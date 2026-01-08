@@ -1,0 +1,2 @@
+class Namespace < ApplicationRecord
+end

@@ -2,7 +2,7 @@ class Namespaces::IndexController < ApplicationController
   before_action :set_namespace
 
   def index
-    render plain: @namespace.gems.pluck(:name).join("\n")
+    render plain: @namespace.gems.pluck(:name).map{|n| "#{n} 0 unknown" }.join("\n")
   end
 
   def show

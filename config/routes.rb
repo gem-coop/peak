@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  scope path: "/:index_id/" do
+  scope path: "/:namespace/" do
     get :versions,   to: "namespaces/index#index"
     get "/info/:id", to: "namespaces/index#show"
   end

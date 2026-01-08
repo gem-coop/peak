@@ -13,6 +13,6 @@ class Namespaces::IndexController < ApplicationController
 
   private
     def set_namespace
-      @namespace = Namespace.named(params[:index_id])
+      @namespace = Namespace.named(params[:namespace])
     end
 end

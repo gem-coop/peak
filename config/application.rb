@@ -28,6 +28,9 @@ module Peak
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
+    # We prefer Oaken to fixtures, so we disable them here.
+    config.app_generators { _1.test_framework _1.test_framework, fixture: false }
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

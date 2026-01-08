@@ -4,8 +4,11 @@ Rails.application.routes.draw do
     get "/info/:id", to: "namespaces/index#show"
   end
 
-  get "/versions" => "namespaces/index#index", defaults: { index_id: "@public" }
-  get "/info/:id" => "namespaces/index#show", defaults: { index_id: "@public" }
+  get "/versions" => "namespaces/index#index", defaults: { namespace: "@public" }
+  get "/info/:id" => "namespaces/index#show", defaults: { namespace: "@public" }
+
+  GEM_PATTERN = /[A-Za-z][A-Za-z0-9\.\-\_]+?\.gem/
+  get "/gems/:id" => "namespaces/gems#show", defaults: { namespace: "@public" }, constraints: {id: GEM_PATTERN}
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

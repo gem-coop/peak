@@ -11,12 +11,18 @@ class Namespace::Gem::Line < ActiveRecord::AssociatedObject
     end
 
     if refs
-      refs.split(":").each do |name, ranges|
-        gem = namespace.gems.upsert({name:}, unique_by: [:namespace_id, :name])
+      refs.split(",").each do |constraints|
+        name, ranges = constraints.split(":")
+        gem_id = namespace.gems.upsert({name:}, unique_by: [:namespace_id, :name], update_only: :name, returning: :id).
+            to_a.dig(0, "id")
 
         ranges.split("&").each do |ref|
-          gem.versions.upsert({ref:}, unique_by: [:gem, :ref])
-          version.references.upsert({ref:}, unique_by: [:version, :ref])
+          operator, ref = ref.split(" ")
+          ref = "0" if ref.nil?
+
+          linked_id = Namespace::Gem::Version.upsert({gem_id:, ref:}, unique_by: [:gem_id, :ref], update_only: :ref, returning: :id).
+            to_a.dig(0, "id")
+          Namespace::Gem::Version::Reference.upsert({source_id: version_id, linked_id:, operator:}, unique_by: [:source_id, :linked_id, :operator])
         end
       end
     end

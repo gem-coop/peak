@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.2].define(version: 2026_01_08_114626) do
+ActiveRecord::Schema[8.2].define(version: 2026_01_08_122252) do
   create_table "namespace_accesses", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "namespace_id", null: false
@@ -29,6 +29,17 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_08_114626) do
     t.datetime "updated_at", null: false
     t.integer "version_id", null: false
     t.index ["version_id"], name: "index_namespace_gem_version_metadata_on_version_id", unique: true
+  end
+
+  create_table "namespace_gem_version_references", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "linked_id", null: false
+    t.string "operator", null: false
+    t.integer "source_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["linked_id"], name: "index_namespace_gem_version_references_on_linked_id"
+    t.index ["source_id", "linked_id", "operator"], name: "namespace_gem_version_references_uniqueness", unique: true
+    t.index ["source_id"], name: "index_namespace_gem_version_references_on_source_id"
   end
 
   create_table "namespace_gem_versions", force: :cascade do |t|

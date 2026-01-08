@@ -5,7 +5,7 @@ class CreateNamespaceGems < ActiveRecord::Migration[8.2]
       t.references :namespace, null: false
 
       t.timestamps
-      t.index [:name, :namespace_id], unique: true, name: "index_namepace_gems_uniqueness"
+      t.index [:namespace_id, :name], unique: true, name: "index_namepace_gems_uniqueness"
     end
   end
 end

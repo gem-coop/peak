@@ -1,6 +1,6 @@
 class Namespace::Gem::Version::Line < ActiveRecord::AssociatedObject
   def to_s
-    "#{version.ref} #{reference_parts.join(",")}|#{version.metadata.line}"
+    "#{version.ref} #{reference_parts.join(",")}|#{version.metadata&.line}"
   end
 
   private

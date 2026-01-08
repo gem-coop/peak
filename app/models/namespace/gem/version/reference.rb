@@ -19,6 +19,7 @@ class Namespace::Gem::Version::Reference < ApplicationRecord
   end
 
   def part
-    "#{operator} #{linked.ref}"
+    # need the serialized version of the operator lol
+    "#{self.class.operators[operator]} #{linked.ref}"
   end
 end

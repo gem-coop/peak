@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  scope path: "/:index_id/" do
+    get :versions,   to: "namespaces/index#index"
+    get "/info/:id", to: "namespaces/index#show"
+  end
+
+  get "/versions" => "namespaces/index#index", defaults: { index_id: "@public" }
+  get "/info/:id" => "namespaces/index#show", defaults: { index_id: "@public" }
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

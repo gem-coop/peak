@@ -5,4 +5,6 @@ class Namespace < ApplicationRecord
   has_many :gems
 
   validates_format_of :name, with: /\A@[a-z]+/
+
+  def self.named(name) = find_by!(name:)
 end

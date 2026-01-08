@@ -1,0 +1,2 @@
+module Namespaces::IndexHelper
+end

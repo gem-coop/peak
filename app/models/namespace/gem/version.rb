@@ -4,4 +4,6 @@ class Namespace::Gem::Version < ApplicationRecord
 
   has_many :references, foreign_key: :source_id
   has_many :reverse_references, foreign_key: :linked_id
+
+  has_object :line
 end

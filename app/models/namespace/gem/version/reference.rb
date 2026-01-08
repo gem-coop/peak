@@ -9,7 +9,7 @@ class Namespace::Gem::Version::Reference < ApplicationRecord
     less_eq: "<=",
     less: "<",
     eq: "=",
-    pessimistic: "~>",
+    pessimistic: "~>"
   }, validate: true
 
   def self.line_parts

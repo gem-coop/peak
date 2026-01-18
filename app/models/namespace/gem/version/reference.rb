@@ -19,7 +19,6 @@ class Namespace::Gem::Version::Reference < ApplicationRecord
   end
 
   def part
-    # need the serialized version of the operator lol
-    "#{self.class.operators[operator]} #{linked.ref}"
+    "#{operator_before_type_cast} #{linked.ref}"
   end
 end

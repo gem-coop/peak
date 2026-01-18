@@ -8,8 +8,8 @@ class Avo::Resources::NamespaceGemVersionReference < Avo::BaseResource
 
   def fields
     field :id, as: :id
-    field :source, as: :belongs_to
-    field :linked, as: :belongs_to
+    field :name, as: :text
     field :operator, as: :text
+    field :ref, as: :text
   end
 end

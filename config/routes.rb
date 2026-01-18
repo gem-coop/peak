@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  scope path: "/:namespace/" do
-    get :versions,   to: "namespaces/index#index"
-    get "/info/:id", to: "namespaces/index#show"
+  namespace :namespaces, path: "/:namespace/" do
+    get :versions,   to: "index#index", as: :versions
+    get "/info/:id", to: "index#show", as: :info
   end
 
   get "/versions" => "namespaces/index#index", defaults: { namespace: "@public" }

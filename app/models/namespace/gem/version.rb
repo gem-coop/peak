@@ -2,8 +2,11 @@ class Namespace::Gem::Version < ApplicationRecord
   belongs_to :gem
   has_one :metadata
 
-  has_many :references, foreign_key: :source_id
-  has_many :reverse_references, foreign_key: :linked_id
+  has_many :nodes
+  has_many :references, through: :nodes
+  has_many :referrants, -> { where(ref: _1.ref) }, through: :gem, foreign_key: :ref, primary_key: :ref
 
-  has_object :line
+  def line
+    "#{ref} #{references.line}#{metadata&.line}"
+  end
 end

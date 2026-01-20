@@ -3,6 +3,7 @@ class Namespace < ApplicationRecord
   has_many :users, through: :accesses
 
   has_many :gems
+  has_many :versions, class_name: "Gem::Version", through: :gems
 
   validates_format_of :name, with: /\A@[a-z]+\z/
 

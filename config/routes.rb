@@ -1,14 +1,17 @@
 Rails.application.routes.draw do
-  namespace :namespaces, path: "/:namespace/" do
+  concern :gem_routing do
     get :versions,   to: "index#index", as: :versions
     get "/info/:id", to: "index#show", as: :info
+    get "/gems/:id", to: "gems#show", as: :gems, constraints: {id: Peak::Gem.pattern}
   end
 
-  get "/versions" => "namespaces/index#index", defaults: { namespace: "@public" }
-  get "/info/:id" => "namespaces/index#show", defaults: { namespace: "@public" }
+  namespace :namespaces, path: "/:namespace/" do
+    concerns :gem_routing
+  end
 
-  GEM_PATTERN = /[A-Za-z][A-Za-z0-9\.\-\_]+?\.gem/
-  get "/gems/:id" => "namespaces/gems#show", defaults: { namespace: "@public" }, constraints: {id: GEM_PATTERN}
+  scope module: :namespaces, defaults: { namespace: "@public" } do
+    concerns :gem_routing
+  end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

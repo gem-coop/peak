@@ -1,7 +1,6 @@
 class Namespace::Gem::Version::Reference < ApplicationRecord
-  belongs_to :source, class_name: module_parent_name
-  belongs_to :linked, class_name: module_parent_name
-  has_one :gem, through: :linked
+  has_many :nodes, class_name: "#{module_parent}::Node"
+  has_many :versions, through: :nodes
 
   enum :operator, {
     greater_eq: ">=",
@@ -10,16 +9,19 @@ class Namespace::Gem::Version::Reference < ApplicationRecord
     less: "<",
     eq: "=",
     pessimistic: "~>"
-  }, validate: true
+  }
 
-  def self.line_parts
-    includes(linked: :gem).group_by(&:gem).map do |gem, refs|
-      "#{gem.name}:#{refs.map(&:part).join("&")}"
+  def self.line
+    parts.join(",")
+  end
+
+  def self.parts
+    all.group_by(&:name).map do |name, refs|
+      "#{name}:#{refs.map(&:part).join("&")}"
     end
   end
 
   def part
-    # need the serialized version of the operator lol
-    "#{self.class.operators[operator]} #{linked.ref}"
+    "#{operator_before_type_cast} #{ref}"
   end
 end

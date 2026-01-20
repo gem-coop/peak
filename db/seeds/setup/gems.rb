@@ -1,6 +1,11 @@
+def gems.oaken_lines = [
+  "0.9.1 |checksum:86c502949e539dd53e40e66664502c7a0bda537eccdfa9ae426f0c90c354ba03,ruby:>= 3.0.0",
+  "1.0.0 |checksum:e89249bc4f6cd3ab9b5e3abdc06c377fa772e6bcb3005cc09ff044bb8d3f1dc2,ruby:>= 3.2"
+]
+
 def gems.parse(name, *lines)
   gem = create(name, name:, unique_by: [:namespace, :name])
-  lines.map { parse_line gem, _1 }
+  lines.flatten.map { parse_line gem, _1 }
 end
 
 def gems.parse_line(gem, line)
@@ -10,16 +15,19 @@ def gems.parse_line(gem, line)
   version = context.versions.create(gem:, ref:, unique_by: [:gem, :ref])
   version.create_metadata metadata.split(",").to_h { _1.split(":") } if metadata
 
-  refs&.split(",").to_a.each do |constraints|
-    name, ranges = constraints.split(":")
-    gem_id = create(name:, unique_by: [:namespace, :name]).id
+  ref_ids = context.references.parse_inserts(refs)
+  version.reference_ids = ref_ids if ref_ids.any?
+end
 
-    ranges.split("&").each do |ref|
-      operator, ref = ref.split(" ")
-      ref = "0" if ref.nil?
+def references.parse_inserts(refs)
+  refs&.split(",").to_a.flat_map do |group|
+    name, ranges = group.split(":")
 
-      linked_id = context.versions.create(gem:, ref:, unique_by: [:gem, :ref]).id
-      version.references.insert({linked_id:, operator:}, unique_by: [:source_id, :linked_id, :operator])
+    inserts = ranges.split("&").map do
+      operator, ref = it.split(" ")
+      {name:, operator:, ref: ref || "0" }
     end
+
+    type.insert_all(inserts, unique_by: [:name, :operator, :ref], returning: :id).rows.map(&:first).flatten
   end
 end

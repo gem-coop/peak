@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   concern :gem_routing do
     get :versions,   to: "index#index", as: :versions
     get "/info/:id", to: "index#show", as: :info
+
     get "/gems/:id", to: "gems#show", as: :gems, constraints: {id: Peak::Gem.pattern}
+    post "/api/v1/gems", to: "gems#create", as: :gem_push
   end
 
   namespace :namespaces, path: "/:namespace/" do

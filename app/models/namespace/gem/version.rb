@@ -8,6 +8,8 @@ class Namespace::Gem::Version < ApplicationRecord
 
   scope :for, -> { joins(:gem).where(gem: {name: _1}) }
 
+  has_one_attached :package
+
   def to_param = package_name
 
   def package_name = "#{name}.gem"

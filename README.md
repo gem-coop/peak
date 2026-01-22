@@ -1,24 +1,11 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Clone the repo, cd into it and run `bin/setup` to get started:
 
-Things you may want to cover:
+```sh
+bin/setup
+```
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Options:
+  - `--reset` resets the database via `bin/rails db:reset`
+  - `--dev` runs `bin/dev` to boot the development server.

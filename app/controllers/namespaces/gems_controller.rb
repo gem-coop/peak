@@ -5,11 +5,7 @@ class Namespaces::GemsController < ApplicationController
   before_action :set_namespace
 
   def create
-    spec, _ = Tempfile.create binmode: true do |file|
-      file.write request.body.read
-      file.rewind
-      Gem::Package.raw_spec file
-    end
+    spec = Peak::Gem.spec_from(request.body)
 
     gem = @namespace.gems.find_or_create_by!(name: spec.name)
     version = gem.versions.find_or_initialize_by(ref: spec.version.to_s)
@@ -17,7 +13,7 @@ class Namespaces::GemsController < ApplicationController
     if version.persisted?
       head :bad_request
     else
-      version.update! package: { io: request.body.tap(&:rewind), filename: version.package_name }
+      version.update! package: { io: request.body, filename: version.package_name }
     end
   end
 
@@ -27,7 +23,7 @@ class Namespaces::GemsController < ApplicationController
 
     if version.package.attached?
       # redirect_to version.package.url expires_in: 5.seconds # TODO: When not using Disk Service?
-      send_data StringIO.new(version.package.download), filename: version.package_name, disposition: :inline
+      send_data version.package.download, filename: version.package_name, disposition: "inline"
     else
       redirect_to "https://gem.coop/gems/#{params[:id]}", allow_other_host: true
     end

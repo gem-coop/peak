@@ -1,4 +1,4 @@
-class CreateNamespaceGems < ActiveRecord::Migration[8.2]
+class CreateNamespaceGems < ActiveRecord::Migration[8.1]
   def change
     create_table :namespace_gems do |t|
       t.string :name, null: false

@@ -1,4 +1,4 @@
-class CreateNamespaceAccesses < ActiveRecord::Migration[8.2]
+class CreateNamespaceAccesses < ActiveRecord::Migration[8.1]
   def change
     create_table :namespace_accesses do |t|
       t.references :namespace, null: false, index: true

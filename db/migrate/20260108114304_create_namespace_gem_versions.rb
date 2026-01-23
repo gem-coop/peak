@@ -1,4 +1,4 @@
-class CreateNamespaceGemVersions < ActiveRecord::Migration[8.2]
+class CreateNamespaceGemVersions < ActiveRecord::Migration[8.1]
   def change
     create_table :namespace_gem_versions do |t|
       t.references :gem, null: false, index: true

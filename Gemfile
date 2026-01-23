@@ -1,7 +1,7 @@
 source "https://gem.coop"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", github: "rails/rails"
+gem "rails"
 
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
@@ -28,15 +28,6 @@ gem "bootsnap", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem "image_processing", "~> 1.2"
 
-# Use Avo for our starting UI
-gem "avo"
-
-# Use next-gen Rails extensions
-gem "oaken"
-gem "active_record-associated_object"
-gem "active_job-performs"
-gem "action_controller-stashed_redirects"
-
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -54,10 +45,25 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  gem "dockerfile-rails", ">= 1.7"
 end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "webmock"
 end
+
+# Use Avo for our starting UI
+gem "avo"
+
+# Use next-gen Rails extensions
+gem "oaken"
+gem "active_record-associated_object"
+gem "active_job-performs"
+gem "action_controller-stashed_redirects"
+
+gem "brotli", "~> 0.7.0"
+gem "httpx", "~> 1.7"
+gem "solid_cache", "~> 1.0"

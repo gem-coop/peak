@@ -39,6 +39,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_25_161937) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "cooldown_versions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "info_byte"
+    t.string "name"
+    t.datetime "updated_at", null: false
+    t.string "version"
+    t.bigint "versions_byte"
+    t.index ["created_at"], name: "index_cooldown_versions_on_created_at"
+    t.index ["name", "version"], name: "index_cooldown_versions_on_name_and_version", unique: true
+  end
+
   create_table "namespace_accesses", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "namespace_id", null: false

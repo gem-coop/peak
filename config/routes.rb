@@ -13,6 +13,10 @@ Rails.application.routes.draw do
 
   scope module: :namespaces, defaults: { namespace: "@public" } do
     concerns :gem_routing
+
+    get "/cooldown/versions" => "namespaces/cooldown#versions"
+    get "/cooldown/info/:name" => "namespaces/cooldown#info"
+    get "/cooldown/gems/:gem" => "namespaces/cooldown#gems", constraints: {gem: Peak::Gem.pattern}
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

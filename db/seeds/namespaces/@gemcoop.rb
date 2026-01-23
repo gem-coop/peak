@@ -5,4 +5,9 @@ accesses.with namespace: do
   _1.plain.create :plain, user: users.create(:plain, name: "Plain")
 end
 
-gems.with(namespace:).parse :oaken, gems.oaken_lines
+gems.with namespace: do
+  _1.parse :oaken, gems.oaken_lines
+
+  peak = _1.create :peak, name: :peak
+  versions.upload gem: peak, ref: "0.1.0"
+end

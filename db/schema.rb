@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_20_201841) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_24_171352) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -82,6 +82,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_20_201841) do
   create_table "namespace_gem_versions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "gem_id", null: false
+    t.datetime "published_at", null: false
     t.string "ref", null: false
     t.datetime "updated_at", null: false
     t.index ["gem_id", "ref"], name: "index_namepace_gem_versions_uniqueness", unique: true

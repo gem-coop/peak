@@ -1,6 +1,5 @@
 class Namespace::Gem::Version < ApplicationRecord
   belongs_to :gem
-  has_one :metadata
 
   has_many :nodes
   has_many :references, through: :nodes
@@ -19,6 +18,7 @@ class Namespace::Gem::Version < ApplicationRecord
 
   def package_name = "#{name}.gem"
   def name = "#{gem.name}-#{ref}"
+  alias_method :filename, :package_name
 
   def line
     "#{ref} #{references.line}#{line_formatted_metadata}\n"
@@ -26,6 +26,11 @@ class Namespace::Gem::Version < ApplicationRecord
 
   def metadata
     slice(:checksum, :ruby, :rubygems, :published_at).compact_blank
+  end
+
+  def finish_upload!(upload)
+    update! checksum: upload.checksum, package: { io: upload.tmpfile, filename: }
+    gem.version_uploaded(self)
   end
 
   private

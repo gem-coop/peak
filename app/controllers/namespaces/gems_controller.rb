@@ -2,24 +2,24 @@ require "rubygems/package"
 
 class Namespaces::GemsController < ApplicationController
   skip_forgery_protection only: :create
-  before_action :set_namespace
+  before_action :set_index
 
   def create
     upload = Current.upload_from(request.body)
-    version = @namespace.gems.version_from name: upload.name, ref: upload.ref
+    version = @index.gems.version_from name: upload.name, ref: upload.ref
 
     if version.persisted?
       head :bad_request
     else
-      version.update! checksum: upload.checksum,
-        package: { io: upload.tmpfile, filename: version.package_name }
+      version.finish_upload! upload
+
       render plain: "#{version.package_name} uploaded 🎉"
     end
   end
 
   def show
     gem_name, ref = Peak::Gem.version(params[:id])
-    version = @namespace.versions.for(gem_name).find_by!(ref:)
+    version = @index.versions.for(gem_name).find_by!(ref:)
 
     if version.package.attached?
       # redirect_to version.package.url expires_in: 5.seconds # TODO: When not using Disk Service?
@@ -30,7 +30,7 @@ class Namespaces::GemsController < ApplicationController
   end
 
   private
-    def set_namespace
-      @namespace = Namespace.named(params[:namespace])
+    def set_index
+      @index = Namespace.named(params[:namespace]).external_index
     end
 end

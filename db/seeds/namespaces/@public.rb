@@ -1,6 +1,6 @@
 namespace = namespaces.create :public, name: "@public"
 
-gems.with namespace: do
+gems.with index: namespace.external_index do
   _1.parse :activesupport, "8.1.1 base64:>= 0,bigdecimal:>= 0,concurrent-ruby:>= 1.3.1&~> 1.0,connection_pool:>= 2.2.5,drb:>= 0,i18n:< 2&>= 1.6,json:>= 0,logger:>= 0"
   _1.parse :activerecord, "8.1.1 activemodel:= 8.1.1,activesupport:= 8.1.1,timeout:>= 0"
 

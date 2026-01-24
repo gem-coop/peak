@@ -12,7 +12,10 @@ Rails.application.routes.draw do
     get "/cooldown/info/:name" => "cooldown#info"
     get "/cooldown/gems/:gem" => "cooldown#gems", constraints: {gem: Peak::Gem.pattern}
 
-    concerns :gem_routing
+    get "/versions" => "mirror#versions"
+    get "/info/:name" => "mirror#info"
+    get "/gems/:gem" => "mirror#gems", constraints: {gem: Peak::Gem.pattern}
+    post "/api/v1/gems", to: "gems#create", as: :gem_push
   end
 
   namespace :namespaces, path: "/:namespace/" do

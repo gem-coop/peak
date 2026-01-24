@@ -38,6 +38,12 @@ class CooldownVersion < ApplicationRecord
     name, vset, _ = version_line.split(" ", 3)
     vset = Set.new(vset.split(","))
 
+    # Handle lines that are just yanks
+    if vset.size == 1 && vset.first.starts_with?("-")
+      yank_version = vset.first[1..]
+      return CooldownVersion.where(name: name, version: yank_version).destroy_all
+    end
+
     info_byte = 0
     unless from_scratch
       info_byte = CooldownVersion.where(name: name).order(:info_byte).pick(:info_byte) || 0

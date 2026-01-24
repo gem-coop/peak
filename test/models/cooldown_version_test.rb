@@ -92,13 +92,13 @@ class CooldownVersionTest < ActiveSupport::TestCase
     assert_equal file_fixture("versions.compacted").read, CooldownVersion.versions_until(nil)
     assert_equal file_fixture("info/rake").read, CooldownVersion.info_until("rake", nil)
 
-    assert_equal [769, 789], CooldownVersion.pluck(:versions_byte).to_a.uniq
+    assert_equal [769], CooldownVersion.pluck(:versions_byte).to_a.uniq
 
-    assert_equal 94, CooldownVersion.count
+    assert_equal 93, CooldownVersion.count
     last = CooldownVersion.last
     assert_equal "rake", last.name
-    assert_equal "100.0.0", last.version
-    assert_equal 789, last.versions_byte
-    assert_equal 9912, last.info_byte
+    assert_equal "13.3.1", last.version
+    assert_equal 769, last.versions_byte
+    assert_equal 9817, last.info_byte
   end
 end

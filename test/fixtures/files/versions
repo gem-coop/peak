@@ -3,3 +3,5 @@ rake 0.4.11,0.4.12,0.4.13,0.4.14,0.4.15,0.4.8,0.4.9,0.5.0,0.5.3,0.5.4,0.6.0,0.6.
 rake 13.2.1 f413baf4fbf8e9aad81bf73cd5af439a
 rake 13.3.0 f413baf4fbf8e9aad81bf73cd5af439a
 rake 13.3.1 f413baf4fbf8e9aad81bf73cd5af439a
+rake 100.0.0 f413baf4fbf8e9aad81bf73cd5af439a
+rake -100.0.0

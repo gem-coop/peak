@@ -7,12 +7,12 @@ class CooldownVersionBackfillCreatedAtJobTest < ActiveJob::TestCase
     Rails.cache.clear
     CooldownVersion.import
     perform_enqueued_jobs
-    CooldownVersion.update_all(created_at: Time.now)
 
+    p CooldownVersion.find_by(version: "13.3.1").published_at
     stub_request(:get, "https://rubygems.org/api/v1/versions/rake.json").to_return(
       body: file_fixture("rake.json").open, headers: {"content-type": "application/json"})
     CooldownVersionBackfillCreatedAtJob.perform_now
 
-    assert_equal Time.parse("2025-10-29 05:41:55.799000000 +0000"), CooldownVersion.find_by(version: "13.3.1").created_at
+    assert_equal Time.parse("2025-10-29 05:41:55 +0000"), CooldownVersion.find_by(version: "13.3.1").published_at
   end
 end

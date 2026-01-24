@@ -5,10 +5,11 @@ class CreateCooldownVersions < ActiveRecord::Migration[8.1]
       t.string :version
       t.bigint :versions_byte
       t.bigint :info_byte
+      t.datetime :published_at
 
       t.timestamps
       t.index [:name, :version], unique: true
-      t.index :created_at
+      t.index :published_at
     end
   end
 end

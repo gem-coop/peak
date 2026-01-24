@@ -10,8 +10,8 @@ class CooldownsControllerTest < ActionDispatch::IntegrationTest
     CooldownVersion.import
     perform_enqueued_jobs
 
-    CooldownVersion.update_all(created_at: 50.hours.ago)
-    CooldownVersion.find_by(version: "13.2.0")&.update(created_at: 49.hours.ago)
+    CooldownVersion.update_all(published_at: 50.hours.ago)
+    CooldownVersion.find_by(version: "13.2.0")&.update(published_at: 49.hours.ago)
     assert_equal "13.2.0", CooldownVersion.last&.version
 
     stub_request(:get, "https://gem.coop/versions").to_return(body: file_fixture("versions").open)
@@ -22,7 +22,7 @@ class CooldownsControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal "13.3.1", CooldownVersion.last.version
 
-    cv = CooldownVersion.where("created_at < ?", 48.hours.ago).order(:created_at).last
+    cv = CooldownVersion.where("published_at < ?", 48.hours.ago).order(:published_at).last
     assert_equal "13.2.0", cv.version
   end
 

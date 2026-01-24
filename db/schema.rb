@@ -43,11 +43,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_25_161937) do
     t.datetime "created_at", null: false
     t.bigint "info_byte"
     t.string "name"
+    t.datetime "published_at"
     t.datetime "updated_at", null: false
     t.string "version"
     t.bigint "versions_byte"
-    t.index ["created_at"], name: "index_cooldown_versions_on_created_at"
     t.index ["name", "version"], name: "index_cooldown_versions_on_name_and_version", unique: true
+    t.index ["published_at"], name: "index_cooldown_versions_on_published_at"
   end
 
   create_table "namespace_accesses", force: :cascade do |t|

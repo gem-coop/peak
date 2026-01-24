@@ -38,7 +38,7 @@ class CooldownVersion < ApplicationRecord
 
     info_byte = 0
     unless from_scratch
-      info_byte = CooldownVersion.where(name: name).order(:created_at).pick(:info_byte) || 0
+      info_byte = CooldownVersion.where(name: name).order(:published_at).pick(:info_byte) || 0
     end
     info = Rails.cache.fetch("gem.coop/info/#{name}", expires_in: 1.hour) do
       HTTPX.plugin(:brotli).get("https://gem.coop/info/#{name}").to_s
@@ -52,24 +52,19 @@ class CooldownVersion < ApplicationRecord
       {name:, version:, versions_byte:, info_byte:}
     end.compact
 
-    the_past = 3.days.ago
-    cvs.each { |cv| cv[:created_at] = the_past } if from_scratch
     CooldownVersion.upsert_all(cvs, unique_by: %i[name version]) unless cvs.empty?
   end
 
-  # Bulk import (see above) sets created_at to 3.days.ago
-  # We need to backfill created_at, but only for the last 48 hours.
-  def self.backfill_created_at
-    # If we have some gems created within the last 48 hours, we are good! Yay.
-    newest = CooldownVersion.where(name:).order(:created_at).last
-    return if newest && 48.hours.ago < newest.created_at
+  # We need to backfill published_at, but only for the last 48 hours.
+  def self.backfill_published_at
+    return if CooldownVersion.where(published_at: nil).empty?
 
     versions = Rails.cache.fetch("gem.coop/versions", expires_in: 1.hour) do
       HTTPX.plugin(:brotli).get("https://gem.coop/versions").to_s
     end
 
     # If we don't have gems created in the last 48 hours, iterate from the (newest) end of versions,
-    # pulling the JSON with created_at dates, adding those dates to the database, and iterating
+    # pulling the JSON with published_at dates, adding those dates to the database, and iterating
     # until we find a gem whose most recent version is older than 48 hours. That means we're done!
     versions.lines.reverse_each do |line|
       name, _ = line.split(" ", 2)
@@ -77,14 +72,16 @@ class CooldownVersion < ApplicationRecord
       api_versions = HTTPX.plugin(:brotli).get("https://rubygems.org/api/v1/versions/#{name}.json").json
 
       version_dates = api_versions.map do |vj|
-        {name: name, version: vj["number"], created_at: vj["created_at"]}
+        {name: name, version: vj["number"], published_at: vj["created_at"]}
       end
 
-      newest_date = Time.parse(version_dates.first[:created_at])
-      return if newest_date < 48.hours.ago
+      newest_date = Time.parse(version_dates.first[:published_at])
+      break if newest_date < 48.hours.ago
 
       CooldownVersion.upsert_all(version_dates, unique_by: %i[name version])
     end
+
+    CooldownVersion.where(published_at: nil).update_all(published_at: 49.hours.ago)
   end
 
   def self.versions_until(byte)

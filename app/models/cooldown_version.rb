@@ -67,6 +67,8 @@ class CooldownVersion < ApplicationRecord
     # pulling the JSON with published_at dates, adding those dates to the database, and iterating
     # until we find a gem whose most recent version is older than 48 hours. That means we're done!
     versions.lines.reverse_each do |line|
+      next if line.match(/^created_at:|^---/)
+
       name, _ = line.split(" ", 2)
 
       api_versions = HTTPX.plugin(:brotli).get("https://rubygems.org/api/v1/versions/#{name}.json").json

@@ -16,6 +16,6 @@ class Namespace::Gem::Version < ApplicationRecord
   def name = "#{gem.name}-#{ref}"
 
   def line
-    "#{ref} #{references.line}#{metadata&.line}"
+    "#{ref} #{references.line}#{metadata&.line}\n"
   end
 end

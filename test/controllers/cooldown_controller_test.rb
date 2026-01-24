@@ -1,9 +1,23 @@
 require "test_helper"
 
-class CooldownsControllerTest < ActionDispatch::IntegrationTest
+class CooldownControllerTest < ActionDispatch::IntegrationTest
   include ActiveJob::TestHelper
 
-  setup do
+  test "errors without gem dates" do
+    stub_request(:get, "https://gem.coop/versions").to_return(body: file_fixture("versions").open)
+    stub_request(:get, "https://gem.coop/info/rake").to_return(body: file_fixture("info/rake").open)
+
+    get "/cooldown/versions"
+    assert_response :error
+
+    get "/cooldown/info/rake"
+    assert_response :error
+
+    get "/cooldown/gems/rake-13.3.1.gem"
+    assert_redirected_to "https://gem.coop/gems/rake-13.3.1.gem"
+  end
+
+  test "bundle install endpoints work" do
     stub_request(:get, "https://gem.coop/versions").to_return(body: file_fixture("versions").read.lines[0...-3].join)
     stub_request(:get, "https://gem.coop/info/rake").to_return(body: file_fixture("info/rake").read.lines[0...-3].join)
     Rails.cache.clear
@@ -24,9 +38,7 @@ class CooldownsControllerTest < ActionDispatch::IntegrationTest
 
     cv = CooldownVersion.where("published_at < ?", 48.hours.ago).order(:published_at).last
     assert_equal "13.2.0", cv.version
-  end
 
-  test "gem installation works" do
     get "/cooldown/versions"
     assert_response :success
     assert_equal file_fixture("versions").read.lines[0..1].join, response.body
@@ -39,7 +51,8 @@ class CooldownsControllerTest < ActionDispatch::IntegrationTest
     assert_not_includes response.body, "13.3.1"
 
     get "/cooldown/gems/rake-13.2.0.gem"
-    assert_response :redirect
     assert_redirected_to "https://gem.coop/gems/rake-13.2.0.gem"
+    get "/cooldown/gems/rake-13.3.1.gem"
+    assert_redirected_to "https://gem.coop/gems/rake-13.3.1.gem"
   end
 end

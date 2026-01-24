@@ -1,4 +1,6 @@
 class CooldownVersion < ApplicationRecord
+  scope :cooled, -> { where("published_at < ?", 48.hours.ago).order(:published_at) }
+
   def self.import(import_async = false)
     versions = Rails.cache.fetch("gem.coop/versions", expires_in: 1.hour) do
       HTTPX.plugin(:brotli).get("https://gem.coop/versions").to_s

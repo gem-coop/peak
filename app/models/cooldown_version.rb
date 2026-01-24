@@ -40,7 +40,7 @@ class CooldownVersion < ApplicationRecord
 
     info_byte = 0
     unless from_scratch
-      info_byte = CooldownVersion.where(name: name).order(:published_at).pick(:info_byte) || 0
+      info_byte = CooldownVersion.where(name: name).order(:info_byte).pick(:info_byte) || 0
     end
     info = Rails.cache.fetch("gem.coop/info/#{name}", expires_in: 1.hour) do
       HTTPX.plugin(:brotli).get("https://gem.coop/info/#{name}").to_s

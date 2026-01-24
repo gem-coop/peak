@@ -7,16 +7,16 @@ Rails.application.routes.draw do
     post "/api/v1/gems", to: "gems#create", as: :gem_push
   end
 
-  namespace :namespaces, path: "/:namespace/" do
+  scope module: :namespaces, defaults: { namespace: "@public" } do
+    get "/cooldown/versions" => "cooldown#versions"
+    get "/cooldown/info/:name" => "cooldown#info"
+    get "/cooldown/gems/:gem" => "cooldown#gems", constraints: {gem: Peak::Gem.pattern}
+
     concerns :gem_routing
   end
 
-  scope module: :namespaces, defaults: { namespace: "@public" } do
+  namespace :namespaces, path: "/:namespace/" do
     concerns :gem_routing
-
-    get "/cooldown/versions" => "namespaces/cooldown#versions"
-    get "/cooldown/info/:name" => "namespaces/cooldown#info"
-    get "/cooldown/gems/:gem" => "namespaces/cooldown#gems", constraints: {gem: Peak::Gem.pattern}
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

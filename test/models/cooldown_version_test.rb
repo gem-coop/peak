@@ -3,6 +3,11 @@ require "test_helper"
 class CooldownVersionTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
 
+  setup do
+    stub_request(:get, "https://rubygems.org/api/v1/versions/rake.json").to_return(
+      body: file_fixture("rake.json").open, headers: {"content-type": "application/json"})
+  end
+
   test "import works" do
     stub_request(:get, "https://gem.coop/versions").to_return(body: file_fixture("versions").read.lines[0...-3].join)
     stub_request(:get, "https://gem.coop/info/rake").to_return(body: file_fixture("info/rake").read.lines[0...-3].join)

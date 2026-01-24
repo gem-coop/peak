@@ -54,6 +54,17 @@ class CooldownVersion < ApplicationRecord
       {name:, version:, versions_byte:, info_byte:}
     end.compact
 
+    unless from_scratch
+      versions_json = Rails.cache.fetch("rubygems.org/api/v1/versions/#{name}.json", expires_in: 1.hour) do
+        HTTPX.plugin(:brotli).get("https://rubygems.org/api/v1/versions/#{name}.json").to_s
+      end
+      versions = JSON.parse(versions_json)
+      cvs.each do |cv|
+        v = versions.find { |v| cv[:version] == v["number"] }
+        cv[:published_at] = v["created_at"]
+      end
+    end
+
     CooldownVersion.upsert_all(cvs, unique_by: %i[name version]) unless cvs.empty?
   end
 

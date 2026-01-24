@@ -3,6 +3,11 @@ require "test_helper"
 class CooldownControllerTest < ActionDispatch::IntegrationTest
   include ActiveJob::TestHelper
 
+  setup do
+    stub_request(:get, "https://rubygems.org/api/v1/versions/rake.json").to_return(
+      body: file_fixture("rake.json").open, headers: {"content-type": "application/json"})
+  end
+
   test "errors without gem dates" do
     stub_request(:get, "https://gem.coop/versions").to_return(body: file_fixture("versions").open)
     stub_request(:get, "https://gem.coop/info/rake").to_return(body: file_fixture("info/rake").open)

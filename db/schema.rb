@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_20_201841) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_24_215130) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -80,9 +80,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_20_201841) do
   end
 
   create_table "namespace_gem_versions", force: :cascade do |t|
+    t.string "checksum"
     t.datetime "created_at", null: false
     t.integer "gem_id", null: false
+    t.datetime "published_at", null: false
     t.string "ref", null: false
+    t.string "ruby"
+    t.string "rubygems"
     t.datetime "updated_at", null: false
     t.index ["gem_id", "ref"], name: "index_namepace_gem_versions_uniqueness", unique: true
     t.index ["gem_id"], name: "index_namespace_gem_versions_on_gem_id"
@@ -92,6 +96,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_20_201841) do
     t.datetime "created_at", null: false
     t.string "name", null: false
     t.integer "namespace_id", null: false
+    t.datetime "trim_versions_published_at"
     t.datetime "updated_at", null: false
     t.index ["namespace_id", "name"], name: "index_namepace_gems_uniqueness", unique: true
     t.index ["namespace_id"], name: "index_namespace_gems_on_namespace_id"

@@ -8,7 +8,7 @@ class Namespaces::IndexController < ApplicationController
   def show
     gem = @namespace.gems.find_by!(name: params[:id])
 
-    render plain: gem.versions.order(:ref).map(&:line).join("\n")
+    render plain: gem.versions.order(:ref).map(&:line).join
   end
 
   private

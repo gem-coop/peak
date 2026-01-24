@@ -13,10 +13,9 @@ FileUtils.chdir APP_ROOT do
   # Add necessary setup steps to this file.
 
   puts "== Installing dependencies =="
-  system("bundle check") || system!("bundle install")
-
-  # Install JavaScript dependencies
-  system!("bun install")
+  system! "brew bundle"
+  system! "rv ci"
+  system! "bun install"
 
   # puts "\n== Copying sample files =="
   # unless File.exist?("config/database.yml")

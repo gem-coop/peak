@@ -17,7 +17,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     get namespaces_gems_url(namespace: namespaces.gemcoop, id: gems.peak.versions.first)
     assert_response :success
 
-    upload = Peak::Gem::Upload.read(StringIO.new(response.body), gemset: gems)
+    upload = Peak::Gem::Upload.read(StringIO.new(response.body))
     assert upload.spec
   ensure
     upload.unlink
@@ -32,6 +32,8 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
       post gem_push_url, env: { "RAW_POST_DATA" => package.binread }
     end
     assert_response :success
+    refute_empty response.body, "bundler throws an exception in case there's no text in the response"
+    assert_match "peak-0.2.0.gem uploaded 🎉", response.body
 
     version = namespace.versions.last
     assert_equal "peak-0.2.0", version.name

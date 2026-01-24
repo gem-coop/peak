@@ -5,14 +5,15 @@ class Namespaces::GemsController < ApplicationController
   before_action :set_namespace
 
   def create
-    upload = Current.gem_upload(request.body, gemset: @namespace.gems)
-    version = upload.version
+    upload = Current.upload_from(request.body)
+    version = @namespace.gems.version_from name: upload.name, ref: upload.ref
 
     if version.persisted?
       head :bad_request
     else
       version.update! checksum: upload.checksum,
         package: { io: upload.tmpfile, filename: version.package_name }
+      render plain: "#{version.package_name} uploaded 🎉"
     end
   end
 

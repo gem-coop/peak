@@ -5,7 +5,7 @@ class CurrentTest < ActiveSupport::TestCase
     file = Tempfile.new
     assert file.path
 
-    Current.uploads << Peak::Gem::Upload.new(file, gemset: gems)
+    Current.uploads << Peak::Gem::Upload.new(file)
     Current.reset
 
     assert_nil file.path

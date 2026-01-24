@@ -4,20 +4,11 @@ class Peak::Gem::Upload
     new(tmpfile, **)
   end
 
-  attr_reader :tmpfile, :gemset
+  attr_reader :tmpfile
 
-  def initialize(tmpfile, gemset:)
-    @tmpfile, @gemset = tmpfile, gemset
-    @tmpfile.rewind
-    @gem = @version = @package = nil
-  end
-
-  def version
-    @version ||= gem.versions.find_or_initialize_by(ref:)
-  end
-
-  def gem
-    @gem ||= gemset.find_or_create_by!(name:)
+  def initialize(tmpfile)
+    @tmpfile = tmpfile.tap(&:rewind)
+    @package = nil
   end
 
   def package
@@ -25,7 +16,6 @@ class Peak::Gem::Upload
   end
   delegate :spec, to: :package
   delegate :name, to: :spec
-
   def ref = spec.version.to_s
 
   def unlink

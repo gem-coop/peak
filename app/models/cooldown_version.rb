@@ -57,37 +57,6 @@ class CooldownVersion < ApplicationRecord
     CooldownVersion.upsert_all(cvs, unique_by: %i[name version]) unless cvs.empty?
   end
 
-  # We need to backfill published_at, but only for the last 48 hours.
-  def self.backfill_published_at
-    return if CooldownVersion.where(published_at: nil).empty?
-
-    versions = Rails.cache.fetch("gem.coop/versions", expires_in: 1.hour) do
-      HTTPX.plugin(:brotli).get("https://gem.coop/versions").to_s
-    end
-
-    # If we don't have gems created in the last 48 hours, iterate from the (newest) end of versions,
-    # pulling the JSON with published_at dates, adding those dates to the database, and iterating
-    # until we find a gem whose most recent version is older than 48 hours. That means we're done!
-    versions.lines.reverse_each do |line|
-      next if line.match(/^created_at:|^---/)
-
-      name, _ = line.split(" ", 2)
-
-      api_versions = HTTPX.plugin(:brotli).get("https://rubygems.org/api/v1/versions/#{name}.json").json
-
-      version_dates = api_versions.map do |vj|
-        {name: name, version: vj["number"], published_at: vj["created_at"]}
-      end
-
-      newest_date = Time.parse(version_dates.first[:published_at])
-      break if newest_date < 48.hours.ago
-
-      CooldownVersion.upsert_all(version_dates, unique_by: %i[name version])
-    end
-
-    CooldownVersion.where(published_at: nil).update_all(published_at: 49.hours.ago)
-  end
-
   def self.versions_until(byte)
     versions = Rails.cache.fetch("gem.coop/versions", expires_in: 1.hour) do
       HTTPX.plugin(:brotli).get("https://gem.coop/versions").to_s

@@ -18,11 +18,15 @@ class Namespace::Gem::Version < ApplicationRecord
   def name = "#{gem.name}-#{ref}"
 
   def line
-    "#{ref} #{references.line}#{metadata_part}\n"
+    "#{ref} #{references.line}#{line_formatted_metadata}\n"
   end
 
-  def metadata_part
-    details = metadata&.slice(:checksum, :ruby, :rubygems).to_h.merge(published_at:).compact_blank.as_json
-    details.map { "#{_1}:#{_2}" }.join(",").presence&.then { "|#{_1}" }
+  def metadata
+    slice(:checksum, :ruby, :rubygems, :published_at).compact_blank
   end
+
+  private
+    def line_formatted_metadata
+      metadata.as_json.map { "#{_1}:#{_2}" }.join(",").presence&.then { "|#{_1}" }
+    end
 end

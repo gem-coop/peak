@@ -14,8 +14,7 @@ def gems.parse_line(gem, line)
   ref, refs = refs.split(" ", 2)
 
   metadata = metadata.split(",").to_h { _1.split(":", 2) } if metadata
-  version = context.versions.create(**{gem:, ref:, published_at: metadata&.delete("published_at")}.compact, unique_by: [:gem, :ref])
-  version.create_metadata metadata if metadata
+  version = context.versions.create(**{gem:, ref:, **metadata}.compact, unique_by: [:gem, :ref])
 
   ref_ids = context.references.parse_inserts(refs)
   version.reference_ids = ref_ids if ref_ids.any?

@@ -1,1 +1,2 @@
 brew "rv"
+brew "bun"

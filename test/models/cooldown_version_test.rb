@@ -19,11 +19,11 @@ class CooldownVersionTest < ActiveSupport::TestCase
     last = CooldownVersion.last
     assert_equal "rake", last.name
     assert_equal "13.2.0", last.version
-    assert_equal 748, last.versions_byte
+    assert_equal 786, last.versions_byte
     assert_equal 9535, last.info_byte
 
     versions = CooldownVersion.versions_until(last.versions_byte)
-    assert_equal 748, versions.size
+    assert_equal 786, versions.size
     assert_includes versions, "13.2.0"
     assert_not_includes versions, "13.2.1"
 
@@ -38,28 +38,27 @@ class CooldownVersionTest < ActiveSupport::TestCase
     CooldownVersion.import
     perform_enqueued_jobs
 
-    # get the whole file if we don't have versions from < 48 hours ago
+    # get the whole file if we don't have a byte offset
     assert_equal file_fixture("versions").read, CooldownVersion.versions_until(nil)
     assert_equal file_fixture("info/rake").read, CooldownVersion.info_until("rake", nil)
 
-    assert_equal 93, CooldownVersion.count
+    assert_equal 92, CooldownVersion.count
     last = CooldownVersion.last
     assert_equal "rake", last.name
-    assert_equal "13.3.1", last.version
-    assert_equal 883, last.versions_byte
-    assert_equal 9817, last.info_byte
+    assert_equal "13.3.0", last.version
+    assert_equal 876, last.versions_byte
+    assert_equal 9723, last.info_byte
+    assert_equal [786, 831, 876], CooldownVersion.pluck(:versions_byte).to_a.uniq
 
     versions = CooldownVersion.versions_until(last.versions_byte)
-    assert_equal 883, versions.size
+    assert_equal 876, versions.size
     assert_includes versions, "13.2.1"
     assert_includes versions, "13.3.0"
-    assert_includes versions, "13.3.1"
 
     info = CooldownVersion.info_until(last.name, last.info_byte)
-    assert_equal 9817, info.size
+    assert_equal 9723, info.size
     assert_includes info, "13.2.1"
     assert_includes info, "13.3.0"
-    assert_includes info, "13.3.1"
   end
 
   test "import handles compaction" do
@@ -74,14 +73,13 @@ class CooldownVersionTest < ActiveSupport::TestCase
     assert_equal file_fixture("info/rake").read, CooldownVersion.info_until("rake", nil)
 
     # check the most recent version matches
-    assert_equal 93, CooldownVersion.count
+    assert_equal 92, CooldownVersion.count
     last = CooldownVersion.last
     assert_equal "rake", last.name
-    assert_equal "13.3.1", last.version
-    assert_equal 883, last.versions_byte
-    assert_equal 9817, last.info_byte
-
-    assert_equal [748, 793, 838, 883], CooldownVersion.pluck(:versions_byte).to_a.uniq
+    assert_equal "13.3.0", last.version
+    assert_equal 876, last.versions_byte
+    assert_equal 9723, last.info_byte
+    assert_equal [786, 831, 876], CooldownVersion.pluck(:versions_byte).to_a.uniq
 
     stub_request(:get, "https://gem.coop/versions").to_return(body: file_fixture("versions.compacted").open)
     Rails.cache.clear
@@ -92,13 +90,12 @@ class CooldownVersionTest < ActiveSupport::TestCase
     assert_equal file_fixture("versions.compacted").read, CooldownVersion.versions_until(nil)
     assert_equal file_fixture("info/rake").read, CooldownVersion.info_until("rake", nil)
 
-    assert_equal [748, 769], CooldownVersion.pluck(:versions_byte).to_a.uniq
-
     assert_equal 93, CooldownVersion.count
     last = CooldownVersion.last
     assert_equal "rake", last.name
     assert_equal "13.3.1", last.version
-    assert_equal 769, last.versions_byte
+    assert_equal 819, last.versions_byte
     assert_equal 9817, last.info_byte
+    assert_equal [800, 819], CooldownVersion.pluck(:versions_byte).to_a.uniq
   end
 end

@@ -5,12 +5,12 @@ class CooldownVersion < ApplicationRecord
     versions = versions_until(nil)
     versions_byte = 0
 
-    cv = CooldownVersion.order(:published_at).last
-    cv_line = cv && versions[...cv.versions_byte]&.lines&.last
-    # jump to our last known version if it's still good
-    if cv_line && cv_line.starts_with?(cv.name) && cv_line.include?(cv.version)
-      versions_byte = cv.versions_byte
-    end
+    # cv = CooldownVersion.order(:versions_byte).last
+    # cv_line = cv && versions[...cv.versions_byte]&.lines&.last
+    # # jump to our last known version if it's still good
+    # if cv_line && cv_line.starts_with?(cv.name) && cv_line.include?(cv.version)
+    #   versions_byte = cv.versions_byte
+    # end
 
     cv_jobs = versions[versions_byte..].lines.map do |version_line|
       versions_byte += version_line.size
@@ -35,20 +35,20 @@ class CooldownVersion < ApplicationRecord
       return CooldownVersion.where(name: name, version: yank_version).destroy_all
     end
 
-    info_byte = CooldownVersion.where(name: name).order(:info_byte).pick(:info_byte) || 0
+    info_byte = 0
     info = info_until(name, nil)
     cvs = info[info_byte..].lines.map do |info_line|
       info_byte += info_line.size
-      next if info_line.starts_with?("---")
+      next if info_line.match(/^created_at:|^---/)
       version, _ = info_line.split(" ", 2)
       next unless vset.include?(version)
       {name:, version:, versions_byte:, info_byte:}
     end.compact
 
-      versions = versions_json(name)
-      cvs.each do |cv|
-        v = versions.find { |v| cv[:version] == v["number"] }
-        cv[:published_at] = v["created_at"]
+    versions = versions_json(name)
+    cvs.each do |cv|
+      v = versions.find { |v| cv[:version] == v["number"] }
+      cv[:published_at] = v["created_at"]
     end
 
     CooldownVersion.upsert_all(cvs, unique_by: %i[name version]) unless cvs.empty?

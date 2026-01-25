@@ -39,25 +39,24 @@ class CooldownControllerTest < ActionDispatch::IntegrationTest
     CooldownVersion.import
     perform_enqueued_jobs
 
-    assert_equal "13.3.1", CooldownVersion.last.version
-
-    cv = CooldownVersion.where("published_at < ?", 48.hours.ago).order(:published_at).last
-    assert_equal "13.2.0", cv.version
+    assert_equal "13.3.0", CooldownVersion.cooled.last.version
+    CooldownVersion.find_by(version: "13.3.0")&.update(published_at: 2.hours.ago)
+    assert_equal "13.2.1", CooldownVersion.cooled.last.version
 
     get "/cooldown/versions"
     assert_response :success
-    assert_equal file_fixture("versions").read.lines[0..1].join, response.body
+    assert_equal file_fixture("versions").read.lines[0..3].join, response.body
     assert_includes response.body, "13.2.0"
-    assert_not_includes response.body, "13.3.1"
+    assert_not_includes response.body, "13.3.0"
 
     get "/cooldown/info/rake"
     assert_response :success
     assert_includes response.body, "13.2.0"
-    assert_not_includes response.body, "13.3.1"
+    assert_not_includes response.body, "13.3.0"
 
     get "/cooldown/gems/rake-13.2.0.gem"
     assert_redirected_to "https://gem.coop/gems/rake-13.2.0.gem"
-    get "/cooldown/gems/rake-13.3.1.gem"
-    assert_redirected_to "https://gem.coop/gems/rake-13.3.1.gem"
+    get "/cooldown/gems/rake-13.3.0.gem"
+    assert_redirected_to "https://gem.coop/gems/rake-13.3.0.gem"
   end
 end

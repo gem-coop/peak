@@ -10,15 +10,9 @@ class CooldownVersion < ApplicationRecord
 
     cv = CooldownVersion.order(:published_at).last
     cv_line = cv && versions[...cv.versions_byte]&.lines&.last
+    # jump to our last known version if it's still good
     if cv_line && cv_line.starts_with?(cv.name) && cv_line.include?(cv.version)
-      from_scratch = false
-      # jump to last known version
       versions_byte = cv.versions_byte
-      # if we already finished the whole file, great! we're done
-      return if versions.length <= versions_byte
-    else
-      # our saved numbers don't line up with the file we pulled, start over
-      from_scratch = true
     end
 
     cv_jobs = versions[versions_byte..].lines.map do |version_line|
@@ -44,10 +38,7 @@ class CooldownVersion < ApplicationRecord
       return CooldownVersion.where(name: name, version: yank_version).destroy_all
     end
 
-    info_byte = 0
-    unless from_scratch
-      info_byte = CooldownVersion.where(name: name).order(:info_byte).pick(:info_byte) || 0
-    end
+    info_byte = CooldownVersion.where(name: name).order(:info_byte).pick(:info_byte) || 0
     info = Rails.cache.fetch("gem.coop/info/#{name}", expires_in: 1.hour) do
       HTTPX.plugin(:brotli).get("https://gem.coop/info/#{name}").to_s
     end

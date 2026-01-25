@@ -6,7 +6,7 @@ class CooldownVersion < ApplicationRecord
 
     versions_byte = 0
 
-    cv = CooldownVersion.order(:created_at).last
+    cv = CooldownVersion.order(:published_at).last
     cv_line = cv && versions[...cv.versions_byte]&.lines&.last
     if cv_line && cv_line.starts_with?(cv.name) && cv_line.include?(cv.version)
       from_scratch = false

@@ -2,7 +2,7 @@ class CooldownVersionHourlyJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
-    CooldownVersionBackfillCreatedAtJob.perform_now
+    CooldownVersionBackfillPublishedAtJob.perform_now
 
     CooldownVersionImportJob.perform_later
 

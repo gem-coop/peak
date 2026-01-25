@@ -1,4 +1,4 @@
-class CooldownVersionBackfillCreatedAtJob < ApplicationJob
+class CooldownVersionBackfillPublishedAtJob < ApplicationJob
   queue_as :default
 
   def perform(*args)

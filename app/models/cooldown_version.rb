@@ -24,7 +24,7 @@ class CooldownVersion < ApplicationRecord
     cv_jobs = versions[versions_byte..].lines.map do |version_line|
       versions_byte += version_line.size
       next if version_line.match(/^created_at:|^---/)
-      CooldownVersionLineImportJob.new(versions_byte, version_line, from_scratch)
+      CooldownVersionLineImportJob.new(versions_byte, version_line)
     end.compact
 
     if import_async
@@ -34,7 +34,7 @@ class CooldownVersion < ApplicationRecord
     end
   end
 
-  def self.import_line(versions_byte, version_line, from_scratch = false)
+  def self.import_line(versions_byte, version_line)
     name, vset, _ = version_line.split(" ", 3)
     vset = Set.new(vset.split(","))
 
@@ -60,7 +60,6 @@ class CooldownVersion < ApplicationRecord
       {name:, version:, versions_byte:, info_byte:}
     end.compact
 
-    unless from_scratch
       versions_json = Rails.cache.fetch("rubygems.org/api/v1/versions/#{name}.json", expires_in: 1.hour) do
         HTTPX.plugin(:brotli).get("https://rubygems.org/api/v1/versions/#{name}.json").to_s
       end
@@ -68,7 +67,6 @@ class CooldownVersion < ApplicationRecord
       cvs.each do |cv|
         v = versions.find { |v| cv[:version] == v["number"] }
         cv[:published_at] = v["created_at"]
-      end
     end
 
     CooldownVersion.upsert_all(cvs, unique_by: %i[name version]) unless cvs.empty?

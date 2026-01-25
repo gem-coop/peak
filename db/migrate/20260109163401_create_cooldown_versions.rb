@@ -6,6 +6,7 @@ class CreateCooldownVersions < ActiveRecord::Migration[8.1]
       t.bigint :versions_byte
       t.bigint :info_byte
       t.datetime :published_at
+      t.datetime :yanked_at
 
       t.timestamps
       t.index [:name, :version], unique: true

@@ -1,4 +1,5 @@
 class CooldownVersion < ApplicationRecord
+  default_scope -> { where(yanked_at: nil) }
   scope :cooled, -> { where("published_at < ?", 48.hours.ago).order(:published_at) }
 
   def self.import(import_async = false)
@@ -31,8 +32,9 @@ class CooldownVersion < ApplicationRecord
 
     # Handle lines that are just yanks
     if vset.size == 1 && vset.first.starts_with?("-")
-      yank_version = vset.first[1..]
-      return CooldownVersion.where(name: name, version: yank_version).destroy_all
+      version = vset.first[1..]
+      cvs = [{name:, version:, yanked_at: Time.now}]
+      return CooldownVersion.unscoped.upsert_all(cvs, unique_by: %i[name version])
     end
 
     info_byte = 0

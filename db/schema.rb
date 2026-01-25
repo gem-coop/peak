@@ -47,6 +47,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_25_161937) do
     t.datetime "updated_at", null: false
     t.string "version"
     t.bigint "versions_byte"
+    t.datetime "yanked_at"
     t.index ["name", "version"], name: "index_cooldown_versions_on_name_and_version", unique: true
     t.index ["published_at"], name: "index_cooldown_versions_on_published_at"
   end

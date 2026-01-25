@@ -22,17 +22,33 @@ class CooldownControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to "https://gem.coop/gems/rake-13.3.1.gem"
   end
 
-  test "bundle install endpoints work" do
+  test "bundle install endpoints work across hourly updates" do
+    # import up to rake 13.2.1
     stub_request(:get, "https://gem.coop/versions").to_return(body: file_fixture("versions").read.lines[0...-3].join)
-    stub_request(:get, "https://gem.coop/info/rake").to_return(body: file_fixture("info/rake").read.lines[0...-3].join)
+    stub_request(:get, "https://gem.coop/info/rake").to_return(body: file_fixture("info/rake").read.lines[0...-2].join)
     Rails.cache.clear
     CooldownVersion.import
     perform_enqueued_jobs
 
-    CooldownVersion.update_all(published_at: 50.hours.ago)
-    CooldownVersion.find_by(version: "13.2.0")&.update(published_at: 49.hours.ago)
-    assert_equal "13.2.0", CooldownVersion.last&.version
+    assert_equal "13.2.1", CooldownVersion.last&.version
 
+    get "/cooldown/versions"
+    assert_response :success
+    assert_includes response.body, "13.2.1"
+    assert_not_includes response.body, "13.3.0"
+
+    get "/cooldown/info/rake"
+    assert_response :success
+    assert_includes response.body, "13.2.1"
+    assert_not_includes response.body, "13.3.0"
+
+    # we don't cooldown the .gem files, at least so far
+    get "/cooldown/gems/rake-13.2.0.gem"
+    assert_redirected_to "https://gem.coop/gems/rake-13.2.0.gem"
+    get "/cooldown/gems/rake-13.3.0.gem"
+    assert_redirected_to "https://gem.coop/gems/rake-13.3.0.gem"
+
+    # import everything, including rake 13.3.0
     stub_request(:get, "https://gem.coop/versions").to_return(body: file_fixture("versions").open)
     stub_request(:get, "https://gem.coop/info/rake").to_return(body: file_fixture("info/rake").open)
     Rails.cache.clear
@@ -40,19 +56,16 @@ class CooldownControllerTest < ActionDispatch::IntegrationTest
     perform_enqueued_jobs
 
     assert_equal "13.3.0", CooldownVersion.cooled.last.version
-    CooldownVersion.find_by(version: "13.3.0")&.update(published_at: 2.hours.ago)
-    assert_equal "13.2.1", CooldownVersion.cooled.last.version
 
     get "/cooldown/versions"
     assert_response :success
-    assert_equal file_fixture("versions").read.lines[0..3].join, response.body
-    assert_includes response.body, "13.2.0"
-    assert_not_includes response.body, "13.3.0"
+    assert_includes response.body, "13.2.1"
+    assert_includes response.body, "13.3.0"
 
     get "/cooldown/info/rake"
     assert_response :success
-    assert_includes response.body, "13.2.0"
-    assert_not_includes response.body, "13.3.0"
+    assert_includes response.body, "13.2.1"
+    assert_includes response.body, "13.3.0"
 
     get "/cooldown/gems/rake-13.2.0.gem"
     assert_redirected_to "https://gem.coop/gems/rake-13.2.0.gem"

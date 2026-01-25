@@ -6,12 +6,12 @@ class CooldownVersion < ApplicationRecord
     versions = versions_until(nil)
     versions_byte = 0
 
-    # cv = CooldownVersion.order(:versions_byte).last
-    # cv_line = cv && versions[...cv.versions_byte]&.lines&.last
-    # # jump to our last known version if it's still good
-    # if cv_line && cv_line.starts_with?(cv.name) && cv_line.include?(cv.version)
-    #   versions_byte = cv.versions_byte
-    # end
+    cv = CooldownVersion.order(:versions_byte).last
+    cv_line = cv && versions[...cv.versions_byte]&.lines&.last
+    # jump to our last known version if it's still good
+    if cv_line && cv_line.starts_with?(cv.name) && cv_line.include?(cv.version) && cv_line.ends_with?("\n")
+      versions_byte = cv.versions_byte
+    end
 
     cv_jobs = versions[versions_byte..].lines.map do |version_line|
       versions_byte += version_line.size

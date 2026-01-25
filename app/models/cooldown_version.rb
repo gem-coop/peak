@@ -2,10 +2,7 @@ class CooldownVersion < ApplicationRecord
   scope :cooled, -> { where("published_at < ?", 48.hours.ago).order(:published_at) }
 
   def self.import(import_async = false)
-    versions = Rails.cache.fetch("gem.coop/versions", expires_in: 1.hour) do
-      HTTPX.plugin(:brotli).get("https://gem.coop/versions").to_s
-    end
-
+    versions = versions_until(nil)
     versions_byte = 0
 
     cv = CooldownVersion.order(:published_at).last
@@ -39,10 +36,7 @@ class CooldownVersion < ApplicationRecord
     end
 
     info_byte = CooldownVersion.where(name: name).order(:info_byte).pick(:info_byte) || 0
-    info = Rails.cache.fetch("gem.coop/info/#{name}", expires_in: 1.hour) do
-      HTTPX.plugin(:brotli).get("https://gem.coop/info/#{name}").to_s
-    end
-
+    info = info_until(name, nil)
     cvs = info[info_byte..].lines.map do |info_line|
       info_byte += info_line.size
       next if info_line.starts_with?("---")
@@ -51,10 +45,7 @@ class CooldownVersion < ApplicationRecord
       {name:, version:, versions_byte:, info_byte:}
     end.compact
 
-      versions_json = Rails.cache.fetch("rubygems.org/api/v1/versions/#{name}.json", expires_in: 1.hour) do
-        HTTPX.plugin(:brotli).get("https://rubygems.org/api/v1/versions/#{name}.json").to_s
-      end
-      versions = JSON.parse(versions_json)
+      versions = versions_json(name)
       cvs.each do |cv|
         v = versions.find { |v| cv[:version] == v["number"] }
         cv[:published_at] = v["created_at"]
@@ -75,5 +66,12 @@ class CooldownVersion < ApplicationRecord
       HTTPX.plugin(:brotli).get("https://gem.coop/info/#{name}").to_s
     end
     byte ? info[...byte] : info
+  end
+
+  def self.versions_json(name)
+    versions_json = Rails.cache.fetch("rubygems.org/api/v1/versions/#{name}.json", expires_in: 1.hour) do
+      HTTPX.plugin(:brotli).get("https://rubygems.org/api/v1/versions/#{name}.json").to_s
+    end
+    JSON.parse(versions_json)
   end
 end

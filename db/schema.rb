@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_25_161937) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_26_011321) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -50,6 +50,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_25_161937) do
     t.datetime "yanked_at"
     t.index ["name", "version"], name: "index_cooldown_versions_on_name_and_version", unique: true
     t.index ["published_at"], name: "index_cooldown_versions_on_published_at"
+    t.index ["yanked_at", "published_at"], name: "index_cooldown_versions_on_yanked_at_and_published_at"
+    t.index ["yanked_at"], name: "index_cooldown_versions_on_yanked_at"
   end
 
   create_table "namespace_accesses", force: :cascade do |t|

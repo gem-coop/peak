@@ -10,6 +10,9 @@ Options:
   - `--reset` resets the database via `bin/rails db:reset`
   - `--dev` runs `bin/dev` to boot the development server.
 
+> [!TIP]
+> [bin/q](bin/q) lets you query a running server a little more easily, click the link for samples.
+
 # Dependencies
 
 - `homebrew`, we're assuming a working Homebrew installation.

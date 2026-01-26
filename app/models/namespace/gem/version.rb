@@ -14,11 +14,10 @@ class Namespace::Gem::Version < ApplicationRecord
 
   attribute :published_at, default: -> { Time.current }
 
-  def to_param = package_name
-
-  def package_name = "#{name}.gem"
+  def to_param = filename
+  def filename = "#{name}.gem"
   def name = "#{gem.name}-#{ref}"
-  alias_method :filename, :package_name
+  alias_method :package_name, :filename
 
   def line
     "#{ref} #{references.line}#{line_formatted_metadata}\n"

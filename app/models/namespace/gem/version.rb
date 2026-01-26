@@ -24,12 +24,12 @@ class Namespace::Gem::Version < ApplicationRecord
   end
 
   def metadata
-    slice(:checksum, :ruby, :rubygems, :published_at).compact_blank
   end
 
   def finish_upload!(upload)
     update! checksum: upload.checksum, package: { io: upload.tmpfile, filename: }
     gem.version_uploaded(self)
+    {checksum:, ruby:, rubygems:, published_at:}.compact_blank
   end
 
   private

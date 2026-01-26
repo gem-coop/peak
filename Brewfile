@@ -1,2 +1,2 @@
 brew "rv"
-brew "oven-sh/bun/bun"
+# brew "oven-sh/bun/bun"

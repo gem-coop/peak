@@ -3,7 +3,7 @@ class Namespaces::CooldownController < ApplicationController
     cv = CooldownVersion.cooled.last
     return no_data unless cv
 
-    expires_in 1.hour, public: true
+    expires_in 30.minutes, public: true
     render plain: CooldownVersion.versions_until(cv.versions_byte)
   end
 
@@ -11,7 +11,7 @@ class Namespaces::CooldownController < ApplicationController
     cv = CooldownVersion.cooled.where(name: params[:name]).last
     return no_data unless cv
 
-    expires_in 1.hour, public: true
+    expires_in 30.minutes, public: true
     render plain: CooldownVersion.info_until(params[:name], cv.info_byte)
   end
 

@@ -120,7 +120,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_25_161937) do
     t.datetime "last_compacted_at", null: false
     t.integer "namespace_id", null: false
     t.datetime "updated_at", null: false
-    t.text "versions_contents", default: "", null: false
+    t.text "versions_contents", default: "---\n", null: false
     t.index ["namespace_id"], name: "index_namespace_indexes_on_namespace_id"
   end
 

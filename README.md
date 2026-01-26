@@ -11,7 +11,7 @@ Options:
   - `--dev` runs `bin/dev` to boot the development server.
 
 > [!TIP]
-> [bin/q](bin/q) lets you query a running server a little more easily, click the link for samples.
+> [bin/sq](bin/sq) lets you query a running server a little more easily, click the link for samples.
 
 # Dependencies
 

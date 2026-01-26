@@ -2,7 +2,7 @@ class Namespaces::IndexController < ApplicationController
   before_action :set_index
 
   def index
-    render plain: @index.load_versions_contents if stale? @index
+    render plain: @index.versions_contents if stale? @index
   end
 
   def show

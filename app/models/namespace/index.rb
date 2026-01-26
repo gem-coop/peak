@@ -10,13 +10,12 @@ class Namespace::Index < ApplicationRecord
   attribute :last_compacted_at, default: -> { Time.current }
 
   def append(envelope)
-    load_versions_contents
     versions_contents << envelope
     save!
   end
 
-  def load_versions_contents
-    self.versions_contents = self.class.where(id:).pick(:versions_contents)
+  def versions_contents
+    read_unloaded_attribute __method__
   end
 
   performs def compact

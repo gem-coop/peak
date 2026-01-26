@@ -20,23 +20,16 @@ class Namespace::Gem::Version < ApplicationRecord
   def name = "#{gem.name}-#{ref}"
   alias_method :package_name, :filename
 
+  has_object :metadata
+
   def process(upload)
     update! checksum: upload.checksum, package: { io: upload.tmpfile, filename: }
   end
 
-
   def line
-    "#{ref} #{references.line}#{line_formatted_metadata}\n"
-  end
-
-  def metadata
-    {checksum:, ruby:, rubygems:, published_at:}.compact_blank
+    "#{ref} #{references.line}#{metadata.line}\n"
   end
 
   private
     def version_uploaded = gem.version_uploaded(self)
-
-    def line_formatted_metadata
-      metadata.as_json.map { "#{_1}:#{_2}" }.join(",").presence&.then { "|#{_1}" }
-    end
 end

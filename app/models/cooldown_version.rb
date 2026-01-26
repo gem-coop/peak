@@ -57,21 +57,21 @@ class CooldownVersion < ApplicationRecord
   end
 
   def self.versions_until(byte)
-    versions = Rails.cache.fetch("gem.coop/versions", expires_in: 1.hour) do
+    versions = Rails.cache.fetch("gem.coop/versions", expires_in: 5.minutes) do
       HTTPX.plugin(:brotli).get("https://gem.coop/versions").to_s
     end
     byte ? versions[...byte] : versions
   end
 
   def self.info_until(name, byte)
-    info = Rails.cache.fetch("gem.coop/info/#{name}", expires_in: 1.hour) do
+    info = Rails.cache.fetch("gem.coop/info/#{name}", expires_in: 5.minutes) do
       HTTPX.plugin(:brotli).get("https://gem.coop/info/#{name}").to_s
     end
     byte ? info[...byte] : info
   end
 
   def self.versions_json(name)
-    versions_json = Rails.cache.fetch("rubygems.org/api/v1/versions/#{name}.json", expires_in: 1.hour) do
+    versions_json = Rails.cache.fetch("rubygems.org/api/v1/versions/#{name}.json", expires_in: 30.minutes) do
       HTTPX.plugin(:brotli).get("https://rubygems.org/api/v1/versions/#{name}.json").to_s
     end
     JSON.parse(versions_json)

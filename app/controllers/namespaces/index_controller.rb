@@ -2,9 +2,7 @@ class Namespaces::IndexController < ApplicationController
   before_action :set_index
 
   def index
-    if stale? blob = @index.versions_blob
-      stream_from blob
-    end
+    render plain: @index.load_versions_contents if stale? @index
   end
 
   def show

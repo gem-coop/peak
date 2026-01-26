@@ -120,9 +120,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_25_161937) do
     t.datetime "last_compacted_at", null: false
     t.integer "namespace_id", null: false
     t.datetime "updated_at", null: false
-    t.integer "versions_blob_id"
+    t.text "versions_contents", default: "", null: false
     t.index ["namespace_id"], name: "index_namespace_indexes_on_namespace_id"
-    t.index ["versions_blob_id"], name: "index_namespace_indexes_on_versions_blob_id"
   end
 
   create_table "namespaces", force: :cascade do |t|

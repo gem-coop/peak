@@ -1,6 +1,6 @@
 class Namespace::Index < ApplicationRecord
   belongs_to :namespace
-  has_remote_text_blob :versions_blob, optional: true
+  default_scope { select(*column_names.without("versions_contents")) }
 
   has_many :gems
   has_many :infos,    through: :gems, class_name: "Namespace::Gem::Info"
@@ -10,12 +10,17 @@ class Namespace::Index < ApplicationRecord
   attribute :last_compacted_at, default: -> { Time.current }
 
   def append(envelope)
-    compact unless versions_blob
-    versions_blob.write envelope
+    load_versions_contents
+    versions_contents << envelope
+    save!
+  end
+
+  def load_versions_contents
+    self.versions_contents = self.class.where(id:).pick(:versions_contents)
   end
 
   performs def compact
-    update! versions_blob: contents, last_compacted_at: Time.current
+    update! versions_contents: contents, last_compacted_at: Time.current
   end
 
   private

@@ -27,8 +27,3 @@ class Namespace::Gem < ApplicationRecord
   end
   def version_uploaded(version) = process_version_later(version)
 end
-
-# Impromptu state machine for states that don't need to be represented forever?
-# E.g. info.orchestrate_into :pending, key: 1 # or a date?
-# class Operation < ApplicationRecord
-# end

@@ -9,7 +9,7 @@ class Namespaces::GemsController < ApplicationController
     version = @index.gems.version_from name: upload.name, ref: upload.ref
 
     if version.persisted?
-      head :bad_request
+      render plain: "Upload skipped: #{version.package_name} already exists. ❌", status: :conflict
     else
       version.process upload
 

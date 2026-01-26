@@ -1,4 +1,12 @@
 Rails.application.config.after_initialize do
-  # auto_import = !ENV.key?("SECRET_KEY_BASE_DUMMY") && Rails.env.production? && CooldownVersion.count > 1_690_000
-  # CooldownVersionHourlyJob.perform_later if auto_import
+  in_prod = !ENV.key?("SECRET_KEY_BASE_DUMMY") && Rails.env.production?
+  not_console = !Rails.const_defined?("Console")
+  versions_loaded = CooldownVersion.count > 1_690_000
+
+  if in_prod && not_console && versions_loaded
+    CooldownVersionHourlyJob.perform_later
+  end
+rescue => e
+  # if the database doesn't exist or something, we can just log about it
+  Rails.logger.error("#{e.class}: #{e.message}")
 end

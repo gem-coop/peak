@@ -9,7 +9,7 @@ class Namespaces::GemsController < ApplicationController
     version = @namespace.gems.version_from name: upload.name, ref: upload.ref
 
     if version.persisted?
-      head :bad_request
+      render plain: "#{version.package_name} already exists. Overwrite not allowed ❌", status: :conflict
     else
       version.update! checksum: upload.checksum,
         package: { io: upload.tmpfile, filename: version.package_name }

@@ -1,18 +1,18 @@
 class Namespaces::IndexController < ApplicationController
-  before_action :set_namespace
+  before_action :set_index
 
   def index
-    render plain: @namespace.gems.pluck(:name).map { |n| "#{n} 0 unknown" }.join("\n")
+    render plain: @index.versions_contents if stale? @index
   end
 
   def show
-    gem = @namespace.gems.find_by!(name: params[:id])
-
-    render plain: gem.versions.order(:ref).map(&:line).join
+    if stale? info = @index.gems.named(params[:id]).info
+      render plain: info.contents
+    end
   end
 
   private
-    def set_namespace
-      @namespace = Namespace.named(params[:namespace])
+    def set_index
+      @index = Namespace.named(params[:namespace]).external_index
     end
 end

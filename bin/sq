@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+# run a server-query like this:
+# bin/sq versions
+# bin/sq @gemcoop/versions
+# bin/sq info/oaken
+# bin/sq @gemcoop/info/oaken --head
+
+# forwards rest arguments onto curl, so stuff like `bin/sq @gemcoop/info/oaken --head` works.
+curl http://peak.test/$1 ${@: 2}

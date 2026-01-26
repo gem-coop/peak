@@ -5,16 +5,18 @@ def gems.oaken_lines = [
 ]
 
 def gems.parse(name, *lines)
-  gem = create(name, name:, unique_by: [:namespace, :name])
+  gem = create(name, name:, unique_by: [:index, :name])
   lines.flatten.map { parse_line gem, _1 }
+
+  gem.info.rebuild
 end
 
 def gems.parse_line(gem, line)
   refs, metadata = line.split("|")
   ref, refs = refs.split(" ", 2)
 
-  metadata = metadata.split(",").to_h { _1.split(":", 2) } if metadata
-  version = context.versions.create(**{gem:, ref:, **metadata}.compact, unique_by: [:gem, :ref])
+  metadata = metadata.split(",").to_h { _1.split(":", 2) }.compact if metadata
+  version = context.versions.create(gem:, ref:, **metadata, unique_by: [:gem, :ref])
 
   ref_ids = context.references.parse_inserts(refs)
   version.reference_ids = ref_ids if ref_ids.any?

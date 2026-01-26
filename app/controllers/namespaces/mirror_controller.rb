@@ -1,9 +1,11 @@
 class Namespaces::MirrorController < ApplicationController
   def versions
+    expires_in 5.minutes, public: true
     render plain: CooldownVersion.versions_until(nil)
   end
 
   def info
+    expires_in 5.minutes, public: true
     render plain: CooldownVersion.info_until(params[:name], nil)
   end
 

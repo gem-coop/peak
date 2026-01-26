@@ -11,7 +11,7 @@ class Namespaces::GemsController < ApplicationController
     if version.persisted?
       head :bad_request
     else
-      version.finish_upload! upload
+      version.process upload
 
       render plain: "#{version.package_name} uploaded 🎉"
     end

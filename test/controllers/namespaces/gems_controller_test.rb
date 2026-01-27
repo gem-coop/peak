@@ -40,7 +40,9 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "bcd14ad61176553b5202726ffba2892fe3bd5b3b32e18461fd36335f71c64d72", version.checksum
     assert_equal ">= 4.0", version.ruby
     assert_equal ">= 2.7", version.rubygems
-    # assert_equal ["peak"], versions.executables
+    assert_equal ["peak"], version.executables
+    assert_equal ["MIT"], version.licenses
+    assert_equal Date.today, version.published_at.to_date
     assert version.package.attached?
     assert_equal package.binread, version.package.download
   end

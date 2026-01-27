@@ -20,7 +20,6 @@ class Namespace::Gem::Version < ApplicationRecord
 
   has_object :metadata
   attribute :published_at, default: -> { Time.current }
-  def extensions = []
 
   def process(upload)
     update! **metadata.extract_from(upload), package: { io: upload.tmpfile, filename: }

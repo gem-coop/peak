@@ -49,9 +49,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_26_011321) do
     t.bigint "versions_byte"
     t.datetime "yanked_at"
     t.index ["name", "version"], name: "index_cooldown_versions_on_name_and_version", unique: true
-    t.index ["published_at"], name: "index_cooldown_versions_on_published_at"
     t.index ["yanked_at", "published_at"], name: "index_cooldown_versions_on_yanked_at_and_published_at"
-    t.index ["yanked_at"], name: "index_cooldown_versions_on_yanked_at"
   end
 
   create_table "namespace_accesses", force: :cascade do |t|

@@ -10,7 +10,7 @@ class CreateCooldownVersions < ActiveRecord::Migration[8.1]
 
       t.timestamps
       t.index [:name, :version], unique: true
-      t.index :published_at
+      t.index [:yanked_at, :published_at]
     end
   end
 end

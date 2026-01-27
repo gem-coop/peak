@@ -3,7 +3,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   scan_ruby:
@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Set up Ruby
+      - name: Set up Ruby with rv
         uses: spinel-coop/setup-rv@main
         with:
           bundler-cache: true
@@ -32,7 +32,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Set up Ruby
+      - name: Set up Ruby with rv
         uses: spinel-coop/setup-rv@main
         with:
           bundler-cache: true
@@ -63,7 +63,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Set up Ruby
+      - name: Set up Ruby with rv
         uses: spinel-coop/setup-rv@main
         with:
           bundler-cache: true

@@ -26,7 +26,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
   test "push" do
     sign_in users.plain
 
-    package = file_fixture "peak-0.2.0.gem"
+    package = file_fixture "peak/peak-0.2.0.gem"
 
     assert_increments gems.peak.versions do
       post gem_push_url, env: { "RAW_POST_DATA" => package.binread }
@@ -37,7 +37,10 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
 
     version = namespace.versions.last
     assert_equal "peak-0.2.0", version.name
-    assert_equal "32d09926fd46add289c0470cf560819b1e8f581c5ca3f3219e0895a222645290", version.checksum
+    assert_equal "bcd14ad61176553b5202726ffba2892fe3bd5b3b32e18461fd36335f71c64d72", version.checksum
+    assert_equal ">= 4.0", version.ruby
+    assert_equal ">= 2.7", version.rubygems
+    # assert_equal ["peak"], versions.executables
     assert version.package.attached?
     assert_equal package.binread, version.package.download
   end

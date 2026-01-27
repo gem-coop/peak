@@ -1,9 +1,8 @@
 require "rubygems/package"
 
 class Peak::Gem::Upload
-  def self.read(io, **)
-    tmpfile = Tempfile.new.tap { IO.copy_stream io, _1 }
-    new(tmpfile, **)
+  def self.read(io)
+    new Tempfile.new.tap { IO.copy_stream io, _1 }
   end
 
   attr_reader :tmpfile

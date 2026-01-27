@@ -1,4 +1,4 @@
-class AddPublishedAtToNamespaceGemVersions < ActiveRecord::Migration[8.2]
+class AddPublishedAtToNamespaceGemVersions < ActiveRecord::Migration[8.1]
   def change
     add_column :namespace_gem_versions, :published_at, :datetime
 

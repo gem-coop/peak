@@ -7,11 +7,18 @@ Rails.application.routes.draw do
     post "/api/v1/gems", to: "gems#create", as: :gem_push
   end
 
-  namespace :namespaces, path: "/:namespace/" do
-    concerns :gem_routing
+  scope module: :namespaces, defaults: { namespace: "@public" } do
+    get "/cooldown/versions" => "cooldown#versions"
+    get "/cooldown/info/:name" => "cooldown#info"
+    get "/cooldown/gems/:gem" => "cooldown#gems", constraints: {gem: Peak::Gem.pattern}
+
+    get "/versions" => "mirror#versions"
+    get "/info/:name" => "mirror#info"
+    get "/gems/:gem" => "mirror#gems", constraints: {gem: Peak::Gem.pattern}
+    post "/api/v1/gems", to: "gems#create", as: :gem_push
   end
 
-  scope module: :namespaces, defaults: { namespace: "@public" } do
+  namespace :namespaces, path: "/:namespace/" do
     concerns :gem_routing
   end
 

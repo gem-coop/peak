@@ -22,12 +22,12 @@ class CooldownVersionTest < ActiveSupport::TestCase
     assert_equal 786, last.versions_byte
     assert_equal 9535, last.info_byte
 
-    versions = CooldownVersion.versions_until(last.versions_byte)
+    versions = CooldownVersion::Server.versions_until(last.versions_byte)
     assert_equal 786, versions.size
     assert_includes versions, "13.2.0"
     assert_not_includes versions, "13.2.1"
 
-    info = CooldownVersion.info_until(last.name, last.info_byte)
+    info = CooldownVersion::Server.info_until(last.name, last.info_byte)
     assert_equal 9535, info.size
     assert_includes info, "13.2.0"
     assert_not_includes info, "13.2.1"
@@ -39,8 +39,8 @@ class CooldownVersionTest < ActiveSupport::TestCase
     perform_enqueued_jobs
 
     # get the whole file if we don't have a byte offset
-    assert_equal file_fixture("versions").read, CooldownVersion.versions_until(nil)
-    assert_equal file_fixture("info/rake").read, CooldownVersion.info_until("rake", nil)
+    assert_equal file_fixture("versions").read, CooldownVersion::Server.versions
+    assert_equal file_fixture("info/rake").read, CooldownVersion::Server.info("rake")
 
     assert_equal 93, CooldownVersion.unscoped.count
     assert_equal 92, CooldownVersion.count
@@ -51,12 +51,12 @@ class CooldownVersionTest < ActiveSupport::TestCase
     assert_equal 9723, last.info_byte
     assert_equal [786, 831, 876], CooldownVersion.pluck(:versions_byte).to_a.uniq
 
-    versions = CooldownVersion.versions_until(last.versions_byte)
+    versions = CooldownVersion::Server.versions_until(last.versions_byte)
     assert_equal 876, versions.size
     assert_includes versions, "13.2.1"
     assert_includes versions, "13.3.0"
 
-    info = CooldownVersion.info_until(last.name, last.info_byte)
+    info = CooldownVersion::Server.info_until(last.name, last.info_byte)
     assert_equal 9723, info.size
     assert_includes info, "13.2.1"
     assert_includes info, "13.3.0"
@@ -70,8 +70,8 @@ class CooldownVersionTest < ActiveSupport::TestCase
     perform_enqueued_jobs
 
     # check the full files match
-    assert_equal file_fixture("versions").read, CooldownVersion.versions_until(nil)
-    assert_equal file_fixture("info/rake").read, CooldownVersion.info_until("rake", nil)
+    assert_equal file_fixture("versions").read, CooldownVersion::Server.versions
+    assert_equal file_fixture("info/rake").read, CooldownVersion::Server.info("rake")
 
     # check the most recent version matches
     assert_equal 93, CooldownVersion.unscoped.count
@@ -89,8 +89,8 @@ class CooldownVersionTest < ActiveSupport::TestCase
     perform_enqueued_jobs
 
     # check the full files match
-    assert_equal file_fixture("versions.compacted").read, CooldownVersion.versions_until(nil)
-    assert_equal file_fixture("info/rake").read, CooldownVersion.info_until("rake", nil)
+    assert_equal file_fixture("versions.compacted").read, CooldownVersion::Server.versions
+    assert_equal file_fixture("info/rake").read, CooldownVersion::Server.info("rake")
 
     assert_equal 93, CooldownVersion.count
     last = CooldownVersion.last

@@ -3,11 +3,11 @@ class CooldownVersion < ApplicationRecord
   scope :cooled, -> { where("published_at < ?", 48.hours.ago).order(:published_at) }
 
   def self.import(import_async = false)
-    versions = versions_until(nil)
+    versions = Server.versions
     versions_byte = 0
 
     cv = CooldownVersion.order(:versions_byte).last
-    cv_line = cv && versions[...cv.versions_byte]&.lines&.last
+    cv_line = cv && Server.versions_until(cv.versions_byte).lines.last
     # jump to our last known version if it's still good
     if cv_line && cv_line.starts_with?(cv.name) && cv_line.include?(cv.version) && cv_line.ends_with?("\n")
       versions_byte = cv.versions_byte
@@ -38,7 +38,7 @@ class CooldownVersion < ApplicationRecord
     end
 
     info_byte = 0
-    info = info_until(name, nil)
+    info = Server.info(name)
     cvs = info[info_byte..].lines.map do |info_line|
       info_byte += info_line.size
       next if info_line.match(/^created_at:|^---/)
@@ -47,7 +47,7 @@ class CooldownVersion < ApplicationRecord
       {name:, version:, versions_byte:, info_byte:}
     end.compact
 
-    versions = versions_json(name)
+    versions = Server.versions_json(name)
     cvs.each do |cv|
       v = versions.find { |v| cv[:version] == v["number"] }
       cv[:published_at] = v["created_at"]
@@ -56,24 +56,29 @@ class CooldownVersion < ApplicationRecord
     CooldownVersion.upsert_all(cvs, unique_by: %i[name version]) unless cvs.empty?
   end
 
-  def self.versions_until(byte)
-    versions = Rails.cache.fetch("gem.coop/versions", expires_in: 5.minutes) do
-      HTTPX.plugin(:brotli).get("https://gem.coop/versions").to_s
+  module Server
+    def self.cached_get(path, expires_in:)
+      Rails.cache.fetch(path, expires_in:) { HTTPX.plugin(:brotli).get("https://#{path}").to_s }
     end
-    byte ? versions[...byte] : versions
-  end
 
-  def self.info_until(name, byte)
-    info = Rails.cache.fetch("gem.coop/info/#{name}", expires_in: 5.minutes) do
-      HTTPX.plugin(:brotli).get("https://gem.coop/info/#{name}").to_s
+    def self.versions
+      cached_get("gem.coop/versions", expires_in: 5.minutes)
     end
-    byte ? info[...byte] : info
-  end
 
-  def self.versions_json(name)
-    versions_json = Rails.cache.fetch("rubygems.org/api/v1/versions/#{name}.json", expires_in: 30.minutes) do
-      HTTPX.plugin(:brotli).get("https://rubygems.org/api/v1/versions/#{name}.json").to_s
+    def self.versions_until(byte)
+      versions.byteslice(...byte)
     end
-    JSON.parse(versions_json)
+
+    def self.info(name)
+      cached_get("gem.coop/info/#{name}", expires_in: 5.minutes)
+    end
+
+    def self.info_until(name, byte)
+      info(name).byteslice(...byte)
+    end
+
+    def self.versions_json(name)
+      JSON.parse cached_get("rubygems.org/api/v1/versions/#{name}.json", expires_in: 30.minutes)
+    end
   end
 end

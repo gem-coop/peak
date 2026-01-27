@@ -4,7 +4,7 @@ class Namespaces::CooldownController < ApplicationController
     return no_data unless cv
 
     expires_in 30.minutes, public: true
-    render plain: CooldownVersion.versions_until(cv.versions_byte)
+    render plain: CooldownVersion::Server.versions_until(cv.versions_byte)
   end
 
   def info
@@ -12,7 +12,7 @@ class Namespaces::CooldownController < ApplicationController
     return no_data unless cv
 
     expires_in 30.minutes, public: true
-    render plain: CooldownVersion.info_until(params[:name], cv.info_byte)
+    render plain: CooldownVersion::Server.info_until(params[:name], cv.info_byte)
   end
 
   def gems

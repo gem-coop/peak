@@ -1,12 +1,10 @@
 class Namespaces::MirrorController < ApplicationController
   def versions
-    expires_in 5.minutes, public: true
-    render plain: CooldownVersion.versions_until(nil)
+    redirect_to "https://gem.coop/versions", allow_other_host: true
   end
 
   def info
-    expires_in 5.minutes, public: true
-    render plain: CooldownVersion.info_until(params[:name], nil)
+    redirect_to "https://gem.coop/info/#{params[:name]}", allow_other_host: true
   end
 
   def gems

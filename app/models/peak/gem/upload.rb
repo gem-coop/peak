@@ -1,7 +1,8 @@
+require "rubygems/package"
+
 class Peak::Gem::Upload
-  def self.read(io, **)
-    tmpfile = Tempfile.new.tap { IO.copy_stream io, _1 }
-    new(tmpfile, **)
+  def self.read(io)
+    new Tempfile.new.tap { IO.copy_stream io, _1 }
   end
 
   attr_reader :tmpfile
@@ -15,8 +16,11 @@ class Peak::Gem::Upload
     @package ||= rewinding { ::Gem::Package.new tmpfile }
   end
   delegate :spec, to: :package
-  delegate :name, to: :spec
+  delegate :name, :executables, :licenses, to: :spec
   def ref = spec.version.to_s
+  def ruby = spec.required_ruby_version.to_s
+  def rubygems = spec.required_rubygems_version.to_s
+  def published_at = nil
 
   def unlink
     tmpfile.close!

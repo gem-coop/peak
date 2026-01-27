@@ -1,5 +1,3 @@
-require "rubygems/package"
-
 class Namespaces::GemsController < ApplicationController
   skip_forgery_protection only: :create
   before_action :set_index

@@ -13,6 +13,9 @@ Options:
 > [!TIP]
 > [bin/sq](bin/sq) lets you query a running server a little more easily, click the link for samples.
 
+> [!TIP]
+> [bin/gemspec](bin/gemspec) lets you download a .gem from https://gem.coop, click the link for samples.
+
 # Dependencies
 
 - `homebrew`, we're assuming a working Homebrew installation.

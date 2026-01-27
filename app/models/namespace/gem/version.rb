@@ -10,20 +10,19 @@ class Namespace::Gem::Version < ApplicationRecord
 
   scope :for, -> { joins(:gem).where(gem: {name: _1}) }
 
-  has_one_attached :package
-  after_create :version_uploaded
-
-  attribute :published_at, default: -> { Time.current }
-
   def to_param = filename
   def filename = "#{name}.gem"
   def name = "#{gem.name}-#{ref}"
   alias_method :package_name, :filename
 
+  has_one_attached :package
+  after_create :version_uploaded
+
   has_object :metadata
+  attribute :published_at, default: -> { Time.current }
 
   def process(upload)
-    update! checksum: upload.checksum, package: { io: upload.tmpfile, filename: }
+    update! **metadata.extract_from(upload), package: { io: upload.tmpfile, filename: }
   end
 
   def line

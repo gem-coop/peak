@@ -35,10 +35,9 @@ class CooldownVersion < ApplicationRecord
       {name:, version:, versions_byte:, info_byte: pos} unless vset.add?(version)
     end
 
-    versions = Server.versions_json(name)
+    versions = Server.versions_json(name).index_by { _1["number"] }
     cvs.each do |cv|
-      v = versions.find { |v| cv[:version] == v["number"] }
-      cv[:published_at] = v["created_at"]
+      cv[:published_at] = versions.dig(cv[:version], "created_at")
     end
 
     CooldownVersion.upsert_all(cvs, unique_by: %i[name version]) unless cvs.empty?

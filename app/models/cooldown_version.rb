@@ -27,11 +27,9 @@ class CooldownVersion < ApplicationRecord
     name, vset, _ = version_line.split(" ", 3)
     vset = Set.new(vset.split(","))
 
-    # Handle lines that are just yanks
-    if vset.size == 1 && vset.first.starts_with?("-")
-      version = vset.first[1..]
-      cvs = [{name:, version:, yanked_at: Time.now}]
-      return CooldownVersion.unscoped.upsert_all(cvs, unique_by: %i[name version])
+    # Handle yank lines that start with -
+    if vset.one? && (version = vset.first.dup).delete_prefix!("-")
+      return unscoped.upsert({name:, version:, yanked_at: Time.now}, unique_by: %i[name version])
     end
 
     cvs = from_contentful_lines_in Server.info(name) do |pos, line|

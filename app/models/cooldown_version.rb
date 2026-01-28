@@ -2,18 +2,17 @@ class CooldownVersion < ApplicationRecord
   default_scope -> { where(yanked_at: nil) }
   scope :cooled, -> { where("published_at < ?", 48.hours.ago).order(:published_at) }
 
-  def self.import(import_async = false)
-    versions = Server.versions
-    versions_byte = 0
-
-    cv = CooldownVersion.order(:versions_byte).last
-    cv_line = cv && Server.versions_until(cv.versions_byte).lines.last
-    # jump to our last known version if it's still good
-    if cv_line && cv_line.starts_with?(cv.name) && cv_line.include?(cv.version) && cv_line.ends_with?("\n")
-      versions_byte = cv.versions_byte
+  def self.previous_latest_version = order(:versions_byte).last&.then&.find(&:still_latest?)
+  def still_latest?
+    # Check if we still appear on the last line read during last import where we left off.
+    if line = Server.versions_until(versions_byte).lines.last
+      line.starts_with?(name) && line.include?(version) && line.ends_with?("\n")
     end
+  end
 
-    cv_jobs = from_contentful_lines_in versions, offset: versions_byte do |pos, line|
+  def self.import(import_async = false)
+    offset  = previous_latest_version&.versions_byte || 0
+    cv_jobs = from_contentful_lines_in Server.versions, offset: do |pos, line|
       CooldownVersionLineImportJob.new(pos, line)
     end
 

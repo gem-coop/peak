@@ -4,6 +4,7 @@ Rails.application.config.after_initialize do
   versions_loaded = CooldownVersion.count > 1_690_000
 
   if in_prod && not_console && versions_loaded
+    Rails.logger.info "Setting up CooldownVersionHourlyJob"
     CooldownVersionHourlyJob.perform_later
   end
 rescue => e

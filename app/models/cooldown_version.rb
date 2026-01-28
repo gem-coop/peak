@@ -30,14 +30,14 @@ class CooldownVersion < ApplicationRecord
       return unscoped.upsert({name:, version:, yanked_at: Time.now}, unique_by: %i[name version])
     end
 
-    versions = Server.versions_json(name).index_by { _1["number"] }
-    cvs = pos_lines_from(Server.info(name)).filter_map do |pos, line|
+    json = Server.versions_json(name).index_by { _1["number"] }
+    versions_attributes = pos_lines_from(Server.info(name)).filter_map do |pos, line|
       version, = line.split(" ", 2)
-      published_at = versions.dig(version, "created_at")
+      published_at = json.dig(version, "created_at")
       {name:, version:, published_at:, versions_byte:, info_byte: pos} unless vset.add?(version)
     end
 
-    CooldownVersion.upsert_all(cvs, unique_by: %i[name version]) unless cvs.empty?
+    upsert_all versions_attributes, unique_by: %i[name version]
   end
 
   def self.pos_lines_from(string, offset: 0)

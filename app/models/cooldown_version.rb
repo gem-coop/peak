@@ -13,11 +13,9 @@ class CooldownVersion < ApplicationRecord
       versions_byte = cv.versions_byte
     end
 
-    cv_jobs = versions[versions_byte..].lines.map do |version_line|
-      versions_byte += version_line.size
-      next if version_line.match(/^created_at:|^---/)
-      CooldownVersionLineImportJob.new(versions_byte, version_line)
-    end.compact
+    cv_jobs = from_contentful_lines_in versions, offset: versions_byte do |pos, line|
+      CooldownVersionLineImportJob.new(pos, line)
+    end
 
     if import_async
       ActiveJob.perform_all_later(cv_jobs)
@@ -37,15 +35,10 @@ class CooldownVersion < ApplicationRecord
       return CooldownVersion.unscoped.upsert_all(cvs, unique_by: %i[name version])
     end
 
-    info_byte = 0
-    info = Server.info(name)
-    cvs = info[info_byte..].lines.map do |info_line|
-      info_byte += info_line.size
-      next if info_line.match(/^created_at:|^---/)
-      version, _ = info_line.split(" ", 2)
-      next unless vset.include?(version)
-      {name:, version:, versions_byte:, info_byte:}
-    end.compact
+    cvs = from_contentful_lines_in Server.info(name) do |pos, line|
+      version, = line.split(" ", 2)
+      {name:, version:, versions_byte:, info_byte: pos} unless vset.add?(version)
+    end
 
     versions = Server.versions_json(name)
     cvs.each do |cv|
@@ -54,6 +47,14 @@ class CooldownVersion < ApplicationRecord
     end
 
     CooldownVersion.upsert_all(cvs, unique_by: %i[name version]) unless cvs.empty?
+  end
+
+  def self.from_contentful_lines_in(string, offset: 0)
+    io = StringIO.new(string).tap { _1.seek offset }
+    io.each_line.filter_map do |line|
+      next if line.start_with? "created_at:", "---"
+      yield io.pos, line
+    end
   end
 
   module Server

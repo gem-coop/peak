@@ -11,15 +11,13 @@ class CooldownVersion < ApplicationRecord
   end
 
   def self.import(import_async = false)
-    offset  = previous_latest_version&.versions_byte || 0
-    cv_jobs = from_contentful_lines_in Server.versions, offset: do |pos, line|
-      CooldownVersionLineImportJob.new(pos, line)
-    end
+    positions = pos_lines_from Server.versions, offset: previous_latest_version&.versions_byte || 0
+    jobs = positions.map { |pos, line| CooldownVersionLineImportJob.new pos, line }
 
     if import_async
-      ActiveJob.perform_all_later(cv_jobs)
+      ActiveJob.perform_all_later(jobs)
     else
-      cv_jobs.each(&:perform_now)
+      jobs.each(&:perform_now)
     end
   end
 
@@ -32,7 +30,7 @@ class CooldownVersion < ApplicationRecord
       return unscoped.upsert({name:, version:, yanked_at: Time.now}, unique_by: %i[name version])
     end
 
-    cvs = from_contentful_lines_in Server.info(name) do |pos, line|
+    cvs = pos_lines_from(Server.info(name)).filter_map do |pos, line|
       version, = line.split(" ", 2)
       {name:, version:, versions_byte:, info_byte: pos} unless vset.add?(version)
     end
@@ -46,11 +44,10 @@ class CooldownVersion < ApplicationRecord
     CooldownVersion.upsert_all(cvs, unique_by: %i[name version]) unless cvs.empty?
   end
 
-  def self.from_contentful_lines_in(string, offset: 0)
+  def self.pos_lines_from(string, offset: 0)
     io = StringIO.new(string).tap { _1.seek offset }
     io.each_line.filter_map do |line|
-      next if line.start_with? "created_at:", "---"
-      yield io.pos, line
+      [io.pos, line] unless line.start_with? "created_at:", "---"
     end
   end
 

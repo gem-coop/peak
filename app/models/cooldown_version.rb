@@ -11,8 +11,8 @@ class CooldownVersion < ApplicationRecord
   end
 
   def self.import(import_async = false)
-    positions = pos_lines_from Server.versions, offset: previous_latest_version&.versions_byte || 0
-    jobs = positions.map { |pos, line| CooldownVersionLineImportJob.new pos, line }
+    offset = previous_latest_version&.versions_byte || 0
+    jobs = pos_lines_from_filter(Server.versions, offset:) { |pos, line| CooldownVersionLineImportJob.new pos, line }
 
     if import_async
       ActiveJob.perform_all_later(jobs)
@@ -31,19 +31,19 @@ class CooldownVersion < ApplicationRecord
     end
 
     json = Server.versions_json(name).index_by { _1["number"] }
-    versions_attributes = pos_lines_from(Server.info(name)).filter_map do |pos, line|
+    versions_attributes = pos_lines_from_filter Server.info(name) do |info_byte, line|
       version, = line.split(" ", 2)
       published_at = json.dig(version, "created_at")
-      {name:, version:, published_at:, versions_byte:, info_byte: pos} unless vset.add?(version)
+      {name:, version:, published_at:, versions_byte:, info_byte:} unless vset.add?(version)
     end
 
     upsert_all versions_attributes, unique_by: %i[name version]
   end
 
-  def self.pos_lines_from(string, offset: 0)
+  def self.pos_lines_from_filter(string, offset: 0)
     io = StringIO.new(string).tap { _1.seek offset }
     io.each_line.filter_map do |line|
-      [io.pos, line] unless line.start_with? "created_at:", "---"
+      yield [io.pos, line] unless line.start_with? "created_at:", "---"
     end
   end
 

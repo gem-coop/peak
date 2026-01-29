@@ -29,6 +29,8 @@ class Namespaces::CooldownController < ApplicationController
     return render plain: data unless request.headers["Range"]
 
     ranges = Rack::Utils.get_byte_ranges(request.headers["Range"], data.length)
+    return head(:range_not_satisfiable) if ranges.blank? || ranges.all?(&:blank?)
+
     range = ranges.first
     response.headers["Content-Range"] = "bytes #{range.begin}-#{range.end}/#{data.length}"
     response.headers["Accept-Ranges"] = "bytes"

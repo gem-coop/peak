@@ -2,7 +2,7 @@ class CooldownVersion < ApplicationRecord
   default_scope -> { where(yanked_at: nil) }
   scope :cooled, -> { where("published_at < ?", 48.hours.ago).order(:published_at) }
 
-  def self.import(import_async = false)
+  def self.import
     versions = Server.versions
     versions_byte = 0
 
@@ -19,11 +19,7 @@ class CooldownVersion < ApplicationRecord
       CooldownVersionLineImportJob.new(versions_byte, version_line)
     end.compact
 
-    if import_async
-      ActiveJob.perform_all_later(cv_jobs)
-    else
-      cv_jobs.each(&:perform_now)
-    end
+    ActiveJob.perform_all_later(cv_jobs)
   end
 
   def self.import_line(versions_byte, version_line)

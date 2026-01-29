@@ -2,6 +2,6 @@ class CooldownVersionImportJob < ApplicationJob
   queue_as :default
 
   def perform
-    CooldownVersion.import(:perform_async)
+    CooldownVersion.import
   end
 end

@@ -54,7 +54,13 @@ class CooldownVersion < ApplicationRecord
 
   module Server
     def self.cached_get(path, expires_in:)
-      Rails.cache.fetch(path, expires_in:) { HTTPX.plugin(:brotli).get("https://#{path}").to_s }
+      Rails.cache.fetch(path, expires_in:) do
+        HTTPX.plugin(:brotli).get("https://#{path}").tap do |res|
+          if res.is_a?(HTTPX::ErrorResponse)
+            raise "Request to #{res.uri} failed with #{res.status} #{res.body}"
+          end
+        end.to_s
+      end
     end
 
     def self.versions

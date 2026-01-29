@@ -33,9 +33,10 @@ class Namespaces::CooldownController < ApplicationController
     return head(:range_not_satisfiable) if ranges.blank? || ranges.all?(&:blank?)
 
     range = ranges.first
+    slice = data.byteslice(range.begin, range.end)
     response.headers["Content-Range"] = "bytes #{range.begin}-#{range.end}/#{data.length}"
-    response.headers["Content-Length"] = range.size - 1
+    response.headers["Content-Length"] = slice.size
 
-    render plain: data.byteslice(range.begin, range.end), status: 206
+    render plain: slice, status: 206
   end
 end

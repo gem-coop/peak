@@ -49,9 +49,9 @@ See the push test in [test/controllers/namespaces/gems_controller_test.rb](test/
 bin/rails test test/controllers/namespaces/gems_controller_test.rb -i push
 ```
 
-The test reads [test/fixtures/files/peak-0.1.0.gem](test/fixtures/files/peak-0.1.0.gem) and uploads it.
+The test reads [test/fixtures/files/peak/peak-0.1.0.gem](test/fixtures/files/peak/peak-0.1.0.gem) and uploads it.
 
-We've also got a gemspec in [test/fixtures/files/peak.gemspec](test/fixtures/files/peak.gemspec) that we've passed to `gem build` to generate the two `.gem` packages.
+We've also got a gemspec in [test/fixtures/files/peak/peak.gemspec](test/fixtures/files/peak/peak.gemspec) that we've passed to `gem build` to generate the two `.gem` packages.
 
 ## Local Testing gem push
 
@@ -66,7 +66,7 @@ gem "peak"
 Then upload our test dependency:
 
 ```sh
-gem push test/fixtures/files/peak-0.2.0.gem --host http://peak.test/@gemcoop
+gem push test/fixtures/files/peak/peak-0.2.0.gem --host http://peak.test/@gemcoop
 ```
 
 You should be able to run `bundle lock` now.

@@ -34,8 +34,8 @@ class Namespaces::CooldownController < ApplicationController
     range = ranges.first
     response.headers["Content-Range"] = "bytes #{range.begin}-#{range.end}/#{data.length}"
     response.headers["Accept-Ranges"] = "bytes"
-    response.headers["Content-Length"] = data.length.to_s
+    response.headers["Content-Length"] = range.size - 1
 
-    send_data data.byteslice(range.begin, range.end), status: 206
+    send_data data.byteslice(range.begin, range.end), type: :text, status: 206
   end
 end

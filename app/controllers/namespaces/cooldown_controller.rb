@@ -26,6 +26,7 @@ class Namespaces::CooldownController < ApplicationController
   end
 
   def render_ranged(data)
+    response.headers["Accept-Ranges"] = "bytes"
     return render plain: data unless request.headers["Range"]
 
     ranges = Rack::Utils.get_byte_ranges(request.headers["Range"], data.length)
@@ -33,7 +34,6 @@ class Namespaces::CooldownController < ApplicationController
 
     range = ranges.first
     response.headers["Content-Range"] = "bytes #{range.begin}-#{range.end}/#{data.length}"
-    response.headers["Accept-Ranges"] = "bytes"
     response.headers["Content-Length"] = range.size - 1
 
     send_data data.byteslice(range.begin, range.end), type: :text, status: 206

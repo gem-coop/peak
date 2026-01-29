@@ -88,7 +88,7 @@ class CooldownControllerTest < ActionDispatch::IntegrationTest
 
     get "/cooldown/info/rake", headers: {Range: "bytes=0-100"}
     assert_response :partial_content
-    assert_includes response.body, "0.5.0"
-    assert_not_includes response.body, "13.3.0"
+    assert_includes response.body, "0.4.11"
+    assert_not_includes response.body, "0.5.0"
   end
 end

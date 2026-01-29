@@ -3,6 +3,7 @@ class Namespaces::CooldownController < ApplicationController
     cv = CooldownVersion.cooled.last
     return no_data unless cv
 
+    Rails.logger.info("curl -X #{request.method} #{curlify_headers(request.headers)} #{request.url}")
     expires_in 30.minutes, public: true
     render_ranged CooldownVersion::Server.versions_until(cv.versions_byte)
   end
@@ -38,5 +39,11 @@ class Namespaces::CooldownController < ApplicationController
     response.headers["Content-Length"] = slice.size
 
     render plain: slice, status: 206
+  end
+
+  def curlify_headers(headers)
+    headers.filter { |k, v| k =~ /^HTTP_/ }.map do |k, v|
+      "-H \"#{k.gsub(/HTTP_/, '').tr('_', '-').downcase}: #{v}\""
+    end.join(" ")
   end
 end

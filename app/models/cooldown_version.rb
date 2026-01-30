@@ -49,7 +49,10 @@ class CooldownVersion < ApplicationRecord
 
     versions = Server.versions_json(name)
     cvs.each do |cv|
-      v = versions.find { |v| cv[:version] == v["number"] }
+      v = versions.find { |v|
+        full_version = v["platform"] == "ruby" ? v["number"] : "#{v["number"]}-#{v["platform"]}"
+        cv[:version] == full_version
+      }
       cv[:published_at] = v["created_at"]
     end
 

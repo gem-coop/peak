@@ -9,7 +9,7 @@ class CooldownVersionTest < ActiveSupport::TestCase
   end
 
   test "import works" do
-    stub_request(:get, "https://gem.coop/versions").to_return(body: file_fixture("versions").read.lines[0...-3].join)
+    stub_request(:get, "https://gem.coop/versions").to_return(body: file_fixture("versions").read.lines[0...-4].join)
     stub_request(:get, "https://gem.coop/info/rake").to_return(body: file_fixture("info/rake").read.lines[0...-3].join)
     Rails.cache.clear
     CooldownVersion.import

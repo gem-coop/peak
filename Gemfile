@@ -69,3 +69,5 @@ gem "brotli", "~> 0.7.0"
 gem "httpx", "~> 1.7"
 gem "solid_cache", "~> 1.0"
 gem "solid_queue", "~> 1.0"
+
+gem "mission_control-jobs", "~> 1.1"

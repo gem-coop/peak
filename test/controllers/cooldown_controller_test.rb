@@ -87,6 +87,8 @@ class CooldownControllerTest < ActionDispatch::IntegrationTest
     get "/cooldown/versions", headers: {Range: "bytes=0-99"}
     assert_response :partial_content
     assert_equal 100, response.body.size
+    assert_equal %("3eee2f4737990c2d749defe04ac78f1b"), response.headers["etag"]
+    assert_equal %(sha256="3e6bd5604c0a534b0c78115d4c2b03c9f41724cd175cecdc66fbff7507c7f1a5"), response.headers["digest"]
     assert_includes response.body, "0.4.11"
     assert_not_includes response.body, "13.3.0"
 

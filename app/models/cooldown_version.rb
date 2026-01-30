@@ -3,23 +3,31 @@ class CooldownVersion < ApplicationRecord
   scope :cooled, -> { where("published_at < ?", 48.hours.ago).order(:published_at) }
 
   def self.import
+    ActiveJob.perform_all_later(version_jobs)
+  end
+
+  def self.version_jobs(force_all: false)
     versions = Server.versions
     versions_byte = 0
 
-    cv = CooldownVersion.order(:versions_byte).last
-    cv_line = cv && Server.versions_until(cv.versions_byte).lines.last
-    # jump to our last known version if it's still good
-    if cv_line && cv_line.starts_with?(cv.name) && cv_line.include?(cv.version) && cv_line.ends_with?("\n")
-      versions_byte = cv.versions_byte
+    unless force_all
+      cv = CooldownVersion.order(:versions_byte).last
+      cv_line = cv && Server.versions_until(cv.versions_byte).lines.last
+      # jump to our last known version if it's still good
+      if cv_line && cv_line.starts_with?(cv.name) && cv_line.include?(cv.version) && cv_line.ends_with?("\n")
+        versions_byte = cv.versions_byte
+      end
     end
 
-    cv_jobs = versions[versions_byte..].lines.map do |version_line|
+    versions[versions_byte..].lines.map do |version_line|
       versions_byte += version_line.size
       next if version_line.match(/^created_at:|^---/)
       CooldownVersionLineImportJob.new(versions_byte, version_line)
     end.compact
+  end
 
-    ActiveJob.perform_all_later(cv_jobs)
+  def self.import_name(name)
+    version_jobs(force_all: true).find { |j| j.arguments[1].starts_with?("#{name} ") }.perform_now
   end
 
   def self.import_line(versions_byte, version_line)

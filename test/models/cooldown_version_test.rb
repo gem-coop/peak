@@ -114,4 +114,18 @@ class CooldownVersionTest < ActiveSupport::TestCase
     assert_equal file_fixture("versions-nio4r").read, CooldownVersion::Server.versions
     assert_equal file_fixture("info/nio4r").read, CooldownVersion::Server.info("nio4r")
   end
+
+  test "import handles prerelease versions with dashes in them" do
+    stub_request(:get, "https://gem.coop/versions").to_return(body: file_fixture("versions-asciidoctor-reducer").open)
+    stub_request(:get, "https://gem.coop/info/asciidoctor-reducer").to_return(body: file_fixture("info/asciidoctor-reducer").open)
+    stub_request(:get, "https://rubygems.org/api/v1/versions/asciidoctor-reducer.json").to_return(
+      body: file_fixture("asciidoctor-reducer.json").open, headers: {"content-type": "application/json"})
+    Rails.cache.clear
+    CooldownVersion.import
+    perform_enqueued_jobs
+
+    # check the full files match
+    assert_equal file_fixture("versions-asciidoctor-reducer").read, CooldownVersion::Server.versions
+    assert_equal file_fixture("info/asciidoctor-reducer").read, CooldownVersion::Server.info("asciidoctor-reducer")
+  end
 end

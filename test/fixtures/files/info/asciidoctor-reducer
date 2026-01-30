@@ -1,0 +1,23 @@
+---
+1.0.0.alpha.1 asciidoctor:~> 2.0|checksum:db05508f60c63147dfc11b388428a7a5bca80d3af8e33c1644296fc0118b3dd8,rubygems:> 1.3.1
+1.0.0.alpha.2 asciidoctor:~> 2.0|checksum:f1b54580f60b38163a43a56b6331ff7082a4fe42ef16eab9088f8dfe6bb33326,rubygems:> 1.3.1
+1.0.0.alpha.3 asciidoctor:~> 2.0|checksum:91224738ebbc693a49a17774aa6d4829a60308aa147c8515b3adcb193b1ab1d6,rubygems:> 1.3.1
+1.0.0.alpha.4 asciidoctor:~> 2.0|checksum:7a2b5a95927ac8b3d514d4401516a31e07265855fd7d4f371a436a97c665f218,rubygems:> 1.3.1
+1.0.0.alpha.5 asciidoctor:~> 2.0|checksum:3c0e62e0729b80a0b5357475cd794955d304c088fbc475991814bc024cb2894e,rubygems:> 1.3.1
+1.0.0.alpha.6 asciidoctor:~> 2.0|checksum:6469716701bd3aa6515c7e770b5e13f95f0c9e42061a5acfde226f4519143d9d,rubygems:> 1.3.1
+1.0.0.alpha.7 asciidoctor:~> 2.0|checksum:e6aecef9c8e2584409fe7fbd27841a9c07e68011785149d43f66af0aeac3f126,rubygems:> 1.3.1
+1.0.0.alpha.8 asciidoctor:~> 2.0|checksum:b2b852a2d19ca5bf51fce7fda28cbaf71803d73f44fb4395c4daae9fc98f885e,rubygems:> 1.3.1
+1.0.0.alpha.9 asciidoctor:~> 2.0|checksum:d68934050d3a4d1cd9035fbcddb89c8fa09b5509b09e9eccffbbeaca89d17b15,rubygems:> 1.3.1
+1.0.0.alpha.10 asciidoctor:~> 2.0|checksum:a3726b1beeebd64f7083129a20d4b2b0d678ae8ac65b17c0a0536d78563a3b7f,rubygems:> 1.3.1
+1.0.0-beta.1 asciidoctor:~> 2.0|checksum:3f4c484689b67c2de05680badf794e4122a7b73da78966234e4f42b2ee9d27bf,rubygems:> 1.3.1
+1.0.0-rc.1 asciidoctor:~> 2.0|checksum:a3389d1ff39fde0e07401287bf8e444126f31ed934468123b82a1184a5a06429,rubygems:> 1.3.1
+1.0.0 asciidoctor:~> 2.0|checksum:e7d45f84d9eda2dab9dc4ab334050c85bc1122e81827991a8704ff140bf8f471
+1.0.1 asciidoctor:~> 2.0|checksum:d91466149541a687a279f643528b42bac6223139559243ff224596534c941255
+1.0.2 asciidoctor:~> 2.0|checksum:bfdf96be1f9348add7ca783a21cc476eb3882967edd624335fcaaebd3ecfda2e
+1.0.3 asciidoctor:~> 2.0|checksum:46c91b289e45654c12e05db05352c6356713e9c53ca622e3bee112ea54b72667
+1.0.4 asciidoctor:~> 2.0|checksum:7cadf545b55fd75bd202572fb1007f8bfa136e5de8c814cb184552931472a842
+1.0.5 asciidoctor:~> 2.0|checksum:051ef0d527826aaf85f5994e062dde806a868152962853bf6ef3cabe4874089c
+1.0.6 asciidoctor:~> 2.0|checksum:9c6a132414846aaeb4620dceb9687ed3f0e827135b3514c2fc46d8564f9a79b9
+1.1.0 asciidoctor:~> 2.0|checksum:51df189807d820065060ff63873c577ab18388a21d4fc80ef7f98070600d5375
+1.1.1 asciidoctor:~> 2.0|checksum:a0b824b5c6022fe2a5313f2b20d537251176a5bcfbd01ec5bc1bf3612591fb7c
+1.1.2 asciidoctor:~> 2.0|checksum:8d6d3a7c3a54916cc03c016447ee7413170fe7cf406c390efbae2f3d71fa1f34

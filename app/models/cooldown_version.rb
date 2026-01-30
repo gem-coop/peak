@@ -51,6 +51,8 @@ class CooldownVersion < ApplicationRecord
       {name:, version:, versions_byte:, info_byte:}
     end.compact
 
+    return if cvs.empty?
+
     versions = Server.versions_json(name)
     cvs.each do |cv|
       v = versions.find do |v|
@@ -61,7 +63,7 @@ class CooldownVersion < ApplicationRecord
       cv[:published_at] = v["created_at"]
     end
 
-    CooldownVersion.upsert_all(cvs, unique_by: %i[name version]) unless cvs.empty?
+    CooldownVersion.upsert_all(cvs, unique_by: %i[name version])
   end
 
   module Server
@@ -70,8 +72,10 @@ class CooldownVersion < ApplicationRecord
     def self.cached_get(path, expires_in:)
       Rails.cache.fetch(path, expires_in:) do
         HTTPX.plugin(:brotli).get("https://#{path}").tap do |res|
-          if res.is_a?(HTTPX::ErrorResponse) || 299 < res.status
-            raise GemYankedError, "Request to #{res.uri} failed with #{res.status} #{res.body}"
+          if path.ends_with?(".json") && res.status == 404
+            raise GemYankedError, path
+          elsif 400 <= res.status
+            raise "Request to #{res.uri} failed with #{res.status} #{res.body}"
           end
         end.to_s
       end
@@ -95,6 +99,8 @@ class CooldownVersion < ApplicationRecord
 
     def self.versions_json(name)
       JSON.parse cached_get("rubygems.org/api/v1/versions/#{name}.json", expires_in: 30.minutes)
+    rescue GemYankedError
+      {}
     end
   end
 end

@@ -136,10 +136,7 @@ class CooldownVersionTest < ActiveSupport::TestCase
       status: 404, body: "This gem could not be found")
     Rails.cache.clear
     CooldownVersion.import
-
-    assert_raises(CooldownVersion::Server::GemYankedError) do
-      perform_enqueued_jobs
-    end
+    perform_enqueued_jobs
 
     # check the full files match
     assert_equal file_fixture("versions-3rb").read, CooldownVersion::Server.versions

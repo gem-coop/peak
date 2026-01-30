@@ -100,4 +100,18 @@ class CooldownVersionTest < ActiveSupport::TestCase
     assert_equal 9817, last.info_byte
     assert_equal [800, 819], CooldownVersion.pluck(:versions_byte).to_a.uniq
   end
+
+  test "import handles non-ruby platforms" do
+    stub_request(:get, "https://gem.coop/versions").to_return(body: file_fixture("versions-nio4r").open)
+    stub_request(:get, "https://gem.coop/info/nio4r").to_return(body: file_fixture("info/nio4r").open)
+    stub_request(:get, "https://rubygems.org/api/v1/versions/nio4r.json").to_return(
+      body: file_fixture("nio4r.json").open, headers: {"content-type": "application/json"})
+    Rails.cache.clear
+    CooldownVersion.import
+    perform_enqueued_jobs
+
+    # check the full files match
+    assert_equal file_fixture("versions-nio4r").read, CooldownVersion::Server.versions
+    assert_equal file_fixture("info/nio4r").read, CooldownVersion::Server.info("nio4r")
+  end
 end

@@ -45,5 +45,5 @@ production:
     migrations_paths: db/cache_migrate
   queue:
     <<: *default
-    database: /data/development-queue.sqlite3
+    database: /data/production-queue.sqlite3
     migrations_paths: db/queue_migrate

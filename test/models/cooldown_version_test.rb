@@ -128,4 +128,21 @@ class CooldownVersionTest < ActiveSupport::TestCase
     assert_equal file_fixture("versions-asciidoctor-reducer").read, CooldownVersion::Server.versions
     assert_equal file_fixture("info/asciidoctor-reducer").read, CooldownVersion::Server.info("asciidoctor-reducer")
   end
+
+  test "handle a fully yanked gem" do
+    stub_request(:get, "https://gem.coop/versions").to_return(body: file_fixture("versions-3rb").open)
+    stub_request(:get, "https://gem.coop/info/3rb").to_return(body: "---\n")
+    stub_request(:get, "https://rubygems.org/api/v1/versions/3rb.json").to_return(
+      status: 404, body: "This gem could not be found")
+    Rails.cache.clear
+    CooldownVersion.import
+
+    assert_raises(CooldownVersion::Server::GemYankedError) do
+      perform_enqueued_jobs
+    end
+
+    # check the full files match
+    assert_equal file_fixture("versions-3rb").read, CooldownVersion::Server.versions
+    assert_equal "---\n", CooldownVersion::Server.info("3rb")
+  end
 end

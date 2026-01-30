@@ -65,11 +65,13 @@ class CooldownVersion < ApplicationRecord
   end
 
   module Server
+    class GemYankedError < RuntimeError; end
+
     def self.cached_get(path, expires_in:)
       Rails.cache.fetch(path, expires_in:) do
         HTTPX.plugin(:brotli).get("https://#{path}").tap do |res|
-          if res.is_a?(HTTPX::ErrorResponse)
-            raise "Request to #{res.uri} failed with #{res.status} #{res.body}"
+          if res.is_a?(HTTPX::ErrorResponse) || 299 < res.status
+            raise GemYankedError, "Request to #{res.uri} failed with #{res.status} #{res.body}"
           end
         end.to_s
       end

@@ -81,13 +81,30 @@ class CooldownControllerTest < ActionDispatch::IntegrationTest
     perform_enqueued_jobs
     assert_equal "13.3.0", CooldownVersion.last&.version
 
-    get "/cooldown/versions", headers: {Range: "bytes=0-100"}
-    assert_response :partial_content
-    assert_includes response.body.byteslice(0..100), "0.4.11"
-    assert_not_includes response.body.byteslice(0..100), "13.3.0"
+    get "/cooldown/versions"
+    full_size = response.body.size
 
-    get "/cooldown/info/rake", headers: {Range: "bytes=0-100"}
+    get "/cooldown/versions", headers: {Range: "bytes=0-99"}
     assert_response :partial_content
+    assert_equal 100, response.body.size
+    assert_includes response.body, "0.4.11"
+    assert_not_includes response.body, "13.3.0"
+
+    get "/cooldown/versions", headers: {Range: "bytes=100-"}
+    assert_response :partial_content
+    assert_equal full_size - 100, response.body.size
+    assert_not_includes response.body, "0.4.11"
+    assert_includes response.body, "13.3.0"
+
+    get "/cooldown/versions", headers: {Range: "bytes=-200"}
+    assert_response :partial_content
+    assert_equal 200, response.body.length
+    assert_not_includes response.body, "0.4.11"
+    assert_includes response.body, "13.3.0"
+
+    get "/cooldown/info/rake", headers: {Range: "bytes=0-99"}
+    assert_response :partial_content
+    assert_equal 100, response.body.length
     assert_includes response.body, "0.4.11"
     assert_not_includes response.body, "0.5.0"
   end

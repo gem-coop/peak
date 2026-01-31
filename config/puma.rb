@@ -36,7 +36,6 @@ plugin :tmp_restart
 
 # Run Solid Queue workers inside the Puma process
 plugin :solid_queue
-solid_queue_mode :async
 
 # Specify the PID file. Defaults to tmp/pids/server.pid in development.
 # In other environments, only set the PID file if requested.

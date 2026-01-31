@@ -6,7 +6,7 @@
 #
 default: &default
   adapter: sqlite3
-  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
   timeout: 5000
 
 development:
@@ -17,6 +17,10 @@ development:
     <<: *default
     database: storage/development-cache.sqlite3
     migrations_paths: db/cache_migrate
+  queue:
+    <<: *default
+    database: storage/development-queue.sqlite3
+    migrations_paths: db/queue_migrate
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -24,7 +28,6 @@ development:
 test:
   <<: *default
   database: storage/test.sqlite3
-
 
 # SQLite3 write its data on the local filesystem, as such it requires
 # persistent disks. If you are deploying to a managed service, you should
@@ -40,3 +43,7 @@ production:
     <<: *default
     database: /data/production-cache.sqlite3
     migrations_paths: db/cache_migrate
+  queue:
+    <<: *default
+    database: /data/production-queue.sqlite3
+    migrations_paths: db/queue_migrate

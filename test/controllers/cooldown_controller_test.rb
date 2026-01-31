@@ -72,4 +72,42 @@ class CooldownControllerTest < ActionDispatch::IntegrationTest
     get "/cooldown/gems/rake-13.3.0.gem"
     assert_redirected_to "https://gem.coop/gems/rake-13.3.0.gem"
   end
+
+  test "cooldown responses support range headers" do
+    stub_request(:get, "https://gem.coop/versions").to_return(body: file_fixture("versions").open)
+    stub_request(:get, "https://gem.coop/info/rake").to_return(body: file_fixture("info/rake").open)
+    Rails.cache.clear
+    CooldownVersion.import
+    perform_enqueued_jobs
+    assert_equal "13.3.0", CooldownVersion.last&.version
+
+    get "/cooldown/versions"
+    full_size = response.body.size
+
+    get "/cooldown/versions", headers: {Range: "bytes=0-99"}
+    assert_response :partial_content
+    assert_equal 100, response.body.size
+    assert_equal %("3eee2f4737990c2d749defe04ac78f1b"), response.headers["etag"]
+    assert_equal %(sha256="3e6bd5604c0a534b0c78115d4c2b03c9f41724cd175cecdc66fbff7507c7f1a5"), response.headers["digest"]
+    assert_includes response.body, "0.4.11"
+    assert_not_includes response.body, "13.3.0"
+
+    get "/cooldown/versions", headers: {Range: "bytes=100-"}
+    assert_response :partial_content
+    assert_equal full_size - 100, response.body.size
+    assert_not_includes response.body, "0.4.11"
+    assert_includes response.body, "13.3.0"
+
+    get "/cooldown/versions", headers: {Range: "bytes=-200"}
+    assert_response :partial_content
+    assert_equal 200, response.body.length
+    assert_not_includes response.body, "0.4.11"
+    assert_includes response.body, "13.3.0"
+
+    get "/cooldown/info/rake", headers: {Range: "bytes=0-99"}
+    assert_response :partial_content
+    assert_equal 100, response.body.length
+    assert_includes response.body, "0.4.11"
+    assert_not_includes response.body, "0.5.0"
+  end
 end

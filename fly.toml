@@ -11,6 +11,7 @@ console_command = '/rails/bin/rails console'
 
 [env]
 DATABASE_URL = 'sqlite3:///data/production.sqlite3'
+WEB_CONCURRENCY = "auto"                            # one process per CPU core
 
 [[mounts]]
 source = 'data'
@@ -41,9 +42,9 @@ tls_skip_verify = false
 X-Forwarded-Proto = 'https'
 
 [[vm]]
-memory = '1gb'
-cpus = 1
-memory_mb = 1024
+cpu_kind = "performance"
+cpus = 2
+memory = "4gb"           # minimum for performance-2x
 
 [[statics]]
 guest_path = '/rails/public'

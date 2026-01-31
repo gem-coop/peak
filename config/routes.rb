@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount MissionControl::Jobs::Engine, at: "/jobs"
+
   concern :gem_routing do
     get :versions,   to: "index#index", as: :versions
     get "/info/:id", to: "index#show", as: :info

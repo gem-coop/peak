@@ -2,28 +2,32 @@ class CooldownVersion < ApplicationRecord
   default_scope -> { where(yanked_at: nil) }
   scope :cooled, -> { where("published_at < ?", 48.hours.ago).order(:published_at) }
 
-  def self.import(import_async = false)
+  def self.import
+    ActiveJob.perform_all_later(version_jobs)
+  end
+
+  def self.version_jobs(force_all: false)
     versions = Server.versions
     versions_byte = 0
 
-    cv = CooldownVersion.order(:versions_byte).last
-    cv_line = cv && Server.versions_until(cv.versions_byte).lines.last
-    # jump to our last known version if it's still good
-    if cv_line && cv_line.starts_with?(cv.name) && cv_line.include?(cv.version) && cv_line.ends_with?("\n")
-      versions_byte = cv.versions_byte
+    unless force_all
+      cv = CooldownVersion.order(:versions_byte).last
+      cv_line = cv && Server.versions_until(cv.versions_byte).lines.last
+      # jump to our last known version if it's still good
+      if cv_line && cv_line.starts_with?(cv.name) && cv_line.include?(cv.version) && cv_line.ends_with?("\n")
+        versions_byte = cv.versions_byte
+      end
     end
 
-    cv_jobs = versions[versions_byte..].lines.map do |version_line|
+    versions[versions_byte..].lines.map do |version_line|
       versions_byte += version_line.size
       next if version_line.match(/^created_at:|^---/)
       CooldownVersionLineImportJob.new(versions_byte, version_line)
     end.compact
+  end
 
-    if import_async
-      ActiveJob.perform_all_later(cv_jobs)
-    else
-      cv_jobs.each(&:perform_now)
-    end
+  def self.import_name(name)
+    version_jobs(force_all: true).find { |j| j.arguments[1].starts_with?("#{name} ") }.perform_now
   end
 
   def self.import_line(versions_byte, version_line)
@@ -47,18 +51,34 @@ class CooldownVersion < ApplicationRecord
       {name:, version:, versions_byte:, info_byte:}
     end.compact
 
+    return if cvs.empty?
+
     versions = Server.versions_json(name)
     cvs.each do |cv|
-      v = versions.find { |v| cv[:version] == v["number"] }
+      v = versions.find do |v|
+        full_v = [v["number"]]
+        full_v << v["platform"] unless v["platform"] == "ruby"
+        cv[:version] == full_v.join("-")
+      end
       cv[:published_at] = v["created_at"]
     end
 
-    CooldownVersion.upsert_all(cvs, unique_by: %i[name version]) unless cvs.empty?
+    CooldownVersion.upsert_all(cvs, unique_by: %i[name version])
   end
 
   module Server
+    class GemYankedError < RuntimeError; end
+
     def self.cached_get(path, expires_in:)
-      Rails.cache.fetch(path, expires_in:) { HTTPX.plugin(:brotli).get("https://#{path}").to_s }
+      Rails.cache.fetch(path, expires_in:) do
+        HTTPX.plugin(:brotli).get("https://#{path}").tap do |res|
+          if res.is_a?(HTTPX::ErrorResponse) || 405 <= res.status
+            raise "Request to #{res.uri} failed with #{res.status} #{res.body}"
+          elsif path.ends_with?(".json") && res.status == 404
+            raise GemYankedError, path
+          end
+        end.to_s
+      end
     end
 
     def self.versions
@@ -79,6 +99,8 @@ class CooldownVersion < ApplicationRecord
 
     def self.versions_json(name)
       JSON.parse cached_get("rubygems.org/api/v1/versions/#{name}.json", expires_in: 30.minutes)
+    rescue GemYankedError
+      {}
     end
   end
 end

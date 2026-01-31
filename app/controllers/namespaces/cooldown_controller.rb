@@ -37,6 +37,8 @@ class Namespaces::CooldownController < ApplicationController
     slice = data.byteslice(range)
     response.headers["Content-Range"] = "bytes #{range.begin}-#{range.end}/#{data.length}"
     response.headers["Content-Length"] = slice.size
+    # Ensure the Fly.io edge proxy will not gzip partial responses, breaking content-length
+    response.headers["Content-Encoding"] = "none"
 
     render_tagged slice, status: 206
   end

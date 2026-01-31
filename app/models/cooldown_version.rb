@@ -72,10 +72,10 @@ class CooldownVersion < ApplicationRecord
     def self.cached_get(path, expires_in:)
       Rails.cache.fetch(path, expires_in:) do
         HTTPX.plugin(:brotli).get("https://#{path}").tap do |res|
-          if path.ends_with?(".json") && res.status == 404
-            raise GemYankedError, path
-          elsif 400 <= res.status
+          if res.is_a?(HTTPX::ErrorResponse) || 405 <= res.status
             raise "Request to #{res.uri} failed with #{res.status} #{res.body}"
+          elsif path.ends_with?(".json") && res.status == 404
+            raise GemYankedError, path
           end
         end.to_s
       end

@@ -11,6 +11,7 @@ console_command = '/rails/bin/rails console'
 
 [env]
 DATABASE_URL = 'sqlite3:///data/production.sqlite3'
+WEB_CONCURRENCY = "auto"                            # one process per CPU core
 
 [[mounts]]
 source = 'data'

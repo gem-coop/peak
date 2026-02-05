@@ -2,6 +2,10 @@ Rails.application.routes.draw do
   mount_avo
   mount MissionControl::Jobs::Engine, at: "/jobs"
 
+  namespace "user/keys", as: :user_keys do
+    resources :sessions, only: %i[new create]
+  end
+
   concern :gem_routing do
     get :versions,   to: "index#index", as: :versions
     get "/info/:id", to: "index#show", as: :info

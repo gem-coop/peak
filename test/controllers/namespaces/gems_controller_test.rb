@@ -28,7 +28,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     package = file_fixture "peak/peak-0.2.0.gem"
 
     assert_increments gems.peak.versions do
-      post gem_push_url, env: { "RAW_POST_DATA" => package.binread, authorization: user.push_key }
+      post gem_push_url, env: { "RAW_POST_DATA" => package.binread, authorization: user.create_push_key.token }
     end
     assert_response :success
     refute_empty response.body, "bundler throws an exception in case there's no text in the response"
@@ -46,7 +46,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     assert_equal package.binread, version.package.download
   end
 
-  test "push without valid API key" do
+  test "push with invalid API key" do
     package = file_fixture "peak/peak-0.2.0.gem"
 
     refute_increments gems.peak.versions do
@@ -59,9 +59,22 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     host! "example.com/nonexistent"
 
     refute_increments gems.peak.versions do
-      post gem_push_url, env: { "RAW_POST_DATA" => package.binread, authorization: user.push_key }
+      post gem_push_url, env: { "RAW_POST_DATA" => package.binread, authorization: user.create_push_key.token }
     end
     assert_response :unauthorized
     assert_dom "body", /User doesn't/
+  end
+
+  test "push with expired API key" do
+    token = users.plain.create_push_key.token
+    package = file_fixture "peak/peak-0.2.0.gem"
+
+    travel 24.hours + 1.second
+
+    refute_increments gems.peak.versions do
+      post gem_push_url, env: { "RAW_POST_DATA" => package.binread, authorization: token }
+    end
+    assert_response :unauthorized
+    assert_dom "body", /API Key/
   end
 end

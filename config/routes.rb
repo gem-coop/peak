@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount_avo
   mount MissionControl::Jobs::Engine, at: "/jobs"
 
   concern :gem_routing do

@@ -1,6 +1,6 @@
 class Namespaces::GemsController < ApplicationController
   skip_forgery_protection only: :create
-  before_action :set_index
+  before_action :authenticate_index_by_user_push_key, only: :create
 
   def create
     upload = Current.upload_from(request.body)
@@ -16,6 +16,8 @@ class Namespaces::GemsController < ApplicationController
   end
 
   def show
+    @index = Namespace.named(params[:namespace]).external_index
+
     gem_name, ref = Peak::Gem.version(params[:id])
     version = @index.versions.for(gem_name).find_by!(ref:)
 
@@ -28,7 +30,14 @@ class Namespaces::GemsController < ApplicationController
   end
 
   private
-    def set_index
-      @index = Namespace.named(params[:namespace]).external_index
+    def authenticate_index_by_user_push_key
+      @user = User.find_by!(push_key: request.authorization)
+      @index = @user.namespaces.named(params[:namespace]).external_index
+    rescue ActiveRecord::RecordNotFound
+      if @user
+        render plain: "User doesn't have access to the given namespace", status: :unauthorized
+      else
+        render plain: "API Key is either incorrect or doesn't exist", status: :unauthorized
+      end
     end
 end

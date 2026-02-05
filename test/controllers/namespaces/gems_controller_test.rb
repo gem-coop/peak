@@ -25,11 +25,10 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
 
   test "push" do
     sign_in users.plain
-
     package = file_fixture "peak/peak-0.2.0.gem"
 
     assert_increments gems.peak.versions do
-      post gem_push_url, env: { "RAW_POST_DATA" => package.binread }
+      post gem_push_url, env: { "RAW_POST_DATA" => package.binread, authorization: user.push_key }
     end
     assert_response :success
     refute_empty response.body, "bundler throws an exception in case there's no text in the response"
@@ -45,5 +44,24 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     assert_equal Date.today, version.published_at.to_date
     assert version.package.attached?
     assert_equal package.binread, version.package.download
+  end
+
+  test "push without valid API key" do
+    package = file_fixture "peak/peak-0.2.0.gem"
+
+    refute_increments gems.peak.versions do
+      post gem_push_url, env: { "RAW_POST_DATA" => package.binread, authorization: "" }
+    end
+    assert_response :unauthorized
+    assert_dom "body", /API Key/
+
+    sign_in users.plain
+    host! "example.com/nonexistent"
+
+    refute_increments gems.peak.versions do
+      post gem_push_url, env: { "RAW_POST_DATA" => package.binread, authorization: user.push_key }
+    end
+    assert_response :unauthorized
+    assert_dom "body", /User doesn't/
   end
 end

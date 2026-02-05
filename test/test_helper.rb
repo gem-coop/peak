@@ -12,6 +12,10 @@ class ActiveSupport::TestCase
     diffs = explicits.merge(positionals.index_with(by)).transform_keys { _1.method(:count) }
     assert_difference(diffs, &)
   end
+
+  def refute_increments(*positionals, &)
+    assert_no_difference(positionals.map { _1.method(:count) }, &)
+  end
 end
 
 class ActionDispatch::IntegrationTest

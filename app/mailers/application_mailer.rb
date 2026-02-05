@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "from@example.com"
+  default from: Mail::Address.new("Gem Coop <support@gem.coop>")
   layout "mailer"
 end

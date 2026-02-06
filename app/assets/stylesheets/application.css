@@ -8,3 +8,159 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --body-bg: light-dark( #f8f8f8,  #191e24);
+  --main-bg: light-dark( white,  #1d232a);
+
+  --font-sm: .875rem;
+}
+
+body {
+  background: var(--body-bg);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  line-height: 1.6;
+  margin: 0;
+}
+
+main {
+  background: var(--main-bg);
+  border-radius: 0.5rem;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 800px;
+  padding: 1.5rem;
+}
+
+nav {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  margin-block-end: 2em;
+
+  & ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  & ul li:not(:last-child):after {
+    content: '|';
+    padding-inline: 10px;
+  }
+}
+
+@media (max-width: 580px) {
+  main {
+    border-radius: 0;
+    padding: .7rem;
+  }
+
+  nav {
+    align-items: baseline;
+    flex-direction: column;
+  }
+}
+
+
+header {
+  background: #f5cc00;
+  color: black;
+  padding: 4px;
+  text-align: center;
+
+  a, a:visited {
+    color: black;
+  }
+}
+
+h1 {
+  font-size: 1.75rem;
+  line-height: 2rem;
+}
+
+hr {
+  margin-block: 2rem;
+}
+
+p {
+  margin-block: 1em;
+}
+
+a, a:visited {
+  color: light-dark( #18181b, white);
+}
+
+pre {
+  overflow: auto;
+  margin-block-start: 0;
+}
+
+pre, code {
+  font-size: var(--font-sm);
+  font-feature-settings: normal;
+  font-variation-settings: normal;
+}
+
+button {
+  font-family: inherit;
+
+  cursor: pointer;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+form {
+  margin-block: 2rem;
+
+  & label {
+    display: block;
+    font-size: var(--font-sm);
+    padding: .5rem .25rem;
+  }
+
+  & input {
+    appearance: none;
+    background: inherit;
+    font-size: inherit;
+    border: 1px solid;
+    border-radius: .5rem;
+    height: 3rem;
+    line-height: 1.5rem;
+    margin-block-end: 1em;
+    padding-inline: 1rem;
+    width: 100%;
+  }
+
+  & button {
+    background-color: #99e600;
+    border: 0;
+    border-radius: 0.5rem;
+    box-shadow: #000 0, #000 0, rgba(0, 0, 0, .05) 0 1px 2px 0;
+    color: black;
+    font-size: var(--font-sm);
+    font-weight: 600;
+    height: 3rem;
+    line-height: 1em;
+    padding-inline: 1rem;
+    text-align: center;
+    text-decoration-line: none;
+    width: 100%;
+  }
+
+  & button:hover, & button:focus {
+    background-color: #85d800;
+  }
+}
+
+peak-status {
+  display: block;
+  text-align: center;
+}

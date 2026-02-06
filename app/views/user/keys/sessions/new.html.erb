@@ -1,20 +1,19 @@
 <h1>New Push Key</h1>
 
-<p>We'll send you a push key to the given email address.</p>
-<p>It expires in 24 hours.</p>
+<p>We'll send you a push key to the given email address. It expires in 24 hours.</p>
 
-<p>
-  You can use it to push gems like so:
+<p>You can use it to push gems like this:</p>
 
-  <pre>
-    <code>GEM_HOST_API_KEY=push_key gem push</code>
-  </pre>
-</p>
+<pre>
+<code>GEM_HOST_API_KEY=push_key RUBYGEMS_HOST=https://gem.coop/@ gem push</code>
+<code>GEM_HOST_API_KEY=push_key RUBYGEMS_HOST=https://gem.coop/@ rake release</code>
+</pre>
+
+<hr>
 
 <%= form_with url: user_keys_sessions_path do |form| %>
-  <%= form.label :email_address do %>
-    Email Address: <%= form.text_field :email_address %>
-  <% end %>
+  <%= form.label :email_address %>
+  <%= form.email_field :email_address, placeholder: "me@example.com" %>
 
-  <%= form.submit "Send email" %>
+  <%= form.button "Create push key" %>
 <% end %>

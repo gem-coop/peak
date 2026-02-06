@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  mount_avo if Rails.env.development?
+  mount_avo
   mount MissionControl::Jobs::Engine, at: "/jobs"
 
   namespace "user/keys", as: :user_keys do

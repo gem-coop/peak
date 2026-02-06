@@ -73,3 +73,5 @@ gem "solid_queue", "~> 1.0"
 gem "mission_control-jobs", "~> 1.1"
 
 gem "resend", "~> 1.0"
+
+gem "honeybadger", "~> 6.3"

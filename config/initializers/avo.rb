@@ -7,7 +7,7 @@ Avo.configure do |config|
   # config.prefix_path = "/internal"
 
   # Where should the user be redirected when visiting the `/avo` url
-  # config.home_path = nil
+  config.home_path = "/avo/resources/namespaces"
 
   ## == Licensing ==
   # config.license_key = ENV['AVO_LICENSE_KEY']
@@ -164,4 +164,24 @@ Avo.configure do |config|
   # config.profile_menu = -> {
   #   link "Profile", path: "/avo/profile", icon: "heroicons/outline/user-circle"
   # }
+
+  Rails.application.config.after_initialize do
+    # Putting this in app/avo/base_resource.rb makes a warning pop up on every Avo screen.
+    Avo::BaseResource.extend Module.new {
+      def navigation_label
+        model_class.name.sub "Namespace::", "::"
+      end
+    }
+
+    Avo::Resources::ResourceManager.prepend Module.new {
+      # Avo sorts by navigation_label, but that doesn't work for us.
+      Sorted = Data.define(:resources) do
+        def sort_by(&) = resources.sort_by(&:name)
+      end
+
+      def resources_for_navigation(user = nil)
+        Sorted.new super
+      end
+    }
+  end
 end

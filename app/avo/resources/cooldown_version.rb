@@ -11,7 +11,7 @@ class Avo::Resources::CooldownVersion < Avo::BaseResource
     field :version, as: :text
     field :yanked_at, as: :date_time
     field :published_at, as: :date_time
-    field :version_byte, as: :number
+    field :versions_byte, as: :number
     field :info_byte, as: :number
   end
 end

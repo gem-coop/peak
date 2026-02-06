@@ -8,8 +8,8 @@ class Avo::Resources::UserPushKey < Avo::BaseResource
 
   def fields
     field :id, as: :id
-    field :user, as: :belongs_to
     field :token, as: :text
     field :expires_at, as: :date_time
+    field :user, as: :belongs_to
   end
 end

@@ -160,7 +160,7 @@ form {
   }
 }
 
-peak-status {
+peak-status, peak-error {
   display: block;
   text-align: center;
 }

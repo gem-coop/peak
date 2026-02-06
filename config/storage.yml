@@ -11,7 +11,7 @@ tigris:
   service: S3
   access_key_id: <%= ENV["AWS_ACCESS_KEY_ID"] %>
   secret_access_key: <%= ENV["AWS_SECRET_ACCESS_KEY"] %>
-  region: us-east-1
+  region: <%= ENV["AWS_REGION"] %>
   bucket: <%= ENV["BUCKET_NAME"] %>
 
 # Remember not to checkin your GCS keyfile to a repository

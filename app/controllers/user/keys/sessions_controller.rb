@@ -14,6 +14,6 @@ class User::Keys::SessionsController < ApplicationController
 
   private
     def rate_limit_response
-      render Peak::Status("You can only request a new push key once every 30 seconds. Try again later."), status: :too_many_requests
+      render Peak::Error("You can only request a new push key once every 30 seconds. Try again later."), status: :too_many_requests
     end
 end

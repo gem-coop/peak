@@ -11,7 +11,7 @@
 
 production:
   update_versions:
-    command: "CooldownVersion.import"
+    class: CooldownVersionImportJob
     schedule: every 20 minutes
   clear_expired_push_keys:
     command: "User::PushKey.expired.destroy_later_bulk"

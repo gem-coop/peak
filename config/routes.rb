@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   mount_avo
-  mount MissionControl::Jobs::Engine, at: "/jobs"
+
+  Sidekiq::Web.use(Rack::Auth::Basic) do |username, password|
+    username == "gem-coop" && ActiveSupport::SecurityUtils.secure_compare(password, ENV["ADMIN_PASSWORD"])
+  end unless Rails.env.local?
+  mount Sidekiq::Web => "/sidekiq"
 
   namespace "user/keys", as: :user_keys do
     resources :sessions, only: %i[new create]

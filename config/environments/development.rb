@@ -74,8 +74,5 @@ Rails.application.configure do
   # config.generators.apply_rubocop_autocorrect_after_generate!
 
   # Replace the default in-process and non-durable queuing backend for Active Job.
-  config.active_job.queue_adapter = :solid_queue
-  config.solid_queue.connects_to = { database: { writing: :queue } }
-
-  config.mission_control.jobs.http_basic_auth_enabled = false
+  config.active_job.queue_adapter = :sidekiq
 end

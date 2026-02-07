@@ -26,10 +26,7 @@ class CooldownControllerTest < ActionDispatch::IntegrationTest
     # import up to rake 13.2.1
     stub_request(:get, "https://gem.coop/versions").to_return(body: file_fixture("versions").read.lines[0...-3].join)
     stub_request(:get, "https://gem.coop/info/rake").to_return(body: file_fixture("info/rake").read.lines[0...-2].join)
-    Rails.cache.clear
-    CooldownVersion.import
-    perform_enqueued_jobs
-
+    perform_import
     assert_equal "13.2.1", CooldownVersion.last&.version
 
     get "/cooldown/versions"
@@ -51,10 +48,7 @@ class CooldownControllerTest < ActionDispatch::IntegrationTest
     # import everything, including rake 13.3.0
     stub_request(:get, "https://gem.coop/versions").to_return(body: file_fixture("versions").open)
     stub_request(:get, "https://gem.coop/info/rake").to_return(body: file_fixture("info/rake").open)
-    Rails.cache.clear
-    CooldownVersion.import
-    perform_enqueued_jobs
-
+    perform_import
     assert_equal "13.3.0", CooldownVersion.cooled.last.version
 
     get "/cooldown/versions"
@@ -76,9 +70,7 @@ class CooldownControllerTest < ActionDispatch::IntegrationTest
   test "cooldown responses support range headers" do
     stub_request(:get, "https://gem.coop/versions").to_return(body: file_fixture("versions").open)
     stub_request(:get, "https://gem.coop/info/rake").to_return(body: file_fixture("info/rake").open)
-    Rails.cache.clear
-    CooldownVersion.import
-    perform_enqueued_jobs
+    perform_import
     assert_equal "13.3.0", CooldownVersion.last&.version
 
     get "/cooldown/versions"
@@ -110,4 +102,12 @@ class CooldownControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "0.4.11"
     assert_not_includes response.body, "0.5.0"
   end
+
+  private
+    def perform_import
+      Rails.cache.clear
+      CooldownVersion::Server.memory_store.clear
+      CooldownVersion.import
+      perform_enqueued_jobs
+    end
 end

@@ -13,10 +13,6 @@ development:
   primary:
     <<: *default
     database: storage/development.sqlite3
-  cache:
-    <<: *default
-    database: storage/development-cache.sqlite3
-    migrations_paths: db/cache_migrate
   queue:
     <<: *default
     database: storage/development-queue.sqlite3
@@ -39,10 +35,6 @@ production:
   primary:
     <<: *default
     database: /data/production.sqlite3
-  cache:
-    <<: *default
-    database: /data/production-cache.sqlite3
-    migrations_paths: db/cache_migrate
   queue:
     <<: *default
     database: /data/production-queue.sqlite3

@@ -69,11 +69,8 @@ class CooldownVersion < ApplicationRecord
   module Server
     class GemYankedError < RuntimeError; end
 
-    mattr_reader :memory_store, default:
-      ActiveSupport::Cache.lookup_store(:memory_store, compress: true)
-
-    def self.cached_get(path, expires_in:, store: Rails.cache)
-      store.fetch(path, expires_in:) do
+    def self.cached_get(path, expires_in:)
+      Rails.cache.fetch(path, expires_in:) do
         HTTPX.plugin(:brotli).get("https://#{path}").tap do |res|
           if res.is_a?(HTTPX::ErrorResponse) || 405 <= res.status
             raise "Request to #{res.uri} failed with #{res.status} #{res.body}"
@@ -85,7 +82,7 @@ class CooldownVersion < ApplicationRecord
     end
 
     def self.versions
-      cached_get("gem.coop/versions", expires_in: 5.minutes, store: memory_store)
+      cached_get("gem.coop/versions", expires_in: 5.minutes)
     end
 
     def self.versions_until(byte)

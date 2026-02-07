@@ -8,8 +8,9 @@ class Avo::Resources::User < Avo::BaseResource
   def fields
     field :id, as: :id
     field :name, as: :text
-    field :push_key, as: :text
+    field :email_address, as: :text
     field :accesses, as: :has_many
     field :namespaces, as: :has_many, through: :accesses
+    field :push_key, as: :has_one
   end
 end

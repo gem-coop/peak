@@ -8,8 +8,8 @@ class Avo::Resources::NamespaceAccess < Avo::BaseResource
 
   def fields
     field :id, as: :id
-    field :namespace, as: :belongs_to
-    field :user, as: :belongs_to
-    field :role, as: :text
+    field :namespace, as: :belongs_to, hide_on: :edit
+    field :user, as: :belongs_to, hide_on: :edit
+    field :role, as: :select, enum: ::Namespace::Access.roles
   end
 end

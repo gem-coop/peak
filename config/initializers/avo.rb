@@ -176,7 +176,7 @@ Avo.configure do |config|
       # Avo sorts by navigation_label, but that doesn't work for us.
       Sorted = Data.define(:resources) do
         def sort_by(&) = resources.sort_by(&:name)
-      end
+      end unless defined?(Sorted)
 
       def resources_for_navigation(user = nil)
         Sorted.new super

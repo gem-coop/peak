@@ -74,5 +74,5 @@ Rails.application.configure do
   # config.generators.apply_rubocop_autocorrect_after_generate!
 
   # Replace the default in-process and non-durable queuing backend for Active Job.
-  config.active_job.queue_adapter = :sidekiq
+  config.active_job.queue_adapter = :async
 end

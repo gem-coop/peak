@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   mount_avo
 
+  require "sidekiq/web"
+  require "sidekiq-scheduler/web"
   Sidekiq::Web.use(Rack::Auth::Basic) do |username, password|
     username == "gem-coop" && ActiveSupport::SecurityUtils.secure_compare(password, ENV["ADMIN_PASSWORD"])
   end unless Rails.env.local?

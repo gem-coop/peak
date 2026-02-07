@@ -25,9 +25,7 @@
 # Any libraries that use a connection pool or another resource pool should
 # be configured to provide at least as many connections as the number of
 # threads. This includes Active Record's `pool` parameter in `database.yml`.
-
-silence_single_worker_warning true
-workers ENV.fetch("WEB_CONCURRENCY", 1)
+workers ENV.fetch("WEB_CONCURRENCY", 0)
 threads_count = ENV.fetch("RAILS_MAX_THREADS", 3)
 threads threads_count, threads_count
 
@@ -41,16 +39,23 @@ plugin :tmp_restart
 # In other environments, only set the PID file if requested.
 pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
 
-x = nil
-before_worker_boot do
-  x = Sidekiq.configure_embed do |config|
-    # config.logger.level = Logger::DEBUG
-    config.queues = %w[critical default low mailer]
-    config.concurrency = 2
+env = ENV.fetch("RAILS_ENV", "development")
+if env == "production"
+  x = nil
+  before_worker_boot do
+    x = Sidekiq.configure_embed do |config|
+      # config.logger.level = Logger::DEBUG
+      config.queues = %w[critical default low mailer]
+      config.concurrency = 2
+      config.on(:startup) do
+        Sidekiq.schedule = YAML.load_file(File.expand_path("../scheduler.yml", __FILE__))
+        SidekiqScheduler::Scheduler.instance.reload_schedule!
+      end
+    end
+    x.run
   end
-  x.run
-end
 
-before_worker_shutdown do
-  x&.stop
+  before_worker_shutdown do
+    x&.stop
+  end
 end

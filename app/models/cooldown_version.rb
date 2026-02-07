@@ -3,7 +3,7 @@ class CooldownVersion < ApplicationRecord
   scope :cooled, -> { where("published_at < ?", 48.hours.ago).order(:published_at) }
 
   def self.import
-    ActiveJob.perform_all_later(version_jobs)
+    version_jobs.tap { |jobs| ActiveJob.perform_all_later(jobs) }
   end
 
   def self.version_jobs(force_all: false)

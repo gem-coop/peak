@@ -60,8 +60,11 @@ class CooldownVersion < ApplicationRecord
         full_v << v["platform"] unless v["platform"] == "ruby"
         cv[:version] == full_v.join("-")
       end
-      cv[:published_at] = v["created_at"]
+      v && cv[:published_at] = v["created_at"]
     end
+
+    # If a version wasn't returned by RubyGems.org, it got yanked
+    cvs.delete_if { |cv| cv[:published_at].nil? }
 
     CooldownVersion.upsert_all(cvs, unique_by: %i[name version])
   end

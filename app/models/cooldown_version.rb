@@ -60,7 +60,16 @@ class CooldownVersion < ApplicationRecord
         full_v << v["platform"] unless v["platform"] == "ruby"
         cv[:version] == full_v.join("-")
       end
-      cv[:published_at] = v["created_at"]
+
+      if v
+        cv[:published_at] = v["created_at"]
+      else
+        # We can't get the exact yanked_at from any API call, since yanked gems
+        # are not included in API responses. This should be good enough for our
+        # purposes, since yanked gems will not be included in future query
+        # results.
+        cv[:yanked_at] = Time.now
+      end
     end
 
     CooldownVersion.upsert_all(cvs, unique_by: %i[name version])

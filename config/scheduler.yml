@@ -1,6 +1,4 @@
-scheduler:
-  schedule:
-    CooldownVersionImportJob:
-      every: 20 minutes
-    ClearExpiredPushKeysJob:
-      every: 1 hour
+CooldownVersionImportJob:
+  every: 20 minutes
+ClearExpiredPushKeysJob:
+  every: 1 hour

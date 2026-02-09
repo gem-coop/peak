@@ -27,6 +27,8 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     sign_in users.plain
     package = file_fixture "peak/peak-0.2.0.gem"
 
+    refute references.type.exists?(name: "second_release_exclusive_ref")
+
     assert_increments gems.peak.versions do
       post gem_push_url, env: { "RAW_POST_DATA" => package.binread, authorization: user.create_push_key.token }
     end
@@ -34,16 +36,20 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     refute_empty response.body, "bundler throws an exception in case there's no text in the response"
     assert_match "peak-0.2.0.gem uploaded 🎉", response.body
 
-    version = namespace.versions.last
+    version = versions.by gems.peak, ref: "0.2.0"
     assert_equal "peak-0.2.0", version.name
-    assert_equal "bcd14ad61176553b5202726ffba2892fe3bd5b3b32e18461fd36335f71c64d72", version.checksum
     assert_equal ">= 4.0", version.ruby
     assert_equal ">= 2.7", version.rubygems
     assert_equal ["peak"], version.executables
     assert_equal ["MIT"], version.licenses
+    assert_equal "oaken:>= 0.9&~> 1.0.1,second_release_exclusive_ref:= 2.0", version.references.line
     assert_equal Date.today, version.published_at.to_date
+    assert_equal "a3dcf5a06581a9c8bcae19411852850851f20268614b151ec2484d0c09d44730", version.checksum
     assert version.package.attached?
     assert_equal package.binread, version.package.download
+
+    first = versions.by gems.peak, ref: "0.1.0"
+    assert_equal first.references.line, version.references.where.not(name: "second_release_exclusive_ref").line
   end
 
   test "push with invalid API key" do

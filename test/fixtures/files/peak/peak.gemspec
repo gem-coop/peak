@@ -20,4 +20,9 @@ Gem::Specification.new do
 
   it.files = []
   it.require_paths = ["lib"]
+
+  it.add_dependency "oaken", ">= 0.9", "~> 1.0.1" # Do double to test multiple values
+  if it.version >= Gem::Version.new("0.2.0")
+    it.add_dependency "second_release_exclusive_ref", "= 2.0"
+  end
 end

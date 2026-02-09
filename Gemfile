@@ -65,15 +65,13 @@ gem "active_record-associated_object"
 gem "active_job-performs"
 gem "action_controller-stashed_redirects"
 
-gem "brotli", "~> 0.7.0"
-gem "httpx", "~> 1.7"
-gem "solid_cache", "~> 1.0"
-gem "solid_queue", "~> 1.0"
-
-gem "mission_control-jobs", "~> 1.1"
-
-gem "resend", "~> 1.0"
-
-gem "honeybadger", "~> 6.3"
-
 gem "aws-sdk-s3", "~> 1.213"
+gem "brotli", "~> 0.7.0"
+gem "honeybadger", "~> 6.3"
+gem "httpx", "~> 1.7"
+gem "mission_control-jobs", "~> 1.1"
+gem "pg", "~> 1.6"
+gem "redis", "~> 5.4"
+gem "resend", "~> 1.0"
+gem "sidekiq-scheduler", "~> 6.0"
+gem "sidekiq", "~> 8.1"

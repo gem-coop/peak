@@ -11,7 +11,9 @@ class CooldownVersionTest < ActiveSupport::TestCase
   test "import works" do
     stub_request(:get, "https://gem.coop/versions").to_return(body: file_fixture("versions").read.lines[0...-4].join)
     stub_request(:get, "https://gem.coop/info/rake").to_return(body: file_fixture("info/rake").read.lines[0...-3].join)
-    perform_import
+    Rails.cache.clear
+    CooldownVersion.import
+    perform_enqueued_jobs
 
     assert_equal 90, CooldownVersion.count
     last = CooldownVersion.last
@@ -32,7 +34,9 @@ class CooldownVersionTest < ActiveSupport::TestCase
 
     stub_request(:get, "https://gem.coop/versions").to_return(body: file_fixture("versions").read)
     stub_request(:get, "https://gem.coop/info/rake").to_return(body: file_fixture("info/rake").read)
-    perform_import
+    Rails.cache.clear
+    CooldownVersion.import
+    perform_enqueued_jobs
 
     # get the whole file if we don't have a byte offset
     assert_equal file_fixture("versions").read, CooldownVersion::Server.versions
@@ -61,7 +65,9 @@ class CooldownVersionTest < ActiveSupport::TestCase
   test "import handles compaction" do
     stub_request(:get, "https://gem.coop/versions").to_return(body: file_fixture("versions").open)
     stub_request(:get, "https://gem.coop/info/rake").to_return(body: file_fixture("info/rake").open)
-    perform_import
+    Rails.cache.clear
+    CooldownVersion.import
+    perform_enqueued_jobs
 
     # check the full files match
     assert_equal file_fixture("versions").read, CooldownVersion::Server.versions
@@ -78,7 +84,9 @@ class CooldownVersionTest < ActiveSupport::TestCase
     assert_equal [786, 831, 876], CooldownVersion.pluck(:versions_byte).to_a.uniq
 
     stub_request(:get, "https://gem.coop/versions").to_return(body: file_fixture("versions.compacted").open)
-    perform_import
+    Rails.cache.clear
+    CooldownVersion.import
+    perform_enqueued_jobs
 
     # check the full files match
     assert_equal file_fixture("versions.compacted").read, CooldownVersion::Server.versions
@@ -98,7 +106,9 @@ class CooldownVersionTest < ActiveSupport::TestCase
     stub_request(:get, "https://gem.coop/info/nio4r").to_return(body: file_fixture("info/nio4r").open)
     stub_request(:get, "https://rubygems.org/api/v1/versions/nio4r.json").to_return(
       body: file_fixture("nio4r.json").open, headers: {"content-type": "application/json"})
-    perform_import
+    Rails.cache.clear
+    CooldownVersion.import
+    perform_enqueued_jobs
 
     # check the full files match
     assert_equal file_fixture("versions-nio4r").read, CooldownVersion::Server.versions
@@ -110,7 +120,9 @@ class CooldownVersionTest < ActiveSupport::TestCase
     stub_request(:get, "https://gem.coop/info/asciidoctor-reducer").to_return(body: file_fixture("info/asciidoctor-reducer").open)
     stub_request(:get, "https://rubygems.org/api/v1/versions/asciidoctor-reducer.json").to_return(
       body: file_fixture("asciidoctor-reducer.json").open, headers: {"content-type": "application/json"})
-    perform_import
+    Rails.cache.clear
+    CooldownVersion.import
+    perform_enqueued_jobs
 
     # check the full files match
     assert_equal file_fixture("versions-asciidoctor-reducer").read, CooldownVersion::Server.versions
@@ -122,18 +134,12 @@ class CooldownVersionTest < ActiveSupport::TestCase
     stub_request(:get, "https://gem.coop/info/3rb").to_return(body: "---\n")
     stub_request(:get, "https://rubygems.org/api/v1/versions/3rb.json").to_return(
       status: 404, body: "This gem could not be found")
-    perform_import
+    Rails.cache.clear
+    CooldownVersion.import
+    perform_enqueued_jobs
 
     # check the full files match
     assert_equal file_fixture("versions-3rb").read, CooldownVersion::Server.versions
     assert_equal "---\n", CooldownVersion::Server.info("3rb")
   end
-
-  private
-    def perform_import
-      Rails.cache.clear
-      CooldownVersion::Server.memory_store.clear
-      CooldownVersion.import
-      perform_enqueued_jobs
-    end
 end

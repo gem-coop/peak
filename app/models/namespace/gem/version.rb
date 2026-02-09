@@ -22,6 +22,7 @@ class Namespace::Gem::Version < ApplicationRecord
   attribute :published_at, default: -> { Time.current }
 
   def process(upload)
+    self.reference_ids = references.unscoped.ids_from(upload.requirement_triples)
     update! **metadata.extract_from(upload), package: { io: upload.tmpfile, filename: }
   end
 

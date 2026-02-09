@@ -22,6 +22,12 @@ class Peak::Gem::Upload
   def rubygems = spec.required_rubygems_version.to_s
   def published_at = nil
 
+  def requirement_triples
+    spec.dependencies.select(&:runtime?).flat_map { |dep|
+      dep.requirement.requirements.map { |operator, ref| [dep.name, operator, ref] }
+    }
+  end
+
   def unlink
     tmpfile.close!
   end

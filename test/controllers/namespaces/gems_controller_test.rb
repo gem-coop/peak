@@ -20,7 +20,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     upload = Peak::Gem::Upload.read(StringIO.new(response.body))
     assert upload.spec
   ensure
-    upload.unlink
+    upload.unlink if upload # Guard against never reaching the assignment line
   end
 
   test "push" do

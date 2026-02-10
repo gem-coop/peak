@@ -5,6 +5,8 @@ class Namespace::Gem < ApplicationRecord
   has_one :info
   before_create :build_info
 
+  has_object :revisionist
+
   def self.named(name) = find_by!(name:)
   def to_param = name
 

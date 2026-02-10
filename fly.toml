@@ -6,6 +6,7 @@
 app = 'gem-coop-beta'
 primary_region = 'dfw'
 console_command = '/rails/bin/rails console'
+release_command = '/rails/bin/rails db:prepare'
 
 [build]
 

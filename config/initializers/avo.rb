@@ -20,11 +20,7 @@ Avo.configure do |config|
   ## == Authentication ==
   # config.current_user_method = :current_user
   config.authenticate_with do
-    if ENV.key?("ADMIN_PASSWORD")
-      http_basic_authenticate_or_request_with(name: "gem-coop", password: ENV["ADMIN_PASSWORD"])
-    else
-      head :unauthorized
-    end
+    authenticate_or_request_with_http_basic { |u, p| Peak.admin.authenticate u, p }
   end unless Rails.env.local?
 
   ## == Authorization ==

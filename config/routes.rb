@@ -3,8 +3,8 @@ Rails.application.routes.draw do
 
   require "sidekiq/web"
   require "sidekiq-scheduler/web"
-  Sidekiq::Web.use(Rack::Auth::Basic) do |username, password|
-    username == "gem-coop" && ActiveSupport::SecurityUtils.secure_compare(password, ENV["ADMIN_PASSWORD"])
+  Sidekiq::Web.use(Rack::Auth::Basic) do |u, p|
+    Peak.admin.authenticate(u, p)
   end unless Rails.env.local?
   mount Sidekiq::Web => "/sidekiq"
 

@@ -1,4 +1,4 @@
 #!/bin/bash
 
 export FLY_ORG=gem-coop
-exec fly "$@"
+exec flyctl "$@"

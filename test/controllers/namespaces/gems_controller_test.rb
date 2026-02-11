@@ -2,7 +2,7 @@ require "test_helper"
 
 class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
   def namespace = namespaces.gemcoop
-  def authorization = users.plain.create_push_key.token
+  def token = users.plain.create_push_key.token
 
   test "show with missing gem" do
     head namespace_gems_url(namespace:, id: "nonexistent-1.0.0.gem")
@@ -32,7 +32,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     refute references.type.exists?(name: "second_release_exclusive_ref")
 
     assert_increments gems.peak.versions do
-      post namespace_gem_push_url(namespace:), env: { "RAW_POST_DATA" => package.binread, authorization: }
+      post namespace_gem_push_url(namespace:), env: { "RAW_POST_DATA" => package.binread, authorization: "Bearer #{token}" }
     end
     assert_response :success
     refute_empty response.body, "bundler throws an exception in case there's no text in the response"
@@ -64,7 +64,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     assert_dom "body", /API Key/
 
     refute_increments gems.peak.versions do
-      post namespace_gem_push_url(namespace: "@nonexistent"), env: { "RAW_POST_DATA" => package.binread, authorization: }
+      post namespace_gem_push_url(namespace: "@nonexistent"), env: { "RAW_POST_DATA" => package.binread, authorization: "Bearer #{token}" }
     end
     assert_response :unauthorized
     assert_dom "body", /User doesn't/
@@ -75,7 +75,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     package = file_fixture "peak/peak-0.2.0.gem"
 
     refute_increments gems.peak.versions do
-      post namespace_gem_push_url(namespace:), env: { "RAW_POST_DATA" => package.binread, authorization: token }
+      post namespace_gem_push_url(namespace:), env: { "RAW_POST_DATA" => package.binread, authorization: "Bearer #{token}" }
     end
     assert_response :unauthorized
     assert_dom "body", /API Key/

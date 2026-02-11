@@ -71,10 +71,8 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "push with expired API key" do
-    token = authorization
+    token = users.plain.create_push_key(expires_at: 1.hour.ago).token
     package = file_fixture "peak/peak-0.2.0.gem"
-
-    travel 24.hours + 1.second
 
     refute_increments gems.peak.versions do
       post namespace_gem_push_url(namespace:), env: { "RAW_POST_DATA" => package.binread, authorization: token }

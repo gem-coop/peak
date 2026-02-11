@@ -2,19 +2,19 @@ require "test_helper"
 
 class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
   test "show with missing gem" do
-    head namespaces_gems_url(namespace: namespaces.gemcoop, id: "nonexistent-1.0.0.gem")
+    head namespace_gems_url(namespace: namespaces.gemcoop, id: "nonexistent-1.0.0.gem")
     assert_response :not_found
   end
 
   test "get show with redirect" do
     version = versions.by gems.oaken, ref: "0.9.1"
 
-    head namespaces_gems_url(namespace: namespaces.gemcoop, id: version)
+    head namespace_gems_url(namespace: namespaces.gemcoop, id: version)
     assert_redirected_to "https://gem.coop/gems/oaken-0.9.1.gem"
   end
 
   test "get show with upload" do
-    get namespaces_gems_url(namespace: namespaces.gemcoop, id: gems.peak.versions.first)
+    get namespace_gems_url(namespace: namespaces.gemcoop, id: gems.peak.versions.first)
     assert_response :success
 
     upload = Peak::Gem::Upload.read(StringIO.new(response.body))

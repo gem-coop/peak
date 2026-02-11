@@ -23,14 +23,16 @@ Rails.application.routes.draw do
     post "/api/v1/gems", to: "gems#create", as: :gem_push
   end
 
-  namespace :namespaces, path: "/:namespace/" do
-    get :versions,   to: "index#index", as: :versions
-    get "/info/:id", to: "index#show", as: :info
+  constraints -> { _1.params[:namespace] != "@public" } do
+    namespace :namespaces, path: "/:namespace/" do
+      get :versions,   to: "index#index", as: :versions
+      get "/info/:id", to: "index#show", as: :info
 
-    get "/gems/:id", to: "gems#show", as: :gems, constraints: {id: Peak::Gem.pattern}
-    post "/api/v1/gems", to: "gems#create", as: :gem_push
+      get "/gems/:id", to: "gems#show", as: :gems, constraints: {id: Peak::Gem.pattern}
+      post "/api/v1/gems", to: "gems#create", as: :gem_push
 
-    root to: "profiles#show", as: :profile
+      root to: "profiles#show", as: :profile
+    end
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

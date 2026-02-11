@@ -21,13 +21,9 @@ class Namespaces::IndexControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "get show with dependencies" do
-    get namespaces_info_url(namespace: namespaces.public, id: gems.activerecord)
+    get namespaces_info_url(namespace:, id: gems.peak)
     assert_response :success
-    assert_text "8.1.1 activemodel:= 8.1.1,activesupport:= 8.1.1,timeout:>= 0|published_at:"
-
-    get namespaces_info_url(namespace: namespaces.public, id: gems.activesupport)
-    assert_response :success
-    assert_text "8.1.1 base64:>= 0,bigdecimal:>= 0,concurrent-ruby:>= 1.3.1&~> 1.0,connection_pool:>= 2.2.5,drb:>= 0,i18n:< 2&>= 1.6,json:>= 0,logger:>= 0|published_at:"
+    assert_text "0.1.0 oaken:>= 0.9&~> 1.0.1"
   end
 
   private def assert_text(text) = assert_match(text, response.body)

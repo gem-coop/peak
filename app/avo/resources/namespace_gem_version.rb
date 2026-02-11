@@ -2,10 +2,10 @@ class Avo::Resources::NamespaceGemVersion < Avo::BaseResource
   # self.includes = []
   # self.attachments = []
   self.model_class = ::Namespace::Gem::Version
-  self.find_record_method = -> do
-    gem_name, ref = Peak::Gem.version(id)
-    query.for(gem_name).find_by(ref:)
-  end
+  # self.find_record_method = -> do
+  #   gem_name, ref = Peak::Gem.version(id)
+  #   query.for(gem_name).find_by(ref:)
+  # end
   # self.search = {
   #   query: -> { query.ransack(id_eq: q, m: "or").result(distinct: false) }
   # }

@@ -6,7 +6,7 @@ class Avo::Resources::NamespaceGemVersionReference < Avo::BaseResource
   #   query: -> { query.ransack(id_eq: q, m: "or").result(distinct: false) }
   # }
 
-  def fields
+  def display_fields
     field :id, as: :id
     field :name, as: :text
     field :operator_before_type_cast, as: :text

@@ -1,5 +1,4 @@
 class Avo::Resources::Namespace < Avo::BaseResource
-  self.find_record_method = -> { query.named(id) }
   # self.includes = []
   # self.attachments = []
   # self.search = {

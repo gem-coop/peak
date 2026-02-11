@@ -161,10 +161,31 @@ Avo.configure do |config|
   # }
 
   Rails.application.config.after_initialize do
-    # Putting this in app/avo/base_resource.rb makes a warning pop up on every Avo screen.
+    # Putting these extensions in app/avo/base_resource.rb makes a warning pop up on every Avo screen.
     Avo::BaseResource.extend Module.new {
       def navigation_label
         model_class.name.sub "Namespace::", "::"
+      end
+    }
+
+    Avo::BaseResource.include Module.new {
+      def record_param = @record&.id
+    }
+
+    # TODO: Remove after https://github.com/avo-hq/avo/discussions/4259 is fixed.
+    Avo::UrlHelpers.prepend Module.new {
+      def resource_path(
+        resource:,
+        record: nil,
+        resource_id: nil,
+        keep_query_params: false,
+        **args
+      )
+        avo.send :"resources_#{resource.singular_route_key}_path", record.try(:id) || record || resource_id, **args
+      end
+
+      def edit_resource_path(resource:, record: nil, resource_id: nil, **args)
+        avo.send :"edit_resources_#{resource.singular_route_key}_path", record.try(:id) || record || resource_id, **args
       end
     }
 

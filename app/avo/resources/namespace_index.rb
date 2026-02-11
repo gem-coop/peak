@@ -6,7 +6,7 @@ class Avo::Resources::NamespaceIndex < Avo::BaseResource
   #   query: -> { query.ransack(id_eq: q, m: "or").result(distinct: false) }
   # }
 
-  def fields
+  def display_fields
     field :id, as: :id
     field :access, as: :select, enum: ::Namespace::Index.accesses
     field :last_compacted_at, as: :date_time

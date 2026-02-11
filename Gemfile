@@ -60,12 +60,10 @@ end
 gem "avo"
 
 # Use next-gen Rails extensions
-source "https://beta.gem.coop/@kaspth" do
-  gem "oaken"
-  gem "active_record-associated_object"
-  gem "active_job-performs"
-  gem "action_controller-stashed_redirects"
-end
+gem "oaken"
+gem "active_record-associated_object"
+gem "active_job-performs"
+gem "action_controller-stashed_redirects"
 
 gem "aws-sdk-s3", "~> 1.213"
 gem "brotli", "~> 0.7.0"

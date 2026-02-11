@@ -1,5 +1,4 @@
 class Namespaces::ProfilesController < ApplicationController
-  block_public_namespace_access
   before_action :set_index
 
   def show

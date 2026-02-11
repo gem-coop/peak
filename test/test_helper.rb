@@ -17,14 +17,3 @@ class ActiveSupport::TestCase
     assert_no_difference(positionals.map { _1.method(:count) }, &)
   end
 end
-
-class ActionDispatch::IntegrationTest
-  attr_reader :user, :namespace
-
-  def sign_in(user, to: namespaces.gemcoop)
-    to.accesses.exists?(user:) or raise ArgumentError, "user doesn't have access to namespace #{to.inspect}"
-
-    @user, @namespace = user, to
-    host! "#{host}/#{to.name}"
-  end
-end

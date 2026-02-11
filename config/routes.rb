@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     resources :sessions, only: %i[new create]
   end
 
-  scope module: :namespaces, defaults: { namespace: "@public" } do
+  scope module: :namespaces, defaults: { namespace: "@public" }, as: :public do
     get "/cooldown/versions" => "cooldown#versions"
     get "/cooldown/info/:name" => "cooldown#info"
     get "/cooldown/gems/:gem" => "cooldown#gems", constraints: {gem: Peak::Gem.pattern}
@@ -23,14 +23,16 @@ Rails.application.routes.draw do
     post "/api/v1/gems", to: "gems#create", as: :gem_push
   end
 
-  namespace :namespaces, path: "/:namespace/" do
-    get :versions,   to: "index#index", as: :versions
-    get "/info/:id", to: "index#show", as: :info
+  constraints -> { _1.params[:namespace].then { it.starts_with?("@") && it != "@public" } } do
+    namespace :namespaces, path: "/:namespace/", as: :namespace do
+      get :versions,   to: "index#index", as: :versions
+      get "/info/:id", to: "index#show", as: :info
 
-    get "/gems/:id", to: "gems#show", as: :gems, constraints: {id: Peak::Gem.pattern}
-    post "/api/v1/gems", to: "gems#create", as: :gem_push
+      get "/gems/:id", to: "gems#show", as: :gems, constraints: {id: Peak::Gem.pattern}
+      post "/api/v1/gems", to: "gems#create", as: :gem_push
 
-    root to: "profiles#show", as: :profile
+      root to: "profiles#show", as: :profile
+    end
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

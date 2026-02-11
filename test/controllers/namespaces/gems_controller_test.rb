@@ -1,20 +1,23 @@
 require "test_helper"
 
 class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
+  def namespace = namespaces.gemcoop
+  def authorization = users.plain.create_push_key.token
+
   test "show with missing gem" do
-    head namespace_gems_url(namespace: namespaces.gemcoop, id: "nonexistent-1.0.0.gem")
+    head namespace_gems_url(namespace:, id: "nonexistent-1.0.0.gem")
     assert_response :not_found
   end
 
   test "get show with redirect" do
     version = versions.by gems.oaken, ref: "0.9.1"
 
-    head namespace_gems_url(namespace: namespaces.gemcoop, id: version)
+    head namespace_gems_url(namespace:, id: version)
     assert_redirected_to "https://gem.coop/gems/oaken-0.9.1.gem"
   end
 
   test "get show with upload" do
-    get namespace_gems_url(namespace: namespaces.gemcoop, id: gems.peak.versions.first)
+    get namespace_gems_url(namespace:, id: gems.peak.versions.first)
     assert_response :success
 
     upload = Peak::Gem::Upload.read(StringIO.new(response.body))
@@ -24,13 +27,12 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "push" do
-    sign_in users.plain
     package = file_fixture "peak/peak-0.2.0.gem"
 
     refute references.type.exists?(name: "second_release_exclusive_ref")
 
     assert_increments gems.peak.versions do
-      post gem_push_url, env: { "RAW_POST_DATA" => package.binread, authorization: user.create_push_key.token }
+      post namespace_gem_push_url(namespace:), env: { "RAW_POST_DATA" => package.binread, authorization: }
     end
     assert_response :success
     refute_empty response.body, "bundler throws an exception in case there's no text in the response"
@@ -56,29 +58,26 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     package = file_fixture "peak/peak-0.2.0.gem"
 
     refute_increments gems.peak.versions do
-      post gem_push_url, env: { "RAW_POST_DATA" => package.binread, authorization: "" }
+      post namespace_gem_push_url(namespace:), env: { "RAW_POST_DATA" => package.binread, authorization: "" }
     end
     assert_response :unauthorized
     assert_dom "body", /API Key/
 
-    sign_in users.plain
-    host! "example.com/nonexistent"
-
     refute_increments gems.peak.versions do
-      post gem_push_url, env: { "RAW_POST_DATA" => package.binread, authorization: user.create_push_key.token }
+      post namespace_gem_push_url(namespace: "@nonexistent"), env: { "RAW_POST_DATA" => package.binread, authorization: }
     end
     assert_response :unauthorized
     assert_dom "body", /User doesn't/
   end
 
   test "push with expired API key" do
-    token = users.plain.create_push_key.token
+    token = authorization
     package = file_fixture "peak/peak-0.2.0.gem"
 
     travel 24.hours + 1.second
 
     refute_increments gems.peak.versions do
-      post gem_push_url, env: { "RAW_POST_DATA" => package.binread, authorization: token }
+      post namespace_gem_push_url(namespace:), env: { "RAW_POST_DATA" => package.binread, authorization: token }
     end
     assert_response :unauthorized
     assert_dom "body", /API Key/

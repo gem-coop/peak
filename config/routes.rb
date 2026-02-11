@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     resources :sessions, only: %i[new create]
   end
 
-  scope module: :namespaces, defaults: { namespace: "@public" } do
+  scope module: :namespaces, defaults: { namespace: "@public" }, as: :public do
     get "/cooldown/versions" => "cooldown#versions"
     get "/cooldown/info/:name" => "cooldown#info"
     get "/cooldown/gems/:gem" => "cooldown#gems", constraints: {gem: Peak::Gem.pattern}

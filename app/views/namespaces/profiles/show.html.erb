@@ -1,0 +1,40 @@
+<script>
+  class Clippy {
+    static addGem(name) {
+      const text = `bundle add ${name} --source "https://gem.coop/<%= @index.namespace.name %>"`
+      navigator.clipboard.writeText(text)
+    }
+  }
+</script>
+
+<section style="display: flex; flex-direction: column;">
+  <div style="display: flex; align-items: baseline; gap: .8em;">
+    <h1><%= @index.namespace.name %> gems</h1>
+    <span>+ 3 latest versions of each</span>
+  </div>
+
+  <section class="flow" style="flex: 2 1 auto; min-height: 300px;">
+    <% @versions.each do |gem, versions| %>
+      <article>
+        <%= tag.h3 gem.name, style: "margin-block-end: 0; display: inline-block;" %>
+        <%= tag.button :🔗, onclick: "Clippy.addGem('#{gem.name}')", style: "height: 2em;" %>
+
+        <% versions.each do |version| %>
+          <p><%= version.ref %> - <%= l version.published_at, format: "%d %b %Y %H:%M UTC" %></p>
+        <% end %>
+      </article>
+    <% end %>
+  </section>
+
+  <footer>
+    <hr>
+
+    <p>To use namespaced gems pass a source in your Gemfile, like this:</p>
+
+    <pre>  <code>gem "<%= @gems.first.name %>", source: "https://gem.coop/<%= @index.namespace.name %>"</code></pre>
+
+    <p>Or run this command:</p>
+
+    <pre>  <code>bundle add <%= @gems.first.name %> --source "https://gem.coop/<%= @index.namespace.name %>"</code></pre>
+  </footer>
+</section>

@@ -33,7 +33,7 @@ class Namespaces::GemsController < ApplicationController
 
   private
     def authenticate_index_by_user_push_key
-      @user = User::PushKey.active.find_by!(token: request.authorization).user
+      @user = User::PushKey.active.find_by!(token: request.authorization.delete_prefix("Bearer ")).user
       @index = @user.namespaces.named(params[:namespace]).external_index
     rescue ActiveRecord::RecordNotFound
       if @user

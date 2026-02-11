@@ -4,7 +4,7 @@ Here's your token so you can push gems. It expires in 24 hours:
 
 You probably want to pass the token as an ENV variable to these commands:
 
-  GEM_HOST_API_KEY=<%= @token -%> RUBYGEMS_HOST=https://gem.coop/@ gem push
-  GEM_HOST_API_KEY=<%= @token -%> RUBYGEMS_HOST=https://gem.coop/@ rake release
+  GEM_HOST_API_KEY=<%= @token -%> gem push --host <%= Peak.host -%>/<%= @namespace.name -%>
+  GEM_HOST_API_KEY=<%= @token -%> RUBYGEMS_HOST=<%= Peak.host -%>/<%= @namespace.name -%> rake release
 
 NOTE: Remember to fill in the namespace name.

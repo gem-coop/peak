@@ -1,8 +1,17 @@
 GEM
-  remote: https://gem.coop/
+  remote: https://beta.gem.coop/@kaspth/
   specs:
     action_controller-stashed_redirects (1.0.0)
       actionpack (>= 7.0)
+    active_job-performs (1.0.0)
+      activejob (>= 6.1)
+    active_record-associated_object (1.0.0)
+      activerecord (>= 6.1)
+    oaken (1.0.0)
+
+GEM
+  remote: https://gem.coop/
+  specs:
     action_text-trix (2.1.16)
       railties
     actioncable (8.1.2)
@@ -49,13 +58,9 @@ GEM
       erubi (~> 1.11)
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
-    active_job-performs (1.0.0)
-      activejob (>= 6.1)
     active_link_to (1.0.5)
       actionpack
       addressable
-    active_record-associated_object (1.0.0)
-      activerecord (>= 6.1)
     activejob (8.1.2)
       activesupport (= 8.1.2)
       globalid (>= 0.3.6)
@@ -266,7 +271,6 @@ GEM
       racc (~> 1.4)
     nokogiri (1.19.0-x86_64-linux-musl)
       racc (~> 1.4)
-    oaken (1.0.0)
     ostruct (0.6.3)
     pagy (9.4.0)
     parallel (1.27.0)
@@ -462,9 +466,9 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
-  action_controller-stashed_redirects
-  active_job-performs
-  active_record-associated_object
+  action_controller-stashed_redirects!
+  active_job-performs!
+  active_record-associated_object!
   avo
   aws-sdk-s3 (~> 1.213)
   bootsnap
@@ -478,7 +482,7 @@ DEPENDENCIES
   httpx (~> 1.7)
   image_processing (~> 1.2)
   mission_control-jobs (~> 1.1)
-  oaken
+  oaken!
   pg (~> 1.6)
   propshaft
   puma (>= 5.0)

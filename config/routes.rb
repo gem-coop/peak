@@ -8,8 +8,8 @@ Rails.application.routes.draw do
   end unless Rails.env.local?
   mount Sidekiq::Web => "/sidekiq"
 
-  namespace "user/keys", as: :user_keys do
-    resources :sessions, only: %i[new create]
+  namespace :user do
+    resources :push_keys, only: %i[new create]
   end
 
   scope module: :namespaces, defaults: { namespace: "@public" }, as: :public do

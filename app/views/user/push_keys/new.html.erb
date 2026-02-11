@@ -1,6 +1,6 @@
 <h1>New Push Key</h1>
 
-<p>We'll send you a push key to the given email address. It expires in 24 hours.</p>
+<p>We'll send you a push key to the given email address. It expires in 24 hours and replaces an existing active key, if any.</p>
 
 <p>You can use it to push gems like this:</p>
 
@@ -11,7 +11,7 @@
 
 <hr>
 
-<%= form_with url: user_keys_sessions_path do |form| %>
+<%= form_with url: user_push_keys_path do |form| %>
   <%= form.label :email_address %>
   <%= form.email_field :email_address, placeholder: "me@example.com" %>
 

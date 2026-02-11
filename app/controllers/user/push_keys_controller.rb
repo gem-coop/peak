@@ -1,4 +1,4 @@
-class User::Keys::SessionsController < ApplicationController
+class User::PushKeysController < ApplicationController
   rate_limit to: 1, within: 30.seconds, with: :rate_limit_response, only: :create
 
   def new

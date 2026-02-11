@@ -24,6 +24,10 @@
         <% end %>
       </article>
     <% end %>
+
+    <% if @gems.empty? %>
+      No gems yet.
+    <% end %>
   </section>
 
   <footer>
@@ -31,10 +35,12 @@
 
     <p>To use namespaced gems pass a source in your Gemfile, like this:</p>
 
-    <pre>  <code>gem "<%= @gems.first.name %>", source: "https://gem.coop/<%= @index.namespace.name %>"</code></pre>
+    <% gem_name = @gems.first&.name || "<name>" %>
+
+    <pre>  <code>gem "<%= gem_name %>", source: "https://gem.coop/<%= @index.namespace.name %>"</code></pre>
 
     <p>Or run this command:</p>
 
-    <pre>  <code>bundle add <%= @gems.first.name %> --source "https://gem.coop/<%= @index.namespace.name %>"</code></pre>
+    <pre>  <code>bundle add <%= gem_name %> --source "https://gem.coop/<%= @index.namespace.name %>"</code></pre>
   </footer>
 </section>

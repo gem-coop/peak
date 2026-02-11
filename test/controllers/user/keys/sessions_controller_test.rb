@@ -18,6 +18,7 @@ class User::Keys::SessionsControllerTest < ActionDispatch::IntegrationTest
       assert_equal [users.plain.email_address], mail.to
       assert_match "Push Key", mail.subject
       assert_match "GEM_HOST_API_KEY", mail.text_part.body.to_s
+      assert_match "/@gemcoop", mail.text_part.body.to_s
     end
   end
 

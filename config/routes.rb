@@ -23,7 +23,7 @@ Rails.application.routes.draw do
     post "/api/v1/gems", to: "gems#create", as: :gem_push
   end
 
-  constraints -> { _1.params[:namespace] != "@public" } do
+  constraints -> { _1.params[:namespace].then { it.starts_with?("@") && it != "@public" } } do
     namespace :namespaces, path: "/:namespace/", as: :namespace do
       get :versions,   to: "index#index", as: :versions
       get "/info/:id", to: "index#show", as: :info

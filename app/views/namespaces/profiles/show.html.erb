@@ -1,7 +1,9 @@
+<% source_url = polymorphic_url @index.namespace %>
+
 <script>
   class Clippy {
     static addGem(name) {
-      const text = `bundle add ${name} --source "https://gem.coop/<%= @index.namespace.name %>"`
+      const text = `bundle add ${name} --source "<%= source_url %>"`
       navigator.clipboard.writeText(text)
     }
   }
@@ -37,10 +39,10 @@
 
     <% gem_name = @gems.first&.name || "<name>" %>
 
-    <pre>  <code>gem "<%= gem_name %>", source: "https://gem.coop/<%= @index.namespace.name %>"</code></pre>
+    <pre>  <code>gem "<%= gem_name %>", source: "<%= source_url %>"</code></pre>
 
     <p>Or run this command:</p>
 
-    <pre>  <code>bundle add <%= gem_name %> --source "https://gem.coop/<%= @index.namespace.name %>"</code></pre>
+    <pre>  <code>bundle add <%= gem_name %> --source "<%= source_url %>"</code></pre>
   </footer>
 </section>

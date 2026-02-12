@@ -1,6 +1,4 @@
 module Peak
-  mattr_reader :host, default: Rails.env.local? ? "http://peak.test" : "https://beta.gem.coop"
-
   def self.Status(...) = Status.new(...)
   def self.Error(...) = Error.new(...)
 

@@ -30,9 +30,9 @@ Rails.application.routes.draw do
 
       get "/gems/:id", to: "gems#show", as: :gems, constraints: {id: Peak::Gem.pattern}
       post "/api/v1/gems", to: "gems#create", as: :gem_push
-
-      root to: "profiles#show", as: :profile
     end
+
+    get "/:namespace", to: "namespaces/profiles#show", as: :namespace
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

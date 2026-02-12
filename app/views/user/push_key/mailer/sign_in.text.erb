@@ -1,10 +1,10 @@
-Here's your token so you can push gems. It expires in 24 hours:
+Here's your push key so you can push gems to any of your namespaces.
 
-<%= @token %>
+It expires in 24 hours and has replaced an existing active key, if any.
 
-You probably want to pass the token as an ENV variable to these commands:
+<%= @push_key.token %>
 
-  GEM_HOST_API_KEY=<%= @token -%> gem push --host <%= Peak.host -%>/<%= @namespace.name -%>
-  GEM_HOST_API_KEY=<%= @token -%> RUBYGEMS_HOST=<%= Peak.host -%>/<%= @namespace.name -%> rake release
+You can pass it to push/release commands, like this:
 
-NOTE: Remember to fill in the namespace name.
+  <%= Peak::Command.gem_push @push_key.token, namespace_url(@namespace) %>
+  <%= Peak::Command.rake_release @push_key.token, namespace_url(@namespace) %>

@@ -5,8 +5,8 @@
 <p>You can use it to push gems like this:</p>
 
 <pre>
-  <code>GEM_HOST_API_KEY=push_key gem push --host <%= Peak.host -%>/@</code>
-  <code>GEM_HOST_API_KEY=push_key RUBYGEMS_HOST=<%= Peak.host -%>/@ rake release</code>
+  <code><%= Peak::Command.gem_push "push_key", namespace_url("@namespace") -%></code>
+  <code><%= Peak::Command.rake_release "push_key", namespace_url("@namespace") -%></code>
 </pre>
 
 <hr>

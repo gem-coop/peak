@@ -11,9 +11,10 @@ class Namespaces::ProfilesControllerTest < ActionDispatch::IntegrationTest
     get namespace_url(namespaces.blank)
     assert_response :success
 
-    namespaces.blank.external_index.gems.create name: "first"
+    namespaces.blank.external_index.gems.create name: "unversioned"
 
     get namespace_url(namespaces.blank)
     assert_response :success
+    assert_not_dom "article", "unversioned"
   end
 end

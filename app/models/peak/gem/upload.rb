@@ -1,14 +1,17 @@
 require "rubygems/package"
 
 class Peak::Gem::Upload
-  def self.read(io)
-    new Tempfile.new.tap { IO.copy_stream io, _1 }
+  def self.read(io, **)
+    IO.copy_stream io, tmpfile = Tempfile.new
+    new(tmpfile, **)
   end
 
   attr_reader :tmpfile
+  attr_accessor :published_at
 
-  def initialize(tmpfile)
+  def initialize(tmpfile, published_at: nil)
     @tmpfile = tmpfile.tap(&:rewind)
+    @published_at = published_at
     @package = nil
   end
 
@@ -20,7 +23,6 @@ class Peak::Gem::Upload
   def ref = spec.version.to_s
   def ruby = spec.required_ruby_version.to_s
   def rubygems = spec.required_rubygems_version.to_s
-  def published_at = nil
 
   def requirement_triples
     spec.dependencies.select(&:runtime?).flat_map { |dep|

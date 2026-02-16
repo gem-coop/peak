@@ -1,5 +1,6 @@
 class Namespace::Gem::Version < ApplicationRecord
   belongs_to :gem
+  belongs_to :created_by, class_name: "User"
 
   has_many :nodes
   has_many :references, through: :nodes
@@ -9,6 +10,7 @@ class Namespace::Gem::Version < ApplicationRecord
   scope :published_order, -> { order(:published_at) }
 
   scope :for, -> { joins(:gem).where(gem: {name: _1}) }
+  scope :system, -> { where(created_by: Peak.system_user) }
 
   def to_param = filename
   def filename = "#{name}.gem"
@@ -21,9 +23,9 @@ class Namespace::Gem::Version < ApplicationRecord
   has_object :metadata
   attribute :published_at, default: -> { Time.current }
 
-  def process(upload)
+  def process(upload, **)
     self.reference_ids = references.unscoped.ids_from(upload.requirement_triples)
-    update! **metadata.extract_from(upload), package: { io: upload.tmpfile, filename: }
+    update! **metadata.extract_from(upload), package: { io: upload.tmpfile, filename: }, **
   end
 
   def line

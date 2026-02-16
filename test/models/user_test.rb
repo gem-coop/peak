@@ -1,7 +1,9 @@
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "system?" do
+    refute users.owner.system?
+    refute users.plain.system?
+    assert users.system.system?
+  end
 end

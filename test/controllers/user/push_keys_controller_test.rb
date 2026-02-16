@@ -15,6 +15,7 @@ class User::PushKeysControllerTest < ActionDispatch::IntegrationTest
     perform_enqueued_jobs
     assert_emails 1
     ActionMailer::Base.deliveries.last.tap do |mail|
+      assert_equal [Peak.system_user.email_address], mail.from
       assert_equal [users.plain.email_address], mail.to
       assert_match "Push Key", mail.subject
       assert_match "GEM_HOST_API_KEY", mail.text_part.body.to_s

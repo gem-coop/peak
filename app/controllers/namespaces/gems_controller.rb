@@ -9,7 +9,7 @@ class Namespaces::GemsController < ApplicationController
     if version.persisted?
       render plain: "Upload skipped: #{version.package_name} already exists. ❌", status: :conflict
     else
-      version.process upload
+      version.process upload, created_by: @user
 
       render plain: "#{version.package_name} uploaded 🎉"
     end

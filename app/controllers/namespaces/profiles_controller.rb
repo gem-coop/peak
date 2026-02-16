@@ -3,7 +3,7 @@ class Namespaces::ProfilesController < ApplicationController
 
   def show
     @gems = @index.gems.where.associated(:versions).order(name: :asc).load_async
-    @versions = @gems.index_with { _1.versions.select(:ref, :published_at).order(ref: :desc).first(3) }.compact
+    @versions = @gems.index_with { _1.versions.select(:ref, :published_at).first(3) }.compact
   end
 
   private

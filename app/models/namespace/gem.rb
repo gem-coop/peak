@@ -12,7 +12,7 @@ class Namespace::Gem < ApplicationRecord
 
 
   has_many :referrants, class_name: "Version::Reference", foreign_key: :name, primary_key: :name
-  has_many :versions do
+  has_many :versions, -> { published_order } do
     def trimmed
       gem = proxy_association.owner
       gem.trim_versions_published_at&.then { published_since _1 } || self

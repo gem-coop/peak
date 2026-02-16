@@ -39,6 +39,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     assert_match "peak-0.2.0.gem uploaded 🎉", response.body
 
     version = versions.by gems.peak, ref: "0.2.0"
+    assert_equal users.plain, version.created_by
     assert_equal "peak-0.2.0", version.name
     assert_equal ">= 4.0", version.ruby
     assert_equal ">= 2.7", version.rubygems
@@ -52,6 +53,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
 
     first = versions.by gems.peak, ref: "0.1.0"
     assert_equal first.references.line, version.references.where.not(name: "second_release_exclusive_ref").line
+    assert_equal users.owner, first.created_by
   end
 
   test "push with invalid API key" do

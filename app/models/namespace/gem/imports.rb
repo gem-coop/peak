@@ -6,7 +6,7 @@ class Namespace::Gem::Imports < ActiveRecord::AssociatedObject
 
   def import_ref(ref)
     upload = Peak::Gem::Upload.read server.download(ref), published_at: publishing_ledger[ref]
-    versions.new(ref:).process(upload)
+    versions.system.new(ref:).process(upload)
   end
 
   def pending_refs

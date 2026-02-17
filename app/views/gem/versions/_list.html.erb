@@ -1,0 +1,9 @@
+<ul class="list-none" style="color: var(--secondary);">
+  <% versions.each do |version| %>
+    <li>
+      <%= version.ref %>
+      <%= tag.span version.published_at.strftime("%b %d %Y"), style: "color: var(--primary);" %>
+      <%= version.created_by.name %>
+    </li>
+  <% end %>
+</ul>

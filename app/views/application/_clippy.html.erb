@@ -1,0 +1,12 @@
+<script>
+  class Clippy {
+    static addGem(name) {
+      const text = `bundle add ${name} --source "<%= source_url %>"`
+      navigator.clipboard.writeText(text)
+    }
+
+    static copyNextElementSiblingText(element) {
+      navigator.clipboard.writeText(element.nextElementSibling.textContent.trim())
+    }
+  }
+</script>

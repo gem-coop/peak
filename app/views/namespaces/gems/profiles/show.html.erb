@@ -1,0 +1,71 @@
+<% source_url = polymorphic_url @index.namespace %>
+<%= render "clippy", source_url: %>
+
+<section>
+  <h1 style="font-size: 1.17em; font-weight: normal;">
+    <%= link_to @gem.namespace.name, @gem.namespace %>/<%= tag.span @gem.name, style: "padding-inline-start: .5em;" %>
+  </h1>
+
+  <% latest = @gem.versions.first %>
+
+  <section style="display: grid; grid-template-columns: 50% 50%; margin-block-end: 1em;">
+    <section>
+      <h3 style="display: inline;">details</h3>
+
+      <dl data-condensed style="margin-block: 0;">
+        <div>
+          <dt>latest</dt>
+          <dd><%= latest.ref %><%= tag.button :🔗, onclick: "Clippy.addGem('#{@gem.name}')", style: "height: 2em;" %></dd>
+        </div>
+
+        <div>
+          <dt>licenses</dt>
+          <dd><%= latest.licenses.join(" ").presence || "none" %></dd>
+        </div>
+
+        <div>
+          <dt>ruby</dt>
+          <dd><%= latest.ruby %></dd>
+        </div>
+
+        <div>
+          <dt>rubygems</dt>
+          <dd><%= latest.rubygems %></dd>
+        </div>
+
+        <div>
+          <dt>executables</dt>
+          <dd><%= latest.executables.join(" ").presence || "none" %></dd>
+        </div>
+
+        <div>
+          <dt>native extensions</dt>
+          <dd><%= latest.has_extensions? ? "yes" : "none" %></dd>
+        </div>
+
+        <div>
+          <dt>platforms</dt>
+          <dd><%= @gem.versions.distinct.includes(:platform).pluck(platform: :name).join(" ") %></dd>
+        </div>
+      </dl>
+    </section>
+
+    <details open style="overflow-wrap: break-word;">
+      <summary style="cursor: pointer;"><h3 style="display: inline;">links</h3></summary>
+
+      <dl style="margin-block: 0;">
+        <% latest.links.group_by(&:value).each do |value, links| %>
+          <%= safe_join links.map { tag.dt _1.key } %>
+          <%= tag.dd link_out_to(value, value), style: "font-size: var(--font-sm);" %>
+        <% end %>
+      </dl>
+    </details>
+  </section>
+
+  <section>
+    <h3 style="margin-block: 0;">versions</h3>
+    <%= render "gem/versions/list", versions: @gem.versions.select(:ref, :published_at, :created_by_id).includes(:created_by).first(20) %>
+  </section>
+
+  <%= render "gem/sections/usage", name: @gem.name, source_url: %>
+</section>

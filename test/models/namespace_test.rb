@@ -11,6 +11,8 @@ class NamespaceTest < ActiveSupport::TestCase
     assert namespaces.build(name: "gemcoop").invalid?
     assert namespaces.build(name: "@Gemcoop").invalid?
     # assert namespaces.build(name: "@gem-coop").invalid? # TODO: get this working
+
+    assert namespaces.build(name: "@org-rb").valid?
   end
 
   private

@@ -17,21 +17,22 @@ class Namespace::Gem::Version < ApplicationRecord
   def name = "#{gem.name}-#{ref}"
   alias_method :package_name, :filename
 
-  has_one_attached :package
-  after_create :version_uploaded
-
   has_object :metadata
+  has_one_attached :package
   attribute :published_at, default: -> { Time.current }
 
-  def process(upload, **)
+  def process(...)
+    consume(...)
+    gem.version_uploaded self
+  end
+
+  def consume(upload, **)
     self.reference_ids = references.unscoped.ids_from(upload.requirement_triples)
-    update! **metadata.extract_from(upload), package: { io: upload.tmpfile, filename: }, **
+    self.package = { io: upload.tmpfile, filename: }
+    update! **metadata.extract_from(upload), **
   end
 
   def line
     "#{ref} #{references.line}#{metadata.line}\n"
   end
-
-  private
-    def version_uploaded = gem.version_uploaded(self)
 end

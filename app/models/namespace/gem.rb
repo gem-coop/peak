@@ -24,8 +24,7 @@ class Namespace::Gem < ApplicationRecord
   end
 
   performs def process_version(version)
-    info.rebuild # TODO: Maybe don't rebuild eagerly? Just mark it stale and let soft_purge on Fastly, then it'll refetch from us maybe?
-    index.append info.envelope_from(version.ref)
+    index.append info.rebuild.envelope_from(version.ref)
   end
   def version_uploaded(version) = process_version_later(version)
 end

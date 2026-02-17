@@ -20,6 +20,8 @@ def gems.parse_line(gem, line)
 
   ref_ids = context.references.parse_inserts(refs)
   version.reference_ids = ref_ids if ref_ids.any?
+
+  gem.process_version version
 end
 
 def references.parse_inserts(refs)

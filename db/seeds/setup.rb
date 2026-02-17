@@ -9,7 +9,12 @@ register Namespace::Gem, as: :gems
 register Namespace::Gem::Version, as: :versions
 register Namespace::Gem::Version::Reference, as: :references
 
+def users.create(label = nil, unique_by: :email_address, **) = super
+def namespaces.create(label = nil, unique_by: :name, **) = super
+def gems.create(label = nil, unique_by: [:index, :name], **) = super
+
 accesses.proxy *Namespace::Access.roles.keys
+def accesses.create(label = nil, unique_by: [:namespace, :user], **) = super
 
 versions.with do
   def upload(gem, ref:, **)

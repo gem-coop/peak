@@ -18,7 +18,7 @@ class NamespaceTest < ActiveSupport::TestCase
   private
     def assert_name_clash(name)
       assert_raises ActiveRecord::RecordNotUnique do
-        namespaces.create name:
+        Namespace.create name:
       end
     end
 end

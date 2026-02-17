@@ -1,12 +1,14 @@
 class Namespace::Gem::Imports < ActiveRecord::AssociatedObject
   def import_all
     pending_refs.each { |ref| import_ref ref }
+
+    gem.info.rebuild
     gem.index.compact
   end
 
   def import_ref(ref)
     upload = Peak::Gem::Upload.read server.download(ref), published_at: publishing_ledger[ref]
-    versions.system.new(ref:).process(upload)
+    versions.system.new(ref:).consume(upload)
   end
 
   def pending_refs

@@ -23,11 +23,8 @@ FileUtils.chdir APP_ROOT do
   # end
 
   puts "\n== Preparing database =="
-  if ARGV.include?("--reset")
-    system! "bin/rails db:reset"
-  else
-    system! "bin/rails db:prepare"
-  end
+  system! "bin/rails db:reset" if ARGV.include?("--reset")
+  system! "bin/rails db:prepare"
 
   puts "\n== Removing old logs and tempfiles =="
   system! "bin/rails log:clear tmp:clear"

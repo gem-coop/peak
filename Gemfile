@@ -75,3 +75,8 @@ gem "redis", "~> 5.4"
 gem "resend", "~> 1.0"
 gem "sidekiq-scheduler", "~> 6.0"
 gem "sidekiq", "~> 8.1"
+
+# Use gems for Honeycomb
+gem "opentelemetry-sdk"
+gem "opentelemetry-exporter-otlp"
+gem "opentelemetry-instrumentation-all"

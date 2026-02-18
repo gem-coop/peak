@@ -67,7 +67,7 @@ gem "action_controller-stashed_redirects"
 
 gem "aws-sdk-s3", "~> 1.213"
 gem "brotli", "~> 0.7.0"
-gem "honeybadger", "~> 6.3"
+gem "honeybadger", "~> 6.4"
 gem "httpx", "~> 1.7"
 gem "mission_control-jobs", "~> 1.1"
 gem "pg", "~> 1.6"

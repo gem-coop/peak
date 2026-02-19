@@ -9,7 +9,13 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => "/sidekiq"
 
   namespace :user do
+    get "/email_verification/:id/", to: "email_verifications#show", as: :email_verification
     resources :push_keys, only: %i[new create]
+  end
+
+  if Rails.env.local?
+    get "/sign_up" => "user/sign_ups#new", as: :user_sign_ups
+    post "/sign_up" => "user/sign_ups#create"
   end
 
   scope module: :namespaces, defaults: { namespace: "@public" }, as: :public do

@@ -1,0 +1,18 @@
+<h1>Sign Up</h1>
+
+<% field_error = -> { tag.p _1.to_sentence.downcase, style: "text-align: center; margin-block-start: 0;" } %>
+
+<%= form_with model: @sign_up do |form| %>
+  <%= form.label :name, "name" %>
+  <%= form.text_field :name %>
+
+  <%= form.label :email_address, "email address", style: "display: inline-block;" %>
+  <%= form.email_field :email_address %>
+  <%= field_error.(@sign_up.user.errors.full_messages_for(:email_address)) %>
+
+  <%= form.label :namespace_name, "personal namespace name" %>
+  <%= form.text_field :namespace_name %>
+  <%= field_error.(@sign_up.namespace.errors.full_messages_for(:name)) %>
+
+  <%= form.button "Create account" %>
+<% end %>

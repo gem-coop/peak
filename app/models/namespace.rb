@@ -11,6 +11,7 @@ class Namespace < ApplicationRecord
   before_create :build_external_index
 
   validates_format_of :name, with: /\A@[a-z-]+\z/
+  validates_uniqueness_of :name
 
   def self.named(name) = find_by!(name:)
   def to_param = name

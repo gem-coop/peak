@@ -12,6 +12,11 @@ Rails.application.routes.draw do
     resources :push_keys, only: %i[new create]
   end
 
+  if Rails.env.local?
+    get "/sign_up" => "user/sign_ups#new", as: :user_sign_ups
+    post "/sign_up" => "user/sign_ups#create"
+  end
+
   scope module: :namespaces, defaults: { namespace: "@public" }, as: :public do
     get "/cooldown/versions" => "cooldown#versions"
     get "/cooldown/info/:name" => "cooldown#info"

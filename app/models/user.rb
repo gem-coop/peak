@@ -4,6 +4,9 @@ class User < ApplicationRecord
 
   has_one :push_key, dependent: :destroy
 
+  has_object :email_verification
+  validates_uniqueness_of :email_address
+
   def system?
     Peak.system_user == self
   end

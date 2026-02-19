@@ -26,5 +26,15 @@ class Namespaces::IndexControllerTest < ActionDispatch::IntegrationTest
     assert_text "0.1.0 oaken:>= 0.9&~> 1.0.1"
   end
 
+  test "get /dev index" do
+    get namespace_versions_url(namespace:, index: "dev")
+    assert_response :success
+  end
+
+  test "get /private index" do
+    get namespace_versions_url(namespace:, index: "private")
+    assert_response :not_found
+  end
+
   private def assert_text(text) = assert_match(text, response.body)
 end

@@ -16,12 +16,11 @@ class User::SignUp
     end
   end
 
-  private
-    def user
-      @user ||= User.new(name:, email_address:)
-    end
+  def user
+    @user ||= User.new(name:, email_address:)
+  end
 
-    def namespace
-      @namespace ||= Namespace.new(name: namespace_name).tap { _1.accesses.owner.new(user:) }
-    end
+  def namespace
+    @namespace ||= Namespace.new(name: namespace_name).tap { _1.accesses.owner.new(user:) }
+  end
 end

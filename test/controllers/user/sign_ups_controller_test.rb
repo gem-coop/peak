@@ -12,10 +12,17 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
     end
     assert_response :success
 
-    assert_equal "Someone", User.last.name
-    assert_equal "someone@example.com", User.last.email_address
-    assert_equal "@someone", Namespace.last.name
-    assert_equal User.last, Namespace.last.accesses.owner.user
+    Namespace::Access.last.tap do |access|
+      assert access.owner?
+      assert_equal "Someone", access.user.name
+      assert_equal "someone@example.com", access.user.email_address
+      assert_equal "@someone", access.namespace.name
+    end
+
+    perform_enqueued_jobs
+    assert mail = ActionMailer::Base.deliveries.last
+    assert_equal ["someone@example.com"], mail.to
+    assert_match "user/email_verification/", mail.text_part.body.to_s
   end
 
   test "post create with taken email address" do

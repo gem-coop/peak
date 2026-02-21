@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_19_111130) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_21_163922) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -142,9 +142,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_19_111130) do
   end
 
   create_table "namespaces", force: :cascade do |t|
+    t.datetime "approved_at"
     t.datetime "created_at", null: false
     t.string "name", null: false
     t.datetime "updated_at", null: false
+    t.index ["approved_at"], name: "index_namespaces_on_approved_at"
     t.index ["name"], name: "index_namespaces_on_name", unique: true
   end
 

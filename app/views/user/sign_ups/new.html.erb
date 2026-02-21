@@ -3,16 +3,17 @@
 <% field_error = -> { tag.p _1.to_sentence.downcase, style: "text-align: center; margin-block-start: 0;" } %>
 
 <%= form_with model: @sign_up do |form| %>
-  <%= form.label :name, "name" %>
-  <%= form.text_field :name %>
+  <%= form.label :name, "full name" %>
+  <%= form.text_field :name, required: true, placeholder: "My Full Name" %>
 
   <%= form.label :email_address, "email address", style: "display: inline-block;" %>
-  <%= form.email_field :email_address %>
+  <%= form.email_field :email_address, required: true, placeholder: "me@example.com" %>
   <%= field_error.(@sign_up.user.errors.full_messages_for(:email_address)) %>
 
   <%= form.label :namespace_name, "personal namespace name" %>
-  <%= form.text_field :namespace_name %>
+  <%= tag.small "start with @, all lowercase, at least 4 characters, use - for separation.", style: "display: block; padding: .5em .25em;" %>
+  <%= form.text_field :namespace_name, required: true, placeholder: "@username", minlength: 4, pattern: @sign_up.namespace.name_pattern %>
   <%= field_error.(@sign_up.namespace.errors.full_messages_for(:name)) %>
 
-  <%= form.button "Create account" %>
+  <%= form.button "Submit namespace for approval" %>
 <% end %>

@@ -8,12 +8,14 @@ class Avo::Resources::Namespace < Avo::BaseResource
   def fields
     field :id,   as: :id
     field :name, as: :text
+    field :approved_at, as: :date_time
 
     field :accesses, as: :has_many
     field :users,    as: :has_many, through: :accesses
 
     field :external_index, as: :has_one
-    field :internal_index, as: :has_one
+    field :dev_index, as: :has_one
+    field :private_index, as: :has_one
 
     field :indexes,  as: :has_many
     field :gems,     as: :has_many, through: :indexes

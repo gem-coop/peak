@@ -16,13 +16,13 @@ class Namespaces::GemsController < ApplicationController
   end
 
   def show
-    @index = Namespace.named(params[:namespace]).external_index
+    set_routed_index
 
     gem_name, ref = Peak::Gem.version(params[:id])
     version = @index.versions.for(gem_name).find_by!(ref:)
 
     if version.package.attached?
-      expires_in 1.year, public: @index.external_access?
+      expires_in 1.year, public: @index.public_cache?
 
       # redirect_to version.package.url expires_in: 5.seconds # TODO: When not using Disk Service?
       send_data version.package.download, filename: version.package_name, disposition: "inline"
@@ -34,7 +34,7 @@ class Namespaces::GemsController < ApplicationController
   private
     def authenticate_index_by_user_push_key
       @user = User::PushKey.active.find_by!(token: request.authorization.delete_prefix("Bearer ")).user
-      @index = @user.namespaces.named(params[:namespace]).external_index
+      set_routed_index from: @user.namespaces
     rescue ActiveRecord::RecordNotFound
       if @user
         render plain: "User doesn't have access to the given namespace", status: :unauthorized

@@ -1,5 +1,5 @@
 class Namespaces::IndexController < ApplicationController
-  before_action :set_index
+  before_action :set_routed_index
 
   def index
     render plain: @index.versions_contents if stale? @index
@@ -10,9 +10,4 @@ class Namespaces::IndexController < ApplicationController
       render plain: info.contents
     end
   end
-
-  private
-    def set_index
-      @index = Namespace.named(params[:namespace]).external_index
-    end
 end

@@ -30,7 +30,7 @@ Rails.application.routes.draw do
   end
 
   constraints -> { _1.params[:namespace].then { it.starts_with?("@") && it != "@public" } } do
-    namespace :namespaces, path: "/:namespace/", as: :namespace do
+    namespace :namespaces, path: "/:namespace(/:index)", as: :namespace do
       get :versions,   to: "index#index", as: :versions
       get "/info/:id", to: "index#show", as: :info
 

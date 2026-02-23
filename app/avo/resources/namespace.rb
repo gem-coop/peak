@@ -5,6 +5,15 @@ class Avo::Resources::Namespace < Avo::BaseResource
   #   query: -> { query.ransack(id_eq: q, m: "or").result(distinct: false) }
   # }
 
+  def scopes
+    scope Avo::Scopes::Pending
+    scope Avo::Scopes::Approved
+  end
+
+  def actions
+    action Avo::Actions::Approve, icon: "heroicons/outline/check-circle"
+  end
+
   def fields
     field :id,   as: :id
     field :name, as: :text

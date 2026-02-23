@@ -24,6 +24,8 @@ Gem::Specification.new do
 
   it.bindir = "exe"
   it.executables = ["peak"]
+  it.extensions = ["ext/extconf.rb"]
+  it.platform = ENV["PEAK_PLATFORM"] || "ruby"
 
   it.files = []
   it.require_paths = ["lib"]

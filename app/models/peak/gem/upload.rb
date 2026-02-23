@@ -34,6 +34,10 @@ class Peak::Gem::Upload
     metadata.select { _1.end_with? "_uri" }.transform_keys { _1.delete_suffix("_uri").to_sym }.merge(homepage:).compact_blank
   end
 
+  def has_extensions?
+    spec.extensions.any?
+  end
+
   def unlink
     tmpfile.close!
   end

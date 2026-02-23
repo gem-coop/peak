@@ -5,6 +5,7 @@ namespace.create_private_index
 accesses.with namespace: do
   _1.owner.create :owner, user: users.create(:owner, name: "Owner", email_address: "owner@example.com")
   _1.plain.create :plain, user: users.create(:plain, name: "Plain", email_address: "plain@example.com")
+  users.plain.create_push_key
 end
 
 gems.with index: namespace.external_index do

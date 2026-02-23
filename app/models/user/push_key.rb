@@ -8,6 +8,9 @@ class User::PushKey < ApplicationRecord
 
   has_secure_token
 
+  def active? = !expired?
+  def expired? = expires_at.past?
+
   def sign_in_mailer
     Mailer.with(push_key: self).sign_in
   end

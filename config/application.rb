@@ -17,6 +17,8 @@ require "rails/test_unit/railtie"
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
+# Require avo, or any other optional groups that are opt-in
+Bundler.require(*Bundler.settings["with"])
 
 module Peak
   class Application < Rails::Application

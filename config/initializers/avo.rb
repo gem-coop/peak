@@ -200,4 +200,4 @@ Avo.configure do |config|
       end
     }
   end
-end
+end if defined?(Avo.boot)

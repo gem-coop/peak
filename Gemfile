@@ -58,6 +58,7 @@ end
 
 # Use Avo for our starting UI
 gem "avo"
+gem "avo-advanced", ">= 3.2.0", source: "https://packager.dev/avo-hq/"
 
 # Use next-gen Rails extensions
 gem "oaken"

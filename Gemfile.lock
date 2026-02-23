@@ -503,6 +503,10 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.3.1)
+    ransack (4.4.1)
+      activerecord (>= 7.2)
+      activesupport (>= 7.2)
+      i18n
     rdoc (7.2.0)
       erb
       psych (>= 4.0.0)
@@ -616,6 +620,34 @@ GEM
       nokogiri (~> 1.8)
     zeitwerk (2.7.4)
 
+GEM
+  remote: https://packager.dev/avo-hq/
+  specs:
+    avo-advanced (3.29.1)
+      avo (= 3.29.1)
+      avo-dynamic_filters (= 3.29.1)
+      avo-pro (= 3.29.1)
+      zeitwerk (>= 2.6.12)
+    avo-dashboards (3.29.1)
+      avo (= 3.29.1)
+      turbo-rails
+      view_component (>= 3.7.0)
+      zeitwerk (>= 2.6.12)
+    avo-dynamic_filters (3.29.1)
+      avo (= 3.29.1)
+      ransack (>= 4.2.0)
+      view_component (>= 3.7.0)
+      zeitwerk (>= 2.6.12)
+    avo-menu (3.29.1)
+      avo (= 3.29.1)
+      docile
+      zeitwerk (>= 2.6.12)
+    avo-pro (3.29.1)
+      avo (= 3.29.1)
+      avo-dashboards (= 3.29.1)
+      avo-menu (= 3.29.1)
+      zeitwerk (>= 2.6.12)
+
 PLATFORMS
   aarch64-linux-gnu
   aarch64-linux-musl
@@ -631,6 +663,7 @@ DEPENDENCIES
   active_job-performs
   active_record-associated_object
   avo
+  avo-advanced (>= 3.2.0)!
   aws-sdk-s3 (~> 1.213)
   bootsnap
   brakeman
@@ -683,7 +716,12 @@ CHECKSUMS
   addressable (2.8.8) sha256=7c13b8f9536cf6364c03b9d417c19986019e28f7c00ac8132da4eb0fe393b057
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
   avo (3.29.1) sha256=bd58343c8b296523a7fb69a15d27adf60ddff2af9a5da12204b9a5e6d9d4bd87
+  avo-advanced (3.29.1) sha256=0b69c098c1e6714d8b470cf92e0ee28f890790c6cf80dda5f13771b9e2a34d30
+  avo-dashboards (3.29.1) sha256=8f8b002e476007cde7bc96c86204fbea54f28d9517ec846ed4f9c6f86695decc
+  avo-dynamic_filters (3.29.1) sha256=48e0a1f67df008b6e45cb7b3d7ecdb3655c35e214d32d586deede06962db6047
   avo-icons (0.1.1) sha256=d9a23d6d47bb7f8f04163119352a66a436dc8accf53f15cd0c3b5fcaffed082c
+  avo-menu (3.29.1) sha256=cd3ee57863eadf0b92fcf136c4d3607f2d7bf6b86eef00751d60311e358a31d8
+  avo-pro (3.29.1) sha256=857ec215134d7385d86183845cd613712a7a654053d79244728fbeb4b8d3f9f6
   aws-eventstream (1.4.0) sha256=116bf85c436200d1060811e6f5d2d40c88f65448f2125bc77ffce5121e6e183b
   aws-partitions (1.1213.0) sha256=5ec132d91d44ef2702125b8f71f0e4fc2cd7de040e02c5d0aefb87219fd2e05e
   aws-sdk-core (3.242.0) sha256=c17b3003acc78d80c1a8437b285a1cfc5e4d7749ce7821cf3071e847535a29a0
@@ -849,6 +887,7 @@ CHECKSUMS
   railties (8.1.2) sha256=1289ece76b4f7668fc46d07e55cc992b5b8751f2ad85548b7da351b8c59f8055
   rainbow (3.1.1) sha256=039491aa3a89f42efa1d6dec2fc4e62ede96eb6acd95e52f1ad581182b79bc6a
   rake (13.3.1) sha256=8c9e89d09f66a26a01264e7e3480ec0607f0c497a861ef16063604b1b08eb19c
+  ransack (4.4.1) sha256=6aeaac36fc19088570e10da1044e6cfd88c740e20f871b84566fd30e32b7a63d
   rdoc (7.2.0) sha256=8650f76cd4009c3b54955eb5d7e3a075c60a57276766ebf36f9085e8c9f23192
   redis (5.4.1) sha256=b5e675b57ad22b15c9bcc765d5ac26f60b675408af916d31527af9bd5a81faae
   redis-client (0.26.4) sha256=3ad70beff5da2653e02dfeae996e7d8d7147a558da12b16b2282ad345e4c7120

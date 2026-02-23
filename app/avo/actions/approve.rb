@@ -7,8 +7,6 @@ class Avo::Actions::Approve < Avo::BaseAction
   # end
 
   def handle(query:, fields:, current_user:, resource:, **args)
-    query.each do |record|
-      record.update!(approved_at: Time.now)
-    end
+    query.update_all approved_at: Time.current
   end
 end

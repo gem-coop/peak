@@ -15,6 +15,8 @@ class Namespace::Gem::Version < ApplicationRecord
   scope :for, -> { joins(:gem).where(gem: {name: _1}) }
   scope :system, -> { where(created_by: Peak.system_user) }
 
+  scope :has_extensions, -> { where(has_extensions: true) }
+
   def to_param = filename
   def filename = "#{name}.gem"
   def name = "#{gem.name}-#{ref}"
@@ -32,6 +34,7 @@ class Namespace::Gem::Version < ApplicationRecord
   def consume(upload, **)
     self.link_ids = links.unscoped.ids_from(upload.links)
     self.reference_ids = references.unscoped.ids_from(upload.requirement_triples)
+    self.has_extensions = upload.has_extensions?
     self.package = { io: upload.tmpfile, filename: }
     update! **metadata.extract_from(upload), **
   end

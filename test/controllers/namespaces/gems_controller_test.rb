@@ -45,6 +45,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     assert_equal ">= 4.0", version.ruby
     assert_equal ">= 2.7", version.rubygems
     assert_equal ["peak"], version.executables
+    assert version.has_extensions?
     assert_equal ["MIT"], version.licenses
     assert_equal "oaken:>= 0.9&~> 1.0.1,second_release_exclusive_ref:= 2.0", version.references.line
 
@@ -59,7 +60,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     }, version.links.pluck(:key, :value).to_h.symbolize_keys)
 
     assert_equal Date.today, version.published_at.to_date
-    assert_equal "a69eb5e7a544c9a2f399903c754ea8649a3f5f23767ff589e70505f306f8bf86", version.checksum
+    assert_equal "c7feaee3abb5405df19f565955941924a52fe70a8d62232ab27c50c47ad9a3cc", version.checksum
 
     assert version.package.attached?
     assert_equal package.binread, version.package.download

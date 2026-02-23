@@ -1,7 +1,3 @@
-Thank you for signing up to gem.coop!
+Here's your link to verify your email address.
 
-Here's your account activation link to verify your email address.
-
-We'll sign you in too.
-
-<%= link_to "Activate account", user_email_verification_url(@verification.signed_id) %>
+<%= user_email_verification_url(@verification.signed_id) %>

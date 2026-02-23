@@ -1,0 +1,5 @@
+<p>Thank you for signing up to gem.coop!</p>
+
+<p>Here's your account activation link to verify your email address.</p>
+
+<p><%= link_to "Activate account", user_email_verification_url(@user.email_verification.signed_id) %></p>

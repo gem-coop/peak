@@ -40,14 +40,27 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
 
     version = versions.by gems.peak, ref: "0.2.0"
     assert_equal users.plain, version.created_by
+
     assert_equal "peak-0.2.0", version.name
     assert_equal ">= 4.0", version.ruby
     assert_equal ">= 2.7", version.rubygems
     assert_equal ["peak"], version.executables
     assert_equal ["MIT"], version.licenses
     assert_equal "oaken:>= 0.9&~> 1.0.1,second_release_exclusive_ref:= 2.0", version.references.line
+
+    assert_equal({
+      homepage: "https://github.com/gem-coop/peak",
+      documentation: "https://github.com/gem-coop/peak",
+      source_code: "https://github.com/gem-coop/peak",
+      changelog: "https://github.com/gem-coop/peak/blob/main/CHANGELOG.md",
+      bug_tracker: "https://github.com/gem-coop/peak/issues",
+      mailing_list: "https://github.com/gem-coop/peak",
+      somewhere_custom: "https://github.com/gem-coop/peak"
+    }, version.links.pluck(:key, :value).to_h.symbolize_keys)
+
     assert_equal Date.today, version.published_at.to_date
-    assert_equal "a3dcf5a06581a9c8bcae19411852850851f20268614b151ec2484d0c09d44730", version.checksum
+    assert_equal "a69eb5e7a544c9a2f399903c754ea8649a3f5f23767ff589e70505f306f8bf86", version.checksum
+
     assert version.package.attached?
     assert_equal package.binread, version.package.download
 

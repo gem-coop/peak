@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_23_173434) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_23_183048) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -70,6 +70,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_23_173434) do
     t.integer "gem_id", null: false
     t.datetime "updated_at", null: false
     t.index ["gem_id"], name: "index_namespace_gem_infos_on_gem_id"
+  end
+
+  create_table "namespace_gem_version_linkings", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "link_id", null: false
+    t.datetime "updated_at", null: false
+    t.integer "version_id", null: false
+    t.index ["link_id"], name: "index_namespace_gem_version_linkings_on_link_id"
+    t.index ["version_id", "link_id"], name: "index_namespace_gem_version_linking_uniqueness", unique: true
+    t.index ["version_id"], name: "index_namespace_gem_version_linkings_on_version_id"
+  end
+
+  create_table "namespace_gem_version_links", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "key", null: false
+    t.datetime "updated_at", null: false
+    t.string "value", null: false
+    t.index ["key", "value"], name: "namespace_gem_version_links_uniqueness", unique: true
   end
 
   create_table "namespace_gem_version_metadata", force: :cascade do |t|

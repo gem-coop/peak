@@ -8,6 +8,7 @@ on:
 
 env:
   BUNDLE_WITH: avo
+  BUNDLE_PACKAGER__DEV: ${{ secrets.BUNDLE_PACKAGER__DEV }}
 
 jobs:
   gems:

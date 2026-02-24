@@ -2,4 +2,14 @@
 
 <p>Here's your account activation link to verify your email address.</p>
 
-<p><%= link_to "Activate account", user_email_verification_url(@user.email_verification.signed_id) %></p>
+<p><%= link_to "Activate my account", user_email_verification_url(@user.email_verification.signed_id) %></p>
+
+<h3>How do I push gems?</h3>
+
+<p>You'll need a new push key. Click here to <%= link_to "generate a new push key", new_user_push_key_url %>.</p>
+
+<p>We're working on stronger modern authentication. More info soon.</p>
+
+<h3>Feedback? Issues?</h3>
+
+<p>Send them to us at <%= mail_to "support@gem.coop" %>, thank you!</p>

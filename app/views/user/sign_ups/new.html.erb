@@ -11,7 +11,7 @@
   <%= field_error.(@sign_up.user.errors.full_messages_for(:email_address)) %>
 
   <%= form.label :namespace_name, "personal namespace name" %>
-  <%= tag.small "start with @, all lowercase, at least 4 characters, use - for separation.", style: "display: block; padding: .5em .25em;" %>
+  <%= tag.small "start with @, all lowercase, numbers allowed, at least 4 characters, use - for separation.", style: "display: block; padding: .5em .25em;" %>
   <%= form.text_field :namespace_name, required: true, placeholder: "@username", minlength: 4, pattern: @sign_up.namespace.name_pattern %>
   <%= field_error.(@sign_up.namespace.errors.full_messages_for(:name)) %>
 

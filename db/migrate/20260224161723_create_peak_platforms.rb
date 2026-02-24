@@ -6,6 +6,7 @@ class CreatePeakPlatforms < ActiveRecord::Migration[8.1]
       t.string :name, null: false
       t.string :specifier, null: false
       t.boolean :precompile_target, null: false, default: false
+      t.index [:arch, :name, :precompile_target]
 
       t.timestamps
     end

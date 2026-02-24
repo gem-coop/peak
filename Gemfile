@@ -57,8 +57,10 @@ group :test do
 end
 
 # Use Avo for our starting UI
-gem "avo"
-gem "avo-advanced", ">= 3.2.0", source: "https://packager.dev/avo-hq/"
+group :avo, optional: true do
+  gem "avo"
+  gem "avo-advanced", ">= 3.2.0", source: "https://packager.dev/avo-hq/"
+end
 
 # Use next-gen Rails extensions
 gem "oaken"

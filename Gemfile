@@ -57,7 +57,10 @@ group :test do
 end
 
 # Use Avo for our starting UI
-gem "avo"
+group :avo, optional: true do
+  gem "avo"
+  gem "avo-advanced", ">= 3.2.0", source: "https://packager.dev/avo-hq/"
+end
 
 # Use next-gen Rails extensions
 gem "oaken"
@@ -69,14 +72,11 @@ gem "aws-sdk-s3", "~> 1.213"
 gem "brotli", "~> 0.7.0"
 gem "honeybadger", "~> 6.4"
 gem "httpx", "~> 1.7"
-gem "mission_control-jobs", "~> 1.1"
+gem "opentelemetry-exporter-otlp"
+gem "opentelemetry-instrumentation-all"
+gem "opentelemetry-sdk"
 gem "pg", "~> 1.6"
 gem "redis", "~> 5.4"
 gem "resend", "~> 1.0"
 gem "sidekiq-scheduler", "~> 6.0"
 gem "sidekiq", "~> 8.1"
-
-# Use gems for Honeycomb
-gem "opentelemetry-sdk"
-gem "opentelemetry-exporter-otlp"
-gem "opentelemetry-instrumentation-all"

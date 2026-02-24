@@ -14,7 +14,14 @@ FileUtils.chdir APP_ROOT do
 
   puts "== Installing dependencies =="
   system! "brew bundle"
-  system! "rv ci"
+
+  if token = ENV["AVO_TOKEN"] and !token.empty?
+    puts "Setting up Avo"
+    system! "bundle config set with avo"
+    system! "bundle config set https://packager.dev/avo-hq/ #{token}"
+  end
+
+  system! "bundle install"
   system! "bun install"
 
   # puts "\n== Copying sample files =="

@@ -17,8 +17,13 @@ require "rails/test_unit/railtie"
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
+# Require avo, or any other optional groups that are opt-in
+Bundler.require(*Bundler.settings["with"])
 
 module Peak
+  @avo = defined?(Avo.boot)
+  def self.avo? = @avo
+
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.1

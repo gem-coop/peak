@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  mount_avo
+  mount_avo if Peak.avo?
 
   require "sidekiq/web"
   require "sidekiq-scheduler/web"

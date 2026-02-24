@@ -21,6 +21,9 @@ Bundler.require(*Rails.groups)
 Bundler.require(*Bundler.settings["with"])
 
 module Peak
+  @avo = defined?(Avo.boot)
+  def self.avo? = @avo
+
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.1

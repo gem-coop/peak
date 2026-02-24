@@ -2,4 +2,14 @@ Thank you for signing up to gem.coop!
 
 Here's your account activation link to verify your email address.
 
-<%= user_email_verification_url(@user.email_verification.signed_id) %>
+Activate my account: <%= user_email_verification_url(@user.email_verification.signed_id) %>
+
+### How do I push gems?
+
+You'll need a new push key. Click here to generate a new push key: <%= new_user_push_key_url %>
+
+We're working on stronger modern authentication. More info soon.
+
+### Feedback? Issues?
+
+Send them to us at support@gem.coop, thank you!

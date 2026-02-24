@@ -1,4 +1,6 @@
 module Peak extend self
+  def table_name_prefix = "peak_"
+
   def system_user
     @system_user ||= User.create_with(name: "gem.coop system").find_or_create_by!(email_address: "support@gem.coop")
   end

@@ -15,6 +15,9 @@ class Namespace::Gem::Version < ApplicationRecord
   scope :for, -> { joins(:gem).where(gem: {name: _1}) }
   scope :system, -> { where(created_by: Peak.system_user) }
 
+  belongs_to :platform, class_name: "Peak::Platform"
+
+  scope :missing_precompiles, -> { has_extensions.joins(:platform).merge(Peak::Platform.precompile_targeted) }
   scope :has_extensions, -> { where(has_extensions: true) }
 
   def to_param = filename
@@ -32,6 +35,7 @@ class Namespace::Gem::Version < ApplicationRecord
   end
 
   def consume(upload, **)
+    self.platform_id = Peak::Platform.ids_from(upload.platform_key).first
     self.link_ids = links.unscoped.ids_from(upload.links)
     self.reference_ids = references.unscoped.ids_from(upload.requirement_triples)
     self.has_extensions = upload.has_extensions?

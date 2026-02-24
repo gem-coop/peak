@@ -23,6 +23,7 @@ class Peak::Gem::Upload
   def ref = spec.version.to_s
   def ruby = spec.required_ruby_version.to_s
   def rubygems = spec.required_rubygems_version.to_s
+  def platform_key = spec.platform.to_s
 
   def requirement_triples
     spec.dependencies.select(&:runtime?).flat_map { |dep|

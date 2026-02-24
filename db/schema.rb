@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_23_202917) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_24_163806) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -128,6 +128,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_23_202917) do
     t.integer "gem_id", null: false
     t.boolean "has_extensions"
     t.json "licenses", default: [], null: false
+    t.integer "platform_id", null: false
     t.datetime "published_at", null: false
     t.string "ref", null: false
     t.string "ruby"
@@ -136,6 +137,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_23_202917) do
     t.index ["created_by_id"], name: "index_namespace_gem_versions_on_created_by_id"
     t.index ["gem_id", "ref"], name: "index_namepace_gem_versions_uniqueness", unique: true
     t.index ["gem_id"], name: "index_namespace_gem_versions_on_gem_id"
+    t.index ["platform_id"], name: "index_namespace_gem_versions_on_platform_id"
   end
 
   create_table "namespace_gems", force: :cascade do |t|
@@ -167,6 +169,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_23_202917) do
     t.datetime "updated_at", null: false
     t.index ["approved_at"], name: "index_namespaces_on_approved_at"
     t.index ["name"], name: "index_namespaces_on_name", unique: true
+  end
+
+  create_table "peak_platforms", force: :cascade do |t|
+    t.string "arch", null: false
+    t.datetime "created_at", null: false
+    t.string "key"
+    t.string "name", null: false
+    t.boolean "precompile_target", default: false, null: false
+    t.string "specifier", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "peak_platforms_uniqueness", unique: true
   end
 
   create_table "user_push_keys", force: :cascade do |t|

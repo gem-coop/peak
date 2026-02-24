@@ -9,3 +9,6 @@ Layout/SpaceInsideArrayLiteralBrackets:
 
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: false
+
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false

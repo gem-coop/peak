@@ -10,7 +10,7 @@ class User::EmailVerificationsControllerTest < ActionDispatch::IntegrationTest
 
   test "get show expired" do
     id = users.plain.email_verification.signed_id
-    travel 6.hours + 1.second
+    travel 24.hours + 1.second
 
     assert_raise ActiveSupport::MessageVerifier::InvalidSignature do
       get user_email_verification_url(id)

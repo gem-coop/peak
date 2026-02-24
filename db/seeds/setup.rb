@@ -1,4 +1,5 @@
-loader.defaults created_by_id: -> { Peak.system_user.id }, approved_at: -> { Time.current }
+loader.defaults created_by_id: -> { Peak.system_user.id },
+  platform_id: -> { Peak::Platform.default.id }, approved_at: -> { Time.current }
 
 Oaken::Stored::ActiveRecord.include loader.context
 def fixture_upload(filename) = Peak::Gem::Upload.read(fixture_file(filename))

@@ -21,7 +21,7 @@ class Peak::Platform < ApplicationRecord
   end
 
   def self.split(key)
-    arch, name, specifier = key.split("-")
+    arch, name, specifier = key.split("-", 3)
     name, arch = arch, nil if name.nil?
 
     { arch: arch.to_s, name: name.to_s, specifier: specifier.to_s }

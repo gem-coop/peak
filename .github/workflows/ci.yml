@@ -103,5 +103,11 @@ jobs:
         with:
           bundler-cache: true
 
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.5
+
       - name: Run tests
         run: bin/rails db:test:prepare test
+        env:
+          BACKTRACE: 1

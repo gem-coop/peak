@@ -1,0 +1,11 @@
+<h1>It's approved, you've got <%= @namespace.name %>!</h1>
+
+<p>You can view your new gem.coop namespace <%= link_to @namespace.name, @namespace %> here.</p>
+
+<p>To start pushing your gems, generate a <%= link_to "new push key", new_user_push_key_url %>.</p>
+
+<hr>
+
+<p>If this is for a team, email us <%= mail_to "support@gem.coop" %> if you want extra members on.</p>
+
+<p>They'll have to have gone through <%= link_to "sign up", sign_up_url %> first.</p>

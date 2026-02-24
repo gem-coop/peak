@@ -59,7 +59,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
       somewhere_custom: "https://github.com/gem-coop/peak"
     }, version.links.pluck(:key, :value).to_h.symbolize_keys)
 
-    assert_equal Date.today, version.published_at.to_date
+    assert_equal Date.current, version.published_at.to_date
     assert_equal "c7feaee3abb5405df19f565955941924a52fe70a8d62232ab27c50c47ad9a3cc", version.checksum
 
     assert version.package.attached?

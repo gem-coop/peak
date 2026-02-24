@@ -24,6 +24,9 @@ class Namespace < ApplicationRecord
   def to_param = name
 
   def approve
-    update! approved_at: Time.current
+    unless approved_at?
+      update! approved_at: Time.current
+      mailer.approved.deliver_later
+    end
   end
 end

@@ -24,6 +24,10 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
     assert mail = ActionMailer::Base.deliveries.last
     assert_equal ["someone@example.com"], mail.to
     assert_match "user/email_verification/", mail.text_part.body.to_s
+
+    namespace = Namespace.last
+    assert_emails(1) { namespace.approve }
+    assert_no_emails { namespace.approve }
   end
 
   test "post create with taken email address" do

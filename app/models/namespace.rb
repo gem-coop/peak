@@ -16,7 +16,7 @@ class Namespace < ApplicationRecord
   has_one :dev_index, -> { dev_access }, class_name: "Index"
   has_one :private_index, -> { private_access }, class_name: "Index"
 
-  class_attribute :name_pattern, default: /@[a-z-]+/ # For embedding in HTML5 input patterns.
+  class_attribute :name_pattern, default: /@[a-z0-9-]+/ # For embedding in HTML5 input patterns.
   validates_format_of :name, with: /\A#{name_pattern}\z/
   validates_uniqueness_of :name
 

@@ -19,7 +19,7 @@ Options:
 # Dependencies
 
 - `homebrew`, we're assuming a working Homebrew installation.
-- [`puma-dev`](https://github.com/puma/puma-dev), set it up and run `puma-dev link` from the root dir to setup accessing the app via `http:peak.test`.
+- [`puma-dev`](https://github.com/puma/puma-dev), set it up and run `puma-dev link` from the root dir to setup accessing the app via `http://peak.test`.
 
 ## Quick Start
 

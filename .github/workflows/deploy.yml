@@ -26,7 +26,11 @@ jobs:
           env: Production
       - uses: actions/checkout@v6
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl deploy --remote-only -e BUILT_BY=github-actions -e GIT_SHA=$GITHUB_SHA --build-secret BUNDLE_PACKAGER__DEV=${{ secrets.BUNDLE_PACKAGER__DEV }}
+      - run: flyctl deploy --remote-only \
+          -e BUILT_BY=github-actions \
+          -e GIT_SHA=$GITHUB_SHA \
+          -e BUNDLE_WITH=avo \
+          --build-secret BUNDLE_PACKAGER__DEV=${{ secrets.BUNDLE_PACKAGER__DEV }}
       - uses: bobheadxi/deployments@v1.5.0
         if: always()
         with:

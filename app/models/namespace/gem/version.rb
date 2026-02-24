@@ -35,7 +35,7 @@ class Namespace::Gem::Version < ApplicationRecord
   end
 
   def consume(upload, **)
-    self.platform_id = Peak::Platform.ids_from([upload.platform_key]).first
+    self.platform_id = Peak::Platform.ids_from(upload.platform_key).first
     self.link_ids = links.unscoped.ids_from(upload.links)
     self.reference_ids = references.unscoped.ids_from(upload.requirement_triples)
     self.has_extensions = upload.has_extensions?

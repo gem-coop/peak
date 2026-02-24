@@ -11,7 +11,7 @@ class Peak::Platform < ApplicationRecord
   def self.default = find_or_create_by!(key: "ruby")
 
   def self.ids_from(keys)
-    upsert_all keys.map { { key: _1, **split(_1) } }
+    upsert_all Array(keys).map { { key: _1, **split(_1) } }
   end
 
   def self.upsert_all(values)

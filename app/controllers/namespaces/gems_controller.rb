@@ -4,7 +4,7 @@ class Namespaces::GemsController < ApplicationController
 
   def create
     upload = Current.upload_from(request.body)
-    version = @index.gems.version_from name: upload.name, ref: upload.ref
+    version = @index.gems.version_from name: upload.name, ref: upload.platform_ref
 
     if version.persisted?
       render plain: "Upload skipped: #{version.package_name} already exists. ❌", status: :conflict

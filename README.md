@@ -20,6 +20,7 @@ Options:
 
 - `homebrew`, we're assuming a working Homebrew installation.
 - [`puma-dev`](https://github.com/puma/puma-dev), set it up and run `puma-dev link` from the root dir to setup accessing the app via `http://peak.test`.
+- `postgresql@16`, installed via Homebrew (`brew install postgresql@16`) or `docker compose up db`.
 
 ## Quick Start
 

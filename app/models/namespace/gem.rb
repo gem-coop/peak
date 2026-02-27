@@ -7,6 +7,7 @@ class Namespace::Gem < ApplicationRecord
 
   has_object :imports, :server
 
+  def self.prepare(name) = find_or_create_by!(name:)
   def self.named(name) = find_by!(name:)
   def to_param = name
 
@@ -17,10 +18,6 @@ class Namespace::Gem < ApplicationRecord
       gem = proxy_association.owner
       gem.trim_versions_published_at&.then { published_since _1 } || self
     end
-  end
-
-  def self.version_from(name:, ref:)
-    find_or_create_by!(name:).versions.find_or_initialize_by(ref:)
   end
 
   performs def process_version(version)

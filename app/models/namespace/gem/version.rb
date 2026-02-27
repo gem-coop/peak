@@ -17,12 +17,18 @@ class Namespace::Gem::Version < ApplicationRecord
 
   belongs_to :platform, class_name: "Peak::Platform"
 
+  scope :on_platform, -> { joins(:platform).merge(Peak::Platform.keyed(_1)) }
   scope :missing_precompiles, -> { has_extensions.joins(:platform).merge(Peak::Platform.precompile_targeted) }
   scope :has_extensions, -> { where(has_extensions: true) }
 
+  def self.listings
+    select(:ref, :summary, :published_at, :platform_id, :created_by_id).includes(:platform, :created_by)
+  end
+
   def to_param = filename
-  def filename = "#{name}.gem"
-  def name = "#{gem.name}-#{ref}"
+  def filename = "#{full_name}.gem"
+  def full_name = "#{gem.name}-#{name}"
+  def name = "#{ref}-#{platform.suffix}".chomp("-")
   alias_method :package_name, :filename
 
   has_object :metadata

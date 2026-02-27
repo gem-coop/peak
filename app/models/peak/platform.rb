@@ -5,6 +5,8 @@ class Peak::Platform < ApplicationRecord
   NAMES = %w[ruby java jruby linux darwin mswin32]
   NAMES.each { class_eval "def #{_1}? = name == '#{_1}'" }
 
+  scope :keyed, -> { where(key: _1) }
+
   scope :precompile_targeted, -> { where(precompile_target: true) }
   before_create :set_details, :set_precompile_target
 
@@ -25,6 +27,10 @@ class Peak::Platform < ApplicationRecord
     name, arch = arch, nil if name.nil?
 
     { arch: arch.to_s, name: name.to_s, specifier: specifier.to_s }
+  end
+
+  def suffix
+    key unless ruby?
   end
 
   private

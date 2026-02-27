@@ -22,5 +22,5 @@ versions.with do
     build(gem:, ref:, **).tap { _1.process fixture_upload("#{gem.name}/#{_1.filename}") }
   end
 
-  def by(gem, ref:) = type.find_by!(gem:, ref:)
+  def by(gem, ref:, **) = type.find_by!(gem:, ref:, **)
 end

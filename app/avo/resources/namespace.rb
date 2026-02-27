@@ -5,6 +5,12 @@ class Avo::Resources::Namespace < Avo::BaseResource
   #   query: -> { query.ransack(id_eq: q, m: "or").result(distinct: false) }
   # }
 
+  # def find_record(id)
+  #   named(id)
+  # end
+
+  self.find_record_method = -> { query.where(name: id) }
+
   def scopes
     scope Avo::Scopes::Pending
     scope Avo::Scopes::Approved

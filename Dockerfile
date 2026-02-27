@@ -51,9 +51,6 @@ RUN bun install --frozen-lockfile
 # Copy application code
 COPY . .
 
-# Booting Rails requires config/database.yml even if it's unused
-RUN cp config/database.local.yml config/database.yml
-
 # Precompile bootsnap code for faster boot times.
 RUN bundle exec bootsnap precompile app/ lib/
 
@@ -61,7 +58,7 @@ RUN bundle exec bootsnap precompile app/ lib/
 RUN bun run build
 
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+RUN DATABASE_URL=postgresql://dummy SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 RUN rm -rf node_modules
 
 # Final stage for app image

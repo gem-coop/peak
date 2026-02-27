@@ -5,11 +5,16 @@ class Avo::Resources::Namespace < Avo::BaseResource
   #   query: -> { query.ransack(id_eq: q, m: "or").result(distinct: false) }
   # }
 
-  # def find_record(id)
-  #   named(id)
-  # end
-
-  self.find_record_method = -> { query.where(name: id) }
+  self.find_record_method = -> {
+    case id
+    when Array
+      id.first.starts_with?("@") ? query.where(name: id) : query.where(id: id)
+    when String
+      id.starts_with?("@") ? query.find_by!(name: id) : query.find(id)
+    else
+      raise "oh no an id we don't know how to handle: #{id.inspect}"
+    end
+  }
 
   def scopes
     scope Avo::Scopes::Pending

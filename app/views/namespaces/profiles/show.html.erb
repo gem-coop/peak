@@ -1,48 +1,42 @@
 <% source_url = polymorphic_url @index.namespace %>
 
-<script>
-  class Clippy {
-    static addGem(name) {
-      const text = `bundle add ${name} --source "<%= source_url %>"`
-      navigator.clipboard.writeText(text)
-    }
-  }
-</script>
+<%= render "clippy", source_url: %>
 
-<section style="display: flex; flex-direction: column;">
-  <div style="display: flex; align-items: baseline; gap: .8em;">
-    <h1><%= @index.namespace.name %> gems</h1>
-    <span>+ 3 latest versions of each</span>
+<section>
+  <div>
+    <h1><%= @index.namespace.name %></h1>
+
+    <small><i>Owned by</i></small>
+    <ul class="list-none" style="margin-block-start: 0;">
+      <% @index.namespace.accesses.owner.extract_associated(:user).each do |user| %>
+        <%= tag.li user.name %>
+      <% end %>
+    </ul>
   </div>
 
-  <section class="flow" style="flex: 2 1 auto; min-height: 300px;">
-    <% @versions.each do |gem, versions| %>
-      <article>
-        <%= tag.h3 gem.name, style: "margin-block-end: 0; display: inline-block;" %>
-        <%= tag.button :🔗, onclick: "Clippy.addGem('#{gem.name}')", style: "height: 2em;" %>
+  <% if @gems.empty? %>
+    <h3>gems</h3>
+    <p>No gems yet.</p>
+    <p>Generate <%= link_to "a new push key", new_user_push_key_url %> to get started.</p>
+  <% else %>
+    <div>
+      <h3 style="display: inline;">gems</h3>
+      <span>+ 3 latest versions of each</span>
+    </div>
 
-        <% versions.each do |version| %>
-          <p><%= version.ref %> - <%= l version.published_at, format: "%d %b %Y %H:%M UTC" %></p>
-        <% end %>
-      </article>
-    <% end %>
+    <section style="min-height: 300px;">
+      <% @versions.each do |gem, versions| %>
+        <article>
+          <h3 style="margin-block-end: 0; display: inline-block;">
+            <%= link_to gem.name, namespace_gem_path(gem.namespace, gem, index: nil) %>
+          </h3>
+          <%= tag.button :🔗, onclick: "Clippy.addGem('#{gem.name}')", style: "height: 2em;" %>
 
-    <% if @gems.empty? %>
-      No gems yet.
-    <% end %>
-  </section>
+          <%= render "gem/versions/list", versions: %>
+        </article>
+      <% end %>
+    </section>
+  <% end %>
 
-  <footer>
-    <hr>
-
-    <p>To use namespaced gems pass a source in your Gemfile, like this:</p>
-
-    <% gem_name = @gems.first&.name || "<name>" %>
-
-    <pre>  <code>gem "<%= gem_name %>", source: "<%= source_url %>"</code></pre>
-
-    <p>Or run this command:</p>
-
-    <pre>  <code>bundle add <%= gem_name %> --source "<%= source_url %>"</code></pre>
-  </footer>
+  <%= render "gem/sections/usage", name: @gems.first&.name || "<name>", source_url: %>
 </section>

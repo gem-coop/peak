@@ -34,6 +34,7 @@ Rails.application.routes.draw do
 
       get "/gems/:id", to: "gems#show", as: :gems, constraints: {id: Peak::Gem.pattern}
       post "/api/v1/gems", to: "gems#create", as: :gem_push
+      get "/:id", to: "gems/profiles#show", as: :gem
     end
 
     get "/:namespace", to: "namespaces/profiles#show", as: :namespace

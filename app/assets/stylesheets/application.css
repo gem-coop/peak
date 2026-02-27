@@ -18,6 +18,9 @@
   --main-bg: light-dark( white,  #1d232a);
 
   --font-sm: .875rem;
+
+  --primary: light-dark(black, white);
+  --secondary:  #949699;
 }
 
 body {
@@ -97,6 +100,29 @@ a, a:visited {
   color: light-dark( #18181b, white);
 }
 
+dl {
+  margin-block: .5em 0;
+
+  &[data-condensed] {
+    dt, dd {
+      display: inline;
+    }
+  }
+}
+
+dt {
+  color: var(--secondary);
+}
+
+dd {
+  margin-inline-start: 0;
+  margin-block-end: 1em;
+
+  a:not(:hover) {
+    text-decoration: none;
+  }
+}
+
 pre {
   overflow: auto;
   margin-block-start: 0;
@@ -163,4 +189,9 @@ form {
 peak-status, peak-error {
   display: block;
   text-align: center;
+}
+
+.list-none {
+  list-style: none;
+  padding-inline-start: 0;
 }

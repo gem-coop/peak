@@ -1,4 +1,4 @@
-loader.defaults created_by_id: -> { Peak.system_user.id },
+loader.defaults created_by_id: -> { Peak.system_user.id }, summary: "",
   platform_id: -> { Peak::Platform.default.id }, approved_at: -> { Time.current }
 
 Oaken::Stored::ActiveRecord.include loader.context

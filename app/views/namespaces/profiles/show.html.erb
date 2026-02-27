@@ -21,18 +21,19 @@
   <% else %>
     <div>
       <h3 style="display: inline;">gems</h3>
-      <span>+ 3 latest versions of each</span>
     </div>
 
     <section style="min-height: 300px;">
-      <% @versions.each do |gem, versions| %>
+      <% @versions.each do |gem, version| %>
         <article>
           <h3 style="margin-block-end: 0; display: inline-block;">
             <%= link_to gem.name, namespace_gem_path(gem.namespace, gem, index: nil) %>
           </h3>
           <%= tag.button :🔗, onclick: "Clippy.addGem('#{gem.name}')", style: "height: 2em;" %>
 
-          <%= render "gem/versions/list", versions: %>
+          <p><i><%= version.summary %></i></p>
+
+          <%= render "gem/versions/list", versions: [version] %>
         </article>
       <% end %>
     </section>

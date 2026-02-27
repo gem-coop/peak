@@ -39,6 +39,7 @@ class Namespace::Gem::Version < ApplicationRecord
     self.link_ids = links.unscoped.ids_from(upload.links)
     self.reference_ids = references.unscoped.ids_from(upload.requirement_triples)
     self.has_extensions = upload.has_extensions?
+    self.summary = upload.summary.to_s
     self.package = { io: upload.tmpfile, filename: }
     update! **metadata.extract_from(upload), **
   end

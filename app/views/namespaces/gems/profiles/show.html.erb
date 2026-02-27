@@ -50,16 +50,18 @@
       </dl>
     </section>
 
-    <details open style="overflow-wrap: break-word;">
-      <summary style="cursor: pointer;"><h3 style="display: inline;">links</h3></summary>
+    <% if links = latest.links.group_by(&:value).presence %>
+      <details open style="overflow-wrap: break-word;">
+        <summary style="cursor: pointer;"><h3 style="display: inline;">links</h3></summary>
 
-      <dl style="margin-block: 0;">
-        <% latest.links.group_by(&:value).each do |value, links| %>
-          <%= safe_join links.map { tag.dt _1.key } %>
-          <%= tag.dd link_out_to(value, value), style: "font-size: var(--font-sm);" %>
-        <% end %>
-      </dl>
-    </details>
+        <dl style="margin-block: 0;">
+          <% links.each do |value, links| %>
+            <%= safe_join links.map { tag.dt _1.key } %>
+            <%= tag.dd link_out_to(value, value), style: "font-size: var(--font-sm);" %>
+          <% end %>
+        </dl>
+      </details>
+    <% end %>
   </section>
 
   <section>

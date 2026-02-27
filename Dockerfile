@@ -52,7 +52,7 @@ RUN bun install --frozen-lockfile
 COPY . .
 
 # Booting Rails requires config/database.yml even if it's unused
-RUN touch config/database.yml
+RUN cp config/database.local.yml config/database.yml
 
 # Precompile bootsnap code for faster boot times.
 RUN bundle exec bootsnap precompile app/ lib/

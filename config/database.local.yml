@@ -14,5 +14,4 @@ test:
 
 production:
   <<: *default
-  database: peak_production
   url: <%= ENV["DATABASE_URL"] %>

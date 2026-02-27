@@ -45,7 +45,7 @@
 
         <div>
           <dt>platforms</dt>
-          <dd><%= @gem.versions.distinct.includes(:platform).pluck(platform: :name).join(" ") %></dd>
+          <dd>ruby <%#= @gem.versions.distinct.includes(:platform).pluck(platform: :name).join(" ") %></dd>
         </div>
       </dl>
     </section>

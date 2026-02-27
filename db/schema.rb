@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_24_163806) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_27_195215) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -136,6 +136,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_24_163806) do
     t.string "ref", null: false
     t.string "ruby"
     t.string "rubygems"
+    t.string "summary", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_namespace_gem_versions_on_created_by_id"
     t.index ["gem_id", "ref"], name: "index_namepace_gem_versions_uniqueness", unique: true

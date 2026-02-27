@@ -19,7 +19,7 @@ class Peak::Gem::Upload
     @package ||= rewinding { ::Gem::Package.new tmpfile }
   end
   delegate :spec, to: :package
-  delegate :name, :executables, :licenses, :homepage, :metadata, to: :spec
+  delegate :name, :executables, :licenses, :summary, :homepage, :metadata, to: :spec
   def ref = spec.version.to_s
   def ruby = spec.required_ruby_version.to_s
   def rubygems = spec.required_rubygems_version.to_s

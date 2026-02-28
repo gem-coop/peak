@@ -25,6 +25,9 @@ module Peak
   def self.avo? = @avo
 
   class Application < Rails::Application
+    Rails.singleton_class.alias_method :app, :application # TODO: Remove on Rails 8.2+
+    def name = "gem.coop"
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.1
 

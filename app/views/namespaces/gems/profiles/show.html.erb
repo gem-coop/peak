@@ -1,3 +1,5 @@
+<% page.title = [@gem.namespace.name, @gem.name].join("/") %>
+
 <% source_url = polymorphic_url @index.namespace %>
 <%= render "clippy", source_url: %>
 

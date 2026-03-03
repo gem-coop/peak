@@ -9,6 +9,7 @@ class CooldownVersion < ApplicationRecord
   def self.version_jobs(force_all: false)
     versions = Server.versions
     versions_byte = 0
+    CooldownVersion.where("versions_byte >= ?", Server.versions.size).update_all(versions_byte: nil)
 
     unless force_all
       cv = CooldownVersion.order(:versions_byte).last

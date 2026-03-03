@@ -17,7 +17,7 @@ WEB_CONCURRENCY = 'auto' # one process per CPU core
 
 [processes]
 app = 'bin/rails server'
-worker = 'bash -c "RAILS_MAX_THREADS=15 bin/sidekiq"'
+worker = 'bin/sidekiq'
 
 [http_service]
 processes = ['app']

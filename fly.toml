@@ -4,7 +4,7 @@
 #
 
 app = 'gem-coop-beta'
-primary_region = 'dfw'
+primary_region = 'ord'
 console_command = 'bin/rails console'
 
 [deploy]

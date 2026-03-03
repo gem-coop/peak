@@ -4,6 +4,10 @@
   - critical
   - default
   - low
+  - import_1
+  - import_2
+  - import_3
+  - import_4
 :scheduler:
   :schedule:
     CooldownVersionImportJob:

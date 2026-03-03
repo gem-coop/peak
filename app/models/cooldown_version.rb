@@ -9,6 +9,8 @@ class CooldownVersion < ApplicationRecord
   def self.version_jobs(force_all: false)
     versions = Server.versions
     versions_byte = 0
+
+    # make sure we won't look past the end of the current file, even if these jobs aren't all done
     CooldownVersion.where("versions_byte >= ?", Server.versions.size).update_all(versions_byte: nil)
 
     unless force_all
@@ -20,10 +22,17 @@ class CooldownVersion < ApplicationRecord
       end
     end
 
+    # Upstash Redis dies if the default queue value is >10MB,
+    # so we are trying to guarantee that we never have more
+    # than about 125,000 jobs in a single queue, here.
+    queue_name = %w[import_1 import_2 import_3 import_4].cycle
+
     versions[versions_byte..].lines.map do |version_line|
       versions_byte += version_line.size
       next if version_line.match(/^created_at:|^---/)
-      CooldownVersionLineImportJob.new(versions_byte, version_line)
+      CooldownVersionLineImportJob.new(versions_byte, version_line).tap do |job|
+        job.queue_name = queue_name.next
+      end
     end.compact
   end
 

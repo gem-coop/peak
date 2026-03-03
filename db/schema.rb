@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_27_195215) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_03_091024) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -52,6 +52,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_195215) do
     t.bigint "versions_byte"
     t.datetime "yanked_at"
     t.index ["name", "version"], name: "index_cooldown_versions_on_name_and_version", unique: true
+    t.index ["versions_byte"], name: "index_cooldown_versions_on_versions_byte"
     t.index ["yanked_at", "published_at"], name: "index_cooldown_versions_on_yanked_at_and_published_at"
   end
 

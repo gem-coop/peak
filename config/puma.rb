@@ -38,24 +38,3 @@ plugin :tmp_restart
 # Specify the PID file. Defaults to tmp/pids/server.pid in development.
 # In other environments, only set the PID file if requested.
 pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
-
-env = ENV.fetch("RAILS_ENV", "development")
-if env == "production"
-  x = nil
-  before_worker_boot do
-    x = Sidekiq.configure_embed do |config|
-      # config.logger.level = Logger::DEBUG
-      config.queues = %w[critical default low mailer]
-      config.concurrency = 2
-      config.on(:startup) do
-        Sidekiq.schedule = YAML.load_file(File.expand_path("../scheduler.yml", __FILE__))
-        SidekiqScheduler::Scheduler.instance.reload_schedule!
-      end
-    end
-    x.run
-  end
-
-  before_worker_shutdown do
-    x&.stop
-  end
-end

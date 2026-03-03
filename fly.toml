@@ -4,8 +4,7 @@
 #
 
 app = 'gem-coop-beta'
-primary_region = 'dfw'
-console_command = 'bin/rails console'
+primary_region = 'ord'
 
 [deploy]
 release_command = 'bin/rails db:prepare'
@@ -13,16 +12,20 @@ release_command = 'bin/rails db:prepare'
 [build]
 
 [env]
-WEB_CONCURRENCY = "auto" # one process per CPU core
+WEB_CONCURRENCY = 'auto' # one process per CPU core
+
+[processes]
+app = 'bin/rails server'
+worker = 'bin/sidekiq'
 
 [http_service]
+processes = ['app']
 internal_port = 3000
 force_https = true
 auto_stop_machines = 'suspend'
 auto_start_machines = true
 min_machines_running = 0
 max_machines_running = 2
-processes = ['app']
 
 [[http_service.checks]]
 interval = '10s'
@@ -37,9 +40,9 @@ tls_skip_verify = false
 X-Forwarded-Proto = 'https'
 
 [[vm]]
-cpu_kind = "performance"
-cpus = 2
-memory = "4gb"           # minimum for performance-2x
+cpu_kind = 'shared'
+cpus = 4
+memory = '1024mb'
 
 [[statics]]
 guest_path = '/rails/public'

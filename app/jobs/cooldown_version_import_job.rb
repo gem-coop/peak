@@ -2,8 +2,8 @@ class CooldownVersionImportJob < ApplicationJob
   queue_as :default
 
   def perform
-    jobs_queued = CooldownVersion.import
-    Rails.logger.info "Finished importing, and queued #{jobs_queued.size} jobs"
+    count = CooldownVersion.import
+    Rails.logger.info "Finished importing, and queued #{count} jobs"
     nil
   end
 end

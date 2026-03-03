@@ -81,7 +81,7 @@ class CooldownVersion < ApplicationRecord
     mattr_reader :memory_store, default:
       ActiveSupport::Cache.lookup_store(:memory_store, compress: true)
 
-    def self.cached_get(path, expires_in:, store: Rails.cache)
+    def self.cached_get(path, expires_in:, store: self.memory_store)
       store.fetch(path, expires_in:) do
         HTTPX.plugin(:brotli).get("https://#{path}").tap do |res|
           if res.is_a?(HTTPX::ErrorResponse) || 405 <= res.status
@@ -94,7 +94,7 @@ class CooldownVersion < ApplicationRecord
     end
 
     def self.versions
-      cached_get("gem.coop/versions", expires_in: 5.minutes, store: memory_store)
+      cached_get("gem.coop/versions", expires_in: 5.minutes)
     end
 
     def self.versions_until(byte)

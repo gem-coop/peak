@@ -41,9 +41,9 @@ tls_skip_verify = false
 X-Forwarded-Proto = 'https'
 
 [[vm]]
-cpu_kind = "performance"
+cpu_kind = "shared"
 cpus = 2
-memory = "4gb"           # minimum for performance-2x
+memory = "1gb"
 
 [[statics]]
 guest_path = '/rails/public'

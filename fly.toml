@@ -5,7 +5,6 @@
 
 app = 'gem-coop-beta'
 primary_region = 'ord'
-console_command = 'bin/rails console'
 
 [deploy]
 release_command = 'bin/rails db:prepare'

@@ -78,4 +78,4 @@ gem "pg", "~> 1.6"
 gem "redis", "~> 5.4"
 gem "resend", "~> 1.0"
 gem "sidekiq-scheduler", "~> 6.0"
-gem "sidekiq", "~> 8.1"
+gem "sidekiq", "~> 8.1", require: %w[sidekiq sidekiq/api]

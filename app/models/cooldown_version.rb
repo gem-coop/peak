@@ -2,6 +2,8 @@ class CooldownVersion < ApplicationRecord
   default_scope -> { where(yanked_at: nil) }
   scope :cooled, -> { where("published_at < ?", 48.hours.ago).order(:published_at) }
 
+  IMPORT_QUEUES = %w[import_1 import_2 import_3 import_4].freeze
+
   def self.import
     version_jobs.tap { |jobs| ActiveJob.perform_all_later(jobs) }.count
   end
@@ -25,7 +27,7 @@ class CooldownVersion < ApplicationRecord
     # Upstash Redis dies if the default queue value is >10MB,
     # so we are trying to guarantee that we never have more
     # than about 125,000 jobs in a single queue, here.
-    queue_name = %w[import_1 import_2 import_3 import_4].cycle
+    queue_name = IMPORT_QUEUES.cycle
 
     versions[versions_byte..].lines.map do |version_line|
       versions_byte += version_line.size

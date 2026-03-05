@@ -12,5 +12,13 @@ class Avo::Resources::User < Avo::BaseResource
     field :accesses, as: :has_many
     field :namespaces, as: :has_many, through: :accesses
     field :push_key, as: :has_one
+    field :email_address_verified_at, as: :boolean, name: "Email verified"
+  end
+
+  def display_fields
+    field :id, as: :id
+    field :name, as: :text
+    field :email_address, as: :text
+    field :email_address_verified_at, as: :boolean, name: "Email verified"
   end
 end

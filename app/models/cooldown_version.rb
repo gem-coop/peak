@@ -105,7 +105,7 @@ class CooldownVersion < ApplicationRecord
       store.fetch(path, expires_in:) do
         HTTPX.plugin(:brotli).get("https://#{path}").tap do |res|
           if res.is_a?(HTTPX::ErrorResponse) || 405 <= res.status
-            raise "Request to #{res.uri} failed with #{res.status} #{res.body}"
+            raise "Request to #{res.uri} failed, got: #{res.inspect}"
           elsif path.ends_with?(".json") && res.status == 404
             raise GemYankedError, path
           end

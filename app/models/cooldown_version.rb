@@ -16,7 +16,7 @@ class CooldownVersion < ApplicationRecord
     CooldownVersion.where("versions_byte >= ?", Server.versions.size).update_all(versions_byte: nil)
 
     unless force_all
-      cv = CooldownVersion.order(:versions_byte).last
+      cv = CooldownVersion.where.not(versions_byte: nil).order(:versions_byte).last
       cv_line = cv && Server.versions_until(cv.versions_byte).lines.last
       # jump to our last known version if it's still good
       if cv_line && cv_line.starts_with?(cv.name) && cv_line.include?(cv.version) && cv_line.ends_with?("\n")

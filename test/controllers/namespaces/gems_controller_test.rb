@@ -70,6 +70,49 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     assert_equal users.owner, first.created_by
   end
 
+  test "push platform" do
+    package = file_fixture "peak/peak-0.1.0-arm-linux.gem"
+
+    assert_increments gems.peak.versions do
+      post namespace_gem_push_url(namespace:), env: { "RAW_POST_DATA" => package.binread, authorization: "Bearer #{token}" }
+    end
+    assert_response :success
+    refute_empty response.body, "bundler throws an exception in case there's no text in the response"
+    assert_match "peak-0.1.0-arm-linux.gem uploaded 🎉", response.body
+
+    version = versions.by gems.peak, ref: "0.1.0-arm-linux"
+    assert_equal users.plain, version.created_by
+
+    assert_equal "peak-0.1.0-arm-linux", version.name
+    assert_equal ">= 4.0", version.ruby
+    assert_equal ">= 2.7", version.rubygems
+    assert_equal ["peak"], version.executables
+    assert version.has_extensions?
+    assert_equal ["MIT"], version.licenses
+    assert_equal Peak::Platform.find_by(key: "arm-linux"), version.platform
+    assert_equal "oaken:>= 0.9&~> 1.0.1", version.references.line
+
+    assert_equal({
+      homepage: "https://github.com/gem-coop/peak",
+      documentation: "https://github.com/gem-coop/peak",
+      source_code: "https://github.com/gem-coop/peak",
+      changelog: "https://github.com/gem-coop/peak/blob/main/CHANGELOG.md",
+      bug_tracker: "https://github.com/gem-coop/peak/issues",
+      mailing_list: "https://github.com/gem-coop/peak",
+      somewhere_custom: "https://github.com/gem-coop/peak"
+    }, version.links.pluck(:key, :value).to_h.symbolize_keys)
+
+    assert_equal Date.current, version.published_at.to_date
+    assert_equal "b1cadb8af8aff43b9acc0cce4abf94a334150c8049099c067ff9b60f95fd6abd", version.checksum
+
+    assert version.package.attached?
+    assert_equal package.binread, version.package.download
+
+    first = versions.by gems.peak, ref: "0.1.0"
+    assert_equal first.references.line, version.references.line
+    assert_equal users.owner, first.created_by
+  end
+
   test "push with invalid API key" do
     package = file_fixture "peak/peak-0.2.0.gem"
 

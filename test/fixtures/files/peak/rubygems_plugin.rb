@@ -21,8 +21,9 @@ class Gem::Commands::CoopCommand < Gem::Command
     ENV.fetch("GEM_HOST_API_KEY") { say "Prefix command with your GEM_HOST_API_KEY= to push gems"; exit 1 }
 
     case subcommand
+    when "release-dev" then release_dev
     when "release" then release
-    when "push"    then push(package_path: @args.first)
+    when "push" then push(package_path: @args.first)
     else
       raise ArgumentError, "unknown subcommand"
     end
@@ -31,10 +32,33 @@ class Gem::Commands::CoopCommand < Gem::Command
   private
     attr_reader :subcommand, :namespace, :args
 
+    def release_dev
+      require "fileutils"
+      require "rubygems/specification"
+      require "rubygems/commands/build_command"
+
+      @namespace += "/dev"
+
+      build = Gem::Commands::BuildCommand.new
+      path = args.first && build.find_gemspec(args.first) || build.find_gemspec
+
+      spec = Gem::Specification.load path
+      sha = `git rev-parse --short head`.chomp
+      date = Time.now.strftime("%Y.%m.%d")
+      spec.version = version = "#{spec.version}.#{sha}.#{date}"
+
+      FileUtils.mkdir_p "pkg"
+      build_path = "pkg/#{spec.name}-#{version}.gemspec"
+      File.binwrite build_path, spec.to_ruby
+
+      package_path = build.invoke build_path, *args # Haven't figured out how to get options[:build_path] to trigger so we Dir.chdir internally.
+      push(package_path:)
+    end
+
     def release
       require "rubygems/commands/build_command"
-      builder = Gem::Commands::BuildCommand.new
-      package_path = builder.invoke *args # Haven't figured out how to get options[:build_path] to trigger so we Dir.chdir internally.
+      build = Gem::Commands::BuildCommand.new
+      package_path = build.invoke *args # Haven't figured out how to get options[:build_path] to trigger so we Dir.chdir internally.
 
       push(package_path:)
     end

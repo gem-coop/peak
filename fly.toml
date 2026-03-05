@@ -13,6 +13,7 @@ release_command = 'bin/rails db:prepare'
 
 [env]
 WEB_CONCURRENCY = 'auto' # one process per CPU core
+RAILS_MAX_THREADS = "15"
 
 [processes]
 app = 'bin/rails server'
@@ -40,9 +41,9 @@ tls_skip_verify = false
 X-Forwarded-Proto = 'https'
 
 [[vm]]
-cpu_kind = 'shared'
-cpus = 4
-memory = '1024mb'
+cpu_kind = 'performance'
+cpus = 1
+memory = '2048mb'
 
 [[statics]]
 guest_path = '/rails/public'

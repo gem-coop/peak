@@ -11,6 +11,6 @@
 :scheduler:
   :schedule:
     CooldownVersionImportJob:
-      every: 50 minutes
+      cron: "0,20,40 * * * *"
     ClearExpiredPushKeysJob:
-      every: 1 hour
+      cron: "6 * * * *"

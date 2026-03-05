@@ -140,7 +140,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_03_091024) do
     t.string "summary", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_namespace_gem_versions_on_created_by_id"
-    t.index ["gem_id", "ref"], name: "index_namepace_gem_versions_uniqueness", unique: true
+    t.index ["gem_id", "platform_id", "ref"], name: "index_namepace_gem_versions_uniqueness", unique: true
     t.index ["gem_id"], name: "index_namespace_gem_versions_on_gem_id"
     t.index ["platform_id"], name: "index_namespace_gem_versions_on_platform_id"
   end

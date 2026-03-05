@@ -1,5 +1,6 @@
-<% source_url = polymorphic_url @index.namespace %>
+<% page.title = @index.namespace.name %>
 
+<% source_url = polymorphic_url @index.namespace %>
 <%= render "clippy", source_url: %>
 
 <section>

@@ -13,10 +13,10 @@ class CooldownVersion < ApplicationRecord
     versions_byte = 0
 
     # make sure we won't look past the end of the current file, even if these jobs aren't all done
-    CooldownVersion.where("versions_byte >= ?", Server.versions.size).update_all(versions_byte: nil)
+    CooldownVersion.where("versions_byte > ?", Server.versions.size).update_all(versions_byte: nil)
 
     unless force_all
-      cv = CooldownVersion.order(:versions_byte).last
+      cv = CooldownVersion.where.not(versions_byte: nil).order(:versions_byte).last
       cv_line = cv && Server.versions_until(cv.versions_byte).lines.last
       # jump to our last known version if it's still good
       if cv_line && cv_line.starts_with?(cv.name) && cv_line.include?(cv.version) && cv_line.ends_with?("\n")
@@ -65,23 +65,31 @@ class CooldownVersion < ApplicationRecord
 
     return if cvs.empty?
 
-    versions = Server.versions_json(name)
-    cvs.each do |cv|
-      v = versions.find do |v|
-        full_v = [v["number"]]
-        full_v << v["platform"] unless v["platform"] == "ruby"
-        cv[:version] == full_v.join("-")
-      end
+    # Try to get published_at from our own database before we make an API call
+    db_versions = self.where(name:).where.not(published_at: nil).pluck(:version, :published_at).to_h
+    cvs.each { |cv| cv[:published_at] = db_versions[cv[:version]] }
 
-      if v
-        cv[:published_at] = v["created_at"]
-      else
-        # We can't get the exact yanked_at from any API call, since yanked gems
-        # are not included in API responses. This should be good enough for our
-        # purposes, since yanked gems will not be included in future query
-        # results.
-        cv[:yanked_at] = Time.now
+    # If that didn't work, get the times from an API call
+    if cvs.any? { |cv| cv[:published_at].nil? }
+      versions = Server.versions_json(name)
+      cvs.each do |cv|
+        v = versions.find do |v|
+          full_v = [v["number"]]
+          full_v << v["platform"] unless v["platform"] == "ruby"
+          cv[:version] == full_v.join("-")
+        end
+
+        v && cv[:published_at] = v["created_at"]
       end
+    end
+
+    # Anything that still doesn't have a published_at was yanked We can't get
+    # the exact yanked_at from any API call, since yanked gems are not included
+    # in API responses. This should be good enough for our purposes, since
+    # yanked gems will not be included in future query results.
+    cvs.select { |cv| cv[:published_at].nil? }.each do |cv|
+      cv[:published_at] = 1.hour.ago
+      cv[:yanked_at] = Time.now
     end
 
     CooldownVersion.upsert_all(cvs, unique_by: %i[name version])
@@ -97,7 +105,7 @@ class CooldownVersion < ApplicationRecord
       store.fetch(path, expires_in:) do
         HTTPX.plugin(:brotli).get("https://#{path}").tap do |res|
           if res.is_a?(HTTPX::ErrorResponse) || 405 <= res.status
-            raise "Request to #{res.uri} failed with #{res.status} #{res.body}"
+            raise "Request to #{res.uri} failed, got: #{res.inspect}"
           elsif path.ends_with?(".json") && res.status == 404
             raise GemYankedError, path
           end

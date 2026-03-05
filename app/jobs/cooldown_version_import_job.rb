@@ -11,6 +11,6 @@ class CooldownVersionImportJob < ApplicationJob
   end
 
   def import_queue_size
-    @import_queue_size ||= Sidekiq::Stats.new.queues.slice(CooldownVersion::IMPORT_QUEUES).map(&:to_i).sum
+    @import_queue_size ||= Sidekiq::Stats.new.queues.slice(*CooldownVersion::IMPORT_QUEUES).values.sum
   end
 end

@@ -65,23 +65,31 @@ class CooldownVersion < ApplicationRecord
 
     return if cvs.empty?
 
-    versions = Server.versions_json(name)
-    cvs.each do |cv|
-      v = versions.find do |v|
-        full_v = [v["number"]]
-        full_v << v["platform"] unless v["platform"] == "ruby"
-        cv[:version] == full_v.join("-")
-      end
+    # Try to get published_at from our own database before we make an API call
+    db_versions = self.where(name:).where.not(published_at: nil).pluck(:version, :published_at).to_h
+    cvs.each { |cv| cv[:published_at] = db_versions[cv[:version]] }
 
-      if v
-        cv[:published_at] = v["created_at"]
-      else
-        # We can't get the exact yanked_at from any API call, since yanked gems
-        # are not included in API responses. This should be good enough for our
-        # purposes, since yanked gems will not be included in future query
-        # results.
-        cv[:yanked_at] = Time.now
+    # If that didn't work, get the times from an API call
+    if cvs.any? { |cv| cv[:published_at].nil? }
+      versions = Server.versions_json(name)
+      cvs.each do |cv|
+        v = versions.find do |v|
+          full_v = [v["number"]]
+          full_v << v["platform"] unless v["platform"] == "ruby"
+          cv[:version] == full_v.join("-")
+        end
+
+        v && cv[:published_at] = v["created_at"]
       end
+    end
+
+    # Anything that still doesn't have a published_at was yanked We can't get
+    # the exact yanked_at from any API call, since yanked gems are not included
+    # in API responses. This should be good enough for our purposes, since
+    # yanked gems will not be included in future query results.
+    cvs.select { |cv| cv[:published_at].nil? }.each do |cv|
+      cv[:published_at] = 1.hour.ago
+      cv[:yanked_at] = Time.now
     end
 
     CooldownVersion.upsert_all(cvs, unique_by: %i[name version])

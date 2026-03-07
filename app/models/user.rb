@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   has_object :email_verification
   before_save { self.email_address_verified_at = nil if email_address_changed? }
+  after_create { Slack.notify "#{name} <#{email_address}> signed up!" }
   validates_uniqueness_of :email_address
 
   def system?

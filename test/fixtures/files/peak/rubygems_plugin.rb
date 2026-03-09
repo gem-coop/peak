@@ -43,9 +43,9 @@ class Gem::Commands::CoopCommand < Gem::Command
       path = args.first && build.find_gemspec(args.first) || build.find_gemspec
 
       spec = Gem::Specification.load path
-      sha = `git rev-parse --short head`.chomp
       date = Time.now.strftime("%Y.%m.%d")
-      spec.version = version = "#{spec.version}.#{sha}.#{date}"
+      sha = `git rev-parse --short head`.chomp
+      spec.version = version = "#{spec.version}.#{date}.#{sha}"
 
       FileUtils.mkdir_p "pkg"
       build_path = "pkg/#{spec.name}-#{version}.gemspec"

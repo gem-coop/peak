@@ -23,7 +23,7 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
     assert_emails 1
     assert mail = ActionMailer::Base.deliveries.last
     assert_equal ["someone@example.com"], mail.to
-    assert_match "user/email_verification/", mail.text_part.body.to_s
+    assert_match "user/email_verifications/", mail.text_part.body.to_s
 
     namespace = Namespace.last
     assert_emails(1) { namespace.approve }

@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => "/sidekiq"
 
   namespace :user do
-    get "/email_verification/:id/", to: "email_verifications#show", as: :email_verification
+    resources :email_verifications, only: %i[new create show]
     resources :push_keys, only: %i[new create]
   end
 

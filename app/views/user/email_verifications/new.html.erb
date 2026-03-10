@@ -1,0 +1,18 @@
+<% if error = flash[:alert] %>
+  <%= tag.h4 tag.i(error), style: "margin-block-end: 5em;" %>
+<% end %>
+
+<%= tag.h1 page.title = "New Email Verification" %>
+
+<p>
+  We'll send you an email that contains a link to verify your email address.
+
+  It expires in 24 hours.
+</p>
+
+<%= form_with url: user_email_verifications_path do |form| %>
+  <%= form.label :email_address, "email address" %>
+  <%= form.text_field :email_address %>
+
+  <%= form.button "Send me a verification email" %>
+<% end %>

@@ -17,3 +17,9 @@ class ActiveSupport::TestCase
     assert_no_difference(positionals.map { _1.method(:count) }, &)
   end
 end
+
+class ActionDispatch::IntegrationTest
+  def sign_in_as(user)
+    get user_session_url(user.magic_link.signed_id)
+  end
+end

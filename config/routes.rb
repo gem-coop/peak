@@ -11,10 +11,17 @@ Rails.application.routes.draw do
   namespace :user do
     resources :email_verifications, only: %i[new create show]
     resources :push_keys, only: %i[new create]
+    resources :sessions, only: %i[show]
   end
 
   get "/sign_up" => "user/sign_ups#new", as: :user_sign_ups
   post "/sign_up" => "user/sign_ups#create"
+
+  get "/sign_in" => "user/sign_ins#new", as: :sign_in
+  post "/sign_in" => "user/sign_ins#create"
+  delete "/sign_out" => "user/sessions#destroy", as: :sign_out
+
+  get "/dashboard" => "dashboard#show", as: :dashboard
 
   scope module: :namespaces, defaults: { namespace: "@public" }, as: :public do
     get "/cooldown/versions" => "cooldown#versions"

@@ -15,6 +15,8 @@ class Namespace::Gem::Version < ApplicationRecord
   scope :for, -> { joins(:gem).where(gem: {name: _1}) }
   scope :system, -> { where(created_by: Peak.system_user) }
 
+  scope :as_byline, -> { select(:ref, :summary, :published_at, :created_by_id).includes(:created_by) }
+
   belongs_to :platform, class_name: "Peak::Platform"
 
   scope :missing_precompiles, -> { has_extensions.joins(:platform).merge(Peak::Platform.precompile_targeted) }

@@ -19,6 +19,8 @@ class Namespace::Gem::Imports < ActiveRecord::AssociatedObject
     delegate :server, :versions, to: :gem
 
     def publishing_ledger
-      @publishing_ledger ||= server.versions_json.to_h { _1.values_at("number", "created_at") }.compact
+      @publishing_ledger ||= server.versions_json.to_h do |json|
+        [json.values_at("number", "platform").join("-").chomp("-ruby"), json["created_at"]]
+      end.compact
     end
 end

@@ -71,7 +71,7 @@
 
   <section>
     <h3 style="margin-block: 0;">versions</h3>
-    <%= render "gem/versions/list", versions: @gem.versions.published_order.select(:ref, :published_at, :created_by_id).includes(:created_by).first(20) %>
+    <%= render "gem/versions/list", versions: @gem.versions.published_order.pure.select(:ref, :published_at, :created_by_id).includes(:created_by).first(20) %>
   </section>
 
   <%= render "gem/sections/usage", name: @gem.name, source_url: %>

@@ -21,7 +21,7 @@ module Authentication extend ActiveSupport::Concern
 
     def resume_session
       if id = session[:user_session_id]
-        Current.session ||= User::Session.find_by(id:)
+        Current.session ||= User::Session.find_by(id:)&.resumed
       end
     end
 

@@ -198,7 +198,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_12_000000) do
 
   create_table "user_sessions", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.string "ip_address"
+    t.string "ip_address", null: false
+    t.datetime "resumed_at", null: false
     t.datetime "updated_at", null: false
     t.string "user_agent"
     t.bigint "user_id", null: false

@@ -3,7 +3,7 @@
 <p>Enter your email address and we'll send you a sign-in link.</p>
 
 <%= form_with url: sign_in_path do |form| %>
-  <%= form.label :email_address %>
+  <%= form.label :email_address, "email address" %>
   <%= form.email_field :email_address, required: true, placeholder: "me@example.com" %>
 
   <%= form.button "Send sign-in link" %>

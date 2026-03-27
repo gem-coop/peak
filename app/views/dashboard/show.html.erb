@@ -9,7 +9,7 @@
     <% Current.user.namespaces.each do |namespace| %>
       <li>
         <% if namespace.approved_at? %>
-          <%= link_to namespace.name, namespace_path(namespace: namespace.name) %>
+          <%= link_to namespace.name, namespace %>
         <% else %>
           <%= namespace.name %> <small>(pending approval)</small>
         <% end %>

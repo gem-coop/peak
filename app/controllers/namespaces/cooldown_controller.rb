@@ -1,4 +1,4 @@
-class Namespaces::CooldownController < ApplicationController
+class Namespaces::CooldownController < Public::BaseController
   def versions
     cv = CooldownVersion.cooled.last
     return no_data unless cv

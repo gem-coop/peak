@@ -1,4 +1,4 @@
-class Namespaces::MirrorController < ApplicationController
+class Namespaces::MirrorController < Public::BaseController
   def versions
     redirect_to "https://gem.coop/versions", allow_other_host: true
   end

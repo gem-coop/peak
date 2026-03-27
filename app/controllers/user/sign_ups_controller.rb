@@ -1,4 +1,4 @@
-class User::SignUpsController < ApplicationController
+class User::SignUpsController < Public::BaseController
   def new
     @sign_up = User::SignUp.new
   end

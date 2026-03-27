@@ -1,4 +1,6 @@
 class User::SessionsController < ApplicationController
+  resume_authenticated only: :destroy
+
   def show
     magic_link = User::MagicLink.find_signed!(params[:id])
     start_new_session_for(magic_link.user)

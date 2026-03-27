@@ -1,13 +1,15 @@
-module Authentication
-  extend ActiveSupport::Concern
-
-  included do
-    before_action :resume_session
-  end
-
+module Authentication extend ActiveSupport::Concern
   class_methods do
-    def require_authentication(**options)
-      before_action :require_authentication, **options
+    def resume_authenticated(**)
+      before_action(:resume_session, **)
+    end
+
+    def require_authentication(**)
+      before_action(:require_authentication, **)
+    end
+
+    def allow_unauthenticated_access(**)
+      skip_before_action(:require_authentication, **)
     end
   end
 

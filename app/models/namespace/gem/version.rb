@@ -19,6 +19,7 @@ class Namespace::Gem::Version < ApplicationRecord
 
   scope :missing_precompiles, -> { has_extensions.joins(:platform).merge(Peak::Platform.precompile_targeted) }
   scope :has_extensions, -> { where(has_extensions: true) }
+  scope :pure, -> { joins(:platform).merge(Peak::Platform.pure) }
 
   def to_param = filename
   def filename = "#{name}.gem"

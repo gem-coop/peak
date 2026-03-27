@@ -1,9 +1,17 @@
 class Peak::Platform < ApplicationRecord
   ARCH = %w[arm arm64 aarch64 x64 x86 x86_64 i386 mswin32 universal]
-  ARCH.each { class_eval "def #{_1}? = arch == '#{_1}'" }
+  ARCH.each do |arch|
+    scope arch, -> { where(arch:) }
+    class_eval "def #{arch}? = arch == '#{arch}'"
+  end
 
   NAMES = %w[ruby java jruby linux darwin mswin32]
-  NAMES.each { class_eval "def #{_1}? = name == '#{_1}'" }
+  NAMES.each do |name|
+    scope name, -> { where(name:) }
+    class_eval "def #{name}? = name == '#{name}'"
+  end
+
+  scope :pure, -> { where(arch: "", specifier: "") }
 
   scope :precompile_targeted, -> { where(precompile_target: true) }
   before_create :set_details, :set_precompile_target

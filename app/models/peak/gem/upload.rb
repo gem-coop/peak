@@ -1,5 +1,3 @@
-require "rubygems/package"
-
 class Peak::Gem::Upload
   def self.read(io, **)
     IO.copy_stream io, tmpfile = Tempfile.new

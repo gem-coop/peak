@@ -25,6 +25,6 @@ end
 
 class ActionDispatch::IntegrationTest
   def sign_in_as(user)
-    get user_session_url(user.magic_link.signed_id)
+    get sign_in_url(user.magic_link.signed_id)
   end
 end

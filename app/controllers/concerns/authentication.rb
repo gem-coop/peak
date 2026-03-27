@@ -17,7 +17,7 @@ module Authentication extend ActiveSupport::Concern
     def require_authentication
       resume_session || redirect_to_sign_in
     end
-    def redirect_to_sign_in = redirect_to(sign_in_url(redirect_url: request.url))
+    def redirect_to_sign_in = redirect_to(new_sign_in_url(redirect_url: request.url))
 
     def resume_session
       if id = session[:user_session_id]

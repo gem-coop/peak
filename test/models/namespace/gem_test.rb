@@ -12,7 +12,7 @@ class Namespace::GemTest < ActiveSupport::TestCase
 
   test "versions.trimmed" do
     gem = gems.oaken
-    versions = gem.versions
+    versions = gem.versions.published_order
     assert_nil gem.trim_versions_published_at
     assert_equal versions, versions.trimmed
 

@@ -8,6 +8,8 @@ class Peak::Platform < ApplicationRecord
   scope :precompile_targeted, -> { where(precompile_target: true) }
   before_create :set_details, :set_precompile_target
 
+  has_many :versions, class_name: "Namespace::Gem::Version"
+
   def self.default = find_or_create_by!(key: "ruby")
 
   def self.ids_from(keys)

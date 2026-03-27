@@ -1,8 +1,8 @@
 class Namespace::Gem::Info < ApplicationRecord
   belongs_to :gem
   # TODO: `trimmed` doesn't carry over from the gem.versions association
-  # has_many :versions, -> { trimmed }, through: :gem
-  def versions = gem.versions.trimmed
+  # has_many :versions, -> { trimmed.published_order }, through: :gem
+  def versions = gem.versions.trimmed.published_order
 
   def rebuild
     io = DigestedIO.new.consume(batched_versions, &:line)

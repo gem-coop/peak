@@ -112,6 +112,10 @@ dl {
 
 dt {
   color: var(--secondary);
+
+  &[data-expanded] ~ dd {
+    display: block;
+  }
 }
 
 dd {

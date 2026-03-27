@@ -1,7 +1,8 @@
 class Current < ActiveSupport::CurrentAttributes
   attribute :session
-  def session? = session.present?
   def user = session&.user
+  def user? = user.present?
+  def session? = session.present?
 
   attribute :uploads, default: []
   before_reset { uploads.each(&:unlink) }

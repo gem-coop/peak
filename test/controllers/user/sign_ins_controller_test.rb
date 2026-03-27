@@ -59,6 +59,6 @@ class User::SignInsControllerTest < ActionDispatch::IntegrationTest
     travel 15.minutes + 1.second
 
     get sign_in_url(signed_id)
-    assert_redirected_to sign_in_url
+    assert_redirected_to new_sign_in_url
   end
 end

@@ -1,3 +1,7 @@
+<% if error = flash[:alert] %>
+  <%= tag.h4 tag.i(error), style: "margin-block-end: 5em;" %>
+<% end %>
+
 <%= tag.h1 page.title = "Sign In" %>
 
 <p>Enter your email address and we'll send you a sign-in link.</p>

@@ -17,7 +17,7 @@ class User::SignInsController < ApplicationController
       start_new_session_for user
       redirect_to attempted_access_url || root_url
     else
-      redirect_to sign_in_url, alert: "That sign-in link is invalid or has expired. Try again."
+      redirect_to new_sign_in_url, alert: "That sign-in link is invalid or has expired. Try again."
     end
   end
 

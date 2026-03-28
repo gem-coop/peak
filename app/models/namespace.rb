@@ -11,7 +11,7 @@ class Namespace < ApplicationRecord
 
   has_one :external_index, -> { external_access }, class_name: "Index"
   before_create :build_external_index
-  after_create { Slack.notify "Namespace #{name} requested" }
+  after_create { Slack.notify_namespace(self) }
 
   # Created & managed by a subscription eventually
   has_one :dev_index, -> { dev_access }, class_name: "Index"

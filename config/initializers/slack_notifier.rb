@@ -20,7 +20,10 @@ Rails.application.config.after_initialize do
       include Rails.application.routes.url_helpers
 
       def namespace(ns)
-        "Namespace #{ns.name} requested\n#{avo.resources_namespace_url(ns)}"
+        msg = "Namespace #{ns.name} requested"
+        if defined?(avo)
+          msg << "\n" << avo.resources_namespace_url(ns)
+        end
       end
     end
   end

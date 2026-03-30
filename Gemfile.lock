@@ -87,7 +87,7 @@ GEM
     addressable (2.8.9)
       public_suffix (>= 2.0.2, < 8.0)
     ast (2.4.3)
-    avo (3.30.4)
+    avo (4.0.0.beta.7)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -96,8 +96,8 @@ GEM
       avo-icons (>= 0.1.1)
       docile
       meta-tags
-      pagy (>= 7.0.0, < 43)
-      prop_initializer (>= 0.3.0)
+      pagy (>= 43.0)
+      prop_initializer (>= 0.2.0)
       turbo-rails (>= 2.0.0)
       turbo_power (>= 0.6.0)
       view_component (>= 3.7.0)
@@ -453,7 +453,10 @@ GEM
     opentelemetry-semantic_conventions (1.36.0)
       opentelemetry-api (~> 1.0)
     ostruct (0.6.3)
-    pagy (9.4.0)
+    pagy (43.4.4)
+      json
+      uri
+      yaml
     parallel (1.27.0)
     parser (3.3.11.1)
       ast (~> 2.4.1)
@@ -632,34 +635,43 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
+    yaml (0.4.0)
     zeitwerk (2.7.5)
 
 GEM
   remote: https://packager.dev/avo-hq/
   specs:
-    avo-advanced (3.30.4)
-      avo (= 3.30.4)
-      avo-dynamic_filters (= 3.30.4)
-      avo-pro (= 3.30.4)
+    avo-advanced (4.0.0.beta.7)
+      avo (= 4.0.0.beta.7)
+      avo-dynamic_filters (= 4.0.0.beta.7)
+      avo-licensing (= 4.0.0.beta.6)
+      avo-pro (= 4.0.0.beta.7)
       zeitwerk (>= 2.6.12)
-    avo-dashboards (3.30.4)
-      avo (= 3.30.4)
+    avo-dashboards (4.0.0.beta.7)
+      avo (= 4.0.0.beta.7)
+      avo-licensing (= 4.0.0.beta.6)
       turbo-rails
       view_component (>= 3.7.0)
       zeitwerk (>= 2.6.12)
-    avo-dynamic_filters (3.30.4)
-      avo (= 3.30.4)
+    avo-dynamic_filters (4.0.0.beta.7)
+      avo (= 4.0.0.beta.7)
+      avo-licensing (= 4.0.0.beta.6)
       ransack (>= 4.2.0)
       view_component (>= 3.7.0)
       zeitwerk (>= 2.6.12)
-    avo-menu (3.30.4)
-      avo (= 3.30.4)
+    avo-licensing (4.0.0.beta.6)
+      avo (>= 4.0.0.beta.6)
+      zeitwerk (>= 2.6.12)
+    avo-menu (4.0.0.beta.7)
+      avo (= 4.0.0.beta.7)
+      avo-licensing (= 4.0.0.beta.6)
       docile
       zeitwerk (>= 2.6.12)
-    avo-pro (3.30.4)
-      avo (= 3.30.4)
-      avo-dashboards (= 3.30.4)
-      avo-menu (= 3.30.4)
+    avo-pro (4.0.0.beta.7)
+      avo (= 4.0.0.beta.7)
+      avo-dashboards (= 4.0.0.beta.7)
+      avo-licensing (= 4.0.0.beta.6)
+      avo-menu (= 4.0.0.beta.7)
       zeitwerk (>= 2.6.12)
 
 PLATFORMS
@@ -677,7 +689,7 @@ DEPENDENCIES
   active_job-performs
   active_record-associated_object
   avo
-  avo-advanced (>= 3.2.0)!
+  avo-advanced (>= 4.0.0.beta)!
   aws-sdk-s3 (~> 1.217)
   bootsnap
   brakeman
@@ -730,13 +742,14 @@ CHECKSUMS
   activesupport (8.1.3) sha256=21a5e0dfbd4c3ddd9e1317ec6a4d782fa226e7867dc70b0743acda81a1dca20e
   addressable (2.8.9) sha256=cc154fcbe689711808a43601dee7b980238ce54368d23e127421753e46895485
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
-  avo (3.30.4) sha256=c7cf11860eb9fc3fad0f1ab96a432d607451fe0854c090539c4e90d6cb6935b5
-  avo-advanced (3.30.4) sha256=d4ac85ebffec7528cd2b2104b5a90260c90a8cb1e4c994bc4666ff5b9c24d678
-  avo-dashboards (3.30.4) sha256=2a90f61e3b409e6b4d4f150af15c89843760e6a9d1d6d89d549e37c35e378fb8
-  avo-dynamic_filters (3.30.4) sha256=d35d2d44d3fe26b1f6a6678c23210ce7d452dea4ece456457f3923e02259b3d2
+  avo (4.0.0.beta.7) sha256=319aed34f0bdddf82a09c19edd8bda84c579e3a3adeaef24df6dfe01ef67c50c
+  avo-advanced (4.0.0.beta.7) sha256=d99f338c0e78178a741efdb9b40bc9f6e24ce5ed54b938273398c4c5a280dc92
+  avo-dashboards (4.0.0.beta.7) sha256=a6441a905f5e4fdf8ffab0be3c66080b6e6e70e79f277b608cf0b1dfcb197505
+  avo-dynamic_filters (4.0.0.beta.7) sha256=205cc66a8911b030e2b13efa943519b06d825cadd00bf6469b21d7973619c30a
   avo-icons (0.1.2) sha256=6dfa1f9d9b3bee6020089684805ec1c26ab13ac886540324a242856d371ea01a
-  avo-menu (3.30.4) sha256=0f3d172a9552932f525fd0ecc25c8712679703994a1ca895cb4ebbd3c713d37b
-  avo-pro (3.30.4) sha256=89244bd231140cdfffae6c9d91831eb213b19cb3173b8e27b1feba0e693168ea
+  avo-licensing (4.0.0.beta.6) sha256=6e64772ba5cdaf7619e1f3186c6676b6594717aeb99f30035c0eff15236f99a5
+  avo-menu (4.0.0.beta.7) sha256=b04012210d3d69777a1534d753ee76b425d8bca9bd31eeab5ddd4d7598b7c49e
+  avo-pro (4.0.0.beta.7) sha256=50b5d036a97db52a2a9bdf73fd26887752363da340365ef86bbffbefd79b2c65
   aws-eventstream (1.4.0) sha256=116bf85c436200d1060811e6f5d2d40c88f65448f2125bc77ffce5121e6e183b
   aws-partitions (1.1231.0) sha256=5142ba78d5226deb5dff6c8d17dfc52b0bcec3451d47fcb70fbe8b744b85d004
   aws-sdk-core (3.244.0) sha256=3e458c078b0c5bdee95bc370c3a483374b3224cf730c1f9f0faf849a5d9a18ea
@@ -878,7 +891,7 @@ CHECKSUMS
   opentelemetry-sdk (1.10.0) sha256=43719949be8df24dcaeb86ebbf75636cda87d51a01af2729499b92a48b80521a
   opentelemetry-semantic_conventions (1.36.0) sha256=c1b1607dbc7853aac7f9e23f6e8b76969c45b07f2b812a4aa4383c19a3b0f617
   ostruct (0.6.3) sha256=95a2ed4a4bd1d190784e666b47b2d3f078e4a9efda2fccf18f84ddc6538ed912
-  pagy (9.4.0) sha256=db3f2e043f684155f18f78be62a81e8d033e39b9f97b1e1a8d12ad38d7bce738
+  pagy (43.4.4) sha256=b41a57328a0aabfd222266a89e9de3dc3a735c17bd57f8113829c95fece5bef6
   parallel (1.27.0) sha256=4ac151e1806b755fb4e2dc2332cbf0e54f2e24ba821ff2d3dcf86bf6dc4ae130
   parser (3.3.11.1) sha256=d17ace7aabe3e72c3cc94043714be27cc6f852f104d81aa284c2281aecc65d54
   pg (1.6.3) sha256=1388d0563e13d2758c1089e35e973a3249e955c659592d10e5b77c468f628a99
@@ -950,6 +963,7 @@ CHECKSUMS
   websocket-driver (0.8.0) sha256=ed0dba4b943c22f17f9a734817e808bc84cdce6a7e22045f5315aa57676d4962
   websocket-extensions (0.1.5) sha256=1c6ba63092cda343eb53fc657110c71c754c56484aad42578495227d717a8241
   xpath (3.2.0) sha256=6dfda79d91bb3b949b947ecc5919f042ef2f399b904013eb3ef6d20dd3a4082e
+  yaml (0.4.0) sha256=240e69d1e6ce3584d6085978719a0faa6218ae426e034d8f9b02fb54d3471942
   zeitwerk (2.7.5) sha256=d8da92128c09ea6ec62c949011b00ed4a20242b255293dd66bf41545398f73dd
 
 RUBY VERSION

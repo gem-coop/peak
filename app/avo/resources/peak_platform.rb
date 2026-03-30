@@ -9,8 +9,8 @@ class Avo::Resources::PeakPlatform < Avo::BaseResource
   def fields
     field :id, as: :id
     field :key, as: :text
-    field :arch, as: :text
-    field :name, as: :text
-    field :specifier, as: :text
+    field :arch, as: :text, hide_on: :new
+    field :name, as: :text, hide_on: :new
+    field :specifier, as: :text, hide_on: :new
   end
 end

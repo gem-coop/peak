@@ -1,0 +1,7 @@
+<% return unless Peak::Terms.acceptance_for(Current.user)&.pending? %>
+
+<article>
+  You need to accept our current terms of service.
+
+  <%= link_to "Click to read and accept", new_terms_acceptances_path %>.
+</article>

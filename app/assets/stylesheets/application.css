@@ -156,7 +156,7 @@ form {
     padding: .5rem .25rem;
   }
 
-  & input {
+  & input:not([type="checkbox"]) {
     appearance: none;
     background: inherit;
     font-size: inherit;

@@ -7,7 +7,7 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
   # inflect.plural /^(ox)$/i, "\\1en"
   # inflect.singular /^(ox)en/i, "\\1"
   inflect.irregular "index", "indexes"
-  inflect.uncountable %w[ metadata ]
+  inflect.uncountable %w[ metadata terms ]
 end
 
 # These inflection rules are supported but not enabled by default:

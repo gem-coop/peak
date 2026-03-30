@@ -57,7 +57,7 @@ end
 # Use Avo for our starting UI
 group :avo, optional: true do
   gem "avo"
-  gem "avo-advanced", ">= 3.2.0", source: "https://packager.dev/avo-hq/"
+  gem "avo-advanced", ">= 4.0.0.beta", source: "https://packager.dev/avo-hq/"
 end
 
 # Use next-gen Rails extensions

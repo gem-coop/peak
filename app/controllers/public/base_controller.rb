@@ -1,4 +1,6 @@
 class Public::BaseController < ActionController::Base
+  layout "application"
+
   private
     def set_routed_index(from: Namespace)
       return head :not_found if params[:index] == "private" # TODO: Figure out routing to the /private index.

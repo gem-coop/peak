@@ -8,7 +8,7 @@
     <%= link_to @gem.namespace.name, @gem.namespace %>/<%= tag.span @gem.name, style: "padding-inline-start: .5em;" %>
   </h1>
 
-  <% latest = @gem.versions.first %>
+  <% latest = @gem.versions.published_order.pure.first %>
   <p style="margin-block-start: 0;"><i><%= latest.summary %></i></p>
 
   <section style="display: grid; grid-template-columns: 50% 50%; margin-block-end: 1em;">
@@ -47,8 +47,10 @@
         </div>
 
         <div>
-          <dt>platforms</dt>
-          <dd>ruby <%#= @gem.versions.distinct.includes(:platform).pluck(platform: :name).join(" ") %></dd>
+          <dt data-expanded>platforms</dt>
+          <% @gem.platforms.pluck(:key).sort.each do |key| %>
+            <dd style="margin-block-end: 0;"><%= key %></dd>
+          <% end %>
         </div>
       </dl>
     </section>
@@ -69,7 +71,12 @@
 
   <section>
     <h3 style="margin-block: 0;">versions</h3>
-    <%= render "gem/versions/list", versions: @gem.versions.select(:ref, :published_at, :created_by_id).includes(:created_by).first(20) %>
+
+    <%= render "gem/versions/list", versions: @gem.versions.published_order.pure.as_byline.first(20) %>
+
+    <div>
+      <%= link_to tag.i("See raw versions list →"), namespace_info_path(@index.namespace, @gem) %>
+    </div>
   </section>
 
   <%= render "gem/sections/usage", name: @gem.name, source_url: %>

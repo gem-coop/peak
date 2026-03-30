@@ -11,25 +11,8 @@ env:
   BUNDLE_PACKAGER__DEV: ${{ secrets.BUNDLE_PACKAGER__DEV }}
 
 jobs:
-  gems:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Set up Ruby
-        uses: spinel-coop/setup-rv@main
-        with:
-          ruby-version: current
-          install-gems: true
-      # - name: Set up Ruby
-      #   uses: ruby/setup-ruby@v1
-      #   with:
-      #     bundler-cache: true
-
   scan:
     runs-on: ubuntu-latest
-    needs: [gems]
 
     steps:
       - name: Checkout code
@@ -53,7 +36,6 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-    needs: [gems]
     env:
       RUBOCOP_CACHE_ROOT: tmp/rubocop
     steps:
@@ -85,7 +67,6 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    needs: [gems]
     env:
       RAILS_ENV: test
 

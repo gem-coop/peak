@@ -75,7 +75,9 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Start database
-        run: docker compose up -d db &
+        run: |
+          docker compose up -d db > /dev/null 2>&1 &
+          disown
 
       - name: Set up Ruby
         uses: spinel-coop/setup-rv@main

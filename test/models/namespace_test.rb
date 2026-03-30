@@ -14,6 +14,10 @@ class NamespaceTest < ActiveSupport::TestCase
 
     assert namespaces.build(name: "@org-rb").valid?
     assert namespaces.build(name: "@org3").valid?
+
+    third = namespaces.build(name: "org3")
+    assert_equal "@org3", third.name
+    assert third.valid?
   end
 
   private

@@ -18,8 +18,8 @@ class Namespace < ApplicationRecord
   has_one :private_index, -> { private_access }, class_name: "Index"
 
   class_attribute :name_pattern, default: /@[a-z0-9-]+/ # For embedding in HTML5 input patterns.
-  validates_format_of :name, with: /\A#{name_pattern}\z/
-  validates_uniqueness_of :name
+  normalizes :name, with: -> { _1.start_with?("@") ? _1 : "@#{_1}" }
+  validates :name, format: /\A#{name_pattern}\z/, uniqueness: true
 
   def self.named(name) = find_by!(name:)
   def to_param = name

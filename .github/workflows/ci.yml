@@ -74,6 +74,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
+      - name: Start database
+        run: |
+          docker compose up -d db > /dev/null 2>&1 &
+          disown
+
       - name: Set up Ruby
         uses: spinel-coop/setup-rv@main
         with:
@@ -87,15 +92,15 @@ jobs:
       - name: Configure database
         run: cp config/database.ci.yml config/database.yml
 
-      - name: Start database
-        run: docker compose up -d --wait db
-
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.3.5
 
       - name: Run bun
         run: bun run build
+
+      - name: Ensure DB is up
+        run: docker compose up -d --wait db
 
       - name: Run tests
         run: bin/rails db:test:prepare test

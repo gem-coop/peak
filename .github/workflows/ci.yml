@@ -75,7 +75,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Start database
-        run: docker compose up -d db
+        run: docker compose up -d db &
 
       - name: Set up Ruby
         uses: spinel-coop/setup-rv@main
@@ -99,6 +99,7 @@ jobs:
 
       - name: Ensure DB is up
         run: docker compose up -d --wait db
+
       - name: Run tests
         run: bin/rails db:test:prepare test
         # env:

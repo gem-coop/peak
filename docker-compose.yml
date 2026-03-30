@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:16
+    image: postgres:16-alpine
     environment:
       POSTGRES_USER: peak
       POSTGRES_HOST_AUTH_METHOD: trust

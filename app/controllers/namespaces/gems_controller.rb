@@ -1,4 +1,4 @@
-class Namespaces::GemsController < ApplicationController
+class Namespaces::GemsController < Public::BaseController
   skip_forgery_protection only: :create
   before_action :authenticate_index_by_user_push_key, only: :create
 

@@ -1,4 +1,4 @@
-class Namespaces::IndexController < ApplicationController
+class Namespaces::IndexController < Public::BaseController
   before_action :set_routed_index
 
   def index

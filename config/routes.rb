@@ -16,6 +16,11 @@ Rails.application.routes.draw do
   get "/sign_up" => "user/sign_ups#new", as: :user_sign_ups
   post "/sign_up" => "user/sign_ups#create"
 
+  resources :sign_in, controller: "user/sign_ins", only: %i[new create show]
+  delete "/sign_out" => "user/sessions#destroy", as: :sign_out
+
+  get "/dashboard" => "dashboard#show", as: :dashboard
+
   scope module: :namespaces, defaults: { namespace: "@public" }, as: :public do
     get "/cooldown/versions" => "cooldown#versions"
     get "/cooldown/info/:name" => "cooldown#info"

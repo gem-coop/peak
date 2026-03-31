@@ -1,8 +1,8 @@
 class Namespace < ApplicationRecord
-  has_many :accesses
+  has_many :accesses, dependent: :destroy
   has_many :users, through: :accesses
 
-  has_many :indexes
+  has_many :indexes, dependent: :destroy
   has_many :gems, through: :indexes
   has_many :versions, class_name: "Gem::Version", through: :gems
 

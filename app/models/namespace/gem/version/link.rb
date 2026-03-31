@@ -1,5 +1,5 @@
 class Namespace::Gem::Version::Link < ApplicationRecord
-  has_many :linkings
+  has_many :linkings, dependent: :destroy
   has_many :versions, through: :linkings
 
   def self.ids_from(links)

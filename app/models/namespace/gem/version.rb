@@ -2,10 +2,10 @@ class Namespace::Gem::Version < ApplicationRecord
   belongs_to :gem
   belongs_to :created_by, class_name: "User"
 
-  has_many :linkings
+  has_many :linkings, dependent: :destroy
   has_many :links, through: :linkings
 
-  has_many :nodes
+  has_many :nodes, dependent: :destroy
   has_many :references, through: :nodes
   has_many :referrants, -> { where(ref: _1.ref) }, through: :gem, foreign_key: :ref, primary_key: :ref
 

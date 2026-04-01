@@ -3,43 +3,15 @@
     {
       "warning_type": "Dangerous Eval",
       "warning_code": 13,
-      "fingerprint": "b76a509be77c0cf916a5e82f4e7a01dcee119d5d249fe42c0e32bfe96f66a24b",
+      "fingerprint": "8e05e13ceddaf5b877cfb80f7de29dd68712ca90ced65ef856511c9443c74d0c",
       "check_name": "Evaluation",
       "message": "Dynamic string evaluated as code",
-      "file": "app/models/peak/platform.rb",
-      "line": 6,
+      "file": "config/initializers/active_record-associated_object.rb",
+      "line": 4,
       "link": "https://brakemanscanner.org/docs/warning_types/dangerous_eval/",
-      "code": "class_eval(\"def #{_1}? = name == '#{_1}'\")",
+      "code": "class_eval(\"class Mailer < ApplicationMailer\\n  helper_method def #{attribute_name} = params.fetch(:#{attribute_name})\\n  helper_method delegate :#{record.model_name.element}, to: :#{attribute_name}\\nend\\n\")",
       "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Peak::Platform",
-        "method": null
-      },
-      "user_input": null,
-      "confidence": "Weak",
-      "cwe_id": [
-        913,
-        95
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "Dangerous Eval",
-      "warning_code": 13,
-      "fingerprint": "bfccf5200469d8c77f8599638dcb0e8debe19ce9dff19a348d529d2cf2e8bcf3",
-      "check_name": "Evaluation",
-      "message": "Dynamic string evaluated as code",
-      "file": "app/models/peak/platform.rb",
-      "line": 3,
-      "link": "https://brakemanscanner.org/docs/warning_types/dangerous_eval/",
-      "code": "class_eval(\"def #{_1}? = arch == '#{_1}'\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Peak::Platform",
-        "method": null
-      },
+      "location": null,
       "user_input": null,
       "confidence": "Weak",
       "cwe_id": [
@@ -49,5 +21,5 @@
       "note": ""
     }
   ],
-  "brakeman_version": "8.0.2"
+  "brakeman_version": "8.0.4"
 }

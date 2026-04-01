@@ -5,6 +5,9 @@ Oaken::Stored::ActiveRecord.include loader.context
 def fixture_upload(filename) = Peak::Gem::Upload.read(fixture_file(filename))
 def fixture_file(filename)   = Rails.root.join("test/fixtures/files").join(filename)
 
+register Peak::Terms, as: :terms
+terms.proxy *Peak::Terms.statuses.keys
+
 register Namespace::Access, as: :accesses
 register Namespace::Gem, as: :gems
 register Namespace::Gem::Version, as: :versions

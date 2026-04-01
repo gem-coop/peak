@@ -1,0 +1,20 @@
+<%= tag.h3 page.title = "Accept Terms of Service" %>
+
+<% if error = flash[:alert] %>
+  <%= tag.h4 tag.i(error), style: "margin-block-end: 5em;" %>
+<% end %>
+
+<%= simple_format @terms.content %>
+
+<footer style="display: flex; justify-content: flex-end;">
+  <%= form_with url: terms_acceptances_path(@terms), scope: :acceptance do |form| %>
+    <%= form.hidden_field :time_zone, value: "" %>
+    <script>document.getElementById("acceptance_time_zone").value = Intl.DateTimeFormat().resolvedOptions().timeZone;</script>
+
+    <%= form.label :accepted do %>
+      <i><%= form.checkbox :accepted %> I accept these terms</i>
+    <% end %>
+
+    <%= form.button "Submit" %>
+  <% end %>
+</footer>

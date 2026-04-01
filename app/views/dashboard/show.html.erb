@@ -2,6 +2,8 @@
 
 <p>Hi, <%= Current.user.name %>!</p>
 
+<%= tag.i render "peak/terms/acceptances/new/banner" %>
+
 <h2>Your namespaces</h2>
 
 <% if Current.user.namespaces.any? %>

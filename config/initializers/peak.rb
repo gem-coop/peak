@@ -1,6 +1,10 @@
 module Peak extend self
   def table_name_prefix = "peak_"
 
+  Release = Data.define(:sha)
+  sha = ENV.fetch("GIT_SHA") { `git rev-parse HEAD`.chomp }
+  mattr_reader :release, default: Release.new(sha:)
+
   def system_user
     @system_user ||= User.create_with(name: "gem.coop system").find_or_create_by!(email_address: "support@gem.coop")
   end

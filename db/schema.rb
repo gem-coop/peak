@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_12_000000) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_30_154148) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -185,6 +185,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_12_000000) do
     t.string "specifier", null: false
     t.datetime "updated_at", null: false
     t.index ["key"], name: "peak_platforms_uniqueness", unique: true
+  end
+
+  create_table "peak_terms", force: :cascade do |t|
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.string "status", default: "drafted", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "peak_terms_acceptances", force: :cascade do |t|
+    t.boolean "accepted", default: false, null: false
+    t.datetime "captured_at", null: false
+    t.datetime "created_at", null: false
+    t.string "sha", null: false
+    t.bigint "terms_id", null: false
+    t.string "time_zone", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["terms_id"], name: "index_peak_terms_acceptances_on_terms_id"
+    t.index ["user_id"], name: "index_peak_terms_acceptances_on_user_id"
   end
 
   create_table "user_push_keys", force: :cascade do |t|

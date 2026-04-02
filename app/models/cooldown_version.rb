@@ -17,11 +17,10 @@ class CooldownVersion < ApplicationRecord
     CooldownVersion.update_all(versions_byte: nil) if lv.versions_byte > versions.size
 
     unless force_all
-      cv = CooldownVersion.where.not(versions_byte: nil).order(:versions_byte).last
-      cv_line = cv && Server.versions_until(cv.versions_byte).lines.last
+      lv_line = lv && Server.versions_until(lv.versions_byte).lines.last
       # jump to our last known version if it's still good
-      if cv_line && cv_line.starts_with?(cv.name) && cv_line.include?(cv.version) && cv_line.ends_with?("\n")
-        versions_byte = cv.versions_byte
+      if lv_line && lv_line.starts_with?(lv.name) && lv_line.include?(lv.version) && lv_line.ends_with?("\n")
+        versions_byte = lv.versions_byte
       end
     end
 

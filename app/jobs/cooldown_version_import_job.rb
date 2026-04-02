@@ -6,6 +6,10 @@ class CooldownVersionImportJob < ApplicationJob
       return Rails.logger.info "Import queue of #{import_queue_size} is not empty, skipping new import."
     end
 
+    # Write the latest versions into our cooled-down versions file
+    CooldownVersion.update_versions
+
+    # Import any new versions so they will be ready for the file next time this job runs
     count = CooldownVersion.import
     Rails.logger.info "Finished importing, and queued #{count} jobs"
     nil

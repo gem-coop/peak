@@ -2,8 +2,9 @@ class CooldownVersionImportJob < ApplicationJob
   queue_as :default
 
   def perform
-    Rails.logger.info "Import queue of #{import_queue_size} is not empty, skipping new import."
-    return if import_queue_size > 0
+    if import_queue_size > 0
+      return Rails.logger.info "Import queue of #{import_queue_size} is not empty, skipping new import."
+    end
 
     count = CooldownVersion.import
     Rails.logger.info "Finished importing, and queued #{count} jobs"

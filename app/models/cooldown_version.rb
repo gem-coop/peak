@@ -4,8 +4,8 @@ class CooldownVersion < ApplicationRecord
 
   IMPORT_QUEUES = %w[import_1 import_2 import_3 import_4].freeze
 
-  def self.import
-    version_jobs.tap { |jobs| ActiveJob.perform_all_later(jobs) }.count
+  def self.import(force_all: false)
+    version_jobs(force_all:).tap { |jobs| ActiveJob.perform_all_later(jobs) }.count
   end
 
   def self.version_jobs(force_all: false)

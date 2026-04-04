@@ -20,6 +20,19 @@ class NamespaceTest < ActiveSupport::TestCase
     assert third.valid?
   end
 
+  test "slack notice" do
+    Slack.webhook_url = "https://slack.test/webhook"
+
+    webhook = stub_request(:post, "https://slack.test/webhook").
+      with(body: {"payload" => "{\"text\":\"Namespace @slacktest requested\"}"})
+
+    namespaces.build(name: "@slacktest").save!
+
+    assert_requested(webhook)
+  ensure
+    Slack.webhook_url = nil
+  end
+
   private
     def assert_name_clash(name)
       namespaces.create(name:).errors[:name].any?

@@ -34,6 +34,9 @@ Rails.application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
+  config.action_mailer.default_url_options = {
+    host: "www.example.com", protocol: "http"
+  }
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
@@ -50,3 +53,6 @@ Rails.application.configure do
   config.active_job.queue_adapter = :test
   config.cache_store = :memory_store
 end
+
+Rails.application.routes.default_url_options = { host: "www.example.com", protocol: "http" }
+Avo::Engine.routes.default_url_options = Rails.application.routes.default_url_options if Peak.avo?

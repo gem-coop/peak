@@ -11,7 +11,7 @@ class Namespace < ApplicationRecord
 
   has_one :external_index, -> { external_access }, class_name: "Index"
   before_create :build_external_index
-  after_create :notify_slack
+  after_create { SlackNotifyNamespaceRequestedJob.perform_later(self) }
 
   # Created & managed by a subscription eventually
   has_one :dev_index, -> { dev_access }, class_name: "Index"
@@ -29,13 +29,5 @@ class Namespace < ApplicationRecord
       update! approved_at: Time.current
       mailer.approved.deliver_later
     end
-  end
-
-  private
-
-  def notify_slack
-    Slack.notify_namespace(self)
-  rescue => e
-    Honeybadger.notify(e)
   end
 end

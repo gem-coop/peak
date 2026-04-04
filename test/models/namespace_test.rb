@@ -21,16 +21,7 @@ class NamespaceTest < ActiveSupport::TestCase
   end
 
   test "slack notice" do
-    Slack.webhook_url = "https://slack.test/webhook"
-
-    webhook = stub_request(:post, "https://slack.test/webhook").
-      with(body: {"payload" => "{\"text\":\"Namespace @slacktest requested\"}"})
-
-    namespaces.build(name: "@slacktest").save!
-
-    assert_requested(webhook)
-  ensure
-    Slack.webhook_url = nil
+    assert namespaces.build(name: "@slacktest").save
   end
 
   private

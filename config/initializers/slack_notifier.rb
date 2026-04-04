@@ -3,29 +3,7 @@ Rails.application.config.after_initialize do
     mattr_accessor :webhook_url
 
     def self.notify(message)
-      notifier&.ping message
-    end
-
-    def self.notify_namespace(ns)
-      notify NoticeWriter.new.namespace(ns)
-    end
-
-    def self.notifier
-      return unless webhook_url
-
-      @notifier ||= Slack::Notifier.new webhook_url
-    end
-
-    class NoticeWriter
-      include Rails.application.routes.url_helpers
-
-      def namespace(ns)
-        "Namespace #{ns.name} requested".tap do |msg|
-          if defined?(avo)
-            msg << "\n" << avo.resources_namespace_url(ns)
-          end
-        end
-      end
+      webhook_url && Slack::Notifier.new(webhook_url).ping(message)
     end
   end
 

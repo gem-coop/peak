@@ -8,3 +8,7 @@ You can pass it to push/release commands, like this:
 
   <%= Peak::Command.gem_push @push_key.token, namespace_url(@namespace) %>
   <%= Peak::Command.rake_release @push_key.token, namespace_url(@namespace) %>
+
+You can request a new push key here, we've prefilled your email address:
+
+  <%= new_user_push_key_url(@push_key.user.slice(:email_address)) %>

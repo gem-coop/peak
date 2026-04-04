@@ -1,1 +1,14 @@
-<%= simple_format render(template: "user/push_key/mailer/sign_in", formats: :text) %>
+<p>Here's your push key so you can push gems to any of your namespaces.</p>
+
+<p>It expires in 24 hours and has replaced an existing active key, if any.<p>
+
+<%= tag.code @push_key.token %>
+
+<p>You can pass it to push/release commands, like this:</p>
+
+<pre>
+  <%= tag.code Peak::Command.gem_push @push_key.token, namespace_url(@namespace) %>
+  <%= tag.code Peak::Command.rake_release @push_key.token, namespace_url(@namespace) %>
+</pre>
+
+<p>You can <%= link_to "request a new push key here", new_user_push_key_url(@push_key.user.slice(:email_address)) %>. We've prefilled your email address.<p>

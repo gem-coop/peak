@@ -8,6 +8,12 @@ class User::PushKeysControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "get new prefills email_address" do
+    get new_user_push_key_url, params: { email_address: "prefilled@example.com" }
+    assert_response :success
+    assert_dom "form input[type=email][value=?]", "prefilled@example.com"
+  end
+
   test "post create" do
     post user_push_keys_url, params: { email_address: users.plain.email_address }
     assert_response :success
@@ -20,6 +26,7 @@ class User::PushKeysControllerTest < ActionDispatch::IntegrationTest
       assert_match "Push Key", mail.subject
       assert_match "GEM_HOST_API_KEY", mail.text_part.body.to_s
       assert_match "/@gemcoop", mail.text_part.body.to_s
+      assert_match new_user_push_key_url(users.plain.slice(:email_address)), mail.text_part.body.to_s
     end
   end
 

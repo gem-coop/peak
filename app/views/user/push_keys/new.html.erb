@@ -13,7 +13,7 @@
 
 <%= form_with url: user_push_keys_path do |form| %>
   <%= form.label :email_address %>
-  <%= form.email_field :email_address, placeholder: "me@example.com" %>
+  <%= form.email_field :email_address, placeholder: "me@example.com", value: params[:email_address] %>
 
   <%= form.button "Create push key" %>
 <% end %>

@@ -12,7 +12,7 @@ class Peak::Terms < ApplicationRecord
   def self.latest
     finalized.order(created_at: :desc).first
   end
-  singleton_class.delegate :acceptance_for, to: :latest
+  singleton_class.delegate :acceptance_for, to: :latest, allow_nil: true
 
   def acceptance_for(user)
     acceptances.find_or_initialize_by(user:)

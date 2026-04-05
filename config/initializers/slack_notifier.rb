@@ -21,9 +21,7 @@ Rails.application.config.after_initialize do
 
       def namespace(ns)
         "Namespace #{ns.name} requested".tap do |msg|
-          if defined?(avo)
-            msg << "\n" << avo.resources_namespace_url(ns)
-          end
+          msg << "\n" << avo.resources_namespace_url(ns) if Peak.avo?
         end
       end
     end

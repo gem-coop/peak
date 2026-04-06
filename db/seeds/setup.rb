@@ -12,6 +12,7 @@ register Namespace::Access, as: :accesses
 register Namespace::Gem, as: :gems
 register Namespace::Gem::Version, as: :versions
 register Namespace::Gem::Version::Reference, as: :references
+register Namespace::Mirror, as: :mirrors
 
 def users.create(label = nil, unique_by: :email_address, **) = super
 def namespaces.create(label = nil, unique_by: :name, **) = super

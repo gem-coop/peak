@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_30_154148) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_06_015342) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -140,7 +140,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_30_154148) do
     t.string "summary", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_namespace_gem_versions_on_created_by_id"
-    t.index ["gem_id", "platform_id", "ref"], name: "index_namepace_gem_versions_uniqueness", unique: true
+    t.index ["gem_id", "ref"], name: "index_namepace_gem_versions_uniqueness", unique: true
     t.index ["gem_id"], name: "index_namespace_gem_versions_on_gem_id"
     t.index ["platform_id"], name: "index_namespace_gem_versions_on_platform_id"
   end
@@ -165,6 +165,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_30_154148) do
     t.datetime "updated_at", null: false
     t.text "versions_contents", default: "---\n", null: false
     t.index ["namespace_id"], name: "index_namespace_indexes_on_namespace_id"
+  end
+
+  create_table "namespace_mirrors", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "namespace_id", null: false
+    t.datetime "updated_at", null: false
+    t.string "upstream"
+    t.index ["namespace_id"], name: "index_namespace_mirrors_on_namespace_id"
   end
 
   create_table "namespaces", force: :cascade do |t|
@@ -237,4 +245,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_30_154148) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "namespace_mirrors", "namespaces"
 end

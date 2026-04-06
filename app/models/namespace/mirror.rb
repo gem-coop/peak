@@ -78,7 +78,7 @@ class Namespace::Mirror < ApplicationRecord
     gem = Namespace::Gem.create_with(namespace:, created_at:).find_or_create_by!(name:, index:)
     cvs.each { |cv| cv[:gem_id] = gem.id }
 
-    Namespace::Gem::Version.upsert_all(cvs)
+    gem.versions.insert_all(cvs, unique_by: %i[gem_id ref])
     gem.info.rebuild
   end
   performs :import_line

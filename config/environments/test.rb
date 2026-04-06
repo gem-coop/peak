@@ -53,6 +53,3 @@ Rails.application.configure do
   config.active_job.queue_adapter = :test
   config.cache_store = :memory_store
 end
-
-Rails.application.routes.default_url_options = { host: "www.example.com", protocol: "http" }
-Avo::Engine.routes.default_url_options = Rails.application.routes.default_url_options if Peak.avo?

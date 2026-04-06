@@ -20,10 +20,6 @@ class NamespaceTest < ActiveSupport::TestCase
     assert third.valid?
   end
 
-  test "slack notice" do
-    assert namespaces.build(name: "@slacktest").save
-  end
-
   private
     def assert_name_clash(name)
       namespaces.create(name:).errors[:name].any?

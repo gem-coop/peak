@@ -32,13 +32,11 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
     assert_equal file_fixture("versions").read, mirrors.public.upstream.versions
     assert_equal file_fixture("info/rake").read, mirrors.public.upstream.info("rake")
 
-    assert_equal 103, public_versions.values.map(&:count).sum
     assert_equal versions_map["rake"], public_versions["rake"]
+    assert_equal 103, public_versions.values.map(&:count).sum
     assert_equal versions_map, public_versions
   end
 
-# test "import versions after new release"
-# test "import versions including a yank"
 # test "import versions after compaction"
 # test "import versions when a yank was hidden by compaction"
 

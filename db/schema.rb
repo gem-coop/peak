@@ -171,7 +171,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_015342) do
     t.datetime "created_at", null: false
     t.bigint "namespace_id", null: false
     t.datetime "updated_at", null: false
-    t.string "upstream"
+    t.string "upstream_url", null: false
     t.index ["namespace_id"], name: "index_namespace_mirrors_on_namespace_id"
   end
 

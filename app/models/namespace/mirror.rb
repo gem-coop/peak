@@ -28,7 +28,7 @@ class Namespace::Mirror < ApplicationRecord
 
     # Handle lines that are just yanks
     if vset.size == 1 && vset.first.starts_with?("-")
-      return gem.versions.find_by(ref: vset.first[1..]).destroy
+      return gem.versions.where(ref: vset.first[1..]).destroy_all
     end
 
     created_by_id = Peak.system_user.id

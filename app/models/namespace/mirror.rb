@@ -7,7 +7,7 @@ class Namespace::Mirror < ApplicationRecord
   end
 
   def import
-    upstream.versions.lines[100..200].each do |line|
+    upstream.versions.lines.each do |line|
       next if line.match(/^created_at:|^---/)
       if Sidekiq.server?
         import_line_later(line)

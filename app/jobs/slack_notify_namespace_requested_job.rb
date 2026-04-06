@@ -1,7 +1,7 @@
 class SlackNotifyNamespaceRequestedJob < ApplicationJob
   queue_as :default
 
-  include Avo::Engine.routes.url_helpers
+  include Avo::Engine.routes.url_helpers if Peak.avo?
 
   def perform(namespace)
     Slack.notify message_for(namespace)

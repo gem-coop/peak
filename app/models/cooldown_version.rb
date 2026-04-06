@@ -99,7 +99,7 @@ class CooldownVersion < ApplicationRecord
     class GemYankedError < RuntimeError; end
 
     mattr_reader :memory_store, default:
-      ActiveSupport::Cache.lookup_store(:memory_store, compress: true)
+      ActiveSupport::Cache.lookup_store(:memory_store, compress: true, size: 256.megabytes)
 
     def self.cached_get(path, expires_in:, store: self.memory_store)
       store.fetch(path, expires_in:) do

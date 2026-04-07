@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+set -x
+
+KEY=$GEM_HOST_API_KEY
+NAMESPACE=$1
+
+if [ -z "$NAMESPACE" ]; then
+  echo "pass a namespace like @gemcoop as the first argument"
+  exit 1
+fi
+
+if [ -z "$KEY" ]; then
+  echo "generating GEM_HOST_API_KEY for $NAMESPACE"
+  KEY=$(bin/push_key $NAMESPACE)
+fi
+
+GEM_HOST_API_KEY=$KEY gem push test/fixtures/files/peak/peak-0.2.0.gem --host http://peak.test/$NAMESPACE

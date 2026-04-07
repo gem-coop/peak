@@ -67,7 +67,7 @@ gem "peak"
 Then upload our test dependency:
 
 ```sh
-GEM_HOST_API_KEY=$(bin/rails runner 'print User.find_by(name: "Plain").push_key.token') gem push test/fixtures/files/peak/peak-0.2.0.gem --host http://peak.test/@gemcoop
+bin/push @gemcoop test/fixtures/files/peak/peak-0.2.0.gem
 ```
 
 You should be able to run `bundle lock` now.

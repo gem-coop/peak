@@ -1,0 +1,5 @@
+#!/usr/bin/env bin/rails runner
+
+name = ARGV.fetch(0) { puts "pass a namespace @-name"; exit 1 }
+namespace = Namespace.named(name)
+print namespace.accesses.owner.first.user.create_push_key.token

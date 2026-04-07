@@ -47,7 +47,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     assert_equal ["peak"], version.executables
     assert version.has_extensions?
     assert_equal ["MIT"], version.licenses
-    assert_equal "oaken:>= 0.9&~> 1.0.1,second_release_exclusive_ref:= 2.0", version.references.line
+    assert_equal "oaken:>= 0.9&~> 1.0.0,second_release_exclusive_ref:= 2.0", version.references.line
 
     assert_equal({
       homepage: "https://github.com/gem-coop/peak",
@@ -60,7 +60,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     }, version.links.pluck(:key, :value).to_h.symbolize_keys)
 
     assert_equal Date.current, version.published_at.to_date
-    assert_equal "c7feaee3abb5405df19f565955941924a52fe70a8d62232ab27c50c47ad9a3cc", version.checksum
+    assert_equal "c6de6896567dd0fc5d000712cb75d12b4ef6168d1e340b9531523dcad9e50937", version.checksum
 
     assert version.package.attached?
     assert_equal package.binread, version.package.download
@@ -90,7 +90,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     assert version.has_extensions?
     assert_equal ["MIT"], version.licenses
     assert_equal Peak::Platform.find_by(key: "arm-linux"), version.platform
-    assert_equal "oaken:>= 0.9&~> 1.0.1", version.references.line
+    assert_equal "oaken:>= 0.9&~> 1.0.0", version.references.line
 
     assert_equal({
       homepage: "https://github.com/gem-coop/peak",
@@ -103,7 +103,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     }, version.links.pluck(:key, :value).to_h.symbolize_keys)
 
     assert_equal Date.current, version.published_at.to_date
-    assert_equal "b1cadb8af8aff43b9acc0cce4abf94a334150c8049099c067ff9b60f95fd6abd", version.checksum
+    assert_equal "515d221c58bb6d91d5b8e09a76db525db9f2d62cb4d7a39a6d80b602970c350f", version.checksum
 
     assert version.package.attached?
     assert_equal package.binread, version.package.download

@@ -23,7 +23,7 @@ class Namespaces::IndexControllerTest < ActionDispatch::IntegrationTest
   test "get show with dependencies" do
     get namespace_info_url(namespace:, id: gems.peak)
     assert_response :success
-    assert_text "0.1.0 oaken:>= 0.9&~> 1.0.1"
+    assert_text "0.1.0 oaken:>= 0.9&~> 1.0.0"
   end
 
   test "get /dev index" do

@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-set -x
+set -ex
 
 KEY=$GEM_HOST_API_KEY
 NAMESPACE=$1

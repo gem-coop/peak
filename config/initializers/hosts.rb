@@ -9,6 +9,7 @@ Rails.application.configure do
 
   Peak.define_singleton_method(:host) { host }
 
+  Avo::Engine.routes.default_url_options = { host: } if Peak.avo?
   Rails.application.routes.default_url_options = { host: }
   config.action_controller.default_url_options = { host: }
   config.action_mailer.default_url_options = { host: }

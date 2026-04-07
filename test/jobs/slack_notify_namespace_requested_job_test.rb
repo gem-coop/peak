@@ -4,7 +4,7 @@ class SlackNotifyNamespaceRequestedJobTest < ActiveJob::TestCase
   test "it notifies slack" do
     Slack.with webhook_url: "https://slack.test/webhook" do
       text = +"Namespace @slacktest requested"
-      text << "\nhttp://www.example.com/avo/resources/namespaces/@slacktest" if Peak.avo?
+      text << "\nhttp://example.com/avo/resources/namespaces/@slacktest" if Peak.avo?
       webhook = stub_request(:post, Slack.webhook_url).with(body: {"payload" => JSON.dump({text:})})
 
       namespace = Namespace.build(name: "@slacktest")

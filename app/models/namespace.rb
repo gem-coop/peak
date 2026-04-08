@@ -11,8 +11,6 @@ class Namespace < ApplicationRecord
 
   has_one :external_index, -> { external_access }, class_name: "Index", dependent: :destroy
   before_create :build_external_index
-  has_one :cooldown_index, -> { external_access }, class_name: "Index", dependent: :destroy
-  before_create :build_cooldown_index
 
   # Created & managed by a subscription eventually
   has_one :dev_index, -> { dev_access }, class_name: "Index", dependent: :destroy

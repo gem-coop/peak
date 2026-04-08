@@ -1,0 +1,6 @@
+---
+0.1.0 |checksum:0d5247397f29b615e6f7f133301f82f5d3b56d0240d03bc0bd4db218a9e88e27
+0.2.0 bloomer:~> 1.0,pwned:~> 1.2|checksum:e9149c20fa97808fcf99880276d9ffd3e5647b1fb4efc036bccf208722ebb53c
+0.3.0 bloomer:~> 1.0,pwned:~> 1.2|checksum:0cc95f9239a7c401943276aa7fb6da349dfc772cb9dfe53f0203d86c0caad89c
+1.0.0 bloomer:~> 1.0,pwned:~> 2.0|checksum:6239d17d46a882b3719b24fb79c78a34caff89d57ab0f5e546be5b5c882bc7d3
+1.0.1 bloomer:~> 1.0,pwned:~> 2.0|checksum:103b3cc9ee9fb3dd68b88b73778bd17a9bfe7cfe12fc7053c2bf9f06caa2c155

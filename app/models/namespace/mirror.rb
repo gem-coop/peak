@@ -2,10 +2,6 @@ class Namespace::Mirror < ApplicationRecord
   belongs_to :namespace
   has_object :upstream
 
-  def self.import_all_later
-    self.find_each(&:import_later)
-  end
-
   def import
     upstream.versions.lines.each do |line|
       next if line.match(/^created_at:|^---/)

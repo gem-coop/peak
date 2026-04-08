@@ -5,3 +5,5 @@ rake 13.2.1 f413baf4fbf8e9aad81bf73cd5af439a
 rake 13.3.0 f413baf4fbf8e9aad81bf73cd5af439a
 rake 100.0.0 f413baf4fbf8e9aad81bf73cd5af439a
 rake -100.0.0
+oaken 0.1.0,0.2.0,0.5.0,0.6.0,0.7.0,0.7.1,0.8.0,0.9.0,0.9.1,1.0.0 d6198df41036403a180359545615eb10
+rake 13.3.1 f413baf4fbf8e9aad81bf73cd5af439a

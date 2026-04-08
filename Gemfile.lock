@@ -84,20 +84,20 @@ GEM
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
       uri (>= 0.13.1)
-    addressable (2.8.9)
+    addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
     ast (2.4.3)
-    avo (4.0.0.beta.7)
+    avo (4.0.0.beta.16)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
       activesupport (>= 6.1)
       addressable
-      avo-icons (>= 0.1.1)
+      avo-icons (>= 0.1.2)
       docile
       meta-tags
       pagy (>= 43.0)
-      prop_initializer (>= 0.2.0)
+      prop_initializer (>= 0.3.0)
       turbo-rails (>= 2.0.0)
       turbo_power (>= 0.6.0)
       view_component (>= 3.7.0)
@@ -454,7 +454,7 @@ GEM
     opentelemetry-semantic_conventions (1.37.0)
       opentelemetry-api (~> 1.0)
     ostruct (0.6.3)
-    pagy (43.4.4)
+    pagy (43.5.0)
       json
       uri
       yaml
@@ -617,7 +617,7 @@ GEM
     unicode-emoji (4.2.0)
     uri (1.1.1)
     useragent (0.16.11)
-    view_component (4.5.0)
+    view_component (4.6.0)
       actionview (>= 7.1.0)
       activesupport (>= 7.1.0)
       concurrent-ruby (~> 1)
@@ -642,37 +642,37 @@ GEM
 GEM
   remote: https://packager.dev/avo-hq/
   specs:
-    avo-advanced (4.0.0.beta.7)
-      avo (= 4.0.0.beta.7)
-      avo-dynamic_filters (= 4.0.0.beta.7)
-      avo-licensing (= 4.0.0.beta.6)
-      avo-pro (= 4.0.0.beta.7)
+    avo-advanced (4.0.0.beta.9)
+      avo (>= 4.0.0.beta.16)
+      avo-dynamic_filters (>= 4.0.0.beta.11)
+      avo-licensing (>= 4.0.0.beta.6)
+      avo-pro (>= 4.0.0.beta.14)
       zeitwerk (>= 2.6.12)
-    avo-dashboards (4.0.0.beta.7)
-      avo (= 4.0.0.beta.7)
-      avo-licensing (= 4.0.0.beta.6)
+    avo-dashboards (4.0.0.beta.9)
+      avo (>= 4.0.0.beta.16)
+      avo-licensing (>= 4.0.0.beta.6)
       turbo-rails
       view_component (>= 3.7.0)
       zeitwerk (>= 2.6.12)
-    avo-dynamic_filters (4.0.0.beta.7)
-      avo (= 4.0.0.beta.7)
-      avo-licensing (= 4.0.0.beta.6)
+    avo-dynamic_filters (4.0.0.beta.11)
+      avo (>= 4.0.0.beta.16)
+      avo-licensing (>= 4.0.0.beta.6)
       ransack (>= 4.2.0)
       view_component (>= 3.7.0)
       zeitwerk (>= 2.6.12)
-    avo-licensing (4.0.0.beta.6)
-      avo (>= 4.0.0.beta.6)
+    avo-licensing (4.0.0.beta.7)
+      avo (>= 4.0.0.beta.16)
       zeitwerk (>= 2.6.12)
-    avo-menu (4.0.0.beta.7)
-      avo (= 4.0.0.beta.7)
-      avo-licensing (= 4.0.0.beta.6)
+    avo-menu (4.0.0.beta.9)
+      avo (>= 4.0.0.beta.16)
+      avo-licensing (>= 4.0.0.beta.6)
       docile
       zeitwerk (>= 2.6.12)
-    avo-pro (4.0.0.beta.7)
-      avo (= 4.0.0.beta.7)
-      avo-dashboards (= 4.0.0.beta.7)
-      avo-licensing (= 4.0.0.beta.6)
-      avo-menu (= 4.0.0.beta.7)
+    avo-pro (4.0.0.beta.14)
+      avo (>= 4.0.0.beta.16)
+      avo-dashboards (>= 4.0.0.beta.9)
+      avo-licensing (>= 4.0.0.beta.6)
+      avo-menu (>= 4.0.0.beta.9)
       zeitwerk (>= 2.6.12)
 
 PLATFORMS
@@ -741,16 +741,16 @@ CHECKSUMS
   activerecord (8.1.3) sha256=8003be7b2466ba0a2a670e603eeb0a61dd66058fccecfc49901e775260ac70ab
   activestorage (8.1.3) sha256=0564ce9309143951a67615e1bb4e090ee54b8befed417133cae614479b46384d
   activesupport (8.1.3) sha256=21a5e0dfbd4c3ddd9e1317ec6a4d782fa226e7867dc70b0743acda81a1dca20e
-  addressable (2.8.9) sha256=cc154fcbe689711808a43601dee7b980238ce54368d23e127421753e46895485
+  addressable (2.9.0) sha256=7fdf6ac3660f7f4e867a0838be3f6cf722ace541dd97767fa42bc6cfa980c7af
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
-  avo (4.0.0.beta.7) sha256=319aed34f0bdddf82a09c19edd8bda84c579e3a3adeaef24df6dfe01ef67c50c
-  avo-advanced (4.0.0.beta.7) sha256=d99f338c0e78178a741efdb9b40bc9f6e24ce5ed54b938273398c4c5a280dc92
-  avo-dashboards (4.0.0.beta.7) sha256=a6441a905f5e4fdf8ffab0be3c66080b6e6e70e79f277b608cf0b1dfcb197505
-  avo-dynamic_filters (4.0.0.beta.7) sha256=205cc66a8911b030e2b13efa943519b06d825cadd00bf6469b21d7973619c30a
+  avo (4.0.0.beta.16) sha256=5e53e22f2221f8e832cee903cff9b5c79da2dc93496e6f3c405dd81033d25d13
+  avo-advanced (4.0.0.beta.9) sha256=38c713360665b98b0a88687eb7e58c846126406ad6f1660548c714f6fae075f1
+  avo-dashboards (4.0.0.beta.9) sha256=fc8582992974a98cfbd1b1a01f08db0d27b73ac888b710526682b775b9b6e183
+  avo-dynamic_filters (4.0.0.beta.11) sha256=d86e0b384c992b9fdbed08336446b5666d7187a9f9602c4d675330b0e10611eb
   avo-icons (0.1.2) sha256=6dfa1f9d9b3bee6020089684805ec1c26ab13ac886540324a242856d371ea01a
-  avo-licensing (4.0.0.beta.6) sha256=6e64772ba5cdaf7619e1f3186c6676b6594717aeb99f30035c0eff15236f99a5
-  avo-menu (4.0.0.beta.7) sha256=b04012210d3d69777a1534d753ee76b425d8bca9bd31eeab5ddd4d7598b7c49e
-  avo-pro (4.0.0.beta.7) sha256=50b5d036a97db52a2a9bdf73fd26887752363da340365ef86bbffbefd79b2c65
+  avo-licensing (4.0.0.beta.7) sha256=67ac89f0a05eed72378b75c07ba2229c4303a468e94484d59d0646167af9251a
+  avo-menu (4.0.0.beta.9) sha256=afcaa9253fc27ea3b083a16996b59d98d1574534e8967d2746ec32ae384f075a
+  avo-pro (4.0.0.beta.14) sha256=bc6ecb915c02eba03020978c177d4871f111385b383f925c066a619957cb56ff
   aws-eventstream (1.4.0) sha256=116bf85c436200d1060811e6f5d2d40c88f65448f2125bc77ffce5121e6e183b
   aws-partitions (1.1236.0) sha256=00f58da2f959852c70067e1ea9690072891320bebf480c4415e8bdff2eeb1cdf
   aws-sdk-core (3.244.0) sha256=3e458c078b0c5bdee95bc370c3a483374b3224cf730c1f9f0faf849a5d9a18ea
@@ -892,7 +892,7 @@ CHECKSUMS
   opentelemetry-sdk (1.11.0) sha256=427c6708f4732105ffa46c11afecb91807085c59e92538eaa6cf46b97b1850c6
   opentelemetry-semantic_conventions (1.37.0) sha256=1e2dc5ad649e19ba2fb0fa7c6f9303e5cdd8d3952511415cb07efe28a0f8f4c3
   ostruct (0.6.3) sha256=95a2ed4a4bd1d190784e666b47b2d3f078e4a9efda2fccf18f84ddc6538ed912
-  pagy (43.4.4) sha256=b41a57328a0aabfd222266a89e9de3dc3a735c17bd57f8113829c95fece5bef6
+  pagy (43.5.0) sha256=58885d5f659e8db5b92cf35eeba674113e4e7bda12649b603c2d6908402570a4
   parallel (1.27.0) sha256=4ac151e1806b755fb4e2dc2332cbf0e54f2e24ba821ff2d3dcf86bf6dc4ae130
   parser (3.3.11.1) sha256=d17ace7aabe3e72c3cc94043714be27cc6f852f104d81aa284c2281aecc65d54
   pg (1.6.3) sha256=1388d0563e13d2758c1089e35e973a3249e955c659592d10e5b77c468f628a99
@@ -957,7 +957,7 @@ CHECKSUMS
   unicode-emoji (4.2.0) sha256=519e69150f75652e40bf736106cfbc8f0f73aa3fb6a65afe62fefa7f80b0f80f
   uri (1.1.1) sha256=379fa58d27ffb1387eaada68c749d1426738bd0f654d812fcc07e7568f5c57c6
   useragent (0.16.11) sha256=700e6413ad4bb954bb63547fa098dddf7b0ebe75b40cc6f93b8d54255b173844
-  view_component (4.5.0) sha256=0d951360d830752da4d1daa5f6cb643f17c30f295fb779fd4de90a051537d9c1
+  view_component (4.6.0) sha256=aabbcc68ab4af8a0135bd3f488e1a4132180cb611aa2565f86cb6e9135f4ed7e
   web-console (4.3.0) sha256=e13b71301cdfc2093f155b5aa3a622db80b4672d1f2f713119cc7ec7ac6a6da4
   webmock (3.26.2) sha256=774556f2ea6371846cca68c01769b2eac0d134492d21f6d0ab5dd643965a4c90
   websocket (1.2.11) sha256=b7e7a74e2410b5e85c25858b26b3322f29161e300935f70a0e0d3c35e0462737

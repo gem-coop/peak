@@ -200,7 +200,7 @@ GEM
     googleapis-common-protos-types (1.22.0)
       google-protobuf (~> 4.26)
     hashdiff (1.2.1)
-    honeybadger (6.5.4)
+    honeybadger (6.5.5)
       logger
       ostruct
     http-2 (1.1.3)
@@ -799,7 +799,7 @@ CHECKSUMS
   google-protobuf (4.34.1-x86_64-linux-musl) sha256=8c0e91436fbe504ffc64f0bd621f2e69adbcce8ed2c58439d7a21117069cfdd7
   googleapis-common-protos-types (1.22.0) sha256=f97492b77bd6da0018c860d5004f512fe7cd165554d7019a8f4df6a56fbfc4c7
   hashdiff (1.2.1) sha256=9c079dbc513dfc8833ab59c0c2d8f230fa28499cc5efb4b8dd276cf931457cd1
-  honeybadger (6.5.4) sha256=f7ab939a6de18758d8ccf5e971ce7a9a27543b8f846227f3d0b0340fe65633eb
+  honeybadger (6.5.5) sha256=bb42c7da748f72961520056ef49ab63abd886d62fd3e7bc45f095c15f7094ca7
   http-2 (1.1.3) sha256=1b2f379d35a11dbae94f8a1a52c053d8c161eb4a0c98b5d1605ff1b2bf171c9c
   httparty (0.24.2) sha256=8fca6a54aa0c4aa4303a0fd33e5e2156175d6a5334f714263b458abd7fda9c38
   httpx (1.7.6) sha256=82d825abc9876a132adc3492c56a0c528478ac238dd6f74d3422ab0036c6b5c8

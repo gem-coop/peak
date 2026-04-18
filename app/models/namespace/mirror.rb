@@ -16,12 +16,11 @@ class Namespace::Mirror < ApplicationRecord
 
   def import_line(line)
     name, vset, _ = line.split(" ", 3)
-    gem = namespace.external_index.gems.find_or_create_by!(name:)
-
     vset = Set.new(vset.split(","))
 
     # Handle lines that are just yanks
     if vset.size == 1 && vset.first.starts_with?("-")
+      gem = namespace.external_index.gems.find_or_create_by!(name:)
       return gem.versions.where(ref: vset.first[1..]).destroy_all
     end
 
@@ -37,6 +36,7 @@ class Namespace::Mirror < ApplicationRecord
     return if cvs.empty?
 
     # Try to get info from our own database before we make an API call
+    gem = namespace.external_index.gems.find_or_create_by!(name:)
     db_versions = gem.versions.pluck(:ref)
     cvs.delete_if { |cv| db_versions.include?(cv[:ref]) }
 
@@ -67,11 +67,7 @@ class Namespace::Mirror < ApplicationRecord
       cv[:yanked_at] = Time.now
     end
 
-    index = namespace.external_index
-    created_at = cvs.map { |cv| cv[:published_at] }.min
-    gem = Namespace::Gem.create_with(namespace:, created_at:).find_or_create_by!(name:, index:)
     cvs.each { |cv| cv[:gem_id] = gem.id }
-
     gem.versions.insert_all(cvs, unique_by: %i[gem_id ref])
     gem.info.rebuild
   end

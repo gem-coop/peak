@@ -9,15 +9,15 @@ class Namespaces::CooldownController < Public::BaseController
   end
 
   def info
-    cv = CooldownVersion.cooled.where(name: params[:name]).last
+    cv = CooldownVersion.cooled.where(name: params[:id]).last
     return no_data unless cv
 
     expires_in 30.minutes, public: true
-    render_ranged CooldownVersion::Server.info_until(params[:name], cv.info_byte)
+    render_ranged CooldownVersion::Server.info_until(params[:id], cv.info_byte)
   end
 
   def gems
-    redirect_to "https://gem.coop/gems/#{params[:gem]}", allow_other_host: true
+    redirect_to "https://gem.coop/gems/#{params[:id]}", allow_other_host: true
   end
 
   private

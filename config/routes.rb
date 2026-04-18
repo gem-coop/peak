@@ -23,8 +23,8 @@ Rails.application.routes.draw do
 
   scope module: :namespaces, defaults: { namespace: "@public" }, as: :public do
     get "/cooldown/versions" => "cooldown#versions"
-    get "/cooldown/info/:name" => "cooldown#info"
-    get "/cooldown/gems/:gem" => "cooldown#gems", constraints: {gem: Peak::Gem.pattern}
+    get "/cooldown/info/:id" => "cooldown#info"
+    get "/cooldown/gems/:id" => "cooldown#gems", constraints: {id: Peak::Gem.pattern}
 
     get "/versions" => "mirror#versions"
     get "/info/:id" => "mirror#info"

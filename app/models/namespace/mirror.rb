@@ -11,8 +11,6 @@ class Namespace::Mirror < ApplicationRecord
         import_line(line)
       end
     end
-
-    namespace.external_index.compact
   end
   performs :import
 

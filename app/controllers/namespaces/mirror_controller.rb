@@ -1,13 +1,17 @@
 class Namespaces::MirrorController < Public::BaseController
+  before_action { @index = Namespace.named("@public").external_index }
+
   def versions
-    redirect_to "https://gem.coop/versions", allow_other_host: true
+    render plain: @index.versions_contents if stale? @index
   end
 
   def info
-    redirect_to "https://gem.coop/info/#{params[:name]}", allow_other_host: true
+    if stale? info = @index.gems.named(params[:id]).info
+      render plain: info.contents
+    end
   end
 
   def gems
-    redirect_to "https://gem.coop/gems/#{params[:gem]}", allow_other_host: true
+    redirect_to "https://gem.coop/gems/#{params[:id]}", allow_other_host: true
   end
 end

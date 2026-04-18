@@ -27,8 +27,8 @@ Rails.application.routes.draw do
     get "/cooldown/gems/:gem" => "cooldown#gems", constraints: {gem: Peak::Gem.pattern}
 
     get "/versions" => "mirror#versions"
-    get "/info/:name" => "mirror#info"
-    get "/gems/:gem" => "mirror#gems", constraints: {gem: Peak::Gem.pattern}
+    get "/info/:id" => "mirror#info"
+    get "/gems/:id" => "mirror#gems", constraints: {id: Peak::Gem.pattern}
     post "/api/v1/gems", to: "gems#create", as: :gem_push
   end
 

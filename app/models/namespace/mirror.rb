@@ -55,7 +55,7 @@ class Namespace::Mirror < ApplicationRecord
         if v
           cv[:platform_id] = Peak::Platform.ids_from(v["platform"]).first
           cv[:published_at] = Time.parse(v["created_at"])
-          cv[:summary] = v["summary"]
+          cv[:summary] = v["summary"] || ""
         end
       end
     end

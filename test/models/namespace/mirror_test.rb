@@ -35,26 +35,20 @@ class Namespace::Index::MirrorTest < ActiveSupport::TestCase
     assert_equal mirror_fixture("3-oaken", "info/rake").read, mirrors.public.upstream.info("rake")
     assert_equal mirror_fixture("3-oaken", "info/oaken").read, mirrors.public.upstream.info("oaken")
 
-    # TODO (?) do we need to support yanks-via-compaction?
-    #   detect compaction via length decreasing
-    #   if compacted, import every line and increment generation
-    #   else import new lines without generation
-    #   after all lines imported, remove previous generation
+    # compact, removing both one gem version and one gem line
+    rake_versions.clear
+    oaken_versions.delete("0.1.0")
+    unpwn_versions = %w[0.1.0 0.2.0 0.3.0 1.0.0 1.0.1]
 
-    ## compact, removing both one gem version and one gem line
-    # rake_versions.clear
-    # oaken_versions.delete("0.1.0")
-    # unpwn_versions = %w[0.1.0 0.2.0 0.3.0 1.0.0 1.0.1]
-
-    # stub_rubygems("4-compacted")
-    # perform_import
-    # assert_equal rake_versions, mirror_versions("rake")
-    # assert_equal oaken_versions, mirror_versions("oaken")
-    # assert_equal unpwn_versions, mirror_versions("unpwn")
-    # assert_equal mirror_fixture("4-compacted", "versions").read, mirrors.public.upstream.versions
-    # assert_equal "", mirrors.public.upstream.info("rake")
-    # assert_equal mirror_fixture("4-compacted", "info/oaken").read, mirrors.public.upstream.info("oaken")
-    # assert_equal mirror_fixture("4-compacted", "info/unpwn").read, mirrors.public.upstream.info("unpwn")
+    stub_rubygems("4-compacted")
+    perform_import
+    assert_equal "", mirrors.public.index.gems.find_by(name: "rake").info.contents
+    assert_equal rake_versions, mirror_versions("rake")
+    assert_equal oaken_versions, mirror_versions("oaken")
+    assert_equal unpwn_versions, mirror_versions("unpwn")
+    assert_equal mirror_fixture("4-compacted", "versions").read, mirrors.public.upstream.versions
+    assert_equal mirror_fixture("4-compacted", "info/oaken").read, mirrors.public.upstream.info("oaken")
+    assert_equal mirror_fixture("4-compacted", "info/unpwn").read, mirrors.public.upstream.info("unpwn")
   end
 
 private

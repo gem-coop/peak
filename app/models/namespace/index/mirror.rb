@@ -3,20 +3,29 @@ class Namespace::Index::Mirror < ApplicationRecord
   has_object :upstream
 
   def import
+    removed_gems = Set.new(index.gems.pluck(:name))
+
     upstream.versions.lines.each do |line|
       next if line.match(/^created_at:|^---/)
+      name, versions, _ = line.split(" ")
+      removed_gems.delete(name)
+
       if Sidekiq.server?
-        import_line_later(line)
+        import_line_later(name, versions)
       else
-        import_line(line)
+        import_line(name, versions)
+      end
+
+      index.gems.where(name: removed_gems).find_each do |gem|
+        gem.versions.destroy_all
+        gem.info.rebuild
       end
     end
   end
   performs :import
 
-  def import_line(line)
-    name, vset, _ = line.split(" ", 3)
-    vset = Set.new(vset.split(","))
+  def import_line(name, versions)
+    vset = Set.new(versions.split(","))
 
     # Handle lines that are just yanks
     if vset.size == 1 && vset.first.starts_with?("-")
@@ -29,7 +38,7 @@ class Namespace::Index::Mirror < ApplicationRecord
     cvs = info.lines.map do |info_line|
       next if info_line.match(/^created_at:|^---/)
       ref, _ = info_line.split(" ", 2)
-      next unless vset.include?(ref)
+      vset.add(ref)
       {ref:, created_by_id:}
     end.compact
 
@@ -60,10 +69,10 @@ class Namespace::Index::Mirror < ApplicationRecord
       end
     end
 
-    # Anything that still doesn't have a published_at was yanked We can't get
-    # the exact yanked_at from any API call, since yanked gems are not included
-    # in API responses. This should be good enough for our purposes, since
-    # yanked gems will not be included in future query results.
+    # Anything that still doesn't have a published_at was yanked
+    # We can't get the exact yanked_at from any API call, since yanked gems are
+    # not included in API responses. This should be good enough for our
+    # purposes, since yanked gems will not be included in future query results.
     cvs.select { |cv| cv[:published_at].nil? }.each do |cv|
       cv[:published_at] = 1.hour.ago
       cv[:yanked_at] = Time.now
@@ -76,6 +85,7 @@ class Namespace::Index::Mirror < ApplicationRecord
 
     cvs.each { |cv| cv[:gem_id] = gem.id }
     gem.versions.insert_all(cvs, unique_by: %i[gem_id ref])
+    gem.versions.where.not(ref: vset).destroy_all
     gem.info.rebuild
   end
   performs :import_line

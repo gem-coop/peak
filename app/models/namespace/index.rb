@@ -2,7 +2,7 @@ class Namespace::Index < ApplicationRecord
   belongs_to :namespace
   default_scope { select(*column_names.without("versions_contents")) }
 
-  has_many :gems, dependent: :destroy
+  has_many :gems,     dependent: :destroy
   has_many :infos,    through: :gems, class_name: "Namespace::Gem::Info"
   has_many :versions, through: :gems, class_name: "Namespace::Gem::Version"
   has_many :cooldowns, dependent: :destroy

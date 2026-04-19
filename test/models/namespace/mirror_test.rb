@@ -61,8 +61,8 @@ private
   end
 
   def mirror_versions(name)
-    rake = namespaces.public.external_index.gems.find_by(name:)
-    rake ? rake.versions.pluck(:ref).sort : []
+    gem = namespaces.public.external_index.gems.find_by(name:)
+    gem ? gem.versions.pluck(:ref).sort : []
   end
 
   def stub_rubygems(scenario)

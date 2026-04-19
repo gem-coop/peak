@@ -36,9 +36,11 @@ class Namespace::Mirror < ApplicationRecord
     return if cvs.empty?
 
     # Try to get info from our own database before we make an API call
-    gem = namespace.external_index.gems.find_or_create_by!(name:)
-    db_versions = gem.versions.pluck(:ref)
-    cvs.delete_if { |cv| db_versions.include?(cv[:ref]) }
+    gem = namespace.external_index.gems.find_or_create_by(name:)
+    if gem
+      db_versions = gem.versions.pluck(:ref)
+      cvs.delete_if { |cv| db_versions.include?(cv[:ref]) }
+    end
 
     # If that didn't work, get the times from an API call
     if cvs.any? { |cv| cv[:published_at].nil? }
@@ -65,6 +67,11 @@ class Namespace::Mirror < ApplicationRecord
     cvs.select { |cv| cv[:published_at].nil? }.each do |cv|
       cv[:published_at] = 1.hour.ago
       cv[:yanked_at] = Time.now
+    end
+
+    if cvs.any?
+      first_publish = cvs.map { |cv| cv[:published_at] }.min
+      gem.update(created_at: first_publish) if first_publish < gem.created_at
     end
 
     cvs.each { |cv| cv[:gem_id] = gem.id }

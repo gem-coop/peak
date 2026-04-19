@@ -28,7 +28,7 @@ class Namespace::Index::Cooldown < ApplicationRecord
   private
 
     def contents
-      contents = "".prepend(frontmatter)
+      contents = frontmatter.clone
       gems.find_each do |gem|
         contents << gem.cooldown_infos.find_or_create_by!(cooldown: self).rebuild.envelope
       end

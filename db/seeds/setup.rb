@@ -6,7 +6,7 @@ def fixture_upload(filename) = Peak::Gem::Upload.read(fixture_file(filename))
 def fixture_file(filename)   = Rails.root.join("test/fixtures/files").join(filename)
 
 register Peak::Terms, as: :terms
-terms.proxy *Peak::Terms.statuses.keys
+terms.proxy(*Peak::Terms.statuses.keys)
 
 register Namespace::Access, as: :accesses
 register Namespace::Gem, as: :gems
@@ -18,7 +18,7 @@ def users.create(label = nil, unique_by: :email_address, **) = super
 def namespaces.create(label = nil, unique_by: :name, **) = super
 def gems.create(label = nil, unique_by: [:index, :name], **) = super
 
-accesses.proxy *Namespace::Access.roles.keys
+accesses.proxy(*Namespace::Access.roles.keys)
 def accesses.create(label = nil, unique_by: [:namespace, :user], **) = super
 
 versions.with do

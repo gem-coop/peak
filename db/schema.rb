@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_06_015342) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_19_012452) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -64,6 +64,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_015342) do
     t.integer "user_id", null: false
     t.index ["namespace_id"], name: "index_namespace_accesses_on_namespace_id"
     t.index ["user_id"], name: "index_namespace_accesses_on_user_id"
+  end
+
+  create_table "namespace_gem_cooldown_infos", force: :cascade do |t|
+    t.string "checksum", default: "", null: false
+    t.text "contents", default: "", null: false
+    t.bigint "cooldown_id", null: false
+    t.datetime "created_at", null: false
+    t.string "envelope", default: "", null: false
+    t.bigint "gem_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cooldown_id"], name: "index_namespace_gem_cooldown_infos_on_cooldown_id"
+    t.index ["gem_id"], name: "index_namespace_gem_cooldown_infos_on_gem_id"
   end
 
   create_table "namespace_gem_infos", force: :cascade do |t|
@@ -157,6 +169,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_015342) do
     t.index ["namespace_id"], name: "index_namespace_gems_on_namespace_id"
   end
 
+  create_table "namespace_index_cooldowns", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "days_delayed", default: 2, null: false
+    t.bigint "index_id", null: false
+    t.datetime "last_compacted_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "versions_contents", default: "---\n", null: false
+    t.index ["index_id"], name: "index_namespace_index_cooldowns_on_index_id"
+  end
+
   create_table "namespace_indexes", force: :cascade do |t|
     t.string "access", default: "external", null: false
     t.datetime "created_at", null: false
@@ -245,5 +267,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_015342) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "namespace_gem_cooldown_infos", "namespace_gems", column: "gem_id"
+  add_foreign_key "namespace_gem_cooldown_infos", "namespace_index_cooldowns", column: "cooldown_id"
+  add_foreign_key "namespace_index_cooldowns", "namespace_indexes", column: "index_id"
   add_foreign_key "namespace_mirrors", "namespaces"
 end

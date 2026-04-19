@@ -1,6 +1,6 @@
 class Namespaces::CooldownController < Public::BaseController
   before_action do
-    @index = Namespace.named(params[:namespace]).external_index.cooldown(48.hours)
+    @index = Namespace.named(params[:namespace]).external_index.cooldown(days: 2)
     render no_data if @index.gems.empty?
   end
 
@@ -9,7 +9,7 @@ class Namespaces::CooldownController < Public::BaseController
   end
 
   def info
-    if stale? info = @index.gems.named(params[:id]).info
+    if stale? info = @index.gems.named(params[:id]).cooldown_infos.find_by(cooldown: @index)
       render_ranged info.contents
     end
   end

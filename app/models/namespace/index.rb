@@ -14,6 +14,10 @@ class Namespace::Index < ApplicationRecord
     find_by!(access: access&.presence_in(accesses.keys) || :external)
   end
 
+  def cooldown(days:)
+    cooldowns.find_or_create_by!(days_delayed: days)
+  end
+
   def append(envelope)
     versions_contents << envelope
     save!
@@ -33,5 +37,5 @@ class Namespace::Index < ApplicationRecord
 
   private
     def contents = infos.pluck(:envelope).join.prepend(frontmatter)
-    def frontmatter = "created_at: #{Time.now.iso8601}\n---\n"
+    def frontmatter = "created_at: #{Time.now.utc.iso8601}\n---\n"
 end

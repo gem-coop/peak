@@ -1,10 +1,10 @@
 class Namespace::Index::Cooldown < ApplicationRecord
-  belongs_to :index
+  belongs_to :index, class_name: "Namespace::Index"
   default_scope { select(*column_names.without("versions_contents")) }
 
-  has_many :gems, through: :index
-  has_many :infos,    through: :gems, class_name: "Namespace::Gem::Info"
-  has_many :versions, through: :gems, class_name: "Namespace::Gem::Version"
+  has_many :gems, ->(cooldown) { where("namespace_gems.created_at <= ?", cooldown.days_delayed.days.ago) }, through: :index
+  has_many :versions, ->(cooldown) { where("published_at <= ?", cooldown.days_delayed.days.ago) }, through: :gems, class_name: "Namespace::Gem::Version"
+  has_many :infos, -> { where(cooldown_id: id) }, through: :gems, class_name: "Namespace::Gem::CooldownInfo", dependent: :destroy
 
   attribute :last_compacted_at, default: -> { Time.current }
 
@@ -24,4 +24,16 @@ class Namespace::Index::Cooldown < ApplicationRecord
   def public_cache?
     index.external_access? || index.dev_access?
   end
+
+  private
+
+    def contents
+      contents = "".prepend(frontmatter)
+      gems.find_each do |gem|
+        contents << gem.cooldown_infos.find_or_create_by!(cooldown: self).rebuild.envelope
+      end
+      contents
+    end
+
+    def frontmatter = "created_at: #{Time.now.utc.iso8601}\n---\n"
 end

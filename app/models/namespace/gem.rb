@@ -3,13 +3,13 @@ class Namespace::Gem < ApplicationRecord
   belongs_to :namespace, default: -> { index.namespace }
 
   has_one :info, dependent: :destroy
+  has_many :cooldown_infos, dependent: :destroy
   before_create :build_info
 
   has_object :imports, :server
 
   def self.named(name) = find_by!(name:)
   def to_param = name
-
 
   has_many :referrants, class_name: "Version::Reference", foreign_key: :name, primary_key: :name
   has_many :versions, dependent: :destroy do

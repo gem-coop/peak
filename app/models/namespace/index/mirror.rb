@@ -7,13 +7,13 @@ class Namespace::Index::Mirror < ApplicationRecord
 
     upstream.versions.lines.each do |line|
       next if line.match(/^created_at:|^---/)
-      name, versions, _ = line.split(" ")
+      name, versions, hash = line.split(" ")
       removed_gems.delete(name)
 
       if Sidekiq.server?
-        import_line_later(name, versions)
+        import_line_later(name, versions, hash)
       else
-        import_line(name, versions)
+        import_line(name, versions, hash)
       end
     end
 
@@ -21,7 +21,10 @@ class Namespace::Index::Mirror < ApplicationRecord
   end
   performs :import
 
-  def import_line(name, versions)
+  def import_line(name, versions, hash)
+    gem = index.gems.find_by(name:)
+    return if gem && gem.info.mirror_checksum == hash
+
     vset = Set.new(versions.split(","))
 
     # Handle lines that are just yanks
@@ -83,7 +86,7 @@ class Namespace::Index::Mirror < ApplicationRecord
     cvs.each { |cv| cv[:gem_id] = gem.id }
     gem.versions.insert_all(cvs, unique_by: %i[gem_id ref])
     gem.versions.where.not(ref: vset).destroy_all
-    gem.info.rebuild
+    gem.info.rebuild(mirror_checksum: hash)
   end
   performs :import_line
 end

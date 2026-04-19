@@ -9,7 +9,9 @@ class Namespace::Index::MirrorTest < ActiveSupport::TestCase
     rake_versions = ["0.4.10", "0.4.11", "0.4.12", "0.4.13", "0.4.14", "0.4.15", "0.4.8", "0.4.9", "0.5.0", "0.5.3", "0.5.4", "0.6.0", "0.6.2", "0.7.0", "0.7.1", "0.7.2", "0.7.3", "0.8.0", "0.8.1", "0.8.2", "0.8.3", "0.8.4", "0.8.5", "0.8.6", "0.8.7", "0.9.0", "0.9.0.beta.0", "0.9.0.beta.1", "0.9.0.beta.2", "0.9.0.beta.4", "0.9.0.beta.5", "0.9.1", "0.9.2", "0.9.2.2", "0.9.3", "0.9.3.beta.1", "0.9.3.beta.2", "0.9.3.beta.3", "0.9.3.beta.4", "0.9.4", "0.9.5", "0.9.6", "10.0.0", "10.0.0.beta.1", "10.0.0.beta.2", "10.0.1", "10.0.2", "10.0.3", "10.0.4", "10.1.0", "10.1.0.beta.1", "10.1.0.beta.2", "10.1.0.beta.3", "10.1.1", "10.2.0", "10.2.1", "10.2.2", "10.3.0", "10.3.1", "10.3.2", "10.4.0", "10.4.1", "10.4.2", "10.5.0", "11.0.1", "11.1.0", "11.1.1", "11.1.2", "11.2.0", "11.2.2", "11.3.0", "12.0.0", "12.0.0.beta1", "12.1.0", "12.2.0", "12.2.1", "12.3.0", "12.3.1", "12.3.2", "12.3.3"]
 
     stub_rubygems("1-rake-12")
+    assert_nil mirrors.public.index.gems.find_by(name: "rake")&.info&.mirror_checksum
     perform_import
+    assert_equal "4a77b4e15cda4aa66d7fe5cf6a32d23f", mirrors.public.index.gems.find_by(name: "rake").info.mirror_checksum
     assert_equal rake_versions, mirror_versions("rake")
     assert_equal mirror_fixture("1-rake-12", "versions").read, mirrors.public.upstream.versions
     assert_equal mirror_fixture("1-rake-12", "info/rake").read, mirrors.public.upstream.info("rake")

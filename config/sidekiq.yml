@@ -10,6 +10,8 @@
   - import_4
 :scheduler:
   :schedule:
+    MirrorImportJob:
+      cron: "0 * * * *"
     CompactMirrorIndexesJob:
       cron: "41 4 2 * *"
     ClearExpiredPushKeysJob:

@@ -1,18 +1,12 @@
-class Namespace::Index < ApplicationRecord
-  belongs_to :namespace
+class Namespace::Index::Cooldown < ApplicationRecord
+  belongs_to :index
   default_scope { select(*column_names.without("versions_contents")) }
 
-  has_many :gems, dependent: :destroy
+  has_many :gems, through: :index
   has_many :infos,    through: :gems, class_name: "Namespace::Gem::Info"
   has_many :versions, through: :gems, class_name: "Namespace::Gem::Version"
-  has_many :cooldowns, dependent: :destroy
-  enum :access, %i[external dev private].index_by(&:itself), suffix: true
 
   attribute :last_compacted_at, default: -> { Time.current }
-
-  def self.locate_or_external(access)
-    find_by!(access: access&.presence_in(accesses.keys) || :external)
-  end
 
   def append(envelope)
     versions_contents << envelope
@@ -28,10 +22,6 @@ class Namespace::Index < ApplicationRecord
   end
 
   def public_cache?
-    external_access? || dev_access?
+    index.external_access? || index.dev_access?
   end
-
-  private
-    def contents = infos.pluck(:envelope).join.prepend(frontmatter)
-    def frontmatter = "created_at: #{Time.now.iso8601}\n---\n"
 end

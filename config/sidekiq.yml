@@ -12,7 +12,5 @@
   :schedule:
     CompactMirrorIndexesJob:
       cron: "41 4 2 * *"
-    CooldownVersionImportJob:
-      cron: "0,20,40 * * * *"
     ClearExpiredPushKeysJob:
       cron: "6 * * * *"

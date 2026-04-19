@@ -23,6 +23,8 @@ class CooldownControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "bundle install endpoints work across hourly updates" do
+    travel_to Time.utc(2026, 4, 19, 11, 47, 00)
+
     # import up to rake 13.2.1
     stub_request(:get, "https://rubygems.org/versions").to_return(body: file_fixture("versions").read.lines[0...-3].join)
     stub_request(:get, "https://rubygems.org/info/rake").to_return(body: file_fixture("info/rake").read.lines[0...-2].join)
@@ -49,7 +51,7 @@ class CooldownControllerTest < ActionDispatch::IntegrationTest
     stub_request(:get, "https://rubygems.org/versions").to_return(body: file_fixture("versions").open)
     stub_request(:get, "https://rubygems.org/info/rake").to_return(body: file_fixture("info/rake").open)
     perform_import
-    assert_equal "13.3.0", Namespace.named("@public").external_index.cooldown(days: 2).gems.last.versions.last.ref
+    assert_equal "13.3.1", Namespace.named("@public").external_index.cooldown(days: 2).gems.last.versions.last.ref
 
     get "/cooldown/versions"
     assert_response :success
@@ -72,7 +74,7 @@ class CooldownControllerTest < ActionDispatch::IntegrationTest
     stub_request(:get, "https://rubygems.org/versions").to_return(body: file_fixture("versions").open)
     stub_request(:get, "https://rubygems.org/info/rake").to_return(body: file_fixture("info/rake").open)
     perform_import
-    assert_equal "13.3.0", Namespace.named("@public").external_index.cooldown(days: 2).gems.last.versions.last.ref
+    assert_equal "13.3.1", Namespace.named("@public").external_index.cooldown(days: 2).gems.last.versions.last.ref
 
     get "/cooldown/versions"
     full_size = response.body.size
@@ -80,8 +82,8 @@ class CooldownControllerTest < ActionDispatch::IntegrationTest
     get "/cooldown/versions", headers: {Range: "bytes=0-99"}
     assert_response :partial_content
     assert_equal 100, response.body.size
-    assert_equal %("981053e0dc802783984f26e8dc52854b"), response.headers["etag"]
-    assert_equal %(sha256="32eceb021b78d8746df24d421676a351f5a606d6fd4d2ed2ac52eb8ec55884a9"), response.headers["digest"]
+    assert_equal %("0453b00398fdd27efc819092d949adbf"), response.headers["etag"]
+    assert_equal %(sha256="fb1a511c3271cbb28d62d2d2906384ecf16e6bd3ec2e441c4c337354f8b4a97c"), response.headers["digest"]
     assert_not_includes response.body, "0.4.11"
     assert_includes response.body, "13.3.0"
 

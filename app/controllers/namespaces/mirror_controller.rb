@@ -1,13 +1,15 @@
 class Namespaces::MirrorController < Public::BaseController
-  before_action { @index = Namespace.named("@public").external_index }
+  before_action do
+    @index = Namespace.named(params[:namespace]).external_index
+  end
 
   def versions
-    render plain: @index.versions_contents if stale? @index
+    render_ranged @index.versions_contents if stale? @index
   end
 
   def info
     if stale? info = @index.gems.named(params[:id]).info
-      render plain: info.contents
+      render_ranged info.contents
     end
   end
 

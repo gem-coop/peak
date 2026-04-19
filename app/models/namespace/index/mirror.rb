@@ -1,5 +1,5 @@
 class Namespace::Index::Mirror < ApplicationRecord
-  belongs_to :namespace
+  belongs_to :index
   has_object :upstream
 
   def import
@@ -20,7 +20,7 @@ class Namespace::Index::Mirror < ApplicationRecord
 
     # Handle lines that are just yanks
     if vset.size == 1 && vset.first.starts_with?("-")
-      gem = namespace.external_index.gems.find_or_create_by!(name:)
+      gem = index.gems.find_or_create_by!(name:)
       return gem.versions.where(ref: vset.first[1..]).destroy_all
     end
 
@@ -36,7 +36,7 @@ class Namespace::Index::Mirror < ApplicationRecord
     return if cvs.empty?
 
     # Try to get info from our own database before we make an API call
-    gem = namespace.external_index.gems.find_or_create_by(name:)
+    gem = index.gems.find_or_create_by(name:)
     if gem
       db_versions = gem.versions.pluck(:ref)
       cvs.delete_if { |cv| db_versions.include?(cv[:ref]) }

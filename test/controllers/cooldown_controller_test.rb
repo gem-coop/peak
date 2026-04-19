@@ -110,7 +110,7 @@ class CooldownControllerTest < ActionDispatch::IntegrationTest
       Namespace::Index::Mirror::Upstream.memory_store.clear
       mirror = Namespace::Index::Mirror.last
       mirror.import
-      mirror.namespace.external_index.cooldown(days: 2).compact
+      mirror.index.cooldown(days: 2).compact
       perform_enqueued_jobs
     end
 end

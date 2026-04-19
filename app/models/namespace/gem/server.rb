@@ -1,14 +1,13 @@
 class Namespace::Gem::Server < ActiveRecord::AssociatedObject
-  def download(ref)
-    HTTPX.plugin(:brotli).get("https://gem.coop/gems/#{gem.name}-#{ref}.gem").body
+  def upstream
+    @upstream ||= Namespace::Index::Mirror.new(upstream_url: "https://rubygems.org").upstream
   end
 
   def refs
     info.lines.map { _1.split(" ", 2).first }.without "---"
   end
-  def info = CooldownVersion::Server.info(gem.name)
 
-  def versions_json
-    CooldownVersion::Server.versions_json(gem.name)
-  end
+  def info = upstream.info(gem.name)
+  def versions_json = upstream.versions_json(gem.name)
+  def download(ref) = upstream.download(gem.name, ref)
 end

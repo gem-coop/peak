@@ -7,6 +7,7 @@ class Namespace::Gem::Imports < ActiveRecord::AssociatedObject
   end
 
   def import_ref(ref)
+    puts "importing #{gem.name} #{ref}..."
     upload = Peak::Gem::Upload.read server.download(ref), published_at: publishing_ledger[ref]
     versions.system.new(ref:).consume(upload)
   end

@@ -32,5 +32,5 @@ class Namespace::Index < ApplicationRecord
 
   private
     def contents = infos.pluck(:envelope).join.prepend(frontmatter)
-    def frontmatter = "---\n"
+    def frontmatter = "created_at: #{Time.now.iso8601}\n---\n"
 end

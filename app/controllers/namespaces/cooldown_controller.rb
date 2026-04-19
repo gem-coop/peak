@@ -1,7 +1,7 @@
 class Namespaces::CooldownController < Public::BaseController
   before_action do
     @index = Namespace.named(params[:namespace]).external_index.cooldown(days: 2)
-    render no_data if @index.gems.empty?
+    no_data if @index.gems.empty?
   end
 
   def versions

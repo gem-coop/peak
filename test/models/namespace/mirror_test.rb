@@ -1,6 +1,6 @@
 require "test_helper"
 
-class Namespace::MirrorTest < ActiveSupport::TestCase
+class Namespace::Index::MirrorTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
 
   test "import versions" do
@@ -61,7 +61,7 @@ private
 
   def perform_import
     Rails.cache.clear
-    Namespace::Mirror::Upstream.memory_store.clear
+    Namespace::Index::Mirror::Upstream.memory_store.clear
     mirrors.public.import
     perform_enqueued_jobs
   end

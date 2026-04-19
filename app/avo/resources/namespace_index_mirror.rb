@@ -1,11 +1,11 @@
-class Avo::Resources::NamespaceMirror < Avo::BaseResource
+class Avo::Resources::NamespaceIndexMirror < Avo::BaseResource
   # self.icon = "tabler/outline/users"
   # self.avatar = {
   #   source: :avatar
   # }
   # self.includes = []
   # self.attachments = []
-  self.model_class = ::Namespace::Mirror
+  self.model_class = ::Namespace::Index::Mirror
   # self.search = {
   #   query: -> { query.ransack(id_eq: q, m: "or").result(distinct: false) }
   # }

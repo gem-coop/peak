@@ -107,8 +107,8 @@ class CooldownControllerTest < ActionDispatch::IntegrationTest
   private
     def perform_import
       Rails.cache.clear
-      Namespace::Mirror::Upstream.memory_store.clear
-      mirror = Namespace::Mirror.last
+      Namespace::Index::Mirror::Upstream.memory_store.clear
+      mirror = Namespace::Index::Mirror.last
       mirror.import
       mirror.namespace.external_index.cooldown(days: 2).compact
       perform_enqueued_jobs

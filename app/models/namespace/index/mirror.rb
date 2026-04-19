@@ -1,4 +1,4 @@
-class Namespace::Mirror < ApplicationRecord
+class Namespace::Index::Mirror < ApplicationRecord
   belongs_to :namespace
   has_object :upstream
 

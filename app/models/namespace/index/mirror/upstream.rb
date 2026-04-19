@@ -1,4 +1,4 @@
-  class Namespace::Mirror::Upstream < ActiveRecord::AssociatedObject
+  class Namespace::Index::Mirror::Upstream < ActiveRecord::AssociatedObject
     class GemYankedError < RuntimeError; end
 
     cattr_reader :memory_store, default:

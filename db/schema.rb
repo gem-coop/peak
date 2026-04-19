@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_19_070759) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_19_085523) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -165,6 +165,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_19_070759) do
     t.index ["index_id"], name: "index_namespace_index_cooldowns_on_index_id"
   end
 
+  create_table "namespace_index_mirrors", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "last_versions_size"
+    t.bigint "namespace_id", null: false
+    t.datetime "updated_at", null: false
+    t.string "upstream_url", null: false
+    t.index ["namespace_id"], name: "index_namespace_index_mirrors_on_namespace_id"
+  end
+
   create_table "namespace_indexes", force: :cascade do |t|
     t.string "access", default: "external", null: false
     t.datetime "created_at", null: false
@@ -173,14 +182,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_19_070759) do
     t.datetime "updated_at", null: false
     t.text "versions_contents", default: "---\n", null: false
     t.index ["namespace_id"], name: "index_namespace_indexes_on_namespace_id"
-  end
-
-  create_table "namespace_mirrors", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.bigint "namespace_id", null: false
-    t.datetime "updated_at", null: false
-    t.string "upstream_url", null: false
-    t.index ["namespace_id"], name: "index_namespace_mirrors_on_namespace_id"
   end
 
   create_table "namespaces", force: :cascade do |t|
@@ -257,5 +258,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_19_070759) do
   add_foreign_key "namespace_gem_cooldown_infos", "namespace_gems", column: "gem_id"
   add_foreign_key "namespace_gem_cooldown_infos", "namespace_index_cooldowns", column: "cooldown_id"
   add_foreign_key "namespace_index_cooldowns", "namespace_indexes", column: "index_id"
-  add_foreign_key "namespace_mirrors", "namespaces"
+  add_foreign_key "namespace_index_mirrors", "namespaces"
 end

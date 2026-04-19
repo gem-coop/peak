@@ -22,7 +22,7 @@ def accesses.create(label = nil, unique_by: [:namespace, :user], **) = super
 
 versions.with do
   def upload(gem, ref:, **)
-    build(gem:, ref:, **).tap { _1.process fixture_upload("#{gem.name}/#{_1.filename}") }
+    build(gem:, ref:, **).tap { _1.process fixture_upload("#{gem.name}/#{_1.filename}") } unless self.type.find_by(gem:, ref:)
   end
 
   def by(gem, ref:) = type.find_by!(gem:, ref:)

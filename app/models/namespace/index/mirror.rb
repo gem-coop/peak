@@ -16,10 +16,7 @@ class Namespace::Index::Mirror < ApplicationRecord
         import_line(name, versions)
       end
 
-      index.gems.where(name: removed_gems).find_each do |gem|
-        gem.versions.destroy_all
-        gem.info.rebuild
-      end
+      index.gems.where(name: removed_gems).destroy_all if removed_gems.any?
     end
   end
   performs :import

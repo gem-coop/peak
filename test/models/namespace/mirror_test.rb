@@ -35,15 +35,17 @@ class Namespace::Index::MirrorTest < ActiveSupport::TestCase
     assert_equal mirror_fixture("3-oaken", "info/rake").read, mirrors.public.upstream.info("rake")
     assert_equal mirror_fixture("3-oaken", "info/oaken").read, mirrors.public.upstream.info("oaken")
 
-    # compact, removing both one gem version and one gem line
-    rake_versions.clear
+    # compact, removing both one oaken 0.1.0 and rake entirely, adding unpwn
     oaken_versions.delete("0.1.0")
     unpwn_versions = %w[0.1.0 0.2.0 0.3.0 1.0.0 1.0.1]
 
     stub_rubygems("4-compacted")
+    before_id = namespaces.public.external_index.gems.find_by(name: "oaken").versions.find_by(ref: "0.2.0").id
     perform_import
-    assert_equal "", mirrors.public.index.gems.find_by(name: "rake").info.contents
-    assert_equal rake_versions, mirror_versions("rake")
+    after_id = namespaces.public.external_index.gems.find_by(name: "oaken").versions.find_by(ref: "0.2.0").id
+    assert_equal before_id, after_id
+    assert_nil mirrors.public.index.gems.find_by(name: "rake")
+    assert_equal [], mirror_versions("rake")
     assert_equal oaken_versions, mirror_versions("oaken")
     assert_equal unpwn_versions, mirror_versions("unpwn")
     assert_equal mirror_fixture("4-compacted", "versions").read, mirrors.public.upstream.versions

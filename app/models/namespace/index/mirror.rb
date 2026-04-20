@@ -84,7 +84,9 @@ class Namespace::Index::Mirror < ApplicationRecord
     end
 
     cvs.each { |cv| cv[:gem_id] = gem.id }
-    gem.versions.insert_all(cvs, unique_by: %i[gem_id ref])
+    imported_ids = gem.versions.insert_all(cvs, unique_by: %i[gem_id ref])
+    gem.versions.where(id: imported_ids).trigger_precompile_later_bulk
+
     gem.versions.where.not(ref: vset).destroy_all
     gem.info.rebuild(mirror_checksum: hash)
   end

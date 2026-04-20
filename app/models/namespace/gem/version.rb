@@ -50,4 +50,23 @@ class Namespace::Gem::Version < ApplicationRecord
   def line
     "#{ref} #{references.line}#{metadata.line}\n"
   end
+
+  def trigger_precompile
+    if has_extensions.nil?
+      upload = Peak::Gem::Upload.read gem.server.download(ref)
+      update!(has_extensions: upload.has_extensions?)
+    end
+    return unless has_extensions
+
+    HTTPX.
+      accept("application/vnd.github+json").
+      with(headers: {
+        "X-GitHub-Api-Version" => "2026-03-10",
+        "Authorization" => "Bearer #{ENV.fetch("GITHUB_TOKEN")}"
+      }).post(
+        "https://api.github.com/repos/gem-coop/precompiled-gems/actions/workflows/263494733/dispatches",
+        json: {ref: "main", inputs: {gem: name}}
+      ) if ENV.key?("GITHUB_TOKEN")
+  end
+  performs :trigger_precompile
 end

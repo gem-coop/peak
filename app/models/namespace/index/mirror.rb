@@ -5,7 +5,7 @@ class Namespace::Index::Mirror < ApplicationRecord
   def import
     removed_gems = Set.new(index.gems.pluck(:name))
 
-    upstream.versions.lines.each do |line|
+    upstream.versions.lines.reverse_each do |line|
       next if line.match(/^created_at:|^---/)
       name, versions, hash = line.split(" ")
       removed_gems.delete(name)

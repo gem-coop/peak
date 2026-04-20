@@ -26,6 +26,7 @@ class Namespace::Index::MirrorTest < ActiveSupport::TestCase
     assert_equal mirror_fixture("2-rake-13", "info/rake").read, mirrors.public.upstream.info("rake")
 
     # next, add a completely new gem
+    rake_versions.delete("13.3.0")
     rake_versions.push("13.3.1")
     oaken_versions = ["0.1.0", "0.2.0", "0.5.0", "0.6.0", "0.7.0", "0.7.1", "0.8.0", "0.9.0", "0.9.1", "1.0.0"]
 

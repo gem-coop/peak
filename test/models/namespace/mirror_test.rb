@@ -40,6 +40,7 @@ class Namespace::Index::MirrorTest < ActiveSupport::TestCase
     unpwn_versions = %w[0.1.0 0.2.0 0.3.0 1.0.0 1.0.1]
 
     stub_rubygems("4-compacted")
+    # check ids before and after to make sure we aren't deleting existing gems and versions
     before_id = namespaces.public.external_index.gems.find_by(name: "oaken").versions.find_by(ref: "0.2.0").id
     perform_import
     after_id = namespaces.public.external_index.gems.find_by(name: "oaken").versions.find_by(ref: "0.2.0").id

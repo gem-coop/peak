@@ -15,9 +15,9 @@ class Namespace::Index::Mirror < ApplicationRecord
       else
         import_line(name, versions)
       end
-
-      index.gems.where(name: removed_gems).destroy_all if removed_gems.any?
     end
+
+    index.gems.where(name: removed_gems).destroy_all if removed_gems.any?
   end
   performs :import
 

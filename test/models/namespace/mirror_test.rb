@@ -17,7 +17,7 @@ class Namespace::Index::MirrorTest < ActiveSupport::TestCase
     assert_equal mirror_fixture("1-rake-12", "info/rake").read, mirrors.public.upstream.info("rake")
 
     # first, add new version rows (including a yank)
-    rake_versions.push(*["13.0.0", "13.0.0.pre.1", "13.0.1", "13.0.2", "13.0.3", "13.0.4", "13.0.5", "13.0.6", "13.1.0", "13.2.0", "13.2.1", "13.3.0"])
+    rake_versions.push(*["13.0.0", "13.0.0.pre.1", "13.0.1", "13.0.2", "13.0.3", "13.0.4", "13.0.5", "13.0.6", "13.1.0", "13.2.0", "13.2.1"])
 
     stub_rubygems("2-rake-13")
     perform_import

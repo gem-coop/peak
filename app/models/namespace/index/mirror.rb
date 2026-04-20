@@ -70,13 +70,9 @@ class Namespace::Index::Mirror < ApplicationRecord
     end
 
     # Anything that still doesn't have a published_at was yanked
-    # We can't get the exact yanked_at from any API call, since yanked gems are
-    # not included in API responses. This should be good enough for our
-    # purposes, since yanked gems will not be included in future query results.
-    cvs.select { |cv| cv[:published_at].nil? }.each do |cv|
-      cv[:published_at] = 1.hour.ago
-      cv[:yanked_at] = Time.now
-    end
+    yanked = cvs.select { |cv| cv[:published_at].nil? }.map { |cv| cv[:ref] }
+    gem.versions.where(ref: yanked).destroy_all if yanked.any?
+    cvs.reject! { |cv| cv[:published_at].nil? }
 
     if cvs.any?
       first_publish = cvs.map { |cv| cv[:published_at] }.min

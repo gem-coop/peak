@@ -44,7 +44,7 @@ class Namespace::Gem::Version < ApplicationRecord
     self.has_extensions = upload.has_extensions?
     self.summary = upload.summary.to_s
     self.package = { io: upload.tmpfile, filename: }
-    update! **metadata.extract_from(upload), **
+    update!(**metadata.extract_from(upload), **)
   end
 
   def line

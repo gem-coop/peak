@@ -4,11 +4,16 @@ class Namespace::Index::Mirror < ApplicationRecord
 
   def import
     removed_gems = Set.new(index.gems.pluck(:name))
+    seen_gems = Set.new
 
     upstream.versions.lines.reverse_each do |line|
       next if line.match(/^created_at:|^---/)
+
       name, versions, hash = line.split(" ")
+      next if seen_gems.include?(name)
+
       removed_gems.delete(name)
+      seen_gems.add(name)
 
       if Sidekiq.server?
         import_line_later(name, versions, hash)

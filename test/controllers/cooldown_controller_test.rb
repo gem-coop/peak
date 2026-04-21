@@ -26,7 +26,7 @@ class CooldownControllerTest < ActionDispatch::IntegrationTest
     travel_to Time.utc(2026, 4, 19, 11, 47, 00)
 
     # import up to rake 13.2.1
-    stub_request(:get, "https://rubygems.org/versions").to_return(body: file_fixture("versions").read.lines[0...-3].join)
+    stub_request(:get, "https://rubygems.org/versions").to_return(body: file_fixture("versions").read.lines[0...-4].join)
     stub_request(:get, "https://rubygems.org/info/rake").to_return(body: file_fixture("info/rake").read.lines[0...-2].join)
     perform_import
     assert_equal "13.2.1", Namespace::Gem.find_by(name: "rake").versions.last&.ref
@@ -112,7 +112,8 @@ class CooldownControllerTest < ActionDispatch::IntegrationTest
       Namespace::Index::Mirror::Upstream.memory_store.clear
       mirror = Namespace::Index::Mirror.last
       mirror.import
-      mirror.index.cooldown(days: 2).compact
       perform_enqueued_jobs
+      mirror.index.compact
+      mirror.index.cooldown(days: 2).compact
     end
 end

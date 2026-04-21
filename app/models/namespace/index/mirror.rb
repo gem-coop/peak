@@ -6,8 +6,21 @@ class Namespace::Index::Mirror < ApplicationRecord
     removed_gems = Set.new(index.gems.pluck(:name))
     seen_gems = Set.new
 
-    upstream.versions.lines.reverse_each do |line|
+    # use the created_at time and the last line we saw to know when to stop
+    lines = upstream.versions.lines
+    if lines.first.starts_with?("created_at:")
+      created_at = Time.parse(lines.first.split(":", 2)[1])
+      if created_at != self.last_created_at
+        self.update!(last_line: nil)
+      end
+      self.update!(last_created_at: created_at)
+    else
+      self.update!(last_line: nil)
+    end
+
+    lines.reverse_each do |line|
       next if line.match(/^created_at:|^---/)
+      break if last_line == line
 
       name, versions, hash = line.split(" ")
       next if seen_gems.include?(name)
@@ -22,13 +35,13 @@ class Namespace::Index::Mirror < ApplicationRecord
       end
     end
 
+    self.update!(last_line: lines.last)
     index.gems.where(name: removed_gems).destroy_all if removed_gems.any?
   end
   performs :import
 
   def import_line(name, versions, hash)
     gem = index.gems.find_by(name:)
-    return if gem && gem.info.mirror_checksum == hash
 
     vset = Set.new(versions.split(","))
 
@@ -90,11 +103,7 @@ class Namespace::Index::Mirror < ApplicationRecord
 
     gem.versions.where.not(ref: vset).destroy_all
 
-    if imported_ids.any?
-      gem.info.rebuild(mirror_checksum: hash)
-    else
-      gem.info.update!(mirror_checksum: hash)
-    end
+    gem.info.rebuild if imported_ids.any?
   end
   performs :import_line
 end

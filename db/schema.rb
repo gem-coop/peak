@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_19_133539) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_21_091559) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -70,7 +70,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_19_133539) do
     t.datetime "created_at", null: false
     t.string "envelope", default: "", null: false
     t.bigint "gem_id", null: false
-    t.string "mirror_checksum"
     t.datetime "updated_at", null: false
     t.index ["gem_id"], name: "index_namespace_gem_infos_on_gem_id"
   end
@@ -169,6 +168,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_19_133539) do
   create_table "namespace_index_mirrors", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "index_id", null: false
+    t.datetime "last_created_at"
+    t.string "last_line"
     t.datetime "updated_at", null: false
     t.string "upstream_url", null: false
     t.index ["index_id"], name: "index_namespace_index_mirrors_on_index_id"

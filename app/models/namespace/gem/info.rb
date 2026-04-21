@@ -4,9 +4,7 @@ class Namespace::Gem::Info < ApplicationRecord
   # has_many :versions, -> { trimmed.published_order }, through: :gem
   def versions = gem.versions.trimmed.published_order
 
-  def rebuild(mirror_checksum: nil)
-    self.mirror_checksum = mirror_checksum
-
+  def rebuild
     io = DigestedIO.new.consume(batched_versions, &:line)
     self.contents = io.string
     self.checksum = io.hexdigest

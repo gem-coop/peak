@@ -84,7 +84,7 @@ class Namespace::Index::Mirror < ApplicationRecord
     gem.versions.where(id: imported_ids).trigger_precompile_later_bulk
 
     gem.versions.where.not(ref: vset).destroy_all
-    gem.info.rebuild(mirror_checksum: hash)
+    gem.info.rebuild(mirror_checksum: hash) if imported_ids.any?
   end
   performs :import_line
 end

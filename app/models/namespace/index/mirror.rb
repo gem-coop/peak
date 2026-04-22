@@ -3,7 +3,6 @@ class Namespace::Index::Mirror < ApplicationRecord
   has_object :upstream
 
   def import
-    removed_gems = Set.new(index.gems.pluck(:name))
     seen_gems = Set.new
 
     # use the created_at time and the last line we saw to know when to stop
@@ -25,7 +24,6 @@ class Namespace::Index::Mirror < ApplicationRecord
       name, versions, hash = line.split(" ")
       next if seen_gems.include?(name)
 
-      removed_gems.delete(name)
       seen_gems.add(name)
 
       if Sidekiq.server?
@@ -35,8 +33,12 @@ class Namespace::Index::Mirror < ApplicationRecord
       end
     end
 
+    if self.last_line.nil?
+      removed_gems = Set.new(index.gems.pluck(:name)) - seen_gems
+      index.gems.where(name: removed_gems).destroy_all if removed_gems.any?
+    end
+
     self.update!(last_line: lines.last)
-    index.gems.where(name: removed_gems).destroy_all if removed_gems.any?
   end
   performs :import
 

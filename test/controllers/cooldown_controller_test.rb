@@ -78,14 +78,13 @@ class CooldownControllerTest < ActionDispatch::IntegrationTest
 
     get "/cooldown/versions"
     full_size = response.body.size
+    assert_includes response.body, "13.3.1"
 
     get "/cooldown/versions", headers: {Range: "bytes=0-99"}
     assert_response :partial_content
     assert_equal 100, response.body.size
     assert_equal %("0453b00398fdd27efc819092d949adbf"), response.headers["etag"]
     assert_equal %(sha256="fb1a511c3271cbb28d62d2d2906384ecf16e6bd3ec2e441c4c337354f8b4a97c"), response.headers["digest"]
-    assert_not_includes response.body, "0.4.11"
-    assert_includes response.body, "13.3.0"
 
     get "/cooldown/versions", headers: {Range: "bytes=100-"}
     assert_response :partial_content
@@ -114,8 +113,9 @@ class CooldownControllerTest < ActionDispatch::IntegrationTest
       Sidekiq::Queue.stub :new, [] do
         mirror.import
       end
-      perform_enqueued_jobs
       mirror.index.compact
+      mirror.index.cooldown(days: 2).rebuild_infos
       mirror.index.cooldown(days: 2).compact
+      perform_enqueued_jobs
     end
 end

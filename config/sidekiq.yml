@@ -9,6 +9,8 @@
   :schedule:
     MirrorImportJob:
       cron: "* * * * *"
+    CooldownUpdateJob:
+      cron: "5 4 * * *"
     CompactMirrorIndexesJob:
       cron: "41 4 2 * *"
     ClearExpiredPushKeysJob:

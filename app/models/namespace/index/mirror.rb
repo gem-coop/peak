@@ -28,17 +28,14 @@ class Namespace::Index::Mirror < ApplicationRecord
       break if last_line == line
 
       name, versions, _ = line.split(" ")
+      # if we already updated the gem with this name, we're good
       next if seen_gems.include?(name)
 
       seen_gems.add(name)
-
-      if Sidekiq.server?
-        import_line_later(name, versions)
-      else
-        import_line(name, versions)
-      end
+      import_line_later(name, versions)
     end
 
+    # if we are processing the whole file, delete any (yanked) gems we didn't see
     if self.last_line.nil?
       removed_gems = Set.new(index.gems.pluck(:name)) - seen_gems
       index.gems.where(name: removed_gems).destroy_all if removed_gems.any?

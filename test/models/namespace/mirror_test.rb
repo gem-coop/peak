@@ -1,4 +1,5 @@
 require "test_helper"
+require "minitest/mock"
 
 class Namespace::Index::MirrorTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
@@ -65,7 +66,9 @@ private
   def perform_import
     Rails.cache.clear
     Namespace::Index::Mirror::Upstream.memory_store.clear
-    mirrors.public.import
+    Sidekiq::Queue.stub :new, [] do
+      mirrors.public.import
+    end
     perform_enqueued_jobs
   end
 

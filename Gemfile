@@ -54,6 +54,10 @@ group :test do
   gem "webmock"
 end
 
+group :test do
+  gem "minitest-mock", "~> 5.27"
+end
+
 # Use Avo for our starting UI
 group :avo, optional: true do
   gem "avo"

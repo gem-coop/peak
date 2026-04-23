@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_21_091559) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_23_073530) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -170,6 +170,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_21_091559) do
     t.bigint "index_id", null: false
     t.datetime "last_created_at"
     t.string "last_line"
+    t.datetime "last_processed_at", default: "1970-01-01 00:00:00", null: false
+    t.datetime "last_started_at", default: "1970-01-01 00:00:00", null: false
     t.datetime "updated_at", null: false
     t.string "upstream_url", null: false
     t.index ["index_id"], name: "index_namespace_index_mirrors_on_index_id"

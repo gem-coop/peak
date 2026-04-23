@@ -3,6 +3,12 @@ class Namespace::Index::Mirror < ApplicationRecord
   has_object :upstream
 
   def import
+    # prevent running two imports at once
+    return if last_processed_at < last_started_at
+    # prevent queueing multiple imports at once
+    return unless Sidekiq::Queue.new("mirror").size.zero?
+
+    self.update!(last_started_at: Time.now)
     seen_gems = Set.new
 
     # use the created_at time and the last line we saw to know when to stop
@@ -38,7 +44,7 @@ class Namespace::Index::Mirror < ApplicationRecord
       index.gems.where(name: removed_gems).destroy_all if removed_gems.any?
     end
 
-    self.update!(last_line: lines.last)
+    self.update!(last_line: lines.last, last_processed_at: Time.now)
   end
   performs :import
 
@@ -107,5 +113,5 @@ class Namespace::Index::Mirror < ApplicationRecord
 
     gem.info.rebuild if imported_ids.any?
   end
-  performs :import_line
+  performs :import_line, queue_as: :mirror
 end

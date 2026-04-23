@@ -5,6 +5,7 @@ class Namespace::Gem < ApplicationRecord
   has_one :info, dependent: :destroy
   has_many :cooldown_infos, dependent: :destroy
   before_create :build_info
+  after_create :create_cooldown_infos
 
   has_object :imports, :server
 
@@ -28,4 +29,12 @@ class Namespace::Gem < ApplicationRecord
     index.append info.rebuild.envelope_from(version.ref)
   end
   def version_uploaded(version) = process_version_later(version)
+
+private
+
+  def create_cooldown_infos
+    index.cooldowns.find_each do |cooldown|
+      cooldown_infos.find_or_create_by!(cooldown:)
+    end
+  end
 end

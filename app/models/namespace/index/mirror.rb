@@ -108,7 +108,10 @@ class Namespace::Index::Mirror < ApplicationRecord
 
     gem.versions.where.not(ref: vset).destroy_all
 
-    gem.info.rebuild if imported_ids.any?
+    if imported_ids.any?
+      gem.info.rebuild
+      gem.cooldown_infos.find_each(&:rebuild)
+    end
   end
   performs :import_line, queue_as: :mirror
 end

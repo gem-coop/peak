@@ -110,12 +110,11 @@ class CooldownControllerTest < ActionDispatch::IntegrationTest
       Rails.cache.clear
       Namespace::Index::Mirror::Upstream.memory_store.clear
       mirror = Namespace::Index::Mirror.last
+      mirror.index.cooldowns.find_or_create_by!(days_delayed: 2)
       Sidekiq::Queue.stub :new, [] do
         mirror.import
       end
       mirror.index.compact
-      mirror.index.cooldown(days: 2).rebuild_infos
-      mirror.index.cooldown(days: 2).compact
       perform_enqueued_jobs
     end
 end

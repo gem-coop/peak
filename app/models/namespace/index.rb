@@ -29,6 +29,7 @@ class Namespace::Index < ApplicationRecord
 
   performs def compact
     update! versions_contents: contents, last_compacted_at: Time.current
+    cooldowns.each(&:compact)
   end
 
   def public_cache?

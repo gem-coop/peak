@@ -21,8 +21,9 @@ class Namespace::Index::Cooldown < ApplicationRecord
     update! versions_contents: contents, last_compacted_at: Time.current
   end
 
-  def rebuild_infos
-    gems.find_each do |gem|
+  def rebuild_infos(period: 1.day)
+    gem_ids = versions.where("published_at >= ?", (days_delayed.days + period).ago).pluck(:gem_id).uniq
+    gems.where(id: gem_ids).find_each do |gem|
       gem.cooldown_infos.find_or_create_by!(cooldown: self).rebuild
     end
     compact_later

@@ -21,15 +21,15 @@ class Namespace::Index::Mirror::Upstream < ActiveRecord::AssociatedObject
   end
 
   def versions
-    cached_get("/versions", expires_in: 30.minutes)
+    cached_get("/versions", expires_in: 1.minutes)
   end
 
   def info(name)
-    cached_get("/info/#{name}", expires_in: 30.minutes)
+    cached_get("/info/#{name}", expires_in: 1.minutes)
   end
 
   def versions_json(name)
-    JSON.parse cached_get("/api/v1/versions/#{name}.json", expires_in: 30.minutes)
+    JSON.parse cached_get("/api/v1/versions/#{name}.json", expires_in: 1.minutes)
   rescue GemYankedError
     {}
   end

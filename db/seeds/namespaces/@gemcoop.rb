@@ -1,6 +1,6 @@
 namespace = namespaces.create :gemcoop, name: "@gemcoop"
-namespace.create_dev_index
-namespace.create_private_index
+namespace.indexes.dev_access.create
+namespace.indexes.private_access.create
 
 accesses.with namespace: do
   _1.owner.create :owner, user: users.create(:owner, name: "Owner", email_address: "owner@example.com")

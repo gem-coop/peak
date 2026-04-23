@@ -21,15 +21,15 @@ class Namespace::Index::Mirror < ApplicationRecord
       next if line.match(/^created_at:|^---/)
       break if last_line == line
 
-      name, versions, hash = line.split(" ")
+      name, versions, _ = line.split(" ")
       next if seen_gems.include?(name)
 
       seen_gems.add(name)
 
       if Sidekiq.server?
-        import_line_later(name, versions, hash)
+        import_line_later(name, versions)
       else
-        import_line(name, versions, hash)
+        import_line(name, versions)
       end
     end
 
@@ -42,7 +42,7 @@ class Namespace::Index::Mirror < ApplicationRecord
   end
   performs :import
 
-  def import_line(name, versions, hash)
+  def import_line(name, versions)
     gem = index.gems.find_by(name:)
 
     vset = Set.new(versions.split(","))

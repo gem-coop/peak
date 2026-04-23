@@ -22,7 +22,7 @@ class Namespace::Index::Cooldown < ApplicationRecord
   end
 
   def rebuild_infos(period: 1.day)
-    gem_ids = versions.where("published_at >= ?", (days_delayed.days + period).ago).pluck(:gem_id).uniq
+    gem_ids = versions.where("published_at >= ?", (days_delayed.days + period + 1).ago).pluck(:gem_id).uniq
     gems.where(id: gem_ids).find_each do |gem|
       gem.cooldown_infos.find_or_create_by!(cooldown: self).rebuild
     end

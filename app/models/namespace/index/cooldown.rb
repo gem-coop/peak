@@ -25,6 +25,7 @@ class Namespace::Index::Cooldown < ApplicationRecord
     gems.find_each do |gem|
       gem.cooldown_infos.find_or_create_by!(cooldown: self).rebuild
     end
+    compact_later
   end
 
   def public_cache?

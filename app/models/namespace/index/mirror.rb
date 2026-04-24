@@ -119,8 +119,6 @@ class Namespace::Index::Mirror < ApplicationRecord
       nodes = reference_ids.map { |id| {version_id: version.id, reference_id: id} }
       Namespace::Gem::Version::Node.upsert_all(nodes)
 
-      gem.process_version version
-
       # version.trigger_precompile_later
 
       version.id

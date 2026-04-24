@@ -22,7 +22,7 @@ class Namespaces::GemsController < Public::BaseController
     version = @index.versions.for(gem_name).find_by!(ref:)
 
     if version.package.attached?
-      expires_in 1.year, public: @index.public_cache?
+      expires_in 1.year, public: @index.public_access?
 
       # redirect_to version.package.url expires_in: 5.seconds # TODO: When not using Disk Service?
       send_data version.package.download, filename: version.package_name, disposition: "inline"

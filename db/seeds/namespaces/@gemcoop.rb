@@ -1,6 +1,7 @@
 namespace = namespaces.create :gemcoop, name: "@gemcoop"
-namespace.indexes.dev_access.create
-namespace.indexes.private_access.create
+# Created & managed by subscription eventually
+indexes.public_access.create namespace:, slug: :dev
+indexes.private_access.create namespace:, slug: :private
 
 accesses.with namespace: do
   _1.owner.create :owner, user: users.create(:owner, name: "Owner", email_address: "owner@example.com")
@@ -8,7 +9,7 @@ accesses.with namespace: do
   users.plain.create_push_key
 end
 
-gems.with index: namespace.external_index do
+gems.with index: namespace.default_index do
   _1.parse :oaken, gems.oaken_lines
 
   peak = _1.create :peak, name: :peak

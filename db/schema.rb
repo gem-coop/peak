@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_30_154148) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_24_070701) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -162,8 +162,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_30_154148) do
     t.datetime "created_at", null: false
     t.datetime "last_compacted_at", null: false
     t.integer "namespace_id", null: false
+    t.string "slug", null: false
     t.datetime "updated_at", null: false
     t.text "versions_contents", default: "---\n", null: false
+    t.index ["namespace_id", "slug"], name: "namespace_index_uniqueness", unique: true
     t.index ["namespace_id"], name: "index_namespace_indexes_on_namespace_id"
   end
 

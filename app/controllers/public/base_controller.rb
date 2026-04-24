@@ -3,7 +3,7 @@ class Public::BaseController < ActionController::Base
 
   private
     def set_routed_index(from: Namespace)
-      return head :not_found if params[:index] == "private" # TODO: Figure out routing to the /private index.
-      @index = from.approved.named(params[:namespace]).indexes.locate_or_external(params[:index])
+      # TODO: Figure out authenticated routing to `private_access` indexes.
+      @index = from.approved.named(params[:namespace]).indexes.public_access.locate_or_default(params[:index])
     end
 end

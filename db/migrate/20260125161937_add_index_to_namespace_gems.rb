@@ -6,7 +6,7 @@ class AddIndexToNamespaceGems < ActiveRecord::Migration[8.1]
 
     up_only do
       Namespace.find_each do |ns|
-        index_id = ns.create_external_index.id
+        index_id = ns.create_default_index.id
         Namespace::Gem.where(namespace: ns).update_all(index_id:)
       end
     end

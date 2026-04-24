@@ -5,12 +5,16 @@ class Namespace::Index < ApplicationRecord
   has_many :gems, dependent: :destroy
   has_many :infos,    through: :gems, class_name: "Namespace::Gem::Info"
   has_many :versions, through: :gems, class_name: "Namespace::Gem::Version"
-  enum :access, %i[external dev private].index_by(&:itself), suffix: true
+  enum :access, %i[public private].index_by(&:itself), suffix: true
 
   attribute :last_compacted_at, default: -> { Time.current }
 
-  def self.locate_or_external(access)
-    find_by!(access: access&.presence_in(accesses.keys) || :external)
+  validates_presence_of :slug
+  normalizes :slug, with: -> { _1.to_s.parameterize }
+  before_destroy { throw :abort if slug.inquiry.default? } # Can't destroy default index.
+
+  def self.locate_or_default(slug)
+    find_by!(slug: slug.presence || :default)
   end
 
   def append(envelope)
@@ -24,10 +28,6 @@ class Namespace::Index < ApplicationRecord
 
   performs def compact
     update! versions_contents: contents, last_compacted_at: Time.current
-  end
-
-  def public_cache?
-    external_access? || dev_access?
   end
 
   private

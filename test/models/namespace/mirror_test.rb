@@ -50,7 +50,7 @@ class Namespace::Index::MirrorTest < ActiveSupport::TestCase
     assert_equal [], mirror_versions("rake")
     assert_equal oaken_versions, mirror_versions("oaken")
     assert_equal mirror_fixture("4-compacted", "versions").read, mirrors.public.upstream.versions
-    assert_equal mirror_fixture("4-compacted", "info/oaken").read, mirrors.public.upstream.info("oaken")
+    assert_includes mirror_gem("oaken").info.contents, "0.1.0 |checksum:a75a5831a045487fe8675a5e6b1205fbe704079e9828f08c9f4e9d1c9e996396,ruby:>= 3.0.0,published_at:2023-07-20T16:29:33.102Z"
 
     stub_rubygems("mirror/5-unpwn")
     perform_import
@@ -58,7 +58,7 @@ class Namespace::Index::MirrorTest < ActiveSupport::TestCase
     assert_equal [], mirror_versions("rake")
     assert_equal oaken_versions, mirror_versions("oaken")
     assert_equal %w[0.1.0 0.2.0 0.3.0 1.0.0 1.0.1], mirror_versions("unpwn")
-    assert_equal mirror_fixture("5-unpwn", "info/unpwn").read, mirrors.public.upstream.info("unpwn")
+    assert_includes mirror_gem("unpwn").info.contents, "1.0.1 bloomer:~> 1.0,pwned:~> 2.0|checksum:103b3cc9ee9fb3dd68b88b73778bd17a9bfe7cfe12fc7053c2bf9f06caa2c155"
   end
 
 private
@@ -72,8 +72,12 @@ private
     perform_enqueued_jobs
   end
 
+  def mirror_gem(name)
+    namespaces.public.external_index.gems.find_by(name:)
+  end
+
   def mirror_versions(name)
-    gem = namespaces.public.external_index.gems.find_by(name:)
+    gem = mirror_gem(name)
     gem ? gem.versions.pluck(:ref).sort : []
   end
 

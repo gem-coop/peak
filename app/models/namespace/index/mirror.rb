@@ -60,9 +60,12 @@ class Namespace::Index::Mirror < ApplicationRecord
     info = upstream.info(name)
     cvs = info.lines.map do |info_line|
       next if info_line.match(/^created_at:|^---/)
-      ref, _ = info_line.split(" ", 2)
+      refs, metadata = info_line.chomp.split("|")
+      ref, refs = refs.split(" ", 2)
+      metadata = metadata.split(",").to_h { _1.split(":", 2) }.compact if metadata
+
       vset.add(ref)
-      {ref:, created_by_id:}
+      {ref:, created_by_id:, refs:}.merge(metadata)
     end.compact
 
     return if cvs.empty?
@@ -102,9 +105,22 @@ class Namespace::Index::Mirror < ApplicationRecord
       gem.update(created_at: first_publish) if first_publish < gem.created_at
     end
 
-    cvs.each { |cv| cv[:gem_id] = gem.id }
-    imported_ids = gem.versions.insert_all(cvs, unique_by: %i[gem_id ref])
-    gem.versions.where(id: imported_ids).trigger_precompile_later_bulk
+    version_refs = gem.versions.pluck(:ref)
+
+    imported_ids = cvs.map do |cv|
+      ref = cv[:ref]
+      next if version_refs.include?(ref)
+
+      reference_ids = create_refs(cv[:refs])
+      cv.delete(:refs)
+      version = gem.versions.create(**cv, reference_ids:)
+      gem.process_version version
+      version.save!
+
+      # version.trigger_precompile_later
+
+      version.id
+    end.compact
 
     gem.versions.where.not(ref: vset).destroy_all
 
@@ -114,6 +130,19 @@ class Namespace::Index::Mirror < ApplicationRecord
     end
   end
   performs :import_line, queue_as: :mirror
+
+  def create_refs(refs)
+    refs&.split(",").to_a.flat_map do |group|
+      name, ranges = group.split(":")
+
+      inserts = ranges.split("&").map do
+        operator, ref = it.split(" ")
+        {name:, operator:, ref: ref || "0" }
+      end
+
+      Namespace::Gem::Version::Reference.upsert_all(inserts)
+    end
+  end
 end
 
 

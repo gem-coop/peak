@@ -1,0 +1,19 @@
+class Avo::Resources::NamespaceIndexManifest < Avo::BaseResource
+  # self.icon = "tabler/outline/users"
+  # self.avatar = {
+  #   source: :avatar
+  # }
+  # self.includes = []
+  # self.attachments = []
+  self.model_class = ::Namespace::Index::Manifest
+  # self.search = {
+  #   query: -> { query.ransack(id_eq: q, m: "or").result(distinct: false) }
+  # }
+
+  def fields
+    field :id, as: :id
+    # field :avatar, as: :avatar
+    field :owner, as: :belongs_to
+    field :contents, as: :textarea
+  end
+end

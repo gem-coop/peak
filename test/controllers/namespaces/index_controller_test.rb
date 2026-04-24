@@ -17,7 +17,7 @@ class Namespaces::IndexControllerTest < ActionDispatch::IntegrationTest
   test "get show" do
     get namespace_info_url(namespace:, id: gems.oaken)
     assert_response :success
-    assert_equal gems.oaken_lines, response.body.split("\n")
+    assert_equal gems.oaken_lines, response.body.lines
   end
 
   test "get show with dependencies" do

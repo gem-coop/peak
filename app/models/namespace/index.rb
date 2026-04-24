@@ -1,13 +1,20 @@
 class Namespace::Index < ApplicationRecord
   belongs_to :namespace
-  default_scope { select(*column_names.without("versions_contents")) }
-
-  has_many :gems, dependent: :destroy
-  has_many :infos,    through: :gems, class_name: "Namespace::Gem::Info"
-  has_many :versions, through: :gems, class_name: "Namespace::Gem::Version"
-  enum :access, %i[public private].index_by(&:itself), suffix: true
-
+  has_one :cooldown, dependent: :destroy
   attribute :last_compacted_at, default: -> { Time.current }
+
+  concerning :Manifested do
+    included do
+      has_one :manifest, as: :author, dependent: :destroy
+      delegate :compact, :append, :append_later, :contents, to: :manifest
+      before_create :build_manifest
+    end
+  end
+
+  has_many :gems, -> { alphabetized }, dependent: :destroy
+  has_many :versions, through: :gems, class_name: "Namespace::Gem::Version"
+
+  enum :access, %i[public private].index_by(&:itself), suffix: true
 
   validates_presence_of :slug
   normalizes :slug, with: -> { _1.to_s.parameterize }
@@ -16,21 +23,4 @@ class Namespace::Index < ApplicationRecord
   def self.locate_or_default(slug)
     find_by!(slug: slug.presence || :default)
   end
-
-  def append(envelope)
-    versions_contents << envelope
-    save!
-  end
-
-  def versions_contents
-    read_unloaded_attribute __method__
-  end
-
-  performs def compact
-    update! versions_contents: contents, last_compacted_at: Time.current
-  end
-
-  private
-    def contents = infos.pluck(:envelope).join.prepend(frontmatter)
-    def frontmatter = "---\n"
 end

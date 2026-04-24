@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_24_193857) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_28_123819) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -132,6 +132,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_24_193857) do
     t.bigint "gem_id", null: false
     t.boolean "has_extensions"
     t.json "licenses", default: [], null: false
+    t.string "line", null: false
     t.bigint "platform_id", null: false
     t.datetime "published_at", null: false
     t.string "ref", null: false
@@ -155,6 +156,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_24_193857) do
     t.index ["index_id", "name"], name: "index_namepace_gems_uniqueness", unique: true
     t.index ["index_id"], name: "index_namespace_gems_on_index_id"
     t.index ["namespace_id"], name: "index_namespace_gems_on_namespace_id"
+  end
+
+  create_table "namespace_index_cooldowns", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "index_id", null: false
+    t.interval "interval", default: "P2D", null: false
+    t.datetime "updated_at", null: false
+    t.index ["index_id"], name: "index_namespace_index_cooldowns_on_index_id", unique: true
+  end
+
+  create_table "namespace_index_manifests", force: :cascade do |t|
+    t.bigint "author_id", null: false
+    t.string "author_type", null: false
+    t.text "contents", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "last_compacted_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_type", "author_id"], name: "index_namespace_index_manifests_on_author", unique: true
   end
 
   create_table "namespace_indexes", force: :cascade do |t|

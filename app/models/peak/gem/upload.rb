@@ -13,15 +13,23 @@ class Peak::Gem::Upload
     @package = nil
   end
 
+  def slice(*keys)
+    keys.index_with { public_send _1 }
+  end
+
   def package
     @package ||= rewinding { ::Gem::Package.new tmpfile }
   end
   delegate :spec, to: :package
   delegate :name, :executables, :licenses, :summary, :homepage, :metadata, to: :spec
-  def platform_ref = "#{spec.version}-#{spec.platform}".chomp("-ruby")
   def ruby = spec.required_ruby_version.to_s
   def rubygems = spec.required_rubygems_version.to_s
+
+  def platform_id
+    Peak::Platform.ids_from(platform_key).first
+  end
   def platform_key = spec.platform.to_s
+  def platform_ref = "#{spec.version}-#{spec.platform}".chomp("-ruby")
 
   def requirement_triples
     spec.dependencies.select(&:runtime?).flat_map { |dep|
@@ -33,9 +41,8 @@ class Peak::Gem::Upload
     metadata.select { _1.end_with? "_uri" }.transform_keys { _1.delete_suffix("_uri").to_sym }.merge(homepage:).compact_blank
   end
 
-  def has_extensions?
-    spec.extensions.any?
-  end
+  def has_extensions? = spec.extensions.any?
+  alias_method :has_extensions, :has_extensions?
 
   def unlink
     tmpfile.close!

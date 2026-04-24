@@ -54,6 +54,10 @@ group :test do
   gem "webmock"
 end
 
+group :test do
+  gem "minitest-mock", "~> 5.27"
+end
+
 # Use Avo for our starting UI
 group :avo, optional: true do
   gem "avo"
@@ -80,3 +84,5 @@ gem "sidekiq-scheduler", "~> 6.0"
 gem "sidekiq", "~> 8.1", require: %w[sidekiq sidekiq/api]
 gem "slack-notifier", "~> 2.4"
 gem "strong_migrations"
+
+gem "annotaterb", "~> 4.22"

@@ -4,13 +4,14 @@
   - critical
   - default
   - low
-  - import_1
-  - import_2
-  - import_3
-  - import_4
+  - mirror
 :scheduler:
   :schedule:
-    CooldownVersionImportJob:
-      cron: "0,20,40 * * * *"
+    MirrorImportJob:
+      cron: "* * * * *"
+    CooldownUpdateJob:
+      cron: "5 4 * * *"
+    CompactMirrorIndexesJob:
+      cron: "41 4 2 * *"
     ClearExpiredPushKeysJob:
       cron: "6 * * * *"

@@ -23,21 +23,24 @@ Rails.application.routes.draw do
 
   scope module: :namespaces, defaults: { namespace: "@public" }, as: :public do
     get "/cooldown/versions" => "cooldown#versions"
-    get "/cooldown/info/:name" => "cooldown#info"
-    get "/cooldown/gems/:gem" => "cooldown#gems", constraints: {gem: Peak::Gem.pattern}
+    get "/cooldown/info/:id" => "cooldown#info"
+    get "/cooldown/gems/:id" => "cooldown#gems", constraints: {id: Peak::Gem.pattern}
 
     get "/versions" => "mirror#versions"
-    get "/info/:name" => "mirror#info"
-    get "/gems/:gem" => "mirror#gems", constraints: {gem: Peak::Gem.pattern}
-    post "/api/v1/gems", to: "gems#create", as: :gem_push
+    get "/info/:id" => "mirror#info"
+    get "/gems/:id" => "mirror#gems", constraints: {id: Peak::Gem.pattern}
   end
 
   constraints -> { _1.params[:namespace].then { it.starts_with?("@") && it != "@public" } } do
     namespace :namespaces, path: "/:namespace(/:index)", as: :namespace do
-      get :versions,   to: "index#index", as: :versions
-      get "/info/:id", to: "index#show", as: :info
+      get "/versions", to: "index#index", as: :versions
+      get "/info/:id", to: "index#show",  as: :info
+      get "/gems/:id", to: "gems#show",   as: :gems, constraints: {id: Peak::Gem.pattern}
 
-      get "/gems/:id", to: "gems#show", as: :gems, constraints: {id: Peak::Gem.pattern}
+      get "/cooldown/versions", to: "cooldown#versions", as: :cooldown_versions
+      get "/cooldown/info/:id", to: "cooldown#info",     as: :cooldown_info
+      get "/cooldown/gems/:id", to: "cooldown#gems",     as: :cooldown_gem, constraints: {id: Peak::Gem.pattern}
+
       post "/api/v1/gems", to: "gems#create", as: :gem_push
       get "/:id", to: "gems/profiles#show", as: :gem
     end

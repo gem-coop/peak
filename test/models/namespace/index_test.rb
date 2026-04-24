@@ -19,3 +19,20 @@ class Namespace::IndexTest < ActiveSupport::TestCase
     assert_match gems.actionview.info.envelope, index.versions_contents
   end
 end
+
+# == Schema Information
+#
+# Table name: namespace_indexes
+#
+#  id                :bigint           not null, primary key
+#  access            :string           default("external"), not null
+#  last_compacted_at :datetime         not null
+#  versions_contents :text             default("---\n"), not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  namespace_id      :bigint           not null
+#
+# Indexes
+#
+#  index_namespace_indexes_on_namespace_id  (namespace_id)
+#

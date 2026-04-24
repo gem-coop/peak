@@ -3,13 +3,14 @@ class Namespace::Gem < ApplicationRecord
   belongs_to :namespace, default: -> { index.namespace }
 
   has_one :info, dependent: :destroy
+  has_many :cooldown_infos, dependent: :destroy
   before_create :build_info
+  after_create :create_cooldown_infos
 
   has_object :imports, :server
 
   def self.named(name) = find_by!(name:)
   def to_param = name
-
 
   has_many :referrants, class_name: "Version::Reference", foreign_key: :name, primary_key: :name
   has_many :versions, dependent: :destroy do
@@ -28,4 +29,31 @@ class Namespace::Gem < ApplicationRecord
     index.append info.rebuild.envelope_from(version.ref)
   end
   def version_uploaded(version) = process_version_later(version)
+
+private
+
+  def create_cooldown_infos
+    index.cooldowns.find_each do |cooldown|
+      cooldown_infos.find_or_create_by!(cooldown:)
+    end
+  end
 end
+
+# == Schema Information
+#
+# Table name: namespace_gems
+#
+#  id                         :bigint           not null, primary key
+#  name                       :string           not null
+#  trim_versions_published_at :datetime
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  index_id                   :bigint           not null
+#  namespace_id               :bigint           not null
+#
+# Indexes
+#
+#  index_namepace_gems_uniqueness        (index_id,name) UNIQUE
+#  index_namespace_gems_on_index_id      (index_id)
+#  index_namespace_gems_on_namespace_id  (namespace_id)
+#

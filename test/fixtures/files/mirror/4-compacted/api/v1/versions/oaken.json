@@ -1,0 +1,227 @@
+[
+    {
+        "authors": "Kasper Timm Hansen",
+        "built_at": "1980-01-02T00:00:00.000Z",
+        "created_at": "2026-01-01T20:09:58.133Z",
+        "description": null,
+        "downloads_count": 6066,
+        "metadata": {
+            "homepage_uri": "https://github.com/kaspth/oaken",
+            "changelog_uri": "https://github.com/kaspth/oaken/blob/main/CHANGELOG.md",
+            "source_code_uri": "https://github.com/kaspth/oaken",
+            "allowed_push_host": "https://rubygems.org"
+        },
+        "number": "1.0.0",
+        "summary": "Oaken aims to blend your Fixtures/Factories and levels up your database seeds.",
+        "platform": "ruby",
+        "rubygems_version": "\u003e= 0",
+        "ruby_version": "\u003e= 3.2",
+        "prerelease": false,
+        "licenses": [
+            "MIT"
+        ],
+        "requirements": [],
+        "sha": "e89249bc4f6cd3ab9b5e3abdc06c377fa772e6bcb3005cc09ff044bb8d3f1dc2",
+        "spec_sha": "94d35e88ea0a29e9b7616f6c8faa554aa540c229d4626d3bdb4e9a940a99019e"
+    },
+    {
+        "authors": "Kasper Timm Hansen",
+        "built_at": "1980-01-02T00:00:00.000Z",
+        "created_at": "2025-05-20T14:02:37.371Z",
+        "description": null,
+        "downloads_count": 17165,
+        "metadata": {
+            "homepage_uri": "https://github.com/kaspth/oaken",
+            "changelog_uri": "https://github.com/kaspth/oaken/blob/main/CHANGELOG.md",
+            "source_code_uri": "https://github.com/kaspth/oaken",
+            "allowed_push_host": "https://rubygems.org"
+        },
+        "number": "0.9.1",
+        "summary": "Oaken aims to blend your Fixtures/Factories and levels up your database seeds.",
+        "platform": "ruby",
+        "rubygems_version": "\u003e= 0",
+        "ruby_version": "\u003e= 3.0.0",
+        "prerelease": false,
+        "licenses": [
+            "MIT"
+        ],
+        "requirements": [],
+        "sha": "86c502949e539dd53e40e66664502c7a0bda537eccdfa9ae426f0c90c354ba03",
+        "spec_sha": "2709375f9137c8fc7b129b6240a5b8091507513c7aa99c6233121c89699ebef1"
+    },
+    {
+        "authors": "Kasper Timm Hansen",
+        "built_at": "2025-05-13T00:00:00.000Z",
+        "created_at": "2025-05-13T18:08:06.550Z",
+        "description": null,
+        "downloads_count": 544,
+        "metadata": {
+            "homepage_uri": "https://github.com/kaspth/oaken",
+            "changelog_uri": "https://github.com/kaspth/oaken/blob/main/CHANGELOG.md",
+            "source_code_uri": "https://github.com/kaspth/oaken",
+            "allowed_push_host": "https://rubygems.org"
+        },
+        "number": "0.9.0",
+        "summary": "Oaken aims to blend your Fixtures/Factories and levels up your database seeds.",
+        "platform": "ruby",
+        "rubygems_version": "\u003e= 0",
+        "ruby_version": "\u003e= 3.0.0",
+        "prerelease": false,
+        "licenses": [
+            "MIT"
+        ],
+        "requirements": [],
+        "sha": "b3a131978f6e6a7d866a8e3f3e4417dea1d21125dee60af895bb98c143371492",
+        "spec_sha": "8b0777c68860a63a8febb56a158a25de657b2cd9cd5f74948119fa88fc969e5d"
+    },
+    {
+        "authors": "Kasper Timm Hansen",
+        "built_at": "1980-01-02T00:00:00.000Z",
+        "created_at": "2025-04-18T15:42:22.293Z",
+        "description": null,
+        "downloads_count": 2912,
+        "metadata": {
+            "homepage_uri": "https://github.com/kaspth/oaken",
+            "changelog_uri": "https://github.com/kaspth/oaken/blob/main/CHANGELOG.md",
+            "source_code_uri": "https://github.com/kaspth/oaken",
+            "allowed_push_host": "https://rubygems.org"
+        },
+        "number": "0.8.0",
+        "summary": "Oaken aims to blend your Fixtures/Factories and levels up your database seeds.",
+        "platform": "ruby",
+        "rubygems_version": "\u003e= 0",
+        "ruby_version": "\u003e= 3.0.0",
+        "prerelease": false,
+        "licenses": [
+            "MIT"
+        ],
+        "requirements": [],
+        "sha": "ee7d752726473ab9e201c304e8b45d73fd07769ad44aa21e1176fd663730d1f7",
+        "spec_sha": "ea3657a8016acf4d6571423f61607addb579f3cbaffc1740a60b4949cde7eebb"
+    },
+    {
+        "authors": "Kasper Timm Hansen",
+        "built_at": "2024-12-10T00:00:00.000Z",
+        "created_at": "2024-12-10T21:13:04.493Z",
+        "description": null,
+        "downloads_count": 9669,
+        "metadata": {
+            "homepage_uri": "https://github.com/kaspth/oaken",
+            "changelog_uri": "https://github.com/kaspth/oaken/blob/main/CHANGELOG.md",
+            "source_code_uri": "https://github.com/kaspth/oaken",
+            "allowed_push_host": "https://rubygems.org"
+        },
+        "number": "0.7.1",
+        "summary": "Oaken aims to blend your Fixtures/Factories and levels up your database seeds.",
+        "platform": "ruby",
+        "rubygems_version": "\u003e= 0",
+        "ruby_version": "\u003e= 3.0.0",
+        "prerelease": false,
+        "licenses": [
+            "MIT"
+        ],
+        "requirements": [],
+        "sha": "67e279cb419e9c2946bed729302a2b9ec24aad5c05934c4bb1eea9cb6a8db82e",
+        "spec_sha": "a284459baa9ad0ffef2d1370bbd33466313a451bb065a88374c814c9a399a632"
+    },
+    {
+        "authors": "Kasper Timm Hansen",
+        "built_at": "2024-06-30T00:00:00.000Z",
+        "created_at": "2024-06-30T17:48:27.227Z",
+        "description": null,
+        "downloads_count": 18328,
+        "metadata": {
+            "homepage_uri": "https://github.com/kaspth/oaken",
+            "changelog_uri": "https://github.com/kaspth/oaken/blob/main/CHANGELOG.md",
+            "source_code_uri": "https://github.com/kaspth/oaken",
+            "allowed_push_host": "https://rubygems.org"
+        },
+        "number": "0.7.0",
+        "summary": "Oaken aims to blend your Fixtures/Factories and levels up your database seeds.",
+        "platform": "ruby",
+        "rubygems_version": "\u003e= 0",
+        "ruby_version": "\u003e= 3.0.0",
+        "prerelease": false,
+        "licenses": [
+            "MIT"
+        ],
+        "requirements": [],
+        "sha": "fbec33b672a79853dcc6b5b0d342a151b9e7d2635ea96415374e1d9b040ed3ac",
+        "spec_sha": "bf82180006dcb266958750bb068bab331f36982d5ed1cf95545b4f447647722a"
+    },
+    {
+        "authors": "Kasper Timm Hansen",
+        "built_at": "2024-05-13T00:00:00.000Z",
+        "created_at": "2024-05-13T21:16:40.894Z",
+        "description": null,
+        "downloads_count": 541,
+        "metadata": {
+            "homepage_uri": "https://github.com/kaspth/oaken",
+            "changelog_uri": "https://github.com/kaspth/oaken/blob/main/CHANGELOG.md",
+            "source_code_uri": "https://github.com/kaspth/oaken",
+            "allowed_push_host": "https://rubygems.org"
+        },
+        "number": "0.6.0",
+        "summary": "Oaken aims to blend your Fixtures/Factories and levels up your database seeds.",
+        "platform": "ruby",
+        "rubygems_version": "\u003e= 0",
+        "ruby_version": "\u003e= 3.0.0",
+        "prerelease": false,
+        "licenses": [
+            "MIT"
+        ],
+        "requirements": [],
+        "sha": "410819beeb983ce057ac10bd7b41dfbe8d37ceca71bdcacd4115396bb1beeaf7",
+        "spec_sha": "7602de27a9785fcdfd2265cd0c6f999307a0ab001ba4fee40796df319531f432"
+    },
+    {
+        "authors": "Kasper Timm Hansen",
+        "built_at": "2023-11-16T00:00:00.000Z",
+        "created_at": "2023-11-16T18:44:21.959Z",
+        "description": null,
+        "downloads_count": 741,
+        "metadata": {
+            "homepage_uri": "https://github.com/kaspth/oaken",
+            "changelog_uri": "https://github.com/kaspth/oaken/blob/main/CHANGELOG.md",
+            "source_code_uri": "https://github.com/kaspth/oaken",
+            "allowed_push_host": "https://rubygems.org"
+        },
+        "number": "0.5.0",
+        "summary": "Oaken aims to blend your Fixtures/Factories and levels up your database seeds.",
+        "platform": "ruby",
+        "rubygems_version": "\u003e= 0",
+        "ruby_version": "\u003e= 3.0.0",
+        "prerelease": false,
+        "licenses": [
+            "MIT"
+        ],
+        "requirements": [],
+        "sha": "590d1871b34ce7100e9a43b17819fa9a1ba1ed5821fe37576a3063c9a87478ab",
+        "spec_sha": "380caff9e7ca0a56342ae6b1cda2b68f2c83e467202916cdb3b48992d3cb8b8f"
+    },
+    {
+        "authors": "Kasper Timm Hansen",
+        "built_at": "2023-07-20T00:00:00.000Z",
+        "created_at": "2023-07-20T16:34:32.783Z",
+        "description": null,
+        "downloads_count": 714,
+        "metadata": {
+            "homepage_uri": "https://kaspthrb.gumroad.com/l/open-source-retreat-summer-2023",
+            "changelog_uri": "https://github.com/kaspth/oaken/blob/main/CHANGELOG.md",
+            "source_code_uri": "https://github.com/kaspth/oaken",
+            "allowed_push_host": "https://rubygems.org"
+        },
+        "number": "0.2.0",
+        "summary": "Oaken aims to blend your Fixtures/Factories and levels up your database seeds.",
+        "platform": "ruby",
+        "rubygems_version": "\u003e= 0",
+        "ruby_version": "\u003e= 3.0.0",
+        "prerelease": false,
+        "licenses": [
+            "MIT"
+        ],
+        "requirements": [],
+        "sha": "4784ac35bf84f1988292697884820acb395aac063f4ba8c45f9c1ee59b4bbf18",
+        "spec_sha": "07b738df2981bfe5795b1f2a7b116bf7d08bffb731b6b6b31e4f3255283802eb"
+    }
+]

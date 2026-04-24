@@ -17,3 +17,5 @@ gems.with index: namespace.external_index do
 
   _1.parse :oaken, gems.oaken_lines
 end
+
+mirrors.create :public, index_id: namespace.external_index.id, upstream_url: "https://rubygems.org"

@@ -44,10 +44,57 @@ class Namespace::Gem::Version < ApplicationRecord
     self.has_extensions = upload.has_extensions?
     self.summary = upload.summary.to_s
     self.package = { io: upload.tmpfile, filename: }
-    update! **metadata.extract_from(upload), **
+    update!(**metadata.extract_from(upload), **)
   end
 
   def line
     "#{ref} #{references.line}#{metadata.line}\n"
   end
+
+  def trigger_precompile
+    if has_extensions.nil?
+      upload = Peak::Gem::Upload.read gem.server.download(ref)
+      update!(has_extensions: upload.has_extensions?)
+    end
+    return unless has_extensions
+
+    HTTPX.
+      accept("application/vnd.github+json").
+      with(headers: {
+        "X-GitHub-Api-Version" => "2026-03-10",
+        "Authorization" => "Bearer #{ENV.fetch("GITHUB_TOKEN")}"
+      }).post(
+        "https://api.github.com/repos/gem-coop/precompiled-gems/actions/workflows/263494733/dispatches",
+        json: {ref: "main", inputs: {gem: name}}
+      ) if ENV.key?("GITHUB_TOKEN")
+  end
+  performs :trigger_precompile
 end
+
+# == Schema Information
+#
+# Table name: namespace_gem_versions
+#
+#  id             :bigint           not null, primary key
+#  checksum       :string
+#  executables    :json             not null
+#  has_extensions :boolean
+#  licenses       :json             not null
+#  published_at   :datetime         not null
+#  ref            :string           not null
+#  ruby           :string
+#  rubygems       :string
+#  summary        :string           not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  created_by_id  :bigint           not null
+#  gem_id         :bigint           not null
+#  platform_id    :bigint           not null
+#
+# Indexes
+#
+#  index_namepace_gem_versions_uniqueness         (gem_id,ref) UNIQUE
+#  index_namespace_gem_versions_on_created_by_id  (created_by_id)
+#  index_namespace_gem_versions_on_gem_id         (gem_id)
+#  index_namespace_gem_versions_on_platform_id    (platform_id)
+#

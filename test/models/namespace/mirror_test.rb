@@ -1,0 +1,87 @@
+require "test_helper"
+require "minitest/mock"
+
+class Namespace::Index::MirrorTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
+
+  test "import versions" do
+    assert_equal [], mirror_versions("rake")
+
+    rake_versions = ["0.4.10", "0.4.11", "0.4.12", "0.4.13", "0.4.14", "0.4.15", "0.4.8", "0.4.9", "0.5.0", "0.5.3", "0.5.4", "0.6.0", "0.6.2", "0.7.0", "0.7.1", "0.7.2", "0.7.3", "0.8.0", "0.8.1", "0.8.2", "0.8.3", "0.8.4", "0.8.5", "0.8.6", "0.8.7", "0.9.0", "0.9.0.beta.0", "0.9.0.beta.1", "0.9.0.beta.2", "0.9.0.beta.4", "0.9.0.beta.5", "0.9.1", "0.9.2", "0.9.2.2", "0.9.3", "0.9.3.beta.1", "0.9.3.beta.2", "0.9.3.beta.3", "0.9.3.beta.4", "0.9.4", "0.9.5", "0.9.6", "10.0.0", "10.0.0.beta.1", "10.0.0.beta.2", "10.0.1", "10.0.2", "10.0.3", "10.0.4", "10.1.0", "10.1.0.beta.1", "10.1.0.beta.2", "10.1.0.beta.3", "10.1.1", "10.2.0", "10.2.1", "10.2.2", "10.3.0", "10.3.1", "10.3.2", "10.4.0", "10.4.1", "10.4.2", "10.5.0", "11.0.1", "11.1.0", "11.1.1", "11.1.2", "11.2.0", "11.2.2", "11.3.0", "12.0.0", "12.0.0.beta1", "12.1.0", "12.2.0", "12.2.1", "12.3.0", "12.3.1", "12.3.2", "12.3.3"]
+
+    stub_rubygems("mirror/1-rake-12")
+    perform_import
+    assert_equal rake_versions, mirror_versions("rake")
+    assert_equal mirror_fixture("1-rake-12", "versions").read, mirrors.public.upstream.versions
+    assert_equal mirror_fixture("1-rake-12", "info/rake").read, mirrors.public.upstream.info("rake")
+
+    # first, add new version rows (including a yank)
+    rake_versions.push(*["13.0.0", "13.0.0.pre.1", "13.0.1", "13.0.2", "13.0.3", "13.0.4", "13.0.5", "13.0.6", "13.1.0", "13.2.0", "13.2.1"])
+
+    stub_rubygems("mirror/2-rake-13")
+    perform_import
+    assert_equal rake_versions, mirror_versions("rake")
+    assert_equal mirror_fixture("2-rake-13", "versions").read, mirrors.public.upstream.versions
+    assert_equal mirror_fixture("2-rake-13", "info/rake").read, mirrors.public.upstream.info("rake")
+
+    # next, add a completely new gem
+    rake_versions.delete("13.3.0")
+    rake_versions.push("13.3.1")
+    oaken_versions = ["0.1.0", "0.2.0", "0.5.0", "0.6.0", "0.7.0", "0.7.1", "0.8.0", "0.9.0", "0.9.1", "1.0.0"]
+
+    stub_rubygems("mirror/3-oaken")
+    perform_import
+    assert_equal rake_versions, mirror_versions("rake")
+    assert_equal oaken_versions, mirror_versions("oaken")
+    assert_equal mirror_fixture("3-oaken", "versions").read, mirrors.public.upstream.versions
+    assert_equal mirror_fixture("3-oaken", "info/rake").read, mirrors.public.upstream.info("rake")
+    assert_equal mirror_fixture("3-oaken", "info/oaken").read, mirrors.public.upstream.info("oaken")
+
+    # compact, removing both one oaken 0.1.0 and rake entirely, adding unpwn
+    oaken_versions.delete("0.1.0")
+
+    stub_rubygems("mirror/4-compacted")
+    # check ids before and after to make sure we aren't deleting existing gems and versions
+    before_id = namespaces.public.external_index.gems.find_by(name: "oaken").versions.find_by(ref: "0.2.0").id
+    perform_import
+    after_id = namespaces.public.external_index.gems.find_by(name: "oaken").versions.find_by(ref: "0.2.0").id
+    assert_equal before_id, after_id
+    assert_nil mirrors.public.index.gems.find_by(name: "rake")
+    assert_equal [], mirror_versions("rake")
+    assert_equal oaken_versions, mirror_versions("oaken")
+    assert_equal mirror_fixture("4-compacted", "versions").read, mirrors.public.upstream.versions
+    assert_includes mirror_gem("oaken").info.contents, "0.1.0 |checksum:a75a5831a045487fe8675a5e6b1205fbe704079e9828f08c9f4e9d1c9e996396,ruby:>= 3.0.0,published_at:2023-07-20T16:29:33.102Z"
+
+    stub_rubygems("mirror/5-unpwn")
+    perform_import
+    assert_equal %w[1.2.0], mirror_versions("indirect")
+    assert_equal [], mirror_versions("rake")
+    assert_equal oaken_versions, mirror_versions("oaken")
+    assert_equal %w[0.1.0 0.2.0 0.3.0 1.0.0 1.0.1], mirror_versions("unpwn")
+    assert_includes mirror_gem("unpwn").info.contents, "1.0.1 bloomer:~> 1.0,pwned:~> 2.0|checksum:103b3cc9ee9fb3dd68b88b73778bd17a9bfe7cfe12fc7053c2bf9f06caa2c155"
+  end
+
+private
+
+  def perform_import
+    Rails.cache.clear
+    Namespace::Index::Mirror::Upstream.memory_store.clear
+    Sidekiq::Queue.stub :new, [] do
+      mirrors.public.import
+    end
+    perform_enqueued_jobs
+  end
+
+  def mirror_gem(name)
+    namespaces.public.external_index.gems.find_by(name:)
+  end
+
+  def mirror_versions(name)
+    gem = mirror_gem(name)
+    gem ? gem.versions.pluck(:ref).sort : []
+  end
+
+  def mirror_fixture(scenario, file)
+    Rails.root.join("test/fixtures/files/mirror").join(scenario).join(file)
+  end
+end

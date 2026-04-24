@@ -40,3 +40,20 @@ class Namespace::Index < ApplicationRecord
     def contents = infos.pluck(:envelope).join.prepend(frontmatter)
     def frontmatter = "created_at: #{Time.now.utc.iso8601}\n---\n"
 end
+
+# == Schema Information
+#
+# Table name: namespace_indexes
+#
+#  id                :bigint           not null, primary key
+#  access            :string           default("external"), not null
+#  last_compacted_at :datetime         not null
+#  versions_contents :text             default("---\n"), not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  namespace_id      :bigint           not null
+#
+# Indexes
+#
+#  index_namespace_indexes_on_namespace_id  (namespace_id)
+#

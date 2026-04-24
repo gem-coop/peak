@@ -84,3 +84,5 @@ gem "sidekiq-scheduler", "~> 6.0"
 gem "sidekiq", "~> 8.1", require: %w[sidekiq sidekiq/api]
 gem "slack-notifier", "~> 2.4"
 gem "strong_migrations"
+
+gem "annotaterb", "~> 4.22"

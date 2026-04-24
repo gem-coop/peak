@@ -38,3 +38,22 @@ private
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: namespace_gems
+#
+#  id                         :bigint           not null, primary key
+#  name                       :string           not null
+#  trim_versions_published_at :datetime
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  index_id                   :bigint           not null
+#  namespace_id               :bigint           not null
+#
+# Indexes
+#
+#  index_namepace_gems_uniqueness        (index_id,name) UNIQUE
+#  index_namespace_gems_on_index_id      (index_id)
+#  index_namespace_gems_on_namespace_id  (namespace_id)
+#

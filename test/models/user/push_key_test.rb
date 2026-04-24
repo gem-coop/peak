@@ -26,3 +26,19 @@ class User::PushKeyTest < ActiveSupport::TestCase
     assert @key.expired?
   end
 end
+
+# == Schema Information
+#
+# Table name: user_push_keys
+#
+#  id         :bigint           not null, primary key
+#  expires_at :datetime         not null
+#  token      :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  user_id    :bigint           not null
+#
+# Indexes
+#
+#  index_user_push_keys_on_user_id  (user_id)
+#

@@ -32,3 +32,19 @@ class Namespace < ApplicationRecord
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: namespaces
+#
+#  id          :bigint           not null, primary key
+#  approved_at :datetime
+#  name        :string           not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+# Indexes
+#
+#  index_namespaces_on_approved_at  (approved_at)
+#  index_namespaces_on_name         (name) UNIQUE
+#

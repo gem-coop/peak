@@ -86,6 +86,9 @@ GEM
       uri (>= 0.13.1)
     addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
+    annotaterb (4.22.0)
+      activerecord (>= 6.0.0)
+      activesupport (>= 6.0.0)
     ast (2.4.3)
     avo (4.0.0.beta.24)
       actionview (>= 6.1)
@@ -691,6 +694,7 @@ DEPENDENCIES
   action_controller-stashed_redirects
   active_job-performs
   active_record-associated_object
+  annotaterb (~> 4.22)
   avo
   avo-advanced (>= 4.0.0.beta)!
   aws-sdk-s3 (~> 1.219)
@@ -745,6 +749,7 @@ CHECKSUMS
   activestorage (8.1.3) sha256=0564ce9309143951a67615e1bb4e090ee54b8befed417133cae614479b46384d
   activesupport (8.1.3) sha256=21a5e0dfbd4c3ddd9e1317ec6a4d782fa226e7867dc70b0743acda81a1dca20e
   addressable (2.9.0) sha256=7fdf6ac3660f7f4e867a0838be3f6cf722ace541dd97767fa42bc6cfa980c7af
+  annotaterb (4.22.0) sha256=66fc40e5f48d5b82ae82013da1e5b43aaaad41ee9bd3d0cf803048efc0a70286
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
   avo (4.0.0.beta.24) sha256=31e429588252d7bac00e5674f6f91993da77106621b60b8f6a6524233db6aa36
   avo-advanced (4.0.0.beta.9) sha256=38c713360665b98b0a88687eb7e58c846126406ad6f1660548c714f6fae075f1

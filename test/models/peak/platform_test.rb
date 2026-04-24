@@ -18,3 +18,22 @@ class Peak::PlatformTest < ActiveSupport::TestCase
       assert Peak::Platform.exists?(arch:, name:, specifier:, **)
     end
 end
+
+# == Schema Information
+#
+# Table name: peak_platforms
+#
+#  id                :bigint           not null, primary key
+#  arch              :string           not null
+#  key               :string
+#  name              :string           not null
+#  precompile_target :boolean          default(FALSE), not null
+#  specifier         :string           not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#
+# Indexes
+#
+#  index_peak_platforms_on_arch_and_name_and_precompile_target  (arch,name,precompile_target)
+#  peak_platforms_uniqueness                                    (key) UNIQUE
+#

@@ -115,3 +115,28 @@ class Namespace::Index::Mirror < ApplicationRecord
   end
   performs :import_line, queue_as: :mirror
 end
+
+
+
+# == Schema Information
+#
+# Table name: namespace_index_mirrors
+#
+#  id                :bigint           not null, primary key
+#  last_created_at   :datetime
+#  last_line         :string
+#  last_processed_at :datetime         default(1970-01-01 00:00:00.000000000 UTC +00:00), not null
+#  last_started_at   :datetime         default(1970-01-01 00:00:00.000000000 UTC +00:00), not null
+#  upstream_url      :string           not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  index_id          :bigint           not null
+#
+# Indexes
+#
+#  index_namespace_index_mirrors_on_index_id  (index_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (index_id => namespace_indexes.id)
+#

@@ -17,3 +17,14 @@ class Peak::TermsTest < ActiveSupport::TestCase
     assert acceptance.accepted?
   end
 end
+
+# == Schema Information
+#
+# Table name: peak_terms
+#
+#  id         :bigint           not null, primary key
+#  content    :text             not null
+#  status     :string           default("drafted"), not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#

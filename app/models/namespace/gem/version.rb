@@ -70,3 +70,31 @@ class Namespace::Gem::Version < ApplicationRecord
   end
   performs :trigger_precompile
 end
+
+# == Schema Information
+#
+# Table name: namespace_gem_versions
+#
+#  id             :bigint           not null, primary key
+#  checksum       :string
+#  executables    :json             not null
+#  has_extensions :boolean
+#  licenses       :json             not null
+#  published_at   :datetime         not null
+#  ref            :string           not null
+#  ruby           :string
+#  rubygems       :string
+#  summary        :string           not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  created_by_id  :bigint           not null
+#  gem_id         :bigint           not null
+#  platform_id    :bigint           not null
+#
+# Indexes
+#
+#  index_namepace_gem_versions_uniqueness         (gem_id,ref) UNIQUE
+#  index_namespace_gem_versions_on_created_by_id  (created_by_id)
+#  index_namespace_gem_versions_on_gem_id         (gem_id)
+#  index_namespace_gem_versions_on_platform_id    (platform_id)
+#

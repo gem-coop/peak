@@ -6,7 +6,11 @@ class AddSlugToNamespaceIndexes < ActiveRecord::Migration[8.1]
     add_column :namespace_indexes, :slug, :string
 
     # Also rename external to public while we're at it.
-    up_only { Namespace::Index.update_all slug: :default, access: :public }
+    up_only do
+      Namespace::Index.where(access: "dev").update_all(slug: "dev", access: "public")
+      Namespace::Index.where(access: "external").update_all(slug: "default", access: "public")
+      Namespace::Index.where(access: "private").update_all(slug: "private")
+    end
     change_column_null :namespace_indexes, :slug, false
 
     add_index :namespace_indexes, [:namespace_id, :slug], unique: true, name: "namespace_index_uniqueness"

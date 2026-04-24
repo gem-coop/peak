@@ -113,9 +113,13 @@ class Namespace::Index::Mirror < ApplicationRecord
 
       reference_ids = create_refs(cv[:refs])
       cv.delete(:refs)
-      version = gem.versions.create(**cv, reference_ids:)
+
+      version = gem.versions.create!(**cv)
+
+      nodes = reference_ids.map { |id| {version_id: version.id, reference_id: id} }
+      Namespace::Gem::Version::Node.upsert_all(nodes)
+
       gem.process_version version
-      version.save!
 
       # version.trigger_precompile_later
 

@@ -1,8 +1,6 @@
 class Namespace::Gem::Imports < ActiveRecord::AssociatedObject
   def import_all
     pending_refs.each { |ref| import_ref ref }
-
-    gem.info.rebuild
     gem.index.compact
   end
 

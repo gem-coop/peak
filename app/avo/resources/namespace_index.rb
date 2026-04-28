@@ -14,7 +14,6 @@ class Avo::Resources::NamespaceIndex < Avo::BaseResource
 
     field :namespace, as: :belongs_to
     field :gems, as: :has_many
-    field :infos, as: :has_many, through: :gems
     field :versions, as: :has_many, through: :gems
   end
 end

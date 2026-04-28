@@ -13,7 +13,6 @@ class Avo::Resources::NamespaceGem < Avo::BaseResource
     field :index, as: :belongs_to, hide_on: :edit
     field :namespace, as: :belongs_to, hide_on: :edit
 
-    field :info, as: :has_one
     field :trim_versions_published_at, as: :date_time
 
     field :versions, as: :has_many

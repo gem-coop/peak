@@ -1,6 +1,6 @@
 class Namespaces::Index::CooldownsController < Public::BaseController
   before_action :set_routed_index
-  before_action { @cooldown = @index.cooldown or head :not_found }
+  before_action { @cooldown = @index.cooldowns.first or head :not_found }
   before_action { fresh_when @cooldown, public: @index.public_access? }
 
   def index

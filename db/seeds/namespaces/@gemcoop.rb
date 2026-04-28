@@ -15,3 +15,5 @@ gems.with index: namespace.default_index do
   peak = _1.create :peak, name: :peak
   versions.upload peak, ref: "0.1.0", created_by: users.owner
 end
+
+cooldowns.label gemcoop_cooldown: namespace.default_index.create_cooldown

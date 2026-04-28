@@ -9,8 +9,8 @@ class Namespace::Gem::Version < ApplicationRecord
   has_many :references, through: :nodes
   has_many :referrants, -> { where(ref: _1.ref) }, through: :gem, foreign_key: :ref, primary_key: :ref
 
-  scope :published_after, -> { where(published_at: _1..).latest_last }
   scope :published_before, -> { where(published_at: .._1).latest_last }
+  scope :published_after, -> { where(published_at: _1..).latest_last }
   scope :latest_first, -> { order(published_at: :desc, ref: :desc) }
   scope :latest_last, -> { order(published_at: :asc, ref: :asc) }
   def self.latest = latest_last.last

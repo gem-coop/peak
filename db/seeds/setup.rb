@@ -10,6 +10,7 @@ terms.proxy *Peak::Terms.statuses.keys
 
 register Namespace::Access, as: :accesses
 register Namespace::Index, as: :indexes
+register Namespace::Index::Cooldown, as: :cooldowns
 register Namespace::Gem, as: :gems
 register Namespace::Gem::Version, as: :versions
 register Namespace::Gem::Version::Reference, as: :references

@@ -33,7 +33,7 @@ class Namespaces::Index::CooldownsControllerTest < ActionDispatch::IntegrationTe
 
   test "get show secondary index cooldown with period_id" do
     get namespace_cooldown_info_url(namespace:, index: :dev, period_id:, id: gems.oaken)
-    assert_response :no_content
+    assert_response :not_found
   end
 
   def namespace = namespaces.gemcoop

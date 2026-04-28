@@ -32,5 +32,5 @@ class Namespace::Index::CooldownTest < ActiveSupport::TestCase
     refute_includes cooldown.new_versions_since_last_refresh, version
   end
 
-  private def cooldown = cooldowns.gemcoop_cooldown
+  private def cooldown = cooldowns.gemcoop
 end

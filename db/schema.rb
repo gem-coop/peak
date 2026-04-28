@@ -163,7 +163,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_28_123819) do
     t.bigint "index_id", null: false
     t.interval "interval", default: "P2D", null: false
     t.datetime "updated_at", null: false
-    t.index ["index_id"], name: "index_namespace_index_cooldowns_on_index_id", unique: true
+    t.index ["index_id", "interval"], name: "index_namespace_index_cooldowns_on_index_id_and_interval", unique: true
   end
 
   create_table "namespace_index_manifests", force: :cascade do |t|

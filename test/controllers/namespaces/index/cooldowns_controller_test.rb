@@ -6,6 +6,13 @@ class Namespaces::Index::CooldownsControllerTest < ActionDispatch::IntegrationTe
     assert_response :success
   end
 
+  test "get primary index cooldown with no cooldowns" do
+    namespace.default_index.cooldowns.delete_all
+
+    get namespace_cooldown_versions_url(namespace:)
+    assert_response :not_found
+  end
+
   test "get primary index cooldown implicit route order consistency if a second cooldown is created" do
     cooldowns.gemcoop.index.cooldowns.create(interval: 1.day)
 

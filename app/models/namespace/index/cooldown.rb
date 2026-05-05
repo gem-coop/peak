@@ -10,7 +10,6 @@ class Namespace::Index::Cooldown < ApplicationRecord
   performs def refresh
     if versions = new_versions_since_last_refresh.includes(:gem).presence
       manifest.append versions
-      touch
     end
   end
 

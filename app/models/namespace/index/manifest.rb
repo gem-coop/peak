@@ -1,5 +1,5 @@
 class Namespace::Index::Manifest < ApplicationRecord
-  belongs_to :author, polymorphic: true
+  belongs_to :author, polymorphic: true, touch: true
   attribute :last_compacted_at, default: -> { Time.current }
 
   performs def compact

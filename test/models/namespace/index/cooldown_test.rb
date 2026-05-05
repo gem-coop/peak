@@ -10,22 +10,22 @@ class Namespace::Index::CooldownTest < ActiveSupport::TestCase
     assert_empty cooldown.versions
   end
 
-  test "new_versions_since_last_refresh excludes versions already included" do
-    cooldown.versions.update_all published_at: cooldown.updated_at - 1.second
+  test "new_versions_since_last_refresh excludes versions already in contents" do
+    cooldown.versions.update_all published_at: cooldown.refreshed_at - 1.second
     assert_empty cooldown.new_versions_since_last_refresh
   end
 
   test "refresh doesn't needlessly bust cache_version" do
-    cooldown.versions.update_all published_at: cooldown.updated_at - 1.second
+    cooldown.versions.update_all published_at: cooldown.refreshed_at - 1.second
     assert_no_changes(-> { cooldown.cache_version }) { cooldown.refresh }
   end
 
   test "refresh pulls in version published after last refresh within threshold" do
-    cooldown.update! interval: 1.minute, updated_at: 10.minutes.ago
-    cooldown.versions.update_all published_at: cooldown.updated_at - 1.second
+    cooldown.update! interval: 1.minute, refreshed_at: 10.minutes.ago
+    cooldown.versions.update_all published_at: cooldown.refreshed_at - 1.second
 
     version = cooldown.versions.by_gem(:oaken).latest
-    version.update! published_at: cooldown.updated_at + 1.second
+    version.update! published_at: cooldown.refreshed_at + 1.second
     assert_includes cooldown.new_versions_since_last_refresh, version
 
     version.update! published_at: Time.current

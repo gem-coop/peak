@@ -10,11 +10,12 @@ class Namespace::Index::Cooldown < ApplicationRecord
   performs def refresh
     if versions = new_versions_since_last_refresh.includes(:gem).presence
       manifest.append versions
+      touch :refreshed_at
     end
   end
 
   def new_versions_since_last_refresh
-    versions.published_after updated_at
+    versions.published_after refreshed_at
   end
 
   def published_threshold

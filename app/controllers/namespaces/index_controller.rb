@@ -1,13 +1,13 @@
 class Namespaces::IndexController < Public::BaseController
   before_action :set_routed_index
+  before_action { fresh_when @index, public: @index.public_access? }
 
   def index
-    render plain: @index.versions_contents if stale? @index
+    render plain: @index.contents
   end
 
   def show
-    if stale? info = @index.gems.named(params[:id]).info
-      render plain: info.contents
-    end
+    plain = @index.versions.latest_last.for(params[:id]).lines
+    render plain:, status: (:not_found if plain.empty?)
   end
 end

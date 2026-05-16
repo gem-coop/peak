@@ -5,11 +5,11 @@ class Namespace::Gem::Version::Metadata < ActiveRecord::AssociatedObject
   def values = extract_from(version)
 
   def extract_from(store)
-    KEYS.index_with { store.public_send _1 }.compact_blank
+    store.slice(*keys).compact_blank
   end
 
-  KEYS = %i[checksum ruby rubygems executables licenses published_at]
-  delegate *KEYS, to: :version
+  mattr_reader :keys, default: %i[checksum ruby rubygems executables licenses published_at]
+  delegate *keys, to: :version
 
   private
     def join_value(value)

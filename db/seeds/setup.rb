@@ -10,6 +10,7 @@ terms.proxy *Peak::Terms.statuses.keys
 
 register Namespace::Access, as: :accesses
 register Namespace::Index, as: :indexes
+register Namespace::Index::Cooldown, as: :cooldowns
 register Namespace::Gem, as: :gems
 register Namespace::Gem::Version, as: :versions
 register Namespace::Gem::Version::Reference, as: :references
@@ -29,7 +30,8 @@ versions.with do
   def versions.create(label = nil, unique_by: [:gem, :ref], **) = super
 
   def upload(gem, ref:, **)
-    create(gem:, ref:, **).tap { _1.process fixture_upload("#{gem.name}/#{_1.filename}") }
+    create(gem:, ref:, line: "", **).tap {
+      _1.process fixture_upload("#{gem.name}/#{_1.filename}") }
   end
 
   def by(gem, ref:) = type.find_by!(gem:, ref:)

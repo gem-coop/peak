@@ -33,6 +33,12 @@ Rails.application.routes.draw do
   end
 
   constraints -> { _1.params[:namespace].then { it.starts_with?("@") && it != "@public" } } do
+    namespace :namespaces, path: "/:namespace(/:index)/cooldown(/:period_id)", as: :namespace_cooldown do
+      get :versions,   to: "index/cooldowns#index", as: :versions
+      get "/info/:id", to: "index/cooldowns#show", as: :info
+      get "/gems/:id", to: "gems#show", as: :gems, constraints: {id: Peak::Gem.pattern}
+    end
+
     namespace :namespaces, path: "/:namespace(/:index)", as: :namespace do
       get :versions,   to: "index#index", as: :versions
       get "/info/:id", to: "index#show", as: :info

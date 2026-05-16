@@ -1,7 +1,7 @@
 namespace = namespaces.create :gemcoop, name: "@gemcoop"
 # Created & managed by subscription eventually
-indexes.public_access.create namespace:, slug: :dev
-indexes.private_access.create namespace:, slug: :private
+indexes.public_access.create :gemcoop_dev, namespace:, slug: :dev
+indexes.private_access.create :gemcoop_private, namespace:, slug: :private
 
 accesses.with namespace: do
   _1.owner.create :owner, user: users.create(:owner, name: "Owner", email_address: "owner@example.com")
@@ -15,3 +15,6 @@ gems.with index: namespace.default_index do
   peak = _1.create :peak, name: :peak
   versions.upload peak, ref: "0.1.0", created_by: users.owner
 end
+
+cooldowns.label gemcoop: namespace.default_index.cooldowns.create
+cooldowns.label gemcoop_dev: indexes.gemcoop_dev.cooldowns.create

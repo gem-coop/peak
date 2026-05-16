@@ -10,9 +10,9 @@ class Namespace::Index::CooldownTest < ActiveSupport::TestCase
     assert_empty cooldown.versions
   end
 
-  test "new_versions_since_last_refresh excludes versions already in contents" do
+  test "versions.refreshed excludes versions already in contents" do
     cooldown.versions.update_all published_at: cooldown.refreshed_at - 1.second
-    assert_empty cooldown.new_versions_since_last_refresh
+    assert_empty cooldown.versions.refreshed
   end
 
   test "refresh doesn't needlessly bust cache_version" do
@@ -26,10 +26,10 @@ class Namespace::Index::CooldownTest < ActiveSupport::TestCase
 
     version = cooldown.versions.latest_for(:oaken)
     version.update! published_at: cooldown.refreshed_at + 1.second
-    assert_includes cooldown.new_versions_since_last_refresh, version
+    assert_includes cooldown.versions.refreshed, version
 
     version.update! published_at: Time.current
-    refute_includes cooldown.new_versions_since_last_refresh, version
+    refute_includes cooldown.versions.refreshed, version
   end
 
   private def cooldown = cooldowns.gemcoop

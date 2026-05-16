@@ -8,7 +8,7 @@
     <%= link_to @gem.namespace.name, @gem.namespace %>/<%= tag.span @gem.name, style: "padding-inline-start: .5em;" %>
   </h1>
 
-  <% latest = @gem.versions.latest_first.pure.first %>
+  <% latest = @gem.versions.pure.latest %>
   <p style="margin-block-start: 0;"><i><%= latest.summary %></i></p>
 
   <section style="display: grid; grid-template-columns: 50% 50%; margin-block-end: 1em;">

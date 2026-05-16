@@ -3,8 +3,7 @@ class Namespace < ApplicationRecord
   has_many :users, through: :accesses
 
   has_many :indexes, dependent: :destroy
-  has_one :default_index, -> { public_access.where(slug: :default) }, class_name: "Index"
-  before_create :build_default_index
+  has_one_built :default_index, -> { public_access.where(slug: :default) }, class_name: "Index"
 
   scope :pending,  -> { where(approved_at: nil) }
   scope :approved, -> { where.not(approved_at: nil) }

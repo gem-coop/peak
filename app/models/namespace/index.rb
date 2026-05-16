@@ -5,7 +5,7 @@ class Namespace::Index < ApplicationRecord
 
   concerning :Manifested do
     included do
-      has_record :manifest, as: :author
+      has_one_built :manifest, as: :author
       delegate :compact, :compact_later, :append, :append_later, :contents, to: :manifest
     end
   end

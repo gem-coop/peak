@@ -1,6 +1,5 @@
 class Namespace::Index::Cooldown < ApplicationRecord
   include Namespace::Index::Manifested
-  after_create :compact_later
 
   belongs_to :index
   has_many :gems, through: :index

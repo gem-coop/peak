@@ -1,6 +1,5 @@
 class Namespace::Index::Manifest < ApplicationRecord
   belongs_to :author, polymorphic: true, touch: true
-  attribute :last_compacted_at, default: -> { Time.current }
 
   performs def compact
     update! last_compacted_at: last_compacted_at = Time.current,

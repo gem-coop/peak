@@ -58,10 +58,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_28_123819) do
 
   create_table "namespace_accesses", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.bigint "namespace_id", null: false
+    t.integer "namespace_id", null: false
     t.string "role", default: "plain", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id", null: false
+    t.integer "user_id", null: false
     t.index ["namespace_id"], name: "index_namespace_accesses_on_namespace_id"
     t.index ["user_id"], name: "index_namespace_accesses_on_user_id"
   end
@@ -71,16 +71,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_28_123819) do
     t.text "contents", default: "", null: false
     t.datetime "created_at", null: false
     t.string "envelope", default: "", null: false
-    t.bigint "gem_id", null: false
+    t.integer "gem_id", null: false
     t.datetime "updated_at", null: false
     t.index ["gem_id"], name: "index_namespace_gem_infos_on_gem_id"
   end
 
   create_table "namespace_gem_version_linkings", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.bigint "link_id", null: false
+    t.integer "link_id", null: false
     t.datetime "updated_at", null: false
-    t.bigint "version_id", null: false
+    t.integer "version_id", null: false
     t.index ["link_id"], name: "index_namespace_gem_version_linkings_on_link_id"
     t.index ["version_id", "link_id"], name: "index_namespace_gem_version_linking_uniqueness", unique: true
     t.index ["version_id"], name: "index_namespace_gem_version_linkings_on_version_id"
@@ -100,15 +100,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_28_123819) do
     t.string "ruby", null: false
     t.string "rubygems"
     t.datetime "updated_at", null: false
-    t.bigint "version_id", null: false
+    t.integer "version_id", null: false
     t.index ["version_id"], name: "index_namespace_gem_version_metadata_on_version_id", unique: true
   end
 
   create_table "namespace_gem_version_nodes", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.bigint "reference_id", null: false
+    t.integer "reference_id", null: false
     t.datetime "updated_at", null: false
-    t.bigint "version_id", null: false
+    t.integer "version_id", null: false
     t.index ["reference_id"], name: "index_namespace_gem_version_nodes_on_reference_id"
     t.index ["version_id", "reference_id"], name: "namespace_gem_version_nodes_uniqueness", unique: true
     t.index ["version_id"], name: "index_namespace_gem_version_nodes_on_version_id"
@@ -127,13 +127,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_28_123819) do
   create_table "namespace_gem_versions", force: :cascade do |t|
     t.string "checksum"
     t.datetime "created_at", null: false
-    t.bigint "created_by_id", null: false
+    t.integer "created_by_id", null: false
     t.json "executables", default: [], null: false
-    t.bigint "gem_id", null: false
+    t.integer "gem_id", null: false
     t.boolean "has_extensions"
     t.json "licenses", default: [], null: false
     t.string "line", null: false
-    t.bigint "platform_id", null: false
+    t.integer "platform_id", null: false
     t.datetime "published_at", null: false
     t.string "ref", null: false
     t.string "ruby"
@@ -141,16 +141,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_28_123819) do
     t.string "summary", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_namespace_gem_versions_on_created_by_id"
-    t.index ["gem_id", "ref"], name: "index_namepace_gem_versions_uniqueness", unique: true
+    t.index ["gem_id", "platform_id", "ref"], name: "index_namepace_gem_versions_uniqueness", unique: true
     t.index ["gem_id"], name: "index_namespace_gem_versions_on_gem_id"
     t.index ["platform_id"], name: "index_namespace_gem_versions_on_platform_id"
   end
 
   create_table "namespace_gems", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.bigint "index_id", null: false
+    t.integer "index_id", null: false
     t.string "name", null: false
-    t.bigint "namespace_id", null: false
+    t.integer "namespace_id", null: false
     t.datetime "trim_versions_published_at"
     t.datetime "updated_at", null: false
     t.index ["index_id", "name"], name: "index_namepace_gems_uniqueness", unique: true
@@ -172,7 +172,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_28_123819) do
     t.string "author_type", null: false
     t.text "contents", default: "", null: false
     t.datetime "created_at", null: false
-    t.datetime "last_compacted_at", null: false
+    t.datetime "last_compacted_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", null: false
     t.index ["author_type", "author_id"], name: "index_namespace_index_manifests_on_author", unique: true
   end
@@ -181,7 +181,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_28_123819) do
     t.string "access", default: "public", null: false
     t.datetime "created_at", null: false
     t.datetime "last_compacted_at", null: false
-    t.bigint "namespace_id", null: false
+    t.integer "namespace_id", null: false
     t.string "slug", null: false
     t.datetime "updated_at", null: false
     t.text "versions_contents", default: "---\n", null: false
@@ -206,7 +206,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_28_123819) do
     t.boolean "precompile_target", default: false, null: false
     t.string "specifier", null: false
     t.datetime "updated_at", null: false
-    t.index ["arch", "name", "precompile_target"], name: "index_peak_platforms_on_arch_and_name_and_precompile_target"
     t.index ["key"], name: "peak_platforms_uniqueness", unique: true
   end
 
@@ -235,7 +234,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_28_123819) do
     t.datetime "expires_at", null: false
     t.string "token", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id", null: false
+    t.integer "user_id", null: false
     t.index ["user_id"], name: "index_user_push_keys_on_user_id"
   end
 

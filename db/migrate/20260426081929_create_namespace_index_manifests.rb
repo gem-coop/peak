@@ -3,7 +3,7 @@ class CreateNamespaceIndexManifests < ActiveRecord::Migration[8.1]
     create_table :namespace_index_manifests do |t|
       t.references :author, null: false, polymorphic: true, index: { unique: true }
       t.text :contents, null: false, default: ""
-      t.datetime :last_compacted_at, null: false
+      t.datetime :last_compacted_at, null: false, default: -> { 'CURRENT_TIMESTAMP' }
 
       t.timestamps
     end

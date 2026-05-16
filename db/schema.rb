@@ -170,9 +170,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_28_123819) do
   create_table "namespace_index_manifests", force: :cascade do |t|
     t.bigint "author_id", null: false
     t.string "author_type", null: false
+    t.datetime "compacted_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.text "contents", default: "", null: false
     t.datetime "created_at", null: false
-    t.datetime "last_compacted_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", null: false
     t.index ["author_type", "author_id"], name: "index_namespace_index_manifests_on_author", unique: true
   end

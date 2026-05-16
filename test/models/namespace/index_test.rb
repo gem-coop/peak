@@ -8,7 +8,7 @@ class Namespace::IndexTest < ActiveSupport::TestCase
 
   test "compaction" do
     manifest = namespaces.public.default_index.manifest
-    assert_changes(-> { manifest.last_compacted_at }) { manifest.compact }
+    assert_changes(-> { manifest.compacted_at }) { manifest.compact }
 
     assert_match gems.actionview.versions.last.envelope, manifest.contents
   end

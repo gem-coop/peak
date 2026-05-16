@@ -14,6 +14,6 @@ class Namespace::Index::Manifest < ApplicationRecord
 
   private
     def composed_envelopes
-      author.gems.map { author.versions.by_gem(_1.name).latest&.envelope }.compact.join
+      author.gems.filter_map { author.versions.latest_for(_1.name)&.envelope }.join
     end
 end

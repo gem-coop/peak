@@ -7,7 +7,7 @@ class Namespaces::Index::CooldownsController < Public::BaseController
   end
 
   def show
-    plain = @cooldown.versions.latest_last.by_gem(params[:id]).lines
+    plain = @cooldown.versions.latest_last.for(params[:id]).lines
     render plain:, status: (:not_found if plain.empty?)
   end
 

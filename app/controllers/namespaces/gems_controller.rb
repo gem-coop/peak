@@ -19,7 +19,7 @@ class Namespaces::GemsController < Public::BaseController
     set_routed_index
 
     gem_name, ref = Peak::Gem.version(params[:id])
-    version = @index.versions.by_gem(gem_name).find_by!(ref:)
+    version = @index.versions.for(gem_name).find_by!(ref:)
 
     if version.package.attached?
       expires_in 1.year, public: @index.public_access?

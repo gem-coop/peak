@@ -2,7 +2,7 @@ require "test_helper"
 
 class Namespace::Index::CooldownTest < ActiveSupport::TestCase
   test "includes envelope published before threshold" do
-    assert_match cooldown.versions.by_gem(:oaken).latest.envelope, cooldown.contents
+    assert_match cooldown.versions.latest_for(:oaken).envelope, cooldown.contents
   end
 
   test "excludes envelope not yet within threshold" do
@@ -24,7 +24,7 @@ class Namespace::Index::CooldownTest < ActiveSupport::TestCase
     cooldown.update! interval: 1.minute, refreshed_at: 10.minutes.ago
     cooldown.versions.update_all published_at: cooldown.refreshed_at - 1.second
 
-    version = cooldown.versions.by_gem(:oaken).latest
+    version = cooldown.versions.latest_for(:oaken)
     version.update! published_at: cooldown.refreshed_at + 1.second
     assert_includes cooldown.new_versions_since_last_refresh, version
 

@@ -18,8 +18,9 @@ class Namespace::Gem::Version < ApplicationRecord
   def versions_upto_self = gem.versions.upto(self)
   scope :upto, -> { published_before(_1.published_at) }
 
-  scope :by_gem, -> { joins(:gem).where(gem: {name: _1}) }
+  scope :for,    -> { joins(:gem).where(gem: {name: _1}) }
   scope :system, -> { where(created_by: Peak.system_user) }
+  def self.latest_for(name) = self.for(name).latest
 
   scope :as_byline, -> { select(:ref, :summary, :published_at, :created_by_id).includes(:created_by) }
 

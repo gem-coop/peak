@@ -13,6 +13,7 @@ class Namespace::Index::Manifest < ApplicationRecord
 
   private
     def composed_envelopes
+      # TODO: later, use https://github.com/bensheldon/activerecord-has_some_of_many
       author.gems.filter_map { author.versions.latest_for(_1.name)&.envelope }.join
     end
 end

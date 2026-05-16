@@ -37,5 +37,5 @@ class Namespaces::Index::CooldownsControllerTest < ActionDispatch::IntegrationTe
   end
 
   def namespace = namespaces.gemcoop
-  def period_id = "#{cooldowns.gemcoop_dev.days_delayed}d"
+  def period_id = "#{cooldowns.gemcoop_dev.interval.in_days.to_i}d"
 end

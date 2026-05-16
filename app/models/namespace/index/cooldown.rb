@@ -18,8 +18,4 @@ class Namespace::Index::Cooldown < ApplicationRecord
   def published_threshold
     interval.ago
   end
-
-  def days_delayed
-    interval.parts.fetch(:days)
-  end
 end

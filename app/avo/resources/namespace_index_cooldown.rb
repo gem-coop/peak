@@ -10,10 +10,12 @@ class Avo::Resources::NamespaceIndexCooldown < Avo::BaseResource
   #   query: -> { query.ransack(id_eq: q, m: "or").result(distinct: false) }
   # }
 
-  def fields
+  def display_fields
     field :id, as: :id
-    # field :avatar, as: :avatar
     field :index, as: :belongs_to
-    field :interval, as: :text
+    field :interval, as: :text do
+      record.interval.parts
+    end
+    field :refreshed_at, as: :text
   end
 end

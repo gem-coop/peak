@@ -10,10 +10,10 @@ class Avo::Resources::NamespaceIndexManifest < Avo::BaseResource
   #   query: -> { query.ransack(id_eq: q, m: "or").result(distinct: false) }
   # }
 
-  def fields
+  def display_fields
     field :id, as: :id
-    # field :avatar, as: :avatar
-    field :owner, as: :belongs_to
+    field :author, as: :belongs_to, polymorphic_as: :author, types: [Namespace::Index, Namespace::Index::Cooldown]
     field :contents, as: :textarea
+    field :compacted_at, as: :date_time
   end
 end

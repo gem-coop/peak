@@ -1,7 +1,6 @@
 class Namespace::Index < ApplicationRecord
   belongs_to :namespace
   has_many :cooldowns, dependent: :destroy
-  attribute :last_compacted_at, default: -> { Time.current }
 
   concerning :Manifested do
     included do

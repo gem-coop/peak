@@ -9,8 +9,6 @@ class Avo::Resources::NamespaceIndex < Avo::BaseResource
   def display_fields
     field :id, as: :id
     field :access, as: :select, enum: ::Namespace::Index.accesses
-    field :last_compacted_at, as: :date_time
-    # field :versions_contents, as: :text # TODO: Output this potentially large field? Not sure.
 
     field :namespace, as: :belongs_to
     field :gems, as: :has_many

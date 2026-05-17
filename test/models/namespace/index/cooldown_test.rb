@@ -32,5 +32,18 @@ class Namespace::Index::CooldownTest < ActiveSupport::TestCase
     refute_includes cooldown.versions.refreshed, version
   end
 
+  test "project_incoming_version" do
+    @cooldown = cooldown
+    @cooldown.update! refresh_due_at: Time.current
+
+    assert_no_changes -> { @cooldown.refresh_due_at } do
+      @cooldown.project_version_incoming at: 1.second.from_now
+    end
+
+    assert_changes -> { @cooldown.refresh_due_at }, to: -> { @cooldown.interval + 1.second } do
+      @cooldown.project_version_incoming at: 1.second.ago
+    end
+  end
+
   private def cooldown = cooldowns.gemcoop
 end

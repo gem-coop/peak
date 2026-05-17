@@ -21,4 +21,9 @@ class Namespace::Index < ApplicationRecord
   def self.locate_or_default(slug)
     find_by!(slug: slug.presence || :default)
   end
+
+  def process_version(version)
+    append version
+    cooldowns.each { _1.project_version_incoming at: version.published_at }
+  end
 end

@@ -26,9 +26,9 @@ Rails.application.routes.draw do
     get "/cooldown(/:period_id)/info/:id", to: "index/cooldowns#show", as: :cooldown_info
     get "/cooldown(/:period_id)/gems/:id", to: "gems#show", as: :cooldown_gems, constraints: {id: Peak::Gem.route_pattern}
 
-    get "/versions" => "mirror#versions"
-    get "/info/:name" => "mirror#info"
-    get "/gems/:gem" => "mirror#gems", constraints: {gem: Peak::Gem.route_pattern}
+    get "/versions" => "mirror#versions", as: :versions
+    get "/info/:name" => "mirror#info", as: :info
+    get "/gems/:gem" => "mirror#gems", as: :gems, constraints: {gem: Peak::Gem.route_pattern}
   end
 
   constraints -> { _1.params[:namespace].then { it.starts_with?("@") && it != "@public" } } do

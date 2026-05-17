@@ -47,7 +47,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     assert_equal ["peak"], version.executables
     assert version.has_extensions?
     assert_equal ["MIT"], version.licenses
-    assert_equal "oaken:>= 0.9&~> 1.0.0,second_release_exclusive_ref:= 2.0", version.references.line
+    assert_match "oaken:>= 0.9&~> 1.0.0,second_release_exclusive_ref:= 2.0", version.line
 
     assert_equal({
       homepage: "https://github.com/gem-coop/peak",

@@ -6,7 +6,15 @@ class Namespace::Gem::Version < ApplicationRecord
   has_many :links, through: :linkings
 
   has_many :nodes, dependent: :destroy
-  has_many :references, through: :nodes
+  has_many :references, through: :nodes do
+    def line = parts.join(",")
+
+    def parts
+      group_by(&:name).map do |name, refs|
+        "#{name}:#{refs.map(&:part).join("&")}"
+      end
+    end
+  end
   has_many :referrants, -> { where(ref: _1.ref) }, through: :gem, foreign_key: :ref, primary_key: :ref
 
   scope :published_before, -> { where(published_at: .._1).latest_last }

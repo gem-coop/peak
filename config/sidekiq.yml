@@ -13,7 +13,5 @@
     # PRO TIP: build schedules via https://crontab.guru
     Namespace::Index::Cooldown::Refresh::FanoutJob:
       cron: "*/10 * * * *" # every 10 minutes
-    CooldownVersionImportJob:
-      cron: "*/20 * * * *" # every 20 minutes
     ClearExpiredPushKeysJob:
       cron: "6 * * * *" # every hour at 6 minutes past

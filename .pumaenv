@@ -1,1 +1,5 @@
 eval "$(rv shell init bash)"
+
+set -o allexport
+source .env.local
+set +o allexport

@@ -3,18 +3,18 @@ class Namespace::Index::Cooldown < ApplicationRecord
 
   belongs_to :index
   has_many :gems, through: :index
-  has_many :versions, -> { published_before _1.published_threshold }, through: :index do
-    def refreshed = published_after(proxy_association.owner.refreshed_at)
-  end
+  has_many :versions, -> { published_before _1.interval.ago }, through: :index
+
+  scope :refresh_due, -> { joins(:projections).merge(Projection.due) }
+
+  has_many :projections, dependent: :destroy
+  delegate :project, :realign, to: :projections
+  after_save_commit :realign, if: :interval_previously_changed?
 
   performs def refresh
-    if refreshed = versions.refreshed.includes(:gem).presence
-      manifest.append refreshed
-      touch :refreshed_at
+    if versions = projections.due.extract_associated(:version)
+      manifest.append versions
+      projections.due.delete_all
     end
-  end
-
-  def published_threshold
-    interval.ago
   end
 end

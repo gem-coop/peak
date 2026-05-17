@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_16_223802) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_17_151254) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -141,7 +141,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_16_223802) do
     t.string "summary", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_namespace_gem_versions_on_created_by_id"
-    t.index ["gem_id", "platform_id", "ref"], name: "index_namepace_gem_versions_uniqueness", unique: true
+    t.index ["gem_id", "ref"], name: "index_namepace_gem_versions_uniqueness", unique: true
     t.index ["gem_id"], name: "index_namespace_gem_versions_on_gem_id"
     t.index ["platform_id"], name: "index_namespace_gem_versions_on_platform_id"
   end
@@ -156,6 +156,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_16_223802) do
     t.index ["index_id", "name"], name: "index_namepace_gems_uniqueness", unique: true
     t.index ["index_id"], name: "index_namespace_gems_on_index_id"
     t.index ["namespace_id"], name: "index_namespace_gems_on_namespace_id"
+  end
+
+  create_table "namespace_index_cooldown_projections", force: :cascade do |t|
+    t.datetime "append_at", null: false
+    t.bigint "cooldown_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "version_id", null: false
+    t.index ["cooldown_id", "version_id"], name: "idx_on_cooldown_id_version_id_07dae4f703", unique: true
+    t.index ["cooldown_id"], name: "index_namespace_index_cooldown_projections_on_cooldown_id"
   end
 
   create_table "namespace_index_cooldowns", force: :cascade do |t|
@@ -204,6 +214,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_16_223802) do
     t.boolean "precompile_target", default: false, null: false
     t.string "specifier", null: false
     t.datetime "updated_at", null: false
+    t.index ["arch", "name", "precompile_target"], name: "index_peak_platforms_on_arch_and_name_and_precompile_target"
     t.index ["key"], name: "peak_platforms_uniqueness", unique: true
   end
 

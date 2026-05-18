@@ -5,6 +5,10 @@ module Peak extend self
   sha = ENV.fetch("GIT_SHA") { `git rev-parse HEAD`.chomp }
   mattr_reader :release, default: Release.new(sha:)
 
+  def host
+    @host ||= Rails.application.routes.default_url_options[:host]
+  end
+
   def env
     @env ||= ActiveSupport::EnvironmentInquirer.new ENV.fetch("PEAK_ENV", "development")
   end

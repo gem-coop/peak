@@ -1,18 +1,21 @@
 #!/bin/bash
 
 function test_token() {
-    echo "Testing token for $HOST"
-    TOKEN=$(curl "https://$HOST/rails/echo" --cookie-jar /tmp/cookie.txt -s | jq .csrf.form_param -r)
+    echo "Testing token for $URL"
+    TOKEN=$(curl "$URL/rails/echo" --cookie-jar /tmp/cookie.txt -s | jq .csrf.form_param -r)
     echo "CSRF token: $TOKEN"
-    curl "https://$HOST/rails/echo" -F "authenticity_token=$TOKEN" --cookie /tmp/cookie.txt -w "form token %{http_code}\n" -s -o /dev/null
-    curl "https://$HOST/rails/echo" -H "x-csrf-token: $TOKEN" --cookie /tmp/cookie.txt -w "header token %{http_code}\n" -s -o /dev/null
-    curl "https://$HOST/rails/echo?authenticity_token=$TOKEN" --cookie /tmp/cookie.txt -w "query token %{http_code}\n" -s -o /dev/null
+    curl "$URL/rails/echo" -F "authenticity_token=$TOKEN" --cookie /tmp/cookie.txt -s | jq -r '. | "form token: \(.csrf.valid_token)"'
+    curl "$URL/rails/echo" -H "x-csrf-token: $TOKEN" --cookie /tmp/cookie.txt -s | jq -r '. | "header GET token: \(.csrf.valid_token)"'
+    curl "$URL/rails/echo" -X POST -H "x-csrf-token: $TOKEN" --cookie /tmp/cookie.txt -s | jq -r '. | "header POST token: \(.csrf.valid_token)"'
+    curl "$URL/rails/echo?authenticity_token=$TOKEN" --cookie /tmp/cookie.txt -s | jq -r '. | "query token: \(.csrf.valid_token)"'
     echo
 }
 
-HOST="peak.test"
+URL="http://localhost:7676"
 test_token
-HOST="gem-coop-staging.fly.dev"
+URL="https://peak.test"
 test_token
-HOST="staging.gem.coop"
+URL="https://gem-coop-staging.fly.dev"
+test_token
+URL="https://staging.gem.coop"
 test_token

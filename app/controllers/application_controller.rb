@@ -7,10 +7,18 @@ class ApplicationController < Public::BaseController
 
   def echo
     render plain: JSON.pretty_generate({
-      base_url: request.base_url,
-      origin: request.origin,
-      csrf_token: request.headers["X-CSRF-Token"],
-      form_authenticity_token: form_authenticity_token,
+      csrf: {
+        valid_origin: valid_request_origin?,
+        valid_token: any_authenticity_token_valid?,
+        form_param: form_authenticity_token,
+        header: request.x_csrf_token,
+      },
+      session: session.to_h,
+      request: {
+        base_url: request.base_url,
+        origin: request.origin,
+        host: request.host,
+      },
       params: params.permit!.to_h,
       headers: request.headers.
         group_by{|k,v| k.include?(".") ? k.split(".").first : "HTTP"}.

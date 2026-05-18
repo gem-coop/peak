@@ -1,0 +1,18 @@
+#!/bin/bash
+
+function test_token() {
+    echo "Testing token for $HOST"
+    TOKEN=$(curl "https://$HOST/rails/echo" --cookie-jar /tmp/cookie.txt -s | jq .csrf.form_param -r)
+    echo "CSRF token: $TOKEN"
+    curl "https://$HOST/rails/echo" -F "authenticity_token=$TOKEN" --cookie /tmp/cookie.txt -w "form token %{http_code}\n" -s -o /dev/null
+    curl "https://$HOST/rails/echo" -H "x-csrf-token: $TOKEN" --cookie /tmp/cookie.txt -w "header token %{http_code}\n" -s -o /dev/null
+    curl "https://$HOST/rails/echo?authenticity_token=$TOKEN" --cookie /tmp/cookie.txt -w "query token %{http_code}\n" -s -o /dev/null
+    echo
+}
+
+HOST="peak.test"
+test_token
+HOST="gem-coop-staging.fly.dev"
+test_token
+HOST="staging.gem.coop"
+test_token

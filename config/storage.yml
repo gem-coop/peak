@@ -8,8 +8,9 @@ local:
 
 fastly:
   service: S3
+  endpoint: '<%= ENV["AWS_ENDPOINT_URL_S3"] %>'
   access_key_id: <%= ENV["AWS_ACCESS_KEY_ID"] %>
   secret_access_key: <%= ENV["AWS_SECRET_ACCESS_KEY"] %>
   region: <%= ENV["AWS_REGION"] %>
   bucket: <%= ENV["BUCKET_NAME"] %>
-  endpoint: <%= ENV["AWS_ENDPOINT_URL_S3"] %>
+  force_path_style: true # this is required for Fastly Object Storage

@@ -14,7 +14,7 @@ class ApplicationController < Public::BaseController
       params: params.permit!.to_h,
       headers: request.headers.
         group_by{|k,v| k.include?(".") ? k.split(".").first : "HTTP"}.
-        transform_values(&:to_h)
+        transform_values{|v| v.sort_by(&:first).to_h}.sort_by(&:first).to_h
     })
   end
 end

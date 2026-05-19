@@ -21,16 +21,6 @@ class Namespace::Gem::Version::Reference < ApplicationRecord
       unique_by: :namespace_gem_version_references_uniqueness).rows.flat_map(&:first)
   end
 
-  def self.line
-    parts.join(",")
-  end
-
-  def self.parts
-    all.group_by(&:name).map do |name, refs|
-      "#{name}:#{refs.map(&:part).join("&")}"
-    end
-  end
-
   def part
     "#{operator_before_type_cast} #{ref}"
   end

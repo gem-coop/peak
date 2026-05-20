@@ -628,10 +628,10 @@ GEM
 GEM
   remote: https://packager.dev/avo-hq/
   specs:
-    avo-advanced (4.0.0.beta.11)
-      avo (>= 4.0.0.beta.26)
+    avo-advanced (4.0.0.beta.12)
+      avo (>= 4.0.0.beta.30)
       avo-dynamic_filters (>= 4.0.0.beta.13)
-      avo-licensing (>= 4.0.0.beta.7)
+      avo-licensing (>= 4.0.0.beta.8)
       avo-pro (>= 4.0.0.beta.16)
       zeitwerk (>= 2.6.12)
     avo-dashboards (4.0.0.beta.14)
@@ -730,7 +730,7 @@ CHECKSUMS
   addressable (2.9.0) sha256=7fdf6ac3660f7f4e867a0838be3f6cf722ace541dd97767fa42bc6cfa980c7af
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
   avo (4.0.0.beta.30) sha256=3944a47b4b588ed11d93fba5c691a05855469237f8f82c3a5000b2fc95a5e92a
-  avo-advanced (4.0.0.beta.11) sha256=19c740bc1d28098042952de2422706a08090eeba67774ad91cb65cfd9f3ed6af
+  avo-advanced (4.0.0.beta.12) sha256=f2934a6f47ac7bf20515344073d19a15e4681dfdf06bf0c24abc9fbed4c5cb12
   avo-dashboards (4.0.0.beta.14) sha256=7c36983f46d31382453446a91416374364e4cad920905ef4496a5ad9a5a9e647
   avo-dynamic_filters (4.0.0.beta.13) sha256=acf635643dc0cb97b34c551103b67fb1ffd1541424e37ad0dd39c1546b63d53c
   avo-icons (0.1.4) sha256=4f77070a5710ebb9db5cd6746aa5f043b8e71e61b27c7fba5210a40d87898e4d

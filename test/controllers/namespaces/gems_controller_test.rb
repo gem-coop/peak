@@ -47,7 +47,17 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     assert_equal ["peak"], version.executables
     assert version.has_extensions?
     assert_equal ["MIT"], version.licenses
-    assert_match "oaken:>= 0.9&~> 1.0.0,second_release_exclusive_ref:= 2.0", version.line
+
+    assert_equal Date.current, version.published_at.to_date
+    assert_equal "c6de6896567dd0fc5d000712cb75d12b4ef6168d1e340b9531523dcad9e50937", version.checksum
+
+    assert_equal version.line, version.compute_line
+
+    version.line.split("|", 2).tap do |references, metadata|
+      assert references && metadata
+      assert_match "oaken:>= 0.9&~> 1.0.0,second_release_exclusive_ref:= 2.0", references
+      assert_match "checksum:#{version.checksum},ruby:>= 4.0,rubygems:>= 2.7,executables:peak,licenses:MIT,published_at:#{version.published_at.iso8601(3)}\n", metadata
+    end
 
     assert_equal({
       homepage: "https://github.com/gem-coop/peak",
@@ -58,9 +68,6 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
       mailing_list: "https://github.com/gem-coop/peak",
       somewhere_custom: "https://github.com/gem-coop/peak"
     }, version.links.pluck(:key, :value).to_h.symbolize_keys)
-
-    assert_equal Date.current, version.published_at.to_date
-    assert_equal "c6de6896567dd0fc5d000712cb75d12b4ef6168d1e340b9531523dcad9e50937", version.checksum
 
     assert version.package.attached?
     assert_equal package.binread, version.package.download

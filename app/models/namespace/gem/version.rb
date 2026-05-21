@@ -60,7 +60,9 @@ class Namespace::Gem::Version < ApplicationRecord
     self.package = { io: upload.tmpfile, filename: }
     self.link_ids = links.unscoped.ids_from(upload.links)
     self.reference_ids = references.unscoped.ids_from(upload.requirement_triples)
-    update!(line: compute_line, **upload.slice(:platform_id, :has_extensions, :summary, *metadata.keys).compact_blank, **)
+
+    assign(**upload.slice(:platform_id, :has_extensions, :summary, *metadata.keys).compact_blank, **)
+    update! line: compute_line
   end
 
   def envelope(ref_stamp: nil)

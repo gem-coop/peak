@@ -6,7 +6,13 @@
 
 <h2>Your namespaces</h2>
 
-<% if Current.user.namespaces.any? %>
+<% if Current.user.namespaces.load.any? %>
+  <p>
+    Looking to push releases?
+
+    <i><%= link_to "Create a new push key", new_user_push_key_path(Current.user.slice(:email_address)) %></i>
+  </p>
+
   <ul>
     <% Current.user.namespaces.each do |namespace| %>
       <li>

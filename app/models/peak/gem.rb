@@ -3,8 +3,7 @@ class Peak::Gem
 
   def self.version(full_ref)
     if pattern.match?(full_ref)
-      ref = full_ref.chomp(".gem")
-      ref.rindex("-").then { [ref.byteslice(..._1), ref.byteslice(_1.succ..)] }
+      full_ref.chomp(".gem").split(/-(?=\d+\.)/)
     end
   end
 end

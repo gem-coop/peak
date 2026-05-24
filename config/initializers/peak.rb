@@ -10,7 +10,9 @@ module Peak extend self
   end
 
   def env
-    @env ||= ActiveSupport::EnvironmentInquirer.new ENV.fetch("PEAK_ENV", "development")
+    @env ||= ActiveSupport::EnvironmentInquirer.new ENV.fetch("PEAK_ENV") {
+      Rails.env.test? ? "test" : "development"
+    }
   end
 
   def system_user

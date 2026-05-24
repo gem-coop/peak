@@ -6,7 +6,7 @@ module Peak extend self
   mattr_reader :release, default: Release.new(sha:)
 
   def host
-    @host ||= Rails.application.routes.default_url_options[:host]
+    Rails.application.routes.default_url_options[:host]
   end
 
   def env

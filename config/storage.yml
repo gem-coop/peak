@@ -6,6 +6,8 @@ local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
 
+# We use Fastly's S3-compatible Object Storage
+# https://docs.fastly.com/products/object-storage
 fastly:
   service: S3
   endpoint: '<%= ENV["AWS_ENDPOINT_URL_S3"] %>'

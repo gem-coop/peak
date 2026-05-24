@@ -11,7 +11,7 @@ class SlackNotifyNamespaceRequestedJob < ApplicationJob
     msg = String.new
     msg << "[#{Peak.env.upcase}] " unless Peak.env.production?
     msg << "Namespace #{namespace.name} requested\n"
-    msg << "#{Route.avo.resources_namespace_url(namespace)}"
+    msg << Route.avo.resources_namespace_url(namespace).to_s
     msg.chomp
   end
 end

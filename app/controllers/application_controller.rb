@@ -12,16 +12,16 @@ class ApplicationController < Public::BaseController
         valid_origin: valid_request_origin?,
         valid_token: any_authenticity_token_valid?,
         form_param: form_authenticity_token,
-        header: request.x_csrf_token,
+        header: request.x_csrf_token
       },
       session: session.to_h,
       request: {
         base_url: request.base_url,
         origin: request.origin,
-        host: request.host,
+        host: request.host
       },
       params: params.permit!.to_h,
-      headers: request.headers.select{|k,v| !k.include?(".")}.sort_by(&:first).to_h
+      headers: request.headers.select { |k, v| !k.include?(".") }.sort_by(&:first).to_h
     })
   end
 end

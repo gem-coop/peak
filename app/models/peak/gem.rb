@@ -1,9 +1,8 @@
 class Peak::Gem
-  mattr_reader :pattern, default: /[A-Za-z][A-Za-z0-9\.\-\_]+?\.gem/
+  mattr_reader :name_pattern,  default: /[A-Za-z][A-Za-z0-9\.\-\_]+?/
+  mattr_reader :route_pattern, default: /#{name_pattern}\.gem/
 
-  def self.version(full_ref)
-    if pattern.match?(full_ref)
-      full_ref.chomp(".gem").split(/-(?=\d+\.)/)
-    end
+  def self.version(ref)
+    ref.chomp(".gem").split(/-(?=\d+\.)/) if route_pattern.match?(ref)
   end
 end

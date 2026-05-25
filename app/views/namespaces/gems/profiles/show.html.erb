@@ -75,7 +75,7 @@
     <%= render "gem/versions/list", versions: @gem.versions.latest_first.pure.as_byline.first(20) %>
 
     <div>
-      <%= link_to tag.i("See raw versions list →"), namespace_info_path(@index.namespace, @gem) %>
+      <%= link_to tag.i("See raw versions list →"), namespace_info_path(@index.namespace) %>
     </div>
   </section>
 

@@ -3,24 +3,17 @@ class User::SignUp
   attr_accessor :name, :email_address, :namespace_name
 
   def save
-    save!
-    true
-  rescue ActiveRecord::RecordInvalid
+    access.save if user.valid? && namespace.valid?
+  rescue ActiveRecord::RecordNotUnique
+    # Race Condition guard: the email_address or namespace name can be taken after uniqueness constraint checks,
+    # so Active Record raises when trying to commit the transaction.
     false
   end
 
-  def save!
-    user.transaction do
-      user.save!
-      namespace.save!
+  def access
+    @access ||= Namespace.new(name: namespace_name).then do
+      _1.accesses.owner.new user: User.new(name:, email_address:)
     end
   end
-
-  def user
-    @user ||= User.new(name:, email_address:)
-  end
-
-  def namespace
-    @namespace ||= Namespace.new(name: namespace_name).tap { _1.accesses.owner.new(user:) }
-  end
+  delegate :user, :namespace, to: :access
 end

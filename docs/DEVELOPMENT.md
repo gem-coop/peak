@@ -54,6 +54,32 @@ The test reads [test/fixtures/files/peak/peak-0.1.0.gem](test/fixtures/files/pea
 
 We've also got a gemspec in [test/fixtures/files/peak/peak.gemspec](test/fixtures/files/peak/peak.gemspec) that we've passed to `gem build` to generate the two `.gem` packages.
 
+## Working & testing events with Stripe
+
+You can find Stripe's up-to-date info via [Workbench > Webhooks](https://dashboard.stripe.com/workbench/webhooks) > Test with a local listener.
+
+First, run `stripe login` and login with your Stripe account that's associated with gem.coop's Stripe account.
+
+Next, use our script to forward Stripe events locally:
+
+```sh
+bin/stripe-listen
+```
+
+Copy the signing secret from the output, then separately boot the server with `STRIPE__SIGNING_SECRET`:
+
+```sh
+STRIPE__SIGNING_SECRET= bin/rails s
+```
+
+Finally, you can trigger specific v1 events like so:
+
+```sh
+stripe trigger customer.subscription.created
+```
+
+Run `stripe trigger --help` to see all possible events.
+
 ## Local Testing gem push
 
 Consider adding a `tmp/Gemfile` like this:

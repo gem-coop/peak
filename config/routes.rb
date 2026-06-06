@@ -55,6 +55,10 @@ Rails.application.routes.draw do
   get "terms/acceptances/new",  to: "peak/terms/acceptances#new",    as: :new_terms_acceptances
   post "terms/:id/acceptances", to: "peak/terms/acceptances#create", as: :terms_acceptances
 
+  namespace "billing/stripe", as: :billing_stripe do
+    resources :events
+  end
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

@@ -18,6 +18,11 @@ class ApplicationRecord < ActiveRecord::Base
     limit(limit).count >= limit
   end
 
+  def self.const_get?(const)
+    const_get(const) if const_defined?(const)
+  end
+  delegate :const_get?, to: :class
+
   def mailer
     self.class::Mailer.with(model_name.element.to_sym => self)
   end

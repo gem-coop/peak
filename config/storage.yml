@@ -6,22 +6,24 @@ local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
 
-# Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
-tigris:
+# We use Fastly's S3-compatible Object Storage
+# https://docs.fastly.com/products/object-storage
+fastly:
   service: S3
+  endpoint: '<%= ENV["AWS_ENDPOINT_URL_S3"] %>'
   access_key_id: <%= ENV["AWS_ACCESS_KEY_ID"] %>
   secret_access_key: <%= ENV["AWS_SECRET_ACCESS_KEY"] %>
   region: <%= ENV["AWS_REGION"] %>
   bucket: <%= ENV["BUCKET_NAME"] %>
+  force_path_style: true # this is required for Fastly Object Storage
 
-# Remember not to checkin your GCS keyfile to a repository
-# google:
-#   service: GCS
-#   project: your_project
-#   credentials: <%= Rails.root.join("path/to/gcs.keyfile") %>
-#   bucket: your_own_bucket-<%= Rails.env %>
-
-# mirror:
-#   service: Mirror
-#   primary: local
-#   mirrors: [ amazon, google, microsoft ]
+# This is also Fastly, but some records were created back when the
+# config was named tigris, so we need this as well, for now.
+tigris:
+  service: S3
+  endpoint: '<%= ENV["AWS_ENDPOINT_URL_S3"] %>'
+  access_key_id: <%= ENV["AWS_ACCESS_KEY_ID"] %>
+  secret_access_key: <%= ENV["AWS_SECRET_ACCESS_KEY"] %>
+  region: <%= ENV["AWS_REGION"] %>
+  bucket: <%= ENV["BUCKET_NAME"] %>
+  force_path_style: true # this is required for Fastly Object Storage

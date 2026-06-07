@@ -1,0 +1,26 @@
+#!/bin/bash
+
+
+export FLY_ORG=gem-coop
+
+case "$1" in
+    production|prod|p)
+        APP_NAME=gem-coop
+        ;;
+    staging|stage|s)
+        APP_NAME=gem-coop-staging
+        ;;
+    *)
+        echo "USAGE: $0 [production|staging]"
+        exit 1
+        ;;
+esac
+
+BUNDLE_PACKAGER__DEV="$(bundle config get packager.dev | tail -n1 | sed 's/.*: //')"
+
+flyctl deploy \
+    -a ${APP_NAME} \
+    -e BUILT_BY=${USER} \
+    -e GIT_SHA="$(git rev-parse HEAD)"\
+    -e BUNDLE_WITH=avo \
+    --build-secret BUNDLE_PACKAGER__DEV=${BUNDLE_PACKAGER__DEV}

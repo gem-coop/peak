@@ -1,0 +1,5 @@
+#!/bin/bash
+
+export FLY_ORG=gem-coop
+export FLY_APP=gem-coop-staging
+exec flyctl "$@"

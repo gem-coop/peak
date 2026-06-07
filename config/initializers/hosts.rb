@@ -1,13 +1,18 @@
 Rails.application.configure do
   host =
-    case
-    when Rails.env.development? then "peak.test"
-    when Rails.env.test? then "example.com"
-    else
-      "beta.gem.coop"
+    case Rails.env
+    when "development" then "peak.test"
+    when "test" then "example.com"
+    when "production"
+      case ENV.fetch("PEAK_ENV", "production")
+      when "staging" then "staging.gem.coop"
+      when "production" then "gem.coop"
+      end
     end
 
-  Peak.define_singleton_method(:host) { host }
+  if host.nil?
+    raise "Unknown host for RAILS_ENV #{ENV["RAILS_ENV"].inspect} and PEAK_ENV #{ENV["PEAK_ENV"].inspect}"
+  end
 
   Avo::Engine.routes.default_url_options = { host: } if Peak.avo?
   Rails.application.routes.default_url_options = { host: }

@@ -22,14 +22,13 @@ Rails.application.routes.draw do
   get "/dashboard" => "dashboard#show", as: :dashboard
 
   scope module: :namespaces, defaults: { namespace: "@public" }, as: :public do
-    get "/cooldown/versions" => "cooldown#versions"
-    get "/cooldown/info/:name" => "cooldown#info"
-    get "/cooldown/gems/:gem" => "cooldown#gems", constraints: {gem: Peak::Gem.route_pattern}
+    get "/cooldown(/:period_id)/versions", to: "index/cooldowns#index", as: :cooldown_versions
+    get "/cooldown(/:period_id)/info/:id", to: "index/cooldowns#show", as: :cooldown_info
+    get "/cooldown(/:period_id)/gems/:id", to: "gems#show", as: :cooldown_gems, constraints: {id: Peak::Gem.route_pattern}
 
-    get "/versions" => "mirror#versions"
-    get "/info/:name" => "mirror#info"
-    get "/gems/:gem" => "mirror#gems", constraints: {gem: Peak::Gem.route_pattern}
-    post "/api/v1/gems", to: "gems#create", as: :gem_push
+    get "/versions" => "mirror#versions", as: :versions
+    get "/info/:name" => "mirror#info", as: :info
+    get "/gems/:gem" => "mirror#gems", as: :gems, constraints: {gem: Peak::Gem.route_pattern}
   end
 
   constraints -> { _1.params[:namespace].then { it.starts_with?("@") && it != "@public" } } do

@@ -1,73 +1,33 @@
-# README
+# Peak
 
-Clone the repo, cd into it and run `bin/setup` to get started:
+> 🏔️ A new overview for Ruby's vast gems, from up here we can spot them all.
 
-```sh
-bin/setup
-```
+## Quickstart
 
-Options:
-  - `--reset` resets the database via `bin/rails db:reset`
-  - `--dev` runs `bin/dev` to boot the development server.
+Run `bin/setup`, then `bin/dev`. See [DEVELOPMENT](/docs/DEVELOPMENT.md) for more.
 
-> [!TIP]
-> [bin/sq](bin/sq) lets you query a running server a little more easily, click the link for samples.
+## What is this?
 
-> [!TIP]
-> [bin/gemspec](bin/gemspec) lets you download a .gem from https://gem.coop, click the link for samples.
+Peak is the Rails app that powers the [gem.coop](https://gem.coop) service.
 
-# Dependencies
+## Who are you?
 
-- `homebrew`, we're assuming a working Homebrew installation.
-- [`puma-dev`](https://github.com/puma/puma-dev), set it up and run `puma-dev link` from the root dir to setup accessing the app via `http://peak.test`.
-- `postgresql@16`, installed via Homebrew (`brew install postgresql@16`) or `docker compose up db`.
+[The Gem Cooperative](https://github.com/gem-coop/governance/#who-we-are) is a group of open-source developers who are building and maintaining the [gem.coop](https://gem.coop) service.
 
-## Quick Start
+## Why did you make this?
 
-We're using [Oaken](https://github.com/kaspth/oaken) to use code as documentation for our domain model.
+Our founding team ran RubyGems.org for about 13 years, from 2012 to 2025. We started [gem.coop](https://gem.coop) after [Ruby Central took over Bundler and RubyGems](https://joel.drapper.me/p/ruby-central/).
 
-So what you see in `db/seeds` is both what gets run via `db:prepare` in `bin/setup` (which runs `db:seed`),
-and also the data we test with.
+We believe the Ruby community needs a gem server run by developers, without corporate administrators claiming ownership of projects they did not build. We're want to make Peak the best gem server, for any Ruby developer or company to use.
 
-To get up to speed, start reading db/seeds/namespaces:
+## Contributing
 
-1. [db/seeds/namespaces/@public.rb](db/seeds/namespaces/@public.rb)
-2. [db/seeds/namespaces/@gemcoop.rb](db/seeds/namespaces/@gemcoop.rb)
+We love pull requests. Check out the [development docs](/docs/development.md) to get started.
 
-First is our `@public` namespace, which in production will have thousands of gems that we ingest continually. In our seeds we just ingest a few.
+To allow both open and commercial license options, contributions need to be submitted under the [Single CLA](https://github.com/singlecla/singlecla). Before you submit your PR, fork the repo to your GitHub account and commit your signature.
 
-Second is modeling a distinct namespace, here just called `@gemcoop`, which mirrors real life in that it:
+## License
 
-- has relatively few gems
-- can have gems named the same as in another namespace, without clashing
-- can have users with an `owner` role and one with a `plain` permissions role
+Peak is licensed under the [AGPLv3](/LICENSE).
 
-### Representative controller test
-
-See the push test in [test/controllers/namespaces/gems_controller_test.rb](test/controllers/namespaces/gems_controller_test.rb), which you can run with:
-
-```sh
-bin/rails test test/controllers/namespaces/gems_controller_test.rb -i push
-```
-
-The test reads [test/fixtures/files/peak/peak-0.1.0.gem](test/fixtures/files/peak/peak-0.1.0.gem) and uploads it.
-
-We've also got a gemspec in [test/fixtures/files/peak/peak.gemspec](test/fixtures/files/peak/peak.gemspec) that we've passed to `gem build` to generate the two `.gem` packages.
-
-## Local Testing gem push
-
-Consider adding a `tmp/Gemfile` like this:
-
-```ruby
-source "http://peak.test/@gemcoop"
-
-gem "peak"
-```
-
-Then upload our test dependency:
-
-```sh
-bin/push @gemcoop test/fixtures/files/peak/peak-0.2.0.gem
-```
-
-You should be able to run `bundle lock` now.
+A non-GPL commercial license is also available. For details, contact us at [support@gem.coop](mailto:support@gem.coop).

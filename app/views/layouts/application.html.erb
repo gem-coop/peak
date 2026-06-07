@@ -26,14 +26,20 @@
   <body>
     <main>
       <nav>
-        <%= image_tag "logo.png", alt: "gem.coop logo", width: 100 %>
+        <%= link_to root_path do %>
+          <%= image_tag "logo.png", alt: "gem.coop logo", width: 100 %>
+        <% end %>
 
         <ul>
-          <li><%= link_to "Home", "https://gem.coop/" %></li>
-          <li><%= link_to "Updates", "https://gem.coop/updates" %></li>
-          <li><%= link_to "Cooldowns", "https://gem.coop/cooldowns" %></li>
-          <li><%= link_to "Fellowship", "https://gem.coop/fellowship" %></li>
-          <li><%= link_to "GitHub", "https://github.com/gem-coop" %></li>
+          <li><%= link_to "Home", root_path %></li>
+          <li><%= link_to "Updates", "/updates" %></li>
+          <li><%= link_to "Fellowship", "/fellowship" %></li>
+
+          <% if Current.user? %>
+            <li><%= link_to "Dashboard", dashboard_path %></li>
+          <% else %>
+            <li><%= link_to "Sign Up", sign_up_path %></li>
+          <% end %>
         </ul>
       </nav>
 

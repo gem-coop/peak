@@ -21,6 +21,8 @@
 
   --primary: light-dark(black, white);
   --secondary:  #949699;
+
+  --border-color: light-dark(#191e24, #ffffffaa);
 }
 
 body {
@@ -43,9 +45,10 @@ nav {
   display: flex;
   gap: 1em;
   align-items: center;
+  justify-content: space-between;
   margin-block-end: 2em;
 
-  & ul {
+  ul {
     display: flex;
     flex-wrap: wrap;
     list-style: none;
@@ -53,9 +56,12 @@ nav {
     padding: 0;
   }
 
-  & ul li:not(:last-child):after {
-    content: '|';
+  ul li {
     padding-inline: 10px;
+
+    &:not(:last-child) {
+      border-inline-end: 1px solid var(--border-color);
+    }
   }
 }
 

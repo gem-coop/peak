@@ -8,11 +8,51 @@ on:
 permissions:
   contents: read
   deployments: write
-env:
-  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 jobs:
-  deploy:
+  deploy-staging:
+    name: Deploy staging
+    environment: Staging
+    if: ${{ github.repository == 'gem-coop/peak' }}
+    runs-on: ubuntu-latest
+    concurrency:
+      group: staging-deploy
+      cancel-in-progress: false
+    steps:
+      - id: deployment
+        uses: bobheadxi/deployments@v1.5.0
+        with:
+          step: start
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: Staging
+      - uses: actions/checkout@v6
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: fly deploy -a gem-coop-staging
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          flyctl deploy -a gem-coop-staging --remote-only \
+          -e BUILT_BY=github-actions \
+          -e GIT_SHA=$GITHUB_SHA \
+          -e BUNDLE_WITH=avo \
+          --build-secret BUNDLE_PACKAGER__DEV=${{ secrets.BUNDLE_PACKAGER__DEV }}
+      - uses: bobheadxi/deployments@v1.5.0
+        if: always()
+        with:
+          step: finish
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
+          env: Staging
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          override: false
+          auto_inactive: true
+      - uses: honeybadger-io/github-notify-deploy-action@v1
+        with:
+          api_key: ${{ secrets.HONEYBADGER_API_KEY }}
+          environment: staging
+  deploy-production:
     name: Deploy production
+    needs: [deploy-staging]
+    environment: Production
     if: ${{ github.repository == 'gem-coop/peak' }}
     runs-on: ubuntu-latest
     concurrency:
@@ -27,8 +67,11 @@ jobs:
           env: Production
       - uses: actions/checkout@v6
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: |
-          flyctl deploy --remote-only \
+      - name: fly deploy -a gem-coop
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          flyctl deploy -a gem-coop --remote-only \
           -e BUILT_BY=github-actions \
           -e GIT_SHA=$GITHUB_SHA \
           -e BUNDLE_WITH=avo \

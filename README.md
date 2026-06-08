@@ -6,28 +6,26 @@
 
 Run `bin/setup`, then `bin/dev`. See [DEVELOPMENT](/docs/DEVELOPMENT.md) for more.
 
-## What is this?
+## About Peak
 
 Peak is the Rails app that powers the [gem.coop](https://gem.coop) service.
 
-## Who are you?
+### Our goals
 
-[The Gem Cooperative](https://github.com/gem-coop/governance/#who-we-are) is a group of open-source developers who are building and maintaining the [gem.coop](https://gem.coop) service.
+We want to make Peak the best gem server for any Ruby developer or company to use, by providing fast, community-owned, transparent, sustainable, and secure gem hosting for everyone. We aim to be compatible with Bundler, but optimized for the next generation. 
 
-## Why did you make this?
+### Our team
 
-Our founding team ran RubyGems.org for about 13 years, from 2012 to 2025. We started [gem.coop](https://gem.coop) after [Ruby Central took over Bundler and RubyGems](https://joel.drapper.me/p/ruby-central/).
-
-We believe the Ruby community needs a gem server run by developers, without corporate administrators claiming ownership of projects they did not build. We're want to make Peak the best gem server, for any Ruby developer or company to use.
+[The Gem Cooperative](https://github.com/gem-coop/governance/#who-we-are) is a group of open-source developers building and maintaining the [gem.coop](https://gem.coop) service, founded by the team that maintained and operated rubygems.org from 2012 to 2025.
 
 ## Contributing
 
 We love pull requests. Check out the [development docs](/docs/development.md) to get started.
 
-To allow both open and commercial license options, contributions need to be submitted under the [Single CLA](https://github.com/singlecla/singlecla). Before you submit your PR, fork the repo to your GitHub account and commit your signature.
+Before you open any pull requests, we have a one-time request: please fork [the Single CLA repo](https://github.com/singlecla/singlecla) to your GitHub account and use the GitHub web UI to commit your signature. The Single CLA ensures we keep the option to add other licenses for Peak, like MIT, or paid corporate plans.
 
 ## License
 
-Peak is licensed under the [AGPLv3](/LICENSE).
+Peak is licensed under the [AGPLv3](/LICENSE). All the code we have published will stay open and free, forever, no matter what other licenses we might add later.
 
-A non-GPL commercial license is also available. For details, contact us at [support@gem.coop](mailto:support@gem.coop).
+A non-GPL corporate license is also available. For details, contact us at [support@gem<!-- don't spam us -->.coop](mailto:support%40%67%65%6d%2e%63%6f%6f%70?subject=Peak%20License).

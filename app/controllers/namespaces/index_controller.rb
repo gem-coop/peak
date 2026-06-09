@@ -7,7 +7,7 @@ class Namespaces::IndexController < Public::BaseController
   end
 
   def show
-    plain = @index.versions.latest_last.for(params[:id]).lines
-    render plain:, status: (:not_found if plain.empty?)
+    stream_lines_from @index.versions.for(params[:id])
+    head :not_found unless performed?
   end
 end

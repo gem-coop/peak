@@ -6,4 +6,15 @@ class Public::BaseController < ActionController::Base
       # TODO: Figure out authenticated routing to `private_access` indexes.
       @index = from.approved.named(params[:namespace]).indexes.public_access.locate_or_default(params[:index])
     end
+
+    def stream_lines_from(versions)
+      stream_batched versions.latest_last.in_batches(of: 50), &:lines
+    end
+
+    def stream_batched(enum)
+      writing_occured = false
+      enum.each { writing_occured = true; response.stream.write yield it }
+    ensure
+      response.stream.close if writing_occured
+    end
 end

@@ -68,7 +68,7 @@ gem "action_controller-stashed_redirects"
 
 gem "aws-sdk-s3", "~> 1.226"
 gem "brotli", "~> 0.8.0"
-gem "honeybadger", "~> 6.7"
+gem "honeybadger", "~> 6.9"
 gem "httpx", "~> 1.8"
 gem "opentelemetry-exporter-otlp"
 gem "opentelemetry-instrumentation-all"

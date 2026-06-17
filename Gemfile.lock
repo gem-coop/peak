@@ -192,7 +192,7 @@ GEM
     googleapis-common-protos-types (1.22.0)
       google-protobuf (~> 4.26)
     hashdiff (1.2.1)
-    honeybadger (6.7.0)
+    honeybadger (6.9.0)
       logger
       ostruct
     http-2 (1.2.0)
@@ -685,7 +685,7 @@ DEPENDENCIES
   capybara
   debug
   dockerfile-rails (>= 1.7)
-  honeybadger (~> 6.7)
+  honeybadger (~> 6.9)
   httpx (~> 1.8)
   image_processing (~> 2.0)
   oaken
@@ -777,7 +777,7 @@ CHECKSUMS
   google-protobuf (4.34.1-x86_64-linux-musl) sha256=8c0e91436fbe504ffc64f0bd621f2e69adbcce8ed2c58439d7a21117069cfdd7
   googleapis-common-protos-types (1.22.0) sha256=f97492b77bd6da0018c860d5004f512fe7cd165554d7019a8f4df6a56fbfc4c7
   hashdiff (1.2.1) sha256=9c079dbc513dfc8833ab59c0c2d8f230fa28499cc5efb4b8dd276cf931457cd1
-  honeybadger (6.7.0) sha256=9b638b33b6208859e64dd34fe8e707a61f95acf3db366dbd4c65cdd042525ebf
+  honeybadger (6.9.0) sha256=f90b4f0dd37b8bfb1decb40f17349459828f6fd6933ef8cf1b1881dbc4a9eb75
   http-2 (1.2.0) sha256=5bed923379ae67895d3bde440502219543da2885104b46ed7d604f5990efad1c
   httparty (0.24.2) sha256=8fca6a54aa0c4aa4303a0fd33e5e2156175d6a5334f714263b458abd7fda9c38
   httpx (1.8.0) sha256=10b300875be99cbc3497397278cf99632262567886f3582ee25ce492bdadbe2a

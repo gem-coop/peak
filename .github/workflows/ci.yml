@@ -18,15 +18,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Set up Ruby
-        uses: spinel-coop/setup-rv@main
-        with:
-          ruby-version: current
-          install-gems: true
       # - name: Set up Ruby
-      #   uses: ruby/setup-ruby@v1
+      #   uses: spinel-coop/setup-rv@main
       #   with:
-      #     bundler-cache: true
+      #     ruby-version: current
+      #     install-gems: true
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
 
       - name: Scan for common Rails security vulnerabilities using static analysis
         run: bin/brakeman --no-pager
@@ -42,15 +42,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Set up Ruby
-        uses: spinel-coop/setup-rv@main
-        with:
-          ruby-version: current
-          install-gems: true
       # - name: Set up Ruby
-      #   uses: ruby/setup-ruby@v1
+      #   uses: spinel-coop/setup-rv@main
       #   with:
-      #     bundler-cache: true
+      #     ruby-version: current
+      #     install-gems: true
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
 
       - name: Prepare RuboCop cache
         uses: actions/cache@v5
@@ -79,15 +79,15 @@ jobs:
           docker compose up -d db > /dev/null 2>&1 &
           disown
 
-      - name: Set up Ruby
-        uses: spinel-coop/setup-rv@main
-        with:
-          ruby-version: current
-          install-gems: true
       # - name: Set up Ruby
-      #   uses: ruby/setup-ruby@v1
+      #   uses: spinel-coop/setup-rv@main
       #   with:
-      #     bundler-cache: true
+      #     ruby-version: current
+      #     install-gems: true
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
 
       - name: Configure database
         run: cp config/database.ci.yml config/database.yml

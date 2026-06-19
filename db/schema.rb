@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_19_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_19_000002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -233,6 +233,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_19_000001) do
     t.index ["user_id"], name: "index_peak_terms_acceptances_on_user_id"
   end
 
+  create_table "trusted_publishers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "environment"
+    t.bigint "gem_id"
+    t.string "gem_name", null: false
+    t.bigint "namespace_id", null: false
+    t.bigint "provider_id", null: false
+    t.string "ref"
+    t.string "repository_name"
+    t.string "repository_owner"
+    t.string "type", null: false
+    t.datetime "updated_at", null: false
+    t.string "workflow_filename"
+    t.index ["gem_id"], name: "index_trusted_publishers_on_gem_id"
+    t.index ["namespace_id"], name: "index_trusted_publishers_on_namespace_id"
+    t.index ["provider_id"], name: "index_trusted_publishers_on_provider_id"
+  end
+
   create_table "user_push_keys", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "expires_at", null: false
@@ -263,4 +281,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_19_000001) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "trusted_publishers", "namespace_gems", column: "gem_id"
+  add_foreign_key "trusted_publishers", "namespaces"
+  add_foreign_key "trusted_publishers", "oidc_providers", column: "provider_id"
 end

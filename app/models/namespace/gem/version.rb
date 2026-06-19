@@ -1,6 +1,6 @@
 class Namespace::Gem::Version < ApplicationRecord
   belongs_to :gem
-  belongs_to :created_by, class_name: "User"
+  belongs_to :created_by, polymorphic: true
 
   has_many :linkings, dependent: :destroy
   has_many :links, through: :linkings
@@ -30,7 +30,7 @@ class Namespace::Gem::Version < ApplicationRecord
   scope :system, -> { where(created_by: Peak.system_user) }
   def self.latest_for(name) = self.for(name).latest
 
-  scope :as_byline, -> { select(:ref, :summary, :published_at, :created_by_id).includes(:created_by) }
+  scope :as_byline, -> { select(:ref, :summary, :published_at, :created_by_id, :created_by_type).includes(:created_by) }
 
   belongs_to :platform, class_name: "Peak::Platform"
 

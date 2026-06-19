@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_19_000004) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_19_000005) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -114,6 +114,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_19_000004) do
     t.string "checksum"
     t.datetime "created_at", null: false
     t.bigint "created_by_id", null: false
+    t.string "created_by_type", default: "User", null: false
     t.json "executables", default: [], null: false
     t.bigint "gem_id", null: false
     t.boolean "has_extensions"
@@ -127,6 +128,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_19_000004) do
     t.string "summary", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_namespace_gem_versions_on_created_by_id"
+    t.index ["created_by_type", "created_by_id"], name: "idx_on_created_by_type_created_by_id_c48d949be2"
     t.index ["gem_id", "ref"], name: "index_namepace_gem_versions_uniqueness", unique: true
     t.index ["gem_id"], name: "index_namespace_gem_versions_on_gem_id"
     t.index ["platform_id"], name: "index_namespace_gem_versions_on_platform_id"

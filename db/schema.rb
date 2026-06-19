@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_19_000003) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_19_000004) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -192,6 +192,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_19_000003) do
     t.index ["name"], name: "index_namespaces_on_name", unique: true
   end
 
+  create_table "oidc_id_tokens", force: :cascade do |t|
+    t.json "claims", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.string "jti", null: false
+    t.bigint "provider_id", null: false
+    t.bigint "push_key_id"
+    t.bigint "trusted_publisher_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["provider_id", "jti"], name: "index_oidc_id_tokens_on_provider_id_and_jti", unique: true
+    t.index ["provider_id"], name: "index_oidc_id_tokens_on_provider_id"
+    t.index ["push_key_id"], name: "index_oidc_id_tokens_on_push_key_id"
+    t.index ["trusted_publisher_id"], name: "index_oidc_id_tokens_on_trusted_publisher_id"
+  end
+
   create_table "oidc_providers", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "issuer", null: false
@@ -291,6 +305,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_19_000003) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "oidc_id_tokens", "oidc_providers", column: "provider_id"
+  add_foreign_key "oidc_id_tokens", "trusted_publisher_push_keys", column: "push_key_id"
+  add_foreign_key "oidc_id_tokens", "trusted_publishers"
   add_foreign_key "trusted_publisher_push_keys", "trusted_publishers"
   add_foreign_key "trusted_publishers", "namespace_gems", column: "gem_id"
   add_foreign_key "trusted_publishers", "namespaces"

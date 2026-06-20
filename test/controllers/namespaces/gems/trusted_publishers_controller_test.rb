@@ -33,4 +33,10 @@ class Namespaces::Gems::TrustedPublishersControllerTest < ActionDispatch::Integr
     get index_url
     assert_response :success
   end
+
+  test "index has a back-link to the gem profile" do
+    sign_in_as users.owner
+    get namespace_gem_trusted_publishers_url(namespace: namespaces.gemcoop.name, gem_id: gems.peak.name)
+    assert_select "a[href=?]", namespace_gem_path(namespaces.gemcoop, gems.peak, index: nil)
+  end
 end

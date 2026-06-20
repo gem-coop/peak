@@ -37,4 +37,10 @@ class Namespaces::TrustedPublishersControllerTest < ActionDispatch::IntegrationT
     follow_redirect!
     assert_includes response.body, "must be an owner"
   end
+
+  test "index has a back-link to the namespace profile" do
+    sign_in_as users.owner
+    get namespace_trusted_publishers_url(namespace: namespaces.gemcoop.name)
+    assert_select "a[href=?]", namespace_path(namespaces.gemcoop.name)
+  end
 end

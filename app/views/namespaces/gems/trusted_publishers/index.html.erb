@@ -1,4 +1,5 @@
 <% page.title = "Trusted Publishers · #{@gem.name}" %>
+<p><%= link_to "← #{@gem.namespace.name}/#{@gem.name}", namespace_gem_path(@gem.namespace, @gem, index: nil) %></p>
 
 <h1>Trusted Publishers for <%= @gem.name %></h1>
 

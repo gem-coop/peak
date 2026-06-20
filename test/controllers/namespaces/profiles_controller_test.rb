@@ -17,4 +17,16 @@ class Namespaces::ProfilesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_not_dom "article", "unversioned"
   end
+
+  test "renders a version authored by a trusted publisher" do
+    publisher = TrustedPublisher::GitHubActions.create!(
+      namespace: namespaces.gemcoop, gem: gems.peak, gem_name: "peak",
+      provider: oidc_providers.github,
+      repository_owner: "gem-coop", repository_name: "peak", workflow_filename: "release.yml")
+    versions.by(gems.peak, ref: "0.1.0").update!(created_by: publisher)
+
+    get namespace_url(namespaces.gemcoop.name)
+    assert_response :success
+    assert_includes response.body, "gem-coop/peak"
+  end
 end

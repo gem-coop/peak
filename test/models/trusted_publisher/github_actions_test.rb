@@ -52,4 +52,37 @@ class TrustedPublisher::GitHubActionsTest < ActiveSupport::TestCase
     pending.link_gem!(gems.peak)
     assert pending.reload.pending?
   end
+
+  test "name is owner/repo" do
+    assert_equal "gem-coop/peak", build.name
+  end
+
+  test "repository owner and name are folded to lowercase" do
+    publisher = build(repository_owner: "Gem-Coop", repository_name: "Peak")
+    assert_equal "gem-coop", publisher.repository_owner
+    assert_equal "peak", publisher.repository_name
+  end
+
+  test "matches case-insensitively against claim casing" do
+    assert build.matches?(default_github_claims(
+      repository_owner: "Gem-Coop", repository: "Gem-Coop/Peak",
+      job_workflow_ref: "Gem-Coop/Peak/.github/workflows/release.yml@refs/heads/main"))
+  end
+
+  test "rejects a duplicate publisher for the same workflow" do
+    build.save!
+    dup = build
+    assert_not dup.valid?
+    assert_predicate dup.errors[:repository_name], :any?
+  end
+
+  test "allows a second publisher differing by environment" do
+    build(environment: "prod").save!
+    assert build(environment: "staging").valid?
+  end
+
+  test "provider_label" do
+    assert_equal "GitHub Actions", build.provider_label
+    assert_equal "trusted publisher", TrustedPublisher.new.provider_label
+  end
 end

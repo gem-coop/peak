@@ -3,7 +3,7 @@
     <li>
       <%= version.ref %>
       <%= tag.span version.published_at.strftime("%b %d %Y"), style: "color: var(--primary);" %>
-      <%= version.created_by.name %>
+      <%= version_author(version) %>
     </li>
   <% end %>
 </ul>

@@ -16,6 +16,9 @@ class TrustedPublisher < ApplicationRecord
     update!(gem:) if pending? && gem.name == gem_name
   end
 
+  def name = "#{repository_owner}/#{repository_name}"
+  def provider_label = "trusted publisher"
+
   # Subclasses implement #matches?(claims) for their provider's claim shape.
   def matches?(_claims) = raise NotImplementedError
 end

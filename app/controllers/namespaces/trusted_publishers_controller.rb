@@ -3,6 +3,7 @@ class Namespaces::TrustedPublishersController < ApplicationController
 
   def index
     @trusted_publishers = current_namespace.trusted_publishers.pending.order(:created_at)
+    @active_publishers = current_namespace.trusted_publishers.where.not(gem_id: nil).order(:created_at)
     @trusted_publisher = TrustedPublisher::GitHubActions.new
   end
 
@@ -10,7 +11,7 @@ class Namespaces::TrustedPublishersController < ApplicationController
     @trusted_publisher = current_namespace.trusted_publishers.build(
       trusted_publisher_params.merge(
         type: "TrustedPublisher::GitHubActions",
-        provider: OIDC::Provider::GitHubActions.sole))
+        provider: OIDC::Provider::GitHubActions.find_by!(issuer: OIDC::Provider::GitHubActions::ISSUER)))
 
     if @trusted_publisher.save
       redirect_to namespace_trusted_publishers_path(namespace: current_namespace.name),

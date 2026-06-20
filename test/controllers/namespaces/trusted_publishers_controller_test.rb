@@ -50,4 +50,16 @@ class Namespaces::TrustedPublishersControllerTest < ActionDispatch::IntegrationT
     assert_select "input[name=?]", "trusted_publisher[ref]"
     assert_includes response.body, "id-token: write"
   end
+
+  test "active section lists a converted publisher linking to its gem page" do
+    TrustedPublisher::GitHubActions.create!(
+      namespace: namespaces.gemcoop, gem: gems.peak, gem_name: "peak",
+      provider: oidc_providers.github,
+      repository_owner: "gem-coop", repository_name: "peak", workflow_filename: "release.yml")
+
+    sign_in_as users.owner
+    get namespace_trusted_publishers_url(namespace: namespaces.gemcoop.name)
+    assert_select "a[href=?]",
+      namespace_gem_trusted_publishers_path(namespace: namespaces.gemcoop.name, gem_id: "peak")
+  end
 end

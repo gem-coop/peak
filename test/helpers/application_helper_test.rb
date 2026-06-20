@@ -18,4 +18,17 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_includes html, "gem-coop/peak"
     assert_includes html, "via GitHub Actions"
   end
+
+  test "owner_of? is true only for an owner" do
+    Current.session = nil
+    refute owner_of?(namespaces.gemcoop)
+
+    Current.session = users.plain.sessions.create!(ip_address: "1.1.1.1", user_agent: "test")
+    refute owner_of?(namespaces.gemcoop)
+
+    Current.session = users.owner.sessions.create!(ip_address: "1.1.1.1", user_agent: "test")
+    assert owner_of?(namespaces.gemcoop)
+  ensure
+    Current.session = nil
+  end
 end

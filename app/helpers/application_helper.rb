@@ -6,6 +6,10 @@ module ApplicationHelper
     link_to(*, target:, **, &)
   end
 
+  def owner_of?(namespace)
+    Current.user? && namespace.accesses.owner.exists?(user: Current.user)
+  end
+
   def version_author(version)
     author = version.created_by
     return author.name unless author.is_a?(TrustedPublisher)

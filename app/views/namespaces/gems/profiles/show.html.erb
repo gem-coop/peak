@@ -8,6 +8,10 @@
     <%= link_to @gem.namespace.name, @gem.namespace %>/<%= tag.span @gem.name, style: "padding-inline-start: .5em;" %>
   </h1>
 
+  <% if owner_of?(@gem.namespace) %>
+    <p><%= link_to "Trusted Publishers", namespace_gem_trusted_publishers_path(namespace: @gem.namespace.name, gem_id: @gem.name) %></p>
+  <% end %>
+
   <% latest = @gem.versions.pure.latest %>
   <p style="margin-block-start: 0;"><i><%= latest.summary %></i></p>
 

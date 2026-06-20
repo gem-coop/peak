@@ -29,4 +29,16 @@ class Namespaces::ProfilesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_includes response.body, "gem-coop/peak"
   end
+
+  test "owner sees the pending trusted publishers link" do
+    sign_in_as users.owner
+    get namespace_url(namespaces.gemcoop.name)
+    assert_select "a[href=?]", namespace_trusted_publishers_path(namespace: namespaces.gemcoop.name)
+  end
+
+  test "non-owner does not see the pending trusted publishers link" do
+    sign_in_as users.plain
+    get namespace_url(namespaces.gemcoop.name)
+    assert_select "a[href=?]", namespace_trusted_publishers_path(namespace: namespaces.gemcoop.name), count: 0
+  end
 end

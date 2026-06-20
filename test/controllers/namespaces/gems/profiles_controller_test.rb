@@ -19,4 +19,24 @@ class Namespaces::Gems::ProfilesControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "gem-coop/peak"
     assert_includes response.body, "via GitHub Actions"
   end
+
+  test "owner sees the trusted publishers link" do
+    sign_in_as users.owner
+    get namespace_gem_url(namespaces.gemcoop, gems.peak, index: nil)
+    assert_select "a[href=?]",
+      namespace_gem_trusted_publishers_path(namespace: namespaces.gemcoop.name, gem_id: gems.peak.name)
+  end
+
+  test "non-owner does not see the trusted publishers link" do
+    sign_in_as users.plain
+    get namespace_gem_url(namespaces.gemcoop, gems.peak, index: nil)
+    assert_select "a[href=?]",
+      namespace_gem_trusted_publishers_path(namespace: namespaces.gemcoop.name, gem_id: gems.peak.name), count: 0
+  end
+
+  test "anonymous does not see the trusted publishers link" do
+    get namespace_gem_url(namespaces.gemcoop, gems.peak, index: nil)
+    assert_select "a[href=?]",
+      namespace_gem_trusted_publishers_path(namespace: namespaces.gemcoop.name, gem_id: gems.peak.name), count: 0
+  end
 end

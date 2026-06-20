@@ -35,6 +35,13 @@ class OIDC::ProviderTest < ActiveSupport::TestCase
     assert_raises(JWT::DecodeError) { @provider.decode(jwt, audience: Peak.host) }
   end
 
+  test "decode rejects a token missing exp" do
+    stub_oidc_discovery
+    claims = default_github_claims.except("exp")
+    jwt = JWT.encode(claims, oidc_rsa_key, "RS256", kid: oidc_jwk.kid)
+    assert_raises(JWT::DecodeError) { @provider.decode(jwt, audience: Peak.host) }
+  end
+
   test "jwks is cached" do
     stub_oidc_discovery
     @provider.jwks

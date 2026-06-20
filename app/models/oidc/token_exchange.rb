@@ -50,5 +50,10 @@ class OIDC::TokenExchange
           push_key: key, jti: claims["jti"], claims:)
       end
       key
+    rescue ActiveRecord::RecordNotUnique
+      raise Error, "Token has already been used"
+    rescue ActiveRecord::RecordInvalid => e
+      raise Error, "Token has already been used" if e.record.errors[:jti].any?
+      raise
     end
 end

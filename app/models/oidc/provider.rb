@@ -14,7 +14,8 @@ class OIDC::Provider < ApplicationRecord
       aud: audience, verify_aud: true,
       verify_expiration: true,
       verify_not_before: true,
-      verify_iat: true)
+      verify_iat: true,
+      required_claims: %w[iss aud exp nbf iat jti sub])
     payload
   end
 
@@ -30,7 +31,7 @@ class OIDC::Provider < ApplicationRecord
     end
 
     def fetch_json(url)
-      response = HTTPX.get(url)
+      response = HTTPX.with(timeout: { connect_timeout: 5, operation_timeout: 5 }).get(url)
       raise JWT::DecodeError, "OIDC fetch failed: #{url} (#{response.status})" unless response.status == 200
       JSON.parse(response.body.to_s)
     end

@@ -32,11 +32,25 @@ class OIDC::TokenExchangeTest < ActiveSupport::TestCase
   end
 
   test "rejects ambiguous matches" do
-    TrustedPublisher::GitHubActions.create!(
+    # The uniqueness validation normally prevents duplicates; bypass it to prove
+    # match_publisher still refuses to mint when two publishers match a token.
+    TrustedPublisher::GitHubActions.new(
       namespace: namespaces.gemcoop, gem: gems.peak, gem_name: "peak",
       provider: oidc_providers.github,
-      repository_owner: "gem-coop", repository_name: "peak", workflow_filename: "release.yml")
+      repository_owner: "gem-coop", repository_name: "peak", workflow_filename: "release.yml"
+    ).save!(validate: false)
     assert_raises(OIDC::TokenExchange::Error) { exchange(build_github_jwt) }
+  end
+
+  test "concurrent replay raises TokenExchange::Error not RecordNotUnique" do
+    jwt = build_github_jwt(jti: "fixed-jti-race")
+    exchange(jwt)
+    # Simulate a second request that slipped past guard_replay! before the first committed.
+    # Bypass the soft guard check; the existing row triggers a uniqueness error in mint.
+    no_guard_exchange = Class.new(OIDC::TokenExchange) { def guard_replay!(...) = nil }
+    assert_raises(OIDC::TokenExchange::Error) do
+      no_guard_exchange.new(namespace: namespaces.gemcoop, jwt:).call
+    end
   end
 
   test "rejects an unknown issuer" do

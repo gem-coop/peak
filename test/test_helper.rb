@@ -44,6 +44,7 @@ class ActiveSupport::TestCase
       "iat" => Time.current.to_i,
       "nbf" => Time.current.to_i,
       "exp" => 5.minutes.from_now.to_i,
+      "sub" => "repo:gem-coop/peak:ref:refs/heads/main",
       "repository" => "gem-coop/peak",
       "repository_owner" => "gem-coop",
       "job_workflow_ref" => "gem-coop/peak/.github/workflows/release.yml@refs/heads/main",

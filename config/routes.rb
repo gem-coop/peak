@@ -49,6 +49,8 @@ Rails.application.routes.draw do
         resources :trusted_publishers, only: %i[index create destroy], module: :gems
       end
 
+      resources :trusted_publishers, only: %i[index create destroy]
+
       get "/:id", to: "gems/profiles#show", as: :gem
     end
 

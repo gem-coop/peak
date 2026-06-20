@@ -30,4 +30,11 @@ class Namespaces::TrustedPublishersControllerTest < ActionDispatch::IntegrationT
     get index_url
     assert_response :success
   end
+
+  test "non-owner sees the owner-gate alert via flash" do
+    sign_in_as users.plain
+    get namespace_trusted_publishers_url(namespace: namespaces.gemcoop.name)
+    follow_redirect!
+    assert_includes response.body, "must be an owner"
+  end
 end

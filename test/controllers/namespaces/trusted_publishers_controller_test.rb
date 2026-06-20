@@ -43,4 +43,11 @@ class Namespaces::TrustedPublishersControllerTest < ActionDispatch::IntegrationT
     get namespace_trusted_publishers_url(namespace: namespaces.gemcoop.name)
     assert_select "a[href=?]", namespace_path(namespaces.gemcoop.name)
   end
+
+  test "form has a ref field and the page shows the CI snippet" do
+    sign_in_as users.owner
+    get namespace_trusted_publishers_url(namespace: namespaces.gemcoop.name)
+    assert_select "input[name=?]", "trusted_publisher[ref]"
+    assert_includes response.body, "id-token: write"
+  end
 end

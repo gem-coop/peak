@@ -24,5 +24,8 @@
   <%= form.label :environment, "Environment (optional)" %>
   <%= form.text_field :environment %>
 
+  <%= form.label :ref, "Ref (optional, e.g. refs/heads/main)" %>
+  <%= form.text_field :ref %>
+
   <%= form.button "Reserve" %>
 <% end %>

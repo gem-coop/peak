@@ -39,4 +39,21 @@ class Namespaces::Gems::TrustedPublishersControllerTest < ActionDispatch::Integr
     get namespace_gem_trusted_publishers_url(namespace: namespaces.gemcoop.name, gem_id: gems.peak.name)
     assert_select "a[href=?]", namespace_gem_path(namespaces.gemcoop, gems.peak, index: nil)
   end
+
+  test "form has a ref field and the page shows the CI snippet" do
+    sign_in_as users.owner
+    get namespace_gem_trusted_publishers_url(namespace: namespaces.gemcoop.name, gem_id: gems.peak.name)
+    assert_select "input[name=?]", "trusted_publisher[ref]"
+    assert_includes response.body, "id-token: write"
+  end
+
+  test "created ref is persisted and displayed" do
+    sign_in_as users.owner
+    post namespace_gem_trusted_publishers_url(namespace: namespaces.gemcoop.name, gem_id: gems.peak.name),
+      params: { trusted_publisher: { repository_owner: "gem-coop", repository_name: "peak",
+        workflow_filename: "release.yml", ref: "refs/heads/main" } }
+    follow_redirect!
+    assert_includes response.body, "refs/heads/main"
+    assert_equal "refs/heads/main", gems.peak.trusted_publishers.order(:created_at).last.ref
+  end
 end

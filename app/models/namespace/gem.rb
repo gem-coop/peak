@@ -4,6 +4,7 @@ class Namespace::Gem < ApplicationRecord
 
   has_many :referrants, class_name: "Version::Reference", foreign_key: :name, primary_key: :name
   has_many :versions, dependent: :destroy
+  has_many :trusted_publishers, dependent: :destroy
   has_many :platforms, -> { distinct }, through: :versions
 
   has_object :imports, :server

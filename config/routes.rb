@@ -45,6 +45,10 @@ Rails.application.routes.draw do
       get "/gems/:id", to: "gems#show", as: :gems, constraints: {id: Peak::Gem.route_pattern}
       post "/api/v1/gems", to: "gems#create", as: :gem_push
       post "/api/v1/oidc/trusted_publisher/exchange_token", to: "token_exchanges#create", as: :oidc_exchange_token
+      scope path: "/:gem_id", as: :gem do
+        resources :trusted_publishers, only: %i[index create destroy], module: :gems
+      end
+
       get "/:id", to: "gems/profiles#show", as: :gem
     end
 

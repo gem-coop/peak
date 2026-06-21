@@ -70,6 +70,8 @@ gem "aws-sdk-s3", "~> 1.226"
 gem "brotli", "~> 0.8.0"
 gem "honeybadger", "~> 6.9"
 gem "httpx", "~> 1.8"
+# Decode and verify OIDC ID tokens for trusted publishing
+gem "jwt", "~> 3.1"
 gem "opentelemetry-exporter-otlp"
 gem "opentelemetry-instrumentation-all"
 gem "opentelemetry-sdk"

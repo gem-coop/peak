@@ -1,0 +1,32 @@
+<% page.title = "Trusted Publishers · #{@gem.name}" %>
+<p><%= link_to "← #{@gem.namespace.name}/#{@gem.name}", namespace_gem_path(@gem.namespace, @gem, index: nil) %></p>
+
+<h1>Trusted Publishers for <%= @gem.name %></h1>
+
+<p>Trusted publishers let GitHub Actions push <%= @gem.name %> without a stored API key.</p>
+
+<% if @trusted_publishers.any? %>
+  <ul>
+    <% @trusted_publishers.each do |publisher| %>
+      <li>
+        <code><%= publisher.repository_owner %>/<%= publisher.repository_name %></code>
+        — <%= publisher.workflow_filename %>
+        <%= " (env: #{publisher.environment})" if publisher.environment.present? %>
+        <%= " (ref: #{publisher.ref})" if publisher.ref.present? %>
+        <%= button_to "Remove",
+          namespace_gem_trusted_publisher_path(namespace: @gem.namespace.name, gem_id: @gem.name, id: publisher.id),
+          method: :delete %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No trusted publishers yet.</p>
+<% end %>
+
+<h2>Set up GitHub Actions</h2>
+<p>Add a workflow like this, then pushes from that workflow need no stored key:</p>
+<pre><code><%= Peak::Command.trusted_publisher_workflow(host: namespace_url(@gem.namespace.name), gem: @gem.name) -%></code></pre>
+<p>Exchange endpoint: <code><%= namespace_oidc_exchange_token_url(namespace: @gem.namespace.name) %></code></p>
+
+<h2>Add a GitHub Actions publisher</h2>
+<%= render "form", trusted_publisher: @trusted_publisher, gem: @gem %>

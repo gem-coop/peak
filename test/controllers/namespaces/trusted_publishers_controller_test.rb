@@ -1,0 +1,65 @@
+require "test_helper"
+
+class Namespaces::TrustedPublishersControllerTest < ActionDispatch::IntegrationTest
+  def index_url = namespace_trusted_publishers_url(namespace: namespaces.gemcoop.name)
+  def valid_params
+    { trusted_publisher: { gem_name: "brand_new_gem", repository_owner: "gem-coop",
+        repository_name: "brand_new_gem", workflow_filename: "release.yml" } }
+  end
+
+  test "owner can reserve a pending publisher" do
+    sign_in_as users.owner
+    assert_increments namespaces.gemcoop.trusted_publishers do
+      post index_url, params: valid_params
+    end
+    publisher = namespaces.gemcoop.trusted_publishers.order(:created_at).last
+    assert publisher.pending?
+    assert_equal "brand_new_gem", publisher.gem_name
+  end
+
+  test "non-owner is redirected" do
+    sign_in_as users.plain
+    refute_increments namespaces.gemcoop.trusted_publishers do
+      post index_url, params: valid_params
+    end
+    assert_response :redirect
+  end
+
+  test "owner can list pending publishers" do
+    sign_in_as users.owner
+    get index_url
+    assert_response :success
+  end
+
+  test "non-owner sees the owner-gate alert via flash" do
+    sign_in_as users.plain
+    get namespace_trusted_publishers_url(namespace: namespaces.gemcoop.name)
+    follow_redirect!
+    assert_includes response.body, "must be an owner"
+  end
+
+  test "index has a back-link to the namespace profile" do
+    sign_in_as users.owner
+    get namespace_trusted_publishers_url(namespace: namespaces.gemcoop.name)
+    assert_select "a[href=?]", namespace_path(namespaces.gemcoop.name)
+  end
+
+  test "form has a ref field and the page shows the CI snippet" do
+    sign_in_as users.owner
+    get namespace_trusted_publishers_url(namespace: namespaces.gemcoop.name)
+    assert_select "input[name=?]", "trusted_publisher[ref]"
+    assert_includes response.body, "id-token: write"
+  end
+
+  test "active section lists a converted publisher linking to its gem page" do
+    TrustedPublisher::GitHubActions.create!(
+      namespace: namespaces.gemcoop, gem: gems.peak, gem_name: "peak",
+      provider: oidc_providers.github,
+      repository_owner: "gem-coop", repository_name: "peak", workflow_filename: "release.yml")
+
+    sign_in_as users.owner
+    get namespace_trusted_publishers_url(namespace: namespaces.gemcoop.name)
+    assert_select "a[href=?]",
+      namespace_gem_trusted_publishers_path(namespace: namespaces.gemcoop.name, gem_id: "peak")
+  end
+end

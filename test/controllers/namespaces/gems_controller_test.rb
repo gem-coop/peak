@@ -146,4 +146,49 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
     assert_dom "body", /API Key/
   end
+
+  def tp_publisher(gem: gems.peak, gem_name: "peak")
+    TrustedPublisher::GitHubActions.create!(
+      namespace: namespaces.gemcoop, gem:, gem_name:,
+      provider: oidc_providers.github,
+      repository_owner: "gem-coop", repository_name: "peak", workflow_filename: "release.yml")
+  end
+
+  test "push with a trusted publisher key attributes to the publisher" do
+    publisher = tp_publisher
+    key = publisher.push_keys.create!
+    package = file_fixture "peak/peak-0.2.0.gem"
+
+    assert_increments gems.peak.versions do
+      post namespace_gem_push_url(namespace: namespaces.gemcoop),
+        env: { "RAW_POST_DATA" => package.binread, authorization: "Bearer #{key.token}" }
+    end
+    assert_response :success
+
+    version = versions.by gems.peak, ref: "0.2.0"
+    assert_equal publisher, version.created_by
+  end
+
+  test "trusted publisher key cannot push another gem" do
+    publisher = tp_publisher(gem: gems.oaken, gem_name: "oaken")
+    key = publisher.push_keys.create!
+    package = file_fixture "peak/peak-0.2.0.gem"
+
+    post namespace_gem_push_url(namespace: namespaces.gemcoop),
+      env: { "RAW_POST_DATA" => package.binread, authorization: "Bearer #{key.token}" }
+    assert_response :forbidden
+  end
+
+  test "pending publisher converts on first push" do
+    publisher = tp_publisher(gem: nil)
+    key = publisher.push_keys.create!
+    package = file_fixture "peak/peak-0.2.0.gem"
+
+    post namespace_gem_push_url(namespace: namespaces.gemcoop),
+      env: { "RAW_POST_DATA" => package.binread, authorization: "Bearer #{key.token}" }
+    assert_response :success
+
+    assert_equal gems.peak, publisher.reload.gem
+    assert_not publisher.pending?
+  end
 end

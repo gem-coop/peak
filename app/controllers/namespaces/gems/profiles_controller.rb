@@ -1,4 +1,5 @@
 class Namespaces::Gems::ProfilesController < ApplicationController
+  resume_authenticated
   before_action :set_index
 
   def show

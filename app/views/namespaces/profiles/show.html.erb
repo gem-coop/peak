@@ -13,6 +13,9 @@
         <%= tag.li user.name %>
       <% end %>
     </ul>
+    <% if owner_of?(@index.namespace) %>
+      <p><%= link_to "Pending Trusted Publishers", namespace_trusted_publishers_path(namespace: @index.namespace.name) %></p>
+    <% end %>
   </div>
 
   <% if @gems.empty? %>

@@ -1,9 +1,12 @@
-loader.defaults created_by_id: -> { Peak.system_user.id }, summary: "",
+loader.defaults created_by_id: -> { Peak.system_user.id }, created_by_type: "User", summary: "",
   platform_id: -> { Peak::Platform.default.id }, approved_at: -> { Time.current }
 
 Oaken::Stored::ActiveRecord.include loader.context
 def fixture_upload(filename) = Peak::Gem::Upload.read(fixture_file(filename))
 def fixture_file(filename)   = Rails.root.join("test/fixtures/files").join(filename)
+
+register OIDC::Provider, as: :oidc_providers
+register TrustedPublisher, as: :trusted_publishers
 
 register Peak::Terms, as: :terms
 terms.proxy *Peak::Terms.statuses.keys

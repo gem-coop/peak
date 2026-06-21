@@ -42,6 +42,10 @@
         </ul>
       </nav>
 
+      <% flash.each do |type, message| %>
+        <%= tag.p message, role: (type.to_sym == :alert ? "alert" : "status"), class: "flash flash-#{type}" %>
+      <% end %>
+
       <%= yield %>
     </main>
   </body>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_17_151254) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_19_000006) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -114,6 +114,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_17_151254) do
     t.string "checksum"
     t.datetime "created_at", null: false
     t.bigint "created_by_id", null: false
+    t.string "created_by_type", default: "User", null: false
     t.json "executables", default: [], null: false
     t.bigint "gem_id", null: false
     t.boolean "has_extensions"
@@ -127,6 +128,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_17_151254) do
     t.string "summary", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_namespace_gem_versions_on_created_by_id"
+    t.index ["created_by_type", "created_by_id"], name: "idx_on_created_by_type_created_by_id_c48d949be2"
     t.index ["gem_id", "ref"], name: "index_namepace_gem_versions_uniqueness", unique: true
     t.index ["gem_id"], name: "index_namespace_gem_versions_on_gem_id"
     t.index ["platform_id"], name: "index_namespace_gem_versions_on_platform_id"
@@ -192,6 +194,29 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_17_151254) do
     t.index ["name"], name: "index_namespaces_on_name", unique: true
   end
 
+  create_table "oidc_id_tokens", force: :cascade do |t|
+    t.json "claims", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.string "jti", null: false
+    t.bigint "provider_id", null: false
+    t.bigint "push_key_id"
+    t.bigint "trusted_publisher_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["provider_id", "jti"], name: "index_oidc_id_tokens_on_provider_id_and_jti", unique: true
+    t.index ["provider_id"], name: "index_oidc_id_tokens_on_provider_id"
+    t.index ["push_key_id"], name: "index_oidc_id_tokens_on_push_key_id"
+    t.index ["trusted_publisher_id"], name: "index_oidc_id_tokens_on_trusted_publisher_id"
+  end
+
+  create_table "oidc_providers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "issuer", null: false
+    t.string "name", null: false
+    t.string "type", null: false
+    t.datetime "updated_at", null: false
+    t.index ["issuer"], name: "index_oidc_providers_on_issuer", unique: true
+  end
+
   create_table "peak_platforms", force: :cascade do |t|
     t.string "arch", null: false
     t.datetime "created_at", null: false
@@ -224,6 +249,34 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_17_151254) do
     t.index ["user_id"], name: "index_peak_terms_acceptances_on_user_id"
   end
 
+  create_table "trusted_publisher_push_keys", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "expires_at", null: false
+    t.string "token_digest", null: false
+    t.bigint "trusted_publisher_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["token_digest"], name: "index_trusted_publisher_push_keys_on_token_digest", unique: true
+    t.index ["trusted_publisher_id"], name: "index_trusted_publisher_push_keys_on_trusted_publisher_id"
+  end
+
+  create_table "trusted_publishers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "environment"
+    t.bigint "gem_id"
+    t.string "gem_name", null: false
+    t.bigint "namespace_id", null: false
+    t.bigint "provider_id", null: false
+    t.string "ref"
+    t.string "repository_name"
+    t.string "repository_owner"
+    t.string "type", null: false
+    t.datetime "updated_at", null: false
+    t.string "workflow_filename"
+    t.index ["gem_id"], name: "index_trusted_publishers_on_gem_id"
+    t.index ["namespace_id"], name: "index_trusted_publishers_on_namespace_id"
+    t.index ["provider_id"], name: "index_trusted_publishers_on_provider_id"
+  end
+
   create_table "user_push_keys", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "expires_at", null: false
@@ -254,4 +307,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_17_151254) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "oidc_id_tokens", "oidc_providers", column: "provider_id"
+  add_foreign_key "oidc_id_tokens", "trusted_publisher_push_keys", column: "push_key_id"
+  add_foreign_key "oidc_id_tokens", "trusted_publishers"
+  add_foreign_key "trusted_publisher_push_keys", "trusted_publishers"
+  add_foreign_key "trusted_publishers", "namespace_gems", column: "gem_id"
+  add_foreign_key "trusted_publishers", "namespaces"
+  add_foreign_key "trusted_publishers", "oidc_providers", column: "provider_id"
 end

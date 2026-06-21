@@ -1,0 +1,47 @@
+<% page.title = "Pending Trusted Publishers · #{@namespace.name}" %>
+<p><%= link_to "← #{@namespace.name}", namespace_path(@namespace.name) %></p>
+
+<h1>Pending Trusted Publishers for <%= @namespace.name %></h1>
+
+<p>Reserve a gem name so GitHub Actions can publish it for the first time without an API key.</p>
+
+<% if @trusted_publishers.any? %>
+  <ul>
+    <% @trusted_publishers.each do |publisher| %>
+      <li>
+        <strong><%= publisher.gem_name %></strong> —
+        <code><%= publisher.repository_owner %>/<%= publisher.repository_name %></code>
+        (<%= publisher.workflow_filename %>)
+        <%= " (env: #{publisher.environment})" if publisher.environment.present? %>
+        <%= " (ref: #{publisher.ref})" if publisher.ref.present? %>
+        <%= button_to "Remove",
+          namespace_trusted_publisher_path(namespace: @namespace.name, id: publisher.id),
+          method: :delete %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No pending trusted publishers.</p>
+<% end %>
+
+<% if @active_publishers.any? %>
+  <h2>Active publishers</h2>
+  <p>These reserved names have been published and are now managed on their gem pages.</p>
+  <ul>
+    <% @active_publishers.each do |publisher| %>
+      <li>
+        <%= link_to publisher.gem_name,
+          namespace_gem_trusted_publishers_path(namespace: @namespace.name, gem_id: publisher.gem_name) %>
+        — <code><%= publisher.repository_owner %>/<%= publisher.repository_name %></code>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<h2>Set up GitHub Actions</h2>
+<p>After reserving a name, add a workflow like this (replace the gem name if needed):</p>
+<pre><code><%= Peak::Command.trusted_publisher_workflow(host: namespace_url(@namespace.name), gem: @trusted_publishers.first&.gem_name || "<your-gem>") -%></code></pre>
+<p>Exchange endpoint: <code><%= namespace_oidc_exchange_token_url(namespace: @namespace.name) %></code></p>
+
+<h2>Reserve a gem name</h2>
+<%= render "form", trusted_publisher: @trusted_publisher, namespace: @namespace %>

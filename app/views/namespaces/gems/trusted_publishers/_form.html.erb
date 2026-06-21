@@ -1,0 +1,28 @@
+<%= form_with model: trusted_publisher,
+      url: namespace_gem_trusted_publishers_path(namespace: gem.namespace.name, gem_id: gem.name),
+      scope: :trusted_publisher do |form| %>
+  <% if trusted_publisher.errors.any? %>
+    <ul>
+      <% trusted_publisher.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <%= form.label :repository_owner, "Repository owner" %>
+  <%= form.text_field :repository_owner, placeholder: "gem-coop" %>
+
+  <%= form.label :repository_name, "Repository name" %>
+  <%= form.text_field :repository_name, placeholder: "peak" %>
+
+  <%= form.label :workflow_filename, "Workflow filename" %>
+  <%= form.text_field :workflow_filename, placeholder: "release.yml" %>
+
+  <%= form.label :environment, "Environment (optional)" %>
+  <%= form.text_field :environment %>
+
+  <%= form.label :ref, "Ref (optional, e.g. refs/heads/main)" %>
+  <%= form.text_field :ref %>
+
+  <%= form.button "Add trusted publisher" %>
+<% end %>

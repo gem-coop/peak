@@ -133,7 +133,20 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
       post namespace_gem_push_url(namespace: "@nonexistent"), env: { "RAW_POST_DATA" => package.binread, authorization: "Bearer #{token}" }
     end
     assert_response :unauthorized
-    assert_dom "body", /User doesn't/
+    assert_dom "body", /Namespace is not approved/
+  end
+
+  test "push from unapproved namespace" do
+    namespace.update! approved_at: nil
+
+    package = file_fixture "peak/peak-0.2.0.gem"
+
+    refute_increments gems.peak.versions do
+      post namespace_gem_push_url(namespace:), env: { "RAW_POST_DATA" => package.binread, authorization: "Bearer #{token}" }
+    end
+
+    assert_response :unauthorized
+    assert_dom "body", /Namespace is not approved or/
   end
 
   test "push from unverified user" do

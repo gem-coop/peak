@@ -9,8 +9,10 @@ class User < ApplicationRecord
   has_one :push_key, dependent: :destroy
 
   has_object :magic_link, :email_verification
-  before_save { self.email_address_verified_at = nil if email_address_changed? }
+  before_update { self.email_address_verified_at = nil if email_address_changed? }
   validates_uniqueness_of :email_address
+
+  def verified? = email_address_verified_at?
 
   def system?
     Peak.system_user == self

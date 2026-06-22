@@ -8,6 +8,10 @@ class User::PushKey < ApplicationRecord
 
   has_secure_token
 
+  def self.from(token)
+    active.includes(:user).find_or_initialize_by(token:)
+  end
+
   def active? = !expired?
   def expired? = expires_at.past?
 

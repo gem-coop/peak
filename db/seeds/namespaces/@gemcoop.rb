@@ -6,7 +6,9 @@ indexes.private_access.create :gemcoop_private, namespace:, slug: :private
 accesses.with namespace: do
   _1.owner.create :owner, user: users.create(:owner, name: "Owner", email_address: "owner@example.com")
   _1.plain.create :plain, user: users.create(:plain, name: "Plain", email_address: "plain@example.com")
-  users.plain.create_push_key
+  user_push_keys.label gemcoop_plain: users.plain.create_push_key
+
+  _1.plain.create user: users.unverified.create(:unverified_plain, name: "Unverified", email_address: "unverified@example.com")
 end
 
 gems.with index: namespace.default_index do

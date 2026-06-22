@@ -1,5 +1,8 @@
-loader.defaults created_by_id: -> { Peak.system_user.id }, summary: "",
-  platform_id: -> { Peak::Platform.default.id }, approved_at: -> { Time.current }
+loader.defaults summary: "",
+  created_by_id: -> { Peak.system_user.id },
+  platform_id: -> { Peak::Platform.default.id },
+  approved_at: -> { Time.current },
+  email_address_verified_at: -> { Time.current }
 
 Oaken::Stored::ActiveRecord.include loader.context
 def fixture_upload(filename) = Peak::Gem::Upload.read(fixture_file(filename))
@@ -36,3 +39,5 @@ versions.with do
 
   def by(gem, ref:) = type.find_by!(gem:, ref:)
 end
+
+def users.unverified = with(email_address_verified_at: nil)

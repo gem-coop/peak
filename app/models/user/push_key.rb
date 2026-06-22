@@ -4,7 +4,7 @@ class User::PushKey < ApplicationRecord
 
   scope :active, -> { where(expires_at: Time.current..).order(expires_at: :desc) }
   scope :expired, -> { where(expires_at: ..Time.current) }
-  performs :destroy
+  performs :destroy, discard_on: ActiveJob::DeserializationError
 
   has_secure_token
 

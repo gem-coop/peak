@@ -5,7 +5,7 @@ class Public::BaseController < ActionController::Base
     def set_routed_index_from_user(user)
       set_routed_index from: user.namespaces
     rescue ActiveRecord::RecordNotFound
-      render plain: "User doesn't have access to the given namespace", status: :unauthorized
+      render plain: "Namespace is not approved or user doesn't have access to it", status: :unauthorized
     end
 
     def set_routed_index(from: Namespace)

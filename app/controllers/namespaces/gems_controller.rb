@@ -1,6 +1,6 @@
 class Namespaces::GemsController < Public::BaseController
   skip_forgery_protection only: :create
-  before_action :authenticate_index_by_user_push_key, only: :create
+  before_action :set_user_from_push_key, only: :create
 
   def create
     upload = Current.upload_from(request.body)
@@ -32,14 +32,20 @@ class Namespaces::GemsController < Public::BaseController
   end
 
   private
-    def authenticate_index_by_user_push_key
-      @user = User::PushKey.active.find_by!(token: request.authorization.delete_prefix("Bearer ")).user
-      set_routed_index from: @user.namespaces
-    rescue ActiveRecord::RecordNotFound
-      if @user
-        render plain: "User doesn't have access to the given namespace", status: :unauthorized
-      else
+    def set_user_from_push_key
+      @user = User::PushKey.from(push_key_token).user
+
+      case
+      when @user.nil?
         render plain: "API Key is either incorrect or doesn't exist", status: :unauthorized
+      when !@user.verified?
+        render plain: "User needs to verify email address", status: :unauthorized
+      else
+        set_routed_index_from_user @user
       end
+    end
+
+    def push_key_token
+      request.authorization.delete_prefix("Bearer ")
     end
 end

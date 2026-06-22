@@ -2,7 +2,7 @@ require "test_helper"
 
 class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
   def namespace = namespaces.gemcoop
-  def token = users.plain.create_push_key.token
+  def token = user_push_keys.gemcoop_plain.token
 
   test "show with missing gem" do
     head namespace_gems_url(namespace:, id: "nonexistent-1.0.0.gem")
@@ -134,6 +134,18 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     end
     assert_response :unauthorized
     assert_dom "body", /User doesn't/
+  end
+
+  test "push from unverified user" do
+    package = file_fixture "peak/peak-0.2.0.gem"
+
+    refute_increments gems.peak.versions do
+      token = users.unverified_plain.create_push_key.token
+      post namespace_gem_push_url(namespace:), env: { "RAW_POST_DATA" => package.binread, authorization: "Bearer #{token}" }
+    end
+
+    assert_response :unauthorized
+    assert_dom "body", /User needs to verify email address/
   end
 
   test "push with expired API key" do

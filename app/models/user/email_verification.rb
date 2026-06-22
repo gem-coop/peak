@@ -8,5 +8,5 @@ class User::EmailVerification < ActiveRecord::AssociatedObject
   def verify
     user.update! email_address_verified_at: Time.current unless verified?
   end
-  def verified? = user.email_address_verified_at?
+  def verified? = user.verified?
 end

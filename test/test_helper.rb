@@ -21,6 +21,18 @@ class ActiveSupport::TestCase
   def refute_increments(*positionals, &)
     assert_no_difference(positionals.map { _1.method(:count) }, &)
   end
+
+  def assert_slack_request(title:, avo_path:)
+    Slack.with webhook_url: "https://slack.test/webhook" do
+      text = +"[TEST] #{title}"
+      text << "\nhttp://example.com/avo/resources/#{avo_path}" if Peak.avo?
+      webhook = stub_request(:post, Slack.webhook_url).with(body: {"payload" => JSON.dump({text:})})
+
+      yield.tap do
+        assert_requested webhook
+      end
+    end
+  end
 end
 
 class ActionDispatch::IntegrationTest

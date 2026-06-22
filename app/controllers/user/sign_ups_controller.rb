@@ -9,7 +9,7 @@ class User::SignUpsController < Public::BaseController
     @sign_up = User::SignUp.new(**sign_up_params.to_h.symbolize_keys)
 
     if @sign_up.save
-      @sign_up.user.mailer.welcome.deliver_later
+      @sign_up.owner.mailer.welcome.deliver_later
     else
       render :new, status: :unprocessable_entity
     end

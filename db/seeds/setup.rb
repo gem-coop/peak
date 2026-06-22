@@ -12,6 +12,7 @@ register Peak::Terms, as: :terms
 terms.proxy *Peak::Terms.statuses.keys
 
 register Namespace::Access, as: :accesses
+register Namespace::Submission, as: :submissions
 register Namespace::Index, as: :indexes
 register Namespace::Index::Cooldown, as: :cooldowns
 register Namespace::Gem, as: :gems
@@ -27,6 +28,9 @@ def indexes.create(label = nil, unique_by: [:namespace, :slug], **) = super
 
 accesses.proxy(*Namespace::Access.roles.keys)
 def accesses.create(label = nil, unique_by: [:namespace, :user], **) = super
+
+submissions.defaults owner: -> { users.owner }
+submissions.proxy(*Namespace::Submission.statuses.keys)
 
 versions.with do
   # TODO: Figure out why we need `versions.` here for it to work.

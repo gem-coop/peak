@@ -10,12 +10,12 @@
 
   <%= form.label :email_address, "email address", style: "display: inline-block;" %>
   <%= form.email_field :email_address, required: true, placeholder: "me@example.com" %>
-  <%= field_error.(@sign_up.user.errors.full_messages_for(:email_address)) %>
+  <%= field_error.(@sign_up.owner.errors.full_messages_for(:email_address)) %>
 
   <%= form.label :namespace_name, "personal namespace name" %>
   <%= tag.small "start with @, all lowercase, numbers allowed, at least 4 characters, use - for separation.", style: "display: block; padding: .5em .25em;" %>
-  <%= form.text_field :namespace_name, required: true, placeholder: "@username", minlength: 4, pattern: @sign_up.namespace.name_pattern %>
-  <%= field_error.(@sign_up.namespace.errors.full_messages_for(:name)) %>
+  <%= form.text_field :namespace_name, required: true, placeholder: "@username", minlength: 4, pattern: @sign_up.submission.name_pattern %>
+  <%= field_error.(@sign_up.submission.errors.full_messages_for(:name)) %>
 
   <%= form.button "Submit namespace for approval" %>
 <% end %>

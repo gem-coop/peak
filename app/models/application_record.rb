@@ -14,6 +14,6 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   def mailer
-    self.class::Mailer.with(model_name.singular.to_sym => self)
+    self.class::Mailer.with(model_name.element.to_sym => self)
   end
 end

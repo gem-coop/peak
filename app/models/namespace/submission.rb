@@ -15,7 +15,7 @@ class Namespace::Submission < ApplicationRecord
   validates_uniqueness_of :name, conditions: -> { adjudicated }
   validates_format_of :name, with: /\A#{name_pattern}\z/
 
-  after_create :slack_notify_later, unless: :adjudicated?
+  after_create :deliver_welcome_later, :slack_notify_later, unless: :adjudicated?
 
   performs def process_approved
     raise NamespaceAlreadyExistsError if namespace
@@ -23,7 +23,7 @@ class Namespace::Submission < ApplicationRecord
     transaction do
       namespace = create_namespace
       namespace.accesses.owner.create! user: owner
-      namespace.mailer.approved.deliver_now # TODO: Move mailer to Submission
+      mailer.approved.deliver_later
     end
   end
   class NamespaceAlreadyExistsError < StandardError; end
@@ -35,4 +35,9 @@ class Namespace::Submission < ApplicationRecord
   performs def slack_notify
     Slack.notify self, "Namespace #{name} requested"
   end
+
+  private
+    def deliver_welcome_later
+      mailer.welcome.deliver_later
+    end
 end

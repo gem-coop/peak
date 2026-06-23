@@ -193,16 +193,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_22_233235) do
   end
 
   create_table "namespace_submissions", force: :cascade do |t|
-    t.datetime "adjudicated_at"
-    t.bigint "adjudicated_by_id"
     t.datetime "created_at", null: false
     t.string "name", null: false
     t.bigint "owner_id", null: false
+    t.datetime "resolved_at"
+    t.bigint "resolved_by_id"
     t.string "status", default: "pending", null: false
     t.datetime "updated_at", null: false
-    t.index ["adjudicated_by_id"], name: "index_namespace_submissions_on_adjudicated_by_id"
     t.index ["name"], name: "index_namespace_submissions_on_name", unique: true, where: "((status)::text <> 'pending'::text)"
     t.index ["owner_id"], name: "index_namespace_submissions_on_owner_id"
+    t.index ["resolved_by_id"], name: "index_namespace_submissions_on_resolved_by_id"
   end
 
   create_table "namespaces", force: :cascade do |t|

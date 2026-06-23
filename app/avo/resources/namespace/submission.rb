@@ -28,7 +28,7 @@ class Avo::Resources::Namespace::Submission < Avo::BaseResource
   end
 
   def actions
-    if view.show? && record.adjudicated?
+    if view.show? && record.resolved?
       action Avo::Actions::Approve, icon: "heroicons/outline/check-circle"
       divider
 
@@ -43,7 +43,7 @@ class Avo::Resources::Namespace::Submission < Avo::BaseResource
     field :owner, as: :belongs_to
     field :name, as: :text
     field :status, as: :text
-    field :adjudicated_by, as: :belongs_to
-    field :adjudicated_at, as: :date_time
+    field :resolved_by, as: :belongs_to
+    field :resolved_at, as: :date_time
   end
 end

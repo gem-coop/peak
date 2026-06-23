@@ -34,8 +34,8 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
-  test "post create with adjudicated namespace name" do
-    submissions.rejected.create name: "@rejected", owner: users.owner
+  test "post create with resolved namespace name" do
+    submissions.rejected.create name: "@rejected"
 
     refute_increments User, Namespace::Submission do
       post user_sign_ups_url, params: sign_up_params(namespace_name: "@rejected")
@@ -52,7 +52,7 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "post create with pending namespace name" do
-    submissions.pending.create name: "@pending", owner: users.owner
+    submissions.pending.create name: "@pending"
 
     assert_increments User, Namespace::Submission do
       post user_sign_ups_url, params: sign_up_params(namespace_name: "@pending")

@@ -4,8 +4,8 @@ class Avo::Actions::Approve < Avo::BaseAction
 
   def handle(query:, fields:, current_user:, resource:, **args)
     query.each do |record|
-      record.adjudiate! :approved, by: current_user
-      record.process_approve_later
+      record.resolve! :approved, by: current_user
+      record.process_approved_later
     end
   end
 end

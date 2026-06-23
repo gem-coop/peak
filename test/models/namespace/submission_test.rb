@@ -29,15 +29,15 @@ class Namespace::SubmissionTest < ActiveSupport::TestCase
     assert third.valid?
   end
 
-  test "adjudicate" do
+  test "resolve" do
     freeze_time
 
-    submissions.basic.adjudicate! :approved, by: Peak.system_user
+    submissions.basic.resolve! :approved, by: Peak.system_user
 
     submissions.basic.tap do |submission|
       assert submission.approved?
-      assert_equal Peak.system_user, submission.adjudicated_by
-      assert_equal Time.current, submission.adjudicated_at
+      assert_equal Peak.system_user, submission.resolved_by
+      assert_equal Time.current, submission.resolved_at
     end
   end
 

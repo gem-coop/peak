@@ -21,7 +21,7 @@ class Namespace::Submission < ApplicationRecord
     raise NamespaceAlreadyExistsError if namespace
 
     transaction do
-      namespace = create_namespace
+      namespace = create_namespace(approved_at: Time.current)
       namespace.accesses.owner.create! user: owner
       mailer.approved.deliver_later
     end

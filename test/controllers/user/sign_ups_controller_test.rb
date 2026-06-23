@@ -1,6 +1,8 @@
 require "test_helper"
 
 class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
+  setup { Rails.application.config.action_controller.cache_store.clear }
+
   test "get new" do
     get user_sign_ups_url
     assert_response :success
@@ -42,6 +44,14 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
       post user_sign_ups_url, params: sign_up_params(namespace_name: namespaces.gemcoop.name)
     end
     assert_response :unprocessable_entity
+  end
+
+  test "post create rate_limit" do
+    2.times do
+      post user_sign_ups_url, params: sign_up_params
+    end
+
+    assert_response :too_many_requests
   end
 
   private

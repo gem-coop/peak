@@ -4,8 +4,10 @@ class Namespace::SubmissionTest < ActiveSupport::TestCase
   include ActionMailer::TestCase::Behavior
 
   test "notifies slack" do
-    assert_slack_request title: "Namespace @basic requested", avo_path: "namespace/submissions/@basic" do
-      submissions.basic.slack_notify
+    submission = submissions.basic
+
+    assert_slack_request title: "Namespace @basic requested", avo_path: "namespace/submissions/#{submission.id}" do
+      submission.slack_notify
     end
   end
 

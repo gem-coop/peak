@@ -8,7 +8,6 @@ class Namespace::Submission < ApplicationRecord
   scope :adjudicated, -> { not_pending }
   def adjudicated? = !pending?
 
-  def to_param = name
   normalizes :name, with: -> { _1.start_with?("@") ? _1 : "@#{_1}" }
 
   class_attribute :name_pattern, default: /@[a-z0-9-]+/ # For embedding in HTML5 input patterns.

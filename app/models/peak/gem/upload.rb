@@ -1,4 +1,6 @@
 class Peak::Gem::Upload
+  mattr_reader :limit, default: 50.megabytes
+
   def self.read(io, **)
     IO.copy_stream io, tmpfile = Tempfile.new
     new(tmpfile, **)

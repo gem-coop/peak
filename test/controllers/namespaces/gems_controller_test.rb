@@ -120,6 +120,15 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     assert_equal users.owner, first.created_by
   end
 
+  test "push above exhaustive limit" do
+    package = file_fixture "peak/peak-0.2.0.gem"
+
+    refute_increments gems.peak.versions do
+      post namespace_gem_push_url(namespace:), env: { "CONTENT-LENGTH" => 51.megabytes, "RAW_POST_DATA" => package.binread, authorization: "Bearer #{token}" }
+    end
+    assert_response :bad_request
+  end
+
   test "push with invalid API key" do
     package = file_fixture "peak/peak-0.2.0.gem"
 

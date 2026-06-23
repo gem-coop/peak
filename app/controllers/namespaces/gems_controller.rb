@@ -1,6 +1,6 @@
 class Namespaces::GemsController < Public::BaseController
   skip_forgery_protection only: :create
-  before_action :set_user_from_push_key, only: :create
+  before_action :halt_exhaustive_upload, :set_user_from_push_key, only: :create
 
   def create
     upload = Current.upload_from(request.body)
@@ -32,6 +32,10 @@ class Namespaces::GemsController < Public::BaseController
   end
 
   private
+    def halt_exhaustive_upload
+      head :bad_request if request.content_length > Peak::Gem::Upload.limit
+    end
+
     def set_user_from_push_key
       @user = User::PushKey.from(push_key_token).user
 

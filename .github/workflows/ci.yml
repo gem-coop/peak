@@ -10,6 +10,9 @@ env:
   BUNDLE_WITH: avo
   BUNDLE_PACKAGER__DEV: ${{ secrets.BUNDLE_PACKAGER__DEV }}
 
+permissions:
+  contents: read
+
 jobs:
   scan:
     runs-on: ubuntu-latest

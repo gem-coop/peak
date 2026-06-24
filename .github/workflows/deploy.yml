@@ -24,7 +24,7 @@ jobs:
           step: start
           token: ${{ secrets.GITHUB_TOKEN }}
           env: Staging
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: fly deploy -a gem-coop-staging
         env:
@@ -65,7 +65,7 @@ jobs:
           step: start
           token: ${{ secrets.GITHUB_TOKEN }}
           env: Production
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: fly deploy -a gem-coop
         env:

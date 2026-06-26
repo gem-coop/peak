@@ -39,8 +39,10 @@ class Peak::Gem::Upload
     }
   end
 
+  # Persist only safe http(s) links; drop schemes a crafted gem could smuggle past gem build.
   def links
     metadata.select { _1.end_with? "_uri" }.transform_keys { _1.delete_suffix("_uri").to_sym }.merge(homepage:).compact_blank
+      .select { |_, value| Peak::Gem::Link.safe? value }
   end
 
   def has_extensions? = spec.extensions.any?

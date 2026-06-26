@@ -16,8 +16,14 @@ class Namespace::Index::Manifest < ApplicationRecord
   end
 
   private
+    # One grouped query builds the same `name refs checksum` lines (gem-id order), no per-gem lookup.
+    # TODO: could swap for https://github.com/bensheldon/activerecord-has_some_of_many if preferred.
     def computed_contents
-      # TODO: later, use https://github.com/bensheldon/activerecord-has_some_of_many
-      gems.find_each.pluck(:name).inject(+"") { |str, name| str << versions.latest_for(name)&.envelope.to_s }
+      versions
+        .reorder("namespace_gems.id", "namespace_gem_versions.published_at", "namespace_gem_versions.ref")
+        .pluck("namespace_gems.name", "namespace_gem_versions.ref", "namespace_gem_versions.line")
+        .group_by(&:first)
+        .map { |name, rows| "#{name} #{rows.map { _1[1] }.join(",")} #{Digest::MD5.hexdigest(rows.map { _1[2] }.join)}\n" }
+        .join
     end
 end

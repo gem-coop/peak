@@ -12,6 +12,7 @@ class User::SignInsController < ApplicationController
   end
 
   def show
+    response.headers["Referrer-Policy"] = "no-referrer" # Keep the token URL out of the Referer header.
     if user = User::MagicLink.find_signed(params[:id])&.user
       attempted_access_url = discard_stashed_redirect_for(:sign_in)
       start_new_session_for user

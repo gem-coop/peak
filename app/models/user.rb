@@ -14,6 +14,11 @@ class User < ApplicationRecord
   before_update { self.email_address_verified_at = nil if email_address_changed? }
   validates_uniqueness_of :email_address
 
+  # Keyed on the verified-at timestamp so the link self-invalidates once the email is verified.
+  generates_token_for :email_verification, expires_in: 24.hours do
+    email_address_verified_at&.to_i
+  end
+
   def verified? = email_address_verified_at?
 
   def system?

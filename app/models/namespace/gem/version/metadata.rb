@@ -1,6 +1,6 @@
 class Namespace::Gem::Version::Metadata < ActiveRecord::AssociatedObject
   def line
-    values.as_json.map { "#{_1}:#{join_value(_2)}" }.join(",").presence&.prepend "|"
+    values.as_json.map { "#{_1}:#{Peak::CompactIndex.safe(join_value(_2))}" }.join(",").presence&.prepend "|"
   end
   def values = extract_from(version)
 

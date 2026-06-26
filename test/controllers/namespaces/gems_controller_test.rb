@@ -1,4 +1,8 @@
 require "test_helper"
+require "tmpdir"
+require "fileutils"
+require "rubygems/package"
+require "rubygems/user_interaction"
 
 class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
   def namespace = namespaces.gemcoop
@@ -184,4 +188,55 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
     assert_dom "body", /API Key/
   end
+
+  # A crafted gem whose name carries a newline must not forge a row in the `/versions` manifest.
+  test "push rejects gem name with embedded newline" do
+    payload = build_crafted_gem(name: "safe\nforged 9.9.9 deadbeef")
+
+    refute_increments Namespace::Gem.where(index: namespace.default_index) do
+      post namespace_gem_push_url(namespace:), env: { "RAW_POST_DATA" => payload, authorization: "Bearer #{token}" }
+    end
+    assert_response :unprocessable_entity
+    assert_match "Upload rejected", response.body
+
+    get namespace_versions_url(namespace:)
+    refute_match(/forged/i, response.body)
+  end
+
+  # A crafted gem with a newline in `licenses` must not forge a line in `/info/:name`.
+  test "push rejects newline-bearing licenses metadata" do
+    payload = build_crafted_gem(name: "safelib", licenses: ["MIT\nFORGED"])
+
+    post namespace_gem_push_url(namespace:), env: { "RAW_POST_DATA" => payload, authorization: "Bearer #{token}" }
+    assert_response :unprocessable_entity
+    assert_match "Upload rejected", response.body
+
+    assert_empty namespace.default_index.versions.for("safelib")
+  end
+
+  private
+    # Builds a `.gem` in-memory via RubyGems' skip-validation path so the malformed name/metadata
+    # survives into the parsed spec. Returns the raw bytes.
+    def build_crafted_gem(name:, **spec_attrs)
+      Dir.mktmpdir do |dir|
+        Dir.chdir(dir) do
+          FileUtils.mkdir_p("lib")
+          File.write("lib/x.rb", "module X; end\n")
+
+          spec = Gem::Specification.new do |s|
+            s.name = name
+            s.version = "1.0.0"
+            s.summary = "summary"
+            s.author = "author"
+            s.files = ["lib/x.rb"]
+            spec_attrs.each { |key, value| s.public_send("#{key}=", value) }
+          end
+
+          path = Gem::DefaultUserInteraction.use_ui(Gem::SilentUI.new) do
+            Gem::Package.build(spec, true, false)
+          end
+          File.binread(path)
+        end
+      end
+    end
 end

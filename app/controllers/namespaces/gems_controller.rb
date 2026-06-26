@@ -15,6 +15,8 @@ class Namespaces::GemsController < Public::BaseController
 
       render plain: "#{version.package_name} uploaded 🎉"
     end
+  rescue ActiveRecord::RecordInvalid, Peak::CompactIndex::UnsafeValue
+    render plain: "Upload rejected: gem name or metadata contains invalid characters. ❌", status: :unprocessable_entity
   end
 
   def show

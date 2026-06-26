@@ -26,6 +26,17 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     upload.unlink if upload # Guard against never reaching the assignment line
   end
 
+  # Streamed download returns the exact stored bytes and filename.
+  test "show streams the exact package bytes" do
+    version = gems.peak.versions.first
+
+    get namespace_gems_url(namespace:, id: version)
+    assert_response :success
+    assert_equal version.package.download, response.body
+    assert_match "peak-0.1.0.gem", response.headers["Content-Disposition"]
+    assert_equal version.package.byte_size.to_s, response.headers["Content-Length"]
+  end
+
   test "push" do
     package = file_fixture "peak/peak-0.2.0.gem"
 

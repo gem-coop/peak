@@ -24,14 +24,24 @@ class Namespaces::GemsController < Public::BaseController
     if version.package.attached?
       expires_in 1.year, public: @index.public_access?
 
-      # redirect_to version.package.url expires_in: 5.seconds # TODO: When not using Disk Service?
-      send_data version.package.download, filename: version.package_name, disposition: "inline"
+      send_package version
     else
       redirect_to "https://gem.coop/gems/#{params[:id]}", allow_other_host: true
     end
   end
 
   private
+    # Stream the blob in chunks instead of buffering the whole package in memory.
+    def send_package(version)
+      blob = version.package.blob
+
+      send_file_headers! filename: version.package_name, disposition: "inline"
+      response.headers["Content-Length"] = blob.byte_size.to_s
+      self.response_body = Enumerator.new do |body|
+        blob.download { |chunk| body << chunk }
+      end
+    end
+
     def set_user_from_push_key
       @user = User::PushKey.from(push_key_token).user
 

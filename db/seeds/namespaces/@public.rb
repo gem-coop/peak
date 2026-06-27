@@ -1,4 +1,4 @@
-namespace = namespaces.create :public, name: "@public"
+namespace = namespaces.create_approved :public, name: "@public"
 
 gems.with index: namespace.default_index do
   _1.parse :activesupport, "8.1.1 base64:>= 0,bigdecimal:>= 0,concurrent-ruby:>= 1.3.1&~> 1.0,connection_pool:>= 2.2.5,drb:>= 0,i18n:< 2&>= 1.6,json:>= 0,logger:>= 0"

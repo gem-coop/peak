@@ -1,1 +1,1 @@
-namespaces.create :blank, name: "@blank"
+namespaces.create_approved :blank, name: "@blank"

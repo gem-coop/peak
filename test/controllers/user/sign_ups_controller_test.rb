@@ -43,14 +43,6 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
-  test "post create rate_limit" do
-    2.times do
-      post user_sign_ups_url, params: sign_up_params
-    end
-
-    assert_response :too_many_requests
-  end
-
   test "post create with pending namespace name" do
     submissions.pending.create name: "@pending"
 

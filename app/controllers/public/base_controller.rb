@@ -1,6 +1,17 @@
 class Public::BaseController < ActionController::Base
   layout "application"
 
+  def self.throttle_responses(on:)
+    hex = SecureRandom.hex
+
+    # TODO: Replace with this on Rails 8.2:
+    # bcrypt = ActiveModel::SecurePassword.lookup_algorithm(:bcrypt)
+    # before_action(only: on) { bcrypt.hash_password(hex) }
+
+    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
+    before_action(only: on) { BCrypt::Password.create(hex, cost: cost) }
+  end
+
   private
     def set_routed_index_from_user(user)
       set_routed_index from: user.namespaces

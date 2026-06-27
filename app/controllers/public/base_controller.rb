@@ -1,6 +1,19 @@
 class Public::BaseController < ActionController::Base
   layout "application"
 
+  def self.throttle_responses(on:, duration: 0.3.seconds)
+    before_action(only: on) { Throttle.call(duration) }
+  end
+
+  module Throttle
+    mattr_accessor :handler, default: Rails.env.test? ? nil : -> { sleep _1 }
+    singleton_class.delegate :call, to: :handler, allow_nil: true
+
+    def self.apply(duration: 0.1.seconds, &)
+      with(handler: proc { sleep duration }, &)
+    end
+  end
+
   private
     def set_routed_index_from_user(user)
       set_routed_index from: user.namespaces

@@ -28,7 +28,7 @@ class Avo::Resources::Namespace::Submission < Avo::BaseResource
   end
 
   def actions
-    if view.show? && record.resolved?
+    if view.show? && !record.approved?
       action Avo::Actions::Approve, icon: "heroicons/outline/check-circle"
       divider
 

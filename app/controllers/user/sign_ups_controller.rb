@@ -1,5 +1,5 @@
 class User::SignUpsController < Public::BaseController
-  rate_limit to: 1, within: 30.seconds, with: :rate_limit_response, only: :create
+  rate_limit to: 1, within: 0.3.seconds, with: :rate_limit_response, only: :create
 
   def new
     @sign_up = User::SignUp.new

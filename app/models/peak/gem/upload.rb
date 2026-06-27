@@ -23,7 +23,7 @@ class Peak::Gem::Upload
     @package ||= rewinding { ::Gem::Package.new tmpfile }
   end
   delegate :spec, to: :package
-  delegate :name, :executables, :licenses, :summary, :homepage, :metadata, to: :spec
+  delegate :name, :executables, :licenses, :summary, :metadata, to: :spec
   def ruby = spec.required_ruby_version.to_s
   def rubygems = spec.required_rubygems_version.to_s
 
@@ -40,8 +40,11 @@ class Peak::Gem::Upload
   end
 
   def links
-    metadata.select { _1.end_with? "_uri" }.transform_keys { _1.delete_suffix("_uri").to_sym }.merge(homepage:).compact_blank
+    metadata.select { _1.end_with?("_uri") }
+      .to_h { [_1.delete_suffix("_uri").to_sym, Peak::Gem::Link.parse(_2)] }
+      .merge(homepage:).compact_blank
   end
+  def homepage = Peak::Gem::Link.parse(spec.homepage)
 
   def has_extensions? = spec.extensions.any?
   alias_method :has_extensions, :has_extensions?

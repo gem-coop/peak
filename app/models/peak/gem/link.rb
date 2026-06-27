@@ -1,12 +1,9 @@
-# Only absolute http(s) URLs with a host are safe to render as anchors; a crafted gem can smuggle
-# `javascript:`/`data:` schemes past gem build.
+# Only absolute http(s) URLs with a host are safe to render in views.
+# Crafted gems can smuggle `javascript:`/`data:` schemes past `gem build`.
 class Peak::Gem::Link
-  ALLOWED_SCHEMES = %w[http https].freeze
-
-  def self.safe?(value)
-    uri = URI.parse(value.to_s)
-    ALLOWED_SCHEMES.include?(uri.scheme&.downcase) && uri.host.present?
+  def self.parse(value)
+    URI(value.to_s).then.find { _1.is_a?(URI::HTTP) && _1.host.present? }&.to_s if value
   rescue URI::InvalidURIError
-    false
+    nil
   end
 end

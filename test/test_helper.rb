@@ -33,6 +33,25 @@ class ActiveSupport::TestCase
       end
     end
   end
+
+  def peak_upload_from(contents)
+    Peak::Gem::Upload.new StringIO.new contents
+  end
+
+  def gem_package_from(**values, &block)
+    Dir.chdir Dir.mktmpdir do
+      File.write "safe.rb", "Safe = Module.new\n"
+
+      spec = Gem::Specification.new
+      values.with_defaults(name: "safe", version: "1.0.0", summary: "summary", author: "author", files: ["safe.rb"]).each do |key, value|
+        spec.public_send "#{key}=", value
+      end
+
+      Gem::DefaultUserInteraction.use_ui(Gem::SilentUI.new) do
+        File.binread Gem::Package.build(spec, true, false) # Build `.gem` with skip-validation so unsafe links survive into the package.
+      end
+    end
+  end
 end
 
 class ActionDispatch::IntegrationTest

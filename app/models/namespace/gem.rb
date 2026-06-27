@@ -9,7 +9,6 @@ class Namespace::Gem < ApplicationRecord
   has_object :imports, :server
 
   scope :alphabetized, -> { order(name: :asc) }
-  validates :name, format: { with: Peak::Gem.name_format }
 
   def self.named(name) = find_by!(name:)
   def to_param = name

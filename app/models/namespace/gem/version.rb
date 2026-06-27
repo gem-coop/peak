@@ -2,10 +2,6 @@ class Namespace::Gem::Version < ApplicationRecord
   belongs_to :gem
   belongs_to :created_by, class_name: "User"
 
-  # Hold ref to RubyGems' version grammar so a crafted archive can't smuggle whitespace or control
-  # bytes into the `/versions` manifest.
-  validates :ref, presence: true, format: { with: Gem::Version::ANCHORED_VERSION_PATTERN }
-
   has_many :linkings, dependent: :destroy
   has_many :links, through: :linkings
 
@@ -15,7 +11,7 @@ class Namespace::Gem::Version < ApplicationRecord
 
     def parts
       group_by(&:name).map do |name, refs|
-        "#{Peak::CompactIndex.safe(name)}:#{refs.map { Peak::CompactIndex.safe _1.part }.join("&")}"
+        "#{name}:#{refs.map(&:part).join("&")}"
       end
     end
   end
@@ -74,10 +70,10 @@ class Namespace::Gem::Version < ApplicationRecord
     # "#{gem.name} #{versions_upto_self.pick(function)}\n"
 
     versions = versions_upto_self
-    "#{Peak::CompactIndex.safe(gem.name)} #{ref_stamp || versions.refs.join(",")} #{versions.checksum}\n"
+    "#{gem.name} #{ref_stamp || versions.refs.join(",")} #{versions.checksum}\n"
   end
 
   def compute_line
-    "#{Peak::CompactIndex.safe(ref)} #{references.line}#{metadata.line}\n"
+    "#{ref} #{references.line}#{metadata.line}\n"
   end
 end

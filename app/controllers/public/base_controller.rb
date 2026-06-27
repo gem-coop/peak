@@ -1,17 +1,15 @@
 class Public::BaseController < ActionController::Base
   layout "application"
 
-  def self.throttle_responses(on:, duration: 0.3.seconds)
-    before_action(only: on) { Throttle.call(duration) }
-  end
+  def self.throttle_responses(on:)
+    hex = SecureRandom.hex
 
-  module Throttle
-    mattr_accessor :handler, default: Rails.env.test? ? nil : -> { sleep _1 }
-    singleton_class.delegate :call, to: :handler, allow_nil: true
+    # TODO: Replace with this on Rails 8.2:
+    # bcrypt = ActiveModel::SecurePassword.lookup_algorithm(:bcrypt)
+    # before_action(only: on) { bcrypt.hash_password(hex) }
 
-    def self.apply(duration: 0.1.seconds, &)
-      with(handler: proc { sleep duration }, &)
-    end
+    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
+    before_action(only: on) { BCrypt::Password.create(hex, cost: cost) }
   end
 
   private

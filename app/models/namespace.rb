@@ -10,9 +10,6 @@ class Namespace < ApplicationRecord
   has_many :indexes, dependent: :destroy
   has_one_built :default_index, -> { public_access.where(slug: :default) }, class_name: "Index"
 
-  scope :pending,  -> { where(approved_at: nil) }
-  scope :approved, -> { where.not(approved_at: nil) }
-
   def self.named(name) = find_by!(name:)
   def to_param = name
 end

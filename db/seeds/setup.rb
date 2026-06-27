@@ -24,7 +24,7 @@ def gems.create(label = nil, unique_by: [:index, :name], **) = super
 
 def namespaces.create_approved(label = nil, owner: Peak.system_user, **) = create(label, **).tap do
   accesses.owner.create(namespace: _1, user: owner)
-  submissions.approved.create(namespace: _1, owner:, resolved_by: Peak.system_user, resolved_at: Time.current)
+  submissions.approved.create(namespace: _1, owner:, resolved_at: Time.current)
 end
 def namespaces.create(label = nil, unique_by: :name, **) = super
 

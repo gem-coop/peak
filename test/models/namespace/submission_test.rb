@@ -32,11 +32,10 @@ class Namespace::SubmissionTest < ActiveSupport::TestCase
   test "resolve" do
     freeze_time
 
-    submissions.basic.resolve! :approved, by: Peak.system_user
+    submissions.basic.resolve! :approved
 
     submissions.basic.tap do |submission|
       assert submission.approved?
-      assert_equal Peak.system_user, submission.resolved_by
       assert_equal Time.current, submission.resolved_at
     end
   end

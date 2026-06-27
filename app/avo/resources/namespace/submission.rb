@@ -43,7 +43,6 @@ class Avo::Resources::Namespace::Submission < Avo::BaseResource
     field :owner, as: :belongs_to
     field :name, as: :text
     field :status, as: :text
-    field :resolved_by, as: :belongs_to
     field :resolved_at, as: :date_time
   end
 end

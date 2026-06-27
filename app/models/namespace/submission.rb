@@ -2,8 +2,6 @@ class Namespace::Submission < ApplicationRecord
   belongs_to :owner, class_name: "User"
   belongs_to :namespace, foreign_key: :name, primary_key: :name, optional: true
 
-  belongs_to :resolved_by, class_name: "User", optional: true
-
   enum :status, %i[pending reserved approved rejected].index_by(&:itself)
   scope :resolved, -> { not_pending }
   def resolved? = !pending?
@@ -27,8 +25,8 @@ class Namespace::Submission < ApplicationRecord
   end
   class NamespaceAlreadyExistsError < StandardError; end
 
-  def resolve!(status, by:, at: Time.current)
-    update! status:, resolved_by: by, resolved_at: at
+  def resolve!(status, at: Time.current)
+    update! status:, resolved_at: at
   end
 
   performs def slack_notify

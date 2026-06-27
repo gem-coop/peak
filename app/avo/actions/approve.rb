@@ -4,8 +4,7 @@ class Avo::Actions::Approve < Avo::BaseAction
 
   def handle(query:, fields:, current_user:, resource:, **args)
     query.each do |record|
-      debugger
-      record.resolve! :approved, by: current_user
+      record.resolve! :approved
       record.process_approved_later
     end
   end

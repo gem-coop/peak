@@ -17,13 +17,19 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "get show with upload" do
+    version = gems.peak.versions.first
+
     get namespace_gems_url(namespace:, id: gems.peak.versions.first)
     assert_response :success
+
+    assert_equal version.package.download, response.body
+    assert_match "peak-0.1.0.gem", response.headers["content-disposition"]
+    assert_equal version.package.byte_size.to_s, response.headers["content-length"]
 
     upload = Peak::Gem::Upload.read(StringIO.new(response.body))
     assert upload.spec
   ensure
-    upload.unlink if upload # Guard against never reaching the assignment line
+    upload.unlink if upload # Guard against never reaching assignment line
   end
 
   test "push" do

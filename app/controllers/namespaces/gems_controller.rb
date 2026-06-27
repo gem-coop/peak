@@ -1,4 +1,6 @@
 class Namespaces::GemsController < Public::BaseController
+  include ActiveStorage::Streaming
+
   skip_forgery_protection only: :create
   before_action :set_user_from_push_key, only: :create
 
@@ -19,15 +21,23 @@ class Namespaces::GemsController < Public::BaseController
     set_routed_index
 
     gem_name, ref = Peak::Gem.version(params[:id])
-    version = @index.versions.for(gem_name).find_by!(ref:)
+    version = @index.versions.with_attached_package.for(gem_name).find_by!(ref:)
 
-    if version.package.attached?
+    case
+    when (blob = version.package.blob).nil?
+      redirect_to "https://gem.coop/gems/#{params[:id]}", allow_other_host: true
+
+    # Adapted from ActiveStorage::Blobs::ProxyController:
+    # https://github.com/rails/rails/blob/9ecc4a5ca6fb9a93a1f243e8f23d8ba592f41600/activestorage/app/controllers/active_storage/blobs/proxy_controller.rb#L28
+    when ranges = request.get_header("Range").presence
+      send_blob_byte_range_data blob, ranges
+    else
       expires_in 1.year, public: @index.public_access?
 
-      # redirect_to version.package.url expires_in: 5.seconds # TODO: When not using Disk Service?
-      send_data version.package.download, filename: version.package_name, disposition: "inline"
-    else
-      redirect_to "https://gem.coop/gems/#{params[:id]}", allow_other_host: true
+      response.headers["accept-ranges"]  = "bytes"
+      response.headers["content-length"] = blob.byte_size.to_s
+
+      send_blob_stream blob, disposition: "inline"
     end
   end
 

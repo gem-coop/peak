@@ -11,7 +11,10 @@ class User::SignUp
   end
 
   def submission
-    @submission ||= Namespace::Submission.new(name: namespace_name, owner: User.new(name:, email_address:))
+    @submission ||= Namespace::Submission.new(name: namespace_name, owner:)
   end
-  delegate :owner, to: :submission
+
+  def owner
+    @owner ||= User.create_with(name:).find_or_initialize_by(email_address:)
+  end
 end

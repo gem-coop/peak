@@ -3,7 +3,7 @@ class User::SignUpsController < Public::BaseController
   rate_limit only: :create, to: 5, within: 1.day, by: :email_address_rate_limiting_key, with: :rate_limit_response
 
   def new
-    @sign_up = User::SignUp.new
+    @sign_up = User::SignUp.new(**params.permit(:name, :email_address).to_h.symbolize_keys)
   end
 
   def create
@@ -24,7 +24,7 @@ class User::SignUpsController < Public::BaseController
       sign_up_params[:email_address].to_s.downcase
     end
 
-    def sign_up_params
+    helper_method def sign_up_params
       params.expect(user_sign_up: %i[name email_address namespace_name])
     end
 end

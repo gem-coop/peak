@@ -28,10 +28,18 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "post create with taken email address" do
-    refute_increments User, Namespace, Namespace::Access do
-      post user_sign_ups_url, params: sign_up_params(email_address: users.owner.email_address)
+    refute_increments User, Namespace do
+      assert_increments users.owner.submissions do
+        post user_sign_ups_url, params: sign_up_params(email_address: users.owner.email_address)
+      end
     end
-    assert_response :unprocessable_entity
+    assert_response :success
+
+    Namespace::Submission.last.tap do |submission|
+      assert_equal "@someone", submission.name
+      assert_equal "Owner", submission.owner.name # We don't override the name.
+      assert_equal users.owner.email_address, submission.owner.email_address
+    end
   end
 
   test "post create with resolved namespace name" do

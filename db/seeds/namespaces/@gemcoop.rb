@@ -1,10 +1,10 @@
-namespace = namespaces.create :gemcoop, name: "@gemcoop"
+owner = users.create(:owner, name: "Owner", email_address: "owner@example.com")
+namespace = namespaces.create_approved :gemcoop, owner:, name: "@gemcoop"
 # Created & managed by subscription eventually
 indexes.public_access.create :gemcoop_dev, namespace:, slug: :dev
 indexes.private_access.create :gemcoop_private, namespace:, slug: :private
 
 accesses.with namespace: do
-  _1.owner.create :owner, user: users.create(:owner, name: "Owner", email_address: "owner@example.com")
   _1.plain.create :plain, user: users.create(:plain, name: "Plain", email_address: "plain@example.com")
   user_push_keys.label gemcoop_plain: users.plain.create_push_key
 

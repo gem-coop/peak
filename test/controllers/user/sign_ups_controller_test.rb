@@ -9,16 +9,15 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "post create success" do
-    assert_increments User, Namespace, Namespace::Access do
+    assert_increments User, Namespace::Submission do
       post user_sign_ups_url, params: sign_up_params
     end
     assert_response :success
 
-    Namespace::Access.last.tap do |access|
-      assert access.owner?
-      assert_equal "Someone", access.user.name
-      assert_equal "someone@example.com", access.user.email_address
-      assert_equal "@someone", access.namespace.name
+    Namespace::Submission.last.tap do |submission|
+      assert_equal "@someone", submission.name
+      assert_equal "Someone", submission.owner.name
+      assert_equal "someone@example.com", submission.owner.email_address
     end
 
     perform_enqueued_jobs
@@ -26,10 +25,6 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
     assert mail = ActionMailer::Base.deliveries.last
     assert_equal ["someone@example.com"], mail.to
     assert_match "user/email_verifications/", mail.text_part.body.to_s
-
-    namespace = Namespace.last
-    assert_emails(1) { namespace.approve }
-    assert_no_emails { namespace.approve }
   end
 
   test "post create with taken email address" do
@@ -39,9 +34,11 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
-  test "post create with taken namespace name" do
-    refute_increments User, Namespace, Namespace::Access do
-      post user_sign_ups_url, params: sign_up_params(namespace_name: namespaces.gemcoop.name)
+  test "post create with resolved namespace name" do
+    submissions.rejected.create name: "@rejected"
+
+    refute_increments User, Namespace::Submission do
+      post user_sign_ups_url, params: sign_up_params(namespace_name: "@rejected")
     end
     assert_response :unprocessable_entity
   end
@@ -52,6 +49,15 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :too_many_requests
+  end
+
+  test "post create with pending namespace name" do
+    submissions.pending.create name: "@pending"
+
+    assert_increments User, Namespace::Submission do
+      post user_sign_ups_url, params: sign_up_params(namespace_name: "@pending")
+    end
+    assert_response :success
   end
 
   private

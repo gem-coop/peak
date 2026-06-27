@@ -15,6 +15,9 @@ module Peak extend self
     }
   end
 
+  singleton_class.attr_reader :env_tag
+  @env_tag = env.production? ? "" : "[#{env.upcase}] "
+
   def system_user
     @system_user ||= User.create_with(name: "gem.coop system").find_or_create_by!(email_address: "support@gem.coop")
   end

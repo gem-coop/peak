@@ -1,11 +1,10 @@
-class Avo::Actions::Approve < Avo::BaseAction
-  self.name = "Approve"
+class Avo::Actions::Reserve < Avo::BaseAction
+  self.name = "Reserve"
   self.visible = -> { true }
 
   def handle(query:, fields:, current_user:, resource:, **args)
     query.each do |record|
-      record.resolve! :approved
-      record.process_approved_later
+      record.resolve! :reserved, by: current_user
     end
   end
 end

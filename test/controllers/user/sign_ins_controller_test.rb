@@ -1,7 +1,7 @@
 require "test_helper"
 
 class User::SignInsControllerTest < ActionDispatch::IntegrationTest
-  setup { Rails.application.config.action_controller.cache_store.clear }
+  setup { User::SignInsController.cache_store.clear }
 
   test "get new" do
     get new_sign_in_url
@@ -39,26 +39,30 @@ class User::SignInsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "show creates session from magic link" do
-    assert_increments User::Session do
-      get sign_in_url(users.plain.magic_link.signed_id)
-    end
+    token = users.plain.magic_link.token
+
+    assert_increments(User::Session) { get sign_in_url(token) }
     assert_redirected_to root_url
+    assert_equal "no-referrer", response.headers["referrer-policy"]
+
+    refute_increments(User::Session) { get sign_in_url(token) }
+    assert_redirected_to new_sign_in_url
   end
 
   test "show creates session from magic link — with redirect_url" do
     get new_sign_in_url(redirect_url: dashboard_url)
 
     assert_increments User::Session do
-      get sign_in_url(users.plain.magic_link.signed_id)
+      get sign_in_url(users.plain.magic_link.token)
     end
     assert_redirected_to dashboard_url
   end
 
   test "show with expired magic link" do
-    signed_id = users.plain.magic_link.signed_id
+    token = users.plain.magic_link.token
     travel 15.minutes + 1.second
 
-    get sign_in_url(signed_id)
+    get sign_in_url(token)
     assert_redirected_to new_sign_in_url
   end
 end

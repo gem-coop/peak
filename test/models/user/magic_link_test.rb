@@ -1,19 +1,16 @@
 require "test_helper"
 
 class User::MagicLinkTest < ActiveSupport::TestCase
-  test "signed_id roundtrip" do
-    magic_link = users.plain.magic_link
-    found = User::MagicLink.find_signed!(magic_link.signed_id)
-    assert_equal users.plain, found.user
+  test "token roundtrip" do
+    token = users.plain.magic_link.token
+    assert_equal users.plain, User::MagicLink.find_by_token!(token).user
   end
 
-  test "signed_id expires" do
-    signed_id = users.plain.magic_link.signed_id
+  test "token expires" do
+    token = users.plain.magic_link.token
     travel 15.minutes + 1.second
 
-    assert_raises(ActiveSupport::MessageVerifier::InvalidSignature) do
-      User::MagicLink.find_signed!(signed_id)
-    end
+    assert_nil User::MagicLink.find_by_token(token)
   end
 
   test "mailer" do

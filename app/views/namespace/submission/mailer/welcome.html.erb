@@ -2,7 +2,7 @@
 
 <p>Here's your account activation link to verify your email address.</p>
 
-<p><%= link_to "Activate my account", user_email_verification_url(@owner.email_verification.signed_id) %></p>
+<p><%= link_to "Activate my account", user_email_verification_url(@owner.email_verification.token) %></p>
 
 <h3>How do I push gems?</h3>
 

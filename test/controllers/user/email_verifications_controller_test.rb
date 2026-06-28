@@ -21,17 +21,23 @@ class User::EmailVerificationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "get show" do
+    token = users.unverified_plain.email_verification.token
+
     assert_changes -> { users.unverified_plain.email_address_verified_at }, from: nil do
-      get user_email_verification_url(users.unverified_plain.email_verification.signed_id)
+      get user_email_verification_url(token)
     end
     assert_response :success
+    assert_equal "no-referrer", response.headers["referrer-policy"]
+
+    get user_email_verification_url(token)
+    assert_redirected_to new_user_email_verification_url
   end
 
   test "get show expired" do
-    id = users.plain.email_verification.signed_id
+    token = users.plain.email_verification.token
     travel 24.hours + 1.second
 
-    get user_email_verification_url(id)
+    get user_email_verification_url(token)
     assert_redirected_to new_user_email_verification_url
   end
 end

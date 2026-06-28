@@ -4,4 +4,8 @@ class ApplicationController < Public::BaseController
 
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
+
+  def self.set_referrer_policy(policy, **)
+    before_action(**) { response.set_header "referrer-policy", policy }
+  end
 end

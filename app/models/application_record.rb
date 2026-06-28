@@ -13,6 +13,10 @@ class ApplicationRecord < ActiveRecord::Base
     after_find(:readonly!, **)
   end
 
+  def self.limit_reached?(limit)
+    limit(limit).count >= limit
+  end
+
   def mailer
     self.class::Mailer.with(model_name.element.to_sym => self)
   end

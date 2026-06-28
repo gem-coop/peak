@@ -1,6 +1,6 @@
 <%= tag.h1 page.title = "Sign Up" %>
 
-<% field_error = -> { tag.p _1.to_sentence.downcase, style: "text-align: center; margin-block-start: 0;" } %>
+<% form_error = -> { tag.p _1.to_sentence.downcase, style: "text-align: center; margin-block-start: 0;" } %>
 
 <p><i>Already have an account? <%= link_to "Create a push key here", new_user_push_key_path %></i></p>
 
@@ -10,12 +10,13 @@
 
   <%= form.label :email_address, "email address", style: "display: inline-block;" %>
   <%= form.email_field :email_address, required: true, placeholder: "me@example.com" %>
-  <%= field_error.(@sign_up.owner.errors.full_messages_for(:email_address)) %>
 
   <%= form.label :namespace_name, "personal namespace name" %>
   <%= tag.small "start with @, all lowercase, numbers allowed, at least 4 characters, use - for separation.", style: "display: block; padding: .5em .25em;" %>
   <%= form.text_field :namespace_name, required: true, placeholder: "@username", minlength: 4, pattern: @sign_up.submission.name_pattern %>
-  <%= field_error.(@sign_up.submission.errors.full_messages_for(:name)) %>
+  <%= form_error.(@sign_up.submission.errors.full_messages_for(:name)) %>
+
+  <%= form_error.(@sign_up.errors.full_messages) %>
 
   <%= form.button "Submit namespace for approval" %>
 <% end %>

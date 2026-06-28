@@ -13,6 +13,7 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
       post user_sign_ups_url, params: sign_up_params
     end
     assert_response :success
+    assert_dom "body", /Want another namespace\?/
 
     Namespace::Submission.last.tap do |submission|
       assert_equal "@someone", submission.name
@@ -25,6 +26,17 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
     assert mail = ActionMailer::Base.deliveries.last
     assert_equal ["someone@example.com"], mail.to
     assert_match "user/email_verifications/", mail.text_part.body.to_s
+  end
+
+  test "post create above sign_up limit" do
+    post user_sign_ups_url, params: sign_up_params
+
+    User::SignUp.with(per_owner_limit: 1) do
+      refute_increments User, Namespace::Submission do
+        post user_sign_ups_url, params: sign_up_params(namespace_name: "@second_namespace")
+      end
+      assert_response :unprocessable_entity
+    end
   end
 
   test "post create with taken email address" do

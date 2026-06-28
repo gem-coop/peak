@@ -19,6 +19,24 @@ class Peak::Gem::Upload
     keys.index_with { public_send _1 }
   end
 
+  class_eval do
+    def self.valid_ref?(ref)
+      ref.present? && ::Gem::Version::ANCHORED_VERSION_PATTERN.match?(ref)
+    end
+
+    def self.valid_chars?(*values)
+      values.none?(/[\r\n\x00]/)
+    end
+
+    def validate
+      raise InvalidError unless Peak::Gem.name?(name)
+      raise InvalidError unless self.class.valid_ref?(platform_ref)
+      raise InvalidError unless self.class.valid_chars?(checksum, ruby, rubygems, *executables, *licenses)
+      self
+    end
+    class InvalidError < StandardError; end
+  end
+
   def package
     @package ||= rewinding { ::Gem::Package.new tmpfile }
   end

@@ -5,7 +5,7 @@ class Namespaces::GemsController < Public::BaseController
   before_action :halt_exhaustive_upload, :set_user_from_push_key, only: :create
 
   def create
-    upload = Current.upload_from(request.body)
+    upload = Current.upload_from(request.body).validate
     version = @index.gems.version_from name: upload.name, ref: upload.platform_ref
 
     if version.persisted?
@@ -15,6 +15,8 @@ class Namespaces::GemsController < Public::BaseController
 
       render plain: "#{version.package_name} uploaded 🎉"
     end
+  rescue Peak::Gem::Upload::InvalidError
+    render plain: "Upload rejected: gemspec contains invalid characters. ❌", status: :unprocessable_entity
   end
 
   def show

@@ -35,12 +35,16 @@ class ActiveSupport::TestCase
   end
 
   def peak_upload_from(contents)
-    Peak::Gem::Upload.new StringIO.new contents
+    Current.upload_from StringIO.new contents
   end
 
-  def gem_package_from(**values, &block)
+  def gem_package_from(**values)
     Dir.chdir Dir.mktmpdir do
       File.write "safe.rb", "Safe = Module.new\n"
+
+      values[:executables]&.each do |name|
+        Pathname.pwd.join("bin").tap(&:mkpath).join(name).write "# lol"
+      end
 
       spec = Gem::Specification.new
       values.with_defaults(name: "safe", version: "1.0.0", summary: "summary", author: "author", files: ["safe.rb"]).each do |key, value|

@@ -184,4 +184,14 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
     assert_dom "body", /API Key/
   end
+
+  test "push rejects gem name with embedded newline" do
+    payload = gem_package_from(name: "safe\nforged 9.9.9 deadbeef")
+
+    refute_increments Namespace::Gem, Namespace::Gem::Version do
+      post namespace_gem_push_url(namespace:), env: { "RAW_POST_DATA" => payload, authorization: "Bearer #{token}" }
+    end
+    assert_response :unprocessable_entity
+    assert_match "Upload rejected", response.body
+  end
 end

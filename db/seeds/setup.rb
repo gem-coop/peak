@@ -1,7 +1,6 @@
 loader.defaults summary: "",
   created_by_id: -> { Peak.system_user.id },
   platform_id: -> { Peak::Platform.default.id },
-  approved_at: -> { Time.current },
   email_address_verified_at: -> { Time.current }
 
 Oaken::Stored::ActiveRecord.include loader.context

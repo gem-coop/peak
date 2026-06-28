@@ -18,12 +18,12 @@ class Public::BaseController < ActionController::Base
     def set_routed_index_from_user(user)
       set_routed_index from: user.namespaces
     rescue ActiveRecord::RecordNotFound
-      render plain: "Namespace is not approved or user doesn't have access to it", status: :unauthorized
+      render plain: "User doesn't have access to the given namespace", status: :unauthorized
     end
 
     def set_routed_index(from: Namespace)
       # TODO: Figure out authenticated routing to `private_access` indexes.
-      @index = from.approved.named(params[:namespace]).indexes.public_access.locate_or_default(params[:index])
+      @index = from.named(params[:namespace]).indexes.public_access.locate_or_default(params[:index])
     end
 
     def stream_lines_from(versions)

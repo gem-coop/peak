@@ -20,7 +20,6 @@ class Avo::Resources::Namespace < Avo::BaseResource
     field :id,   as: :id
     field :name, as: :text
     field :created_at,  as: :date_time, hide_on: :forms
-    field :approved_at, as: :date_time
 
     field :accesses, as: :has_many
     field :users,    as: :has_many, through: :accesses

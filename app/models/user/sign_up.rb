@@ -1,13 +1,21 @@
 class User::SignUp
+  mattr_accessor :per_owner_limit, default: 5
+
   include ActiveModel::Model
   attr_accessor :name, :email_address, :namespace_name
 
+  validate { errors.add(:base, "namespace limit reached. contact support for help.") if limit_reached? }
+
   def save
-    owner.valid? && submission.save
+    submission.save if valid?
   rescue ActiveRecord::RecordNotUnique
-    # Race Condition guard: the email_address or namespace name can be taken after uniqueness constraint checks,
+    # Race Condition guard: namespace name can be taken after uniqueness constraint checks,
     # so Active Record raises when trying to commit the transaction.
     false
+  end
+
+  def limit_reached?
+    owner.submissions.limit_reached?(per_owner_limit)
   end
 
   def submission

@@ -17,8 +17,8 @@ class Namespace::Gem::Version < ApplicationRecord
   end
   has_many :referrants, -> { where(ref: _1.ref) }, through: :gem, foreign_key: :ref, primary_key: :ref
 
-  scope :published_before, -> { where(published_at: .._1).latest_last }
-  scope :published_after, -> { where(published_at: _1..).latest_last }
+  scope :published_before, -> { where(published_at: .._1) }
+  scope :published_after, -> { where(published_at: _1..) }
   scope :latest_first, -> { order(published_at: :desc, ref: :desc) }
   scope :latest_last, -> { order(published_at: :asc, ref: :asc) }
   def self.latest = latest_last.last
@@ -28,9 +28,10 @@ class Namespace::Gem::Version < ApplicationRecord
 
   scope :for,    -> { joins(:gem).where(gem: {name: _1}) }
   scope :system, -> { where(created_by: Peak.system_user) }
+  scope :distinct_on_gem_name, -> { includes(:gem).distinct_on("namespace_gems.name").merge(Namespace::Gem.alphabetized) }
   def self.latest_for(name) = self.for(name).latest
 
-  scope :as_byline, -> { select(:ref, :summary, :published_at, :created_by_id).includes(:created_by) }
+  scope :as_byline, -> { select(:id, :ref, :summary, :published_at, :gem_id, :created_by_id).includes(:gem, :created_by) }
 
   belongs_to :platform, class_name: "Peak::Platform"
 
@@ -48,8 +49,8 @@ class Namespace::Gem::Version < ApplicationRecord
   attribute :published_at, default: -> { Time.current }
 
   def self.checksum = Digest::MD5.hexdigest(lines)
-  def self.lines = pluck(:line).join
-  def self.refs = pluck(:ref)
+  def self.lines = latest_last.pluck(:line).join
+  def self.refs = latest_last.pluck(:ref)
 
   def process(...)
     consume(...)
@@ -66,7 +67,7 @@ class Namespace::Gem::Version < ApplicationRecord
   end
 
   def envelope(ref_stamp: nil)
-    # function = Arel.sql("concat_ws(' ', string_agg(ref::text, ','), md5(string_agg(line::text, '')))"))
+    # function = Arel.sql("concat_ws(' ', string_agg(ref::text, ','), md5(string_agg(line::text, '')))")
     # "#{gem.name} #{versions_upto_self.pick(function)}\n"
 
     versions = versions_upto_self

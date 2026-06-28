@@ -1,8 +1,7 @@
 class User::EmailVerification < ActiveRecord::AssociatedObject
-  has_mailer to: :user, subject: "Verify your email and sign in"
+  generates_token expires_in: 24.hours, embed: -> { _1.email_address_verified_at&.to_i }
 
-  def self.find_by_token(token) = User.find_by_token_for(attribute_name, token)&.email_verification
-  def token = user.generate_token_for(self.class.attribute_name)
+  has_mailer to: :user, subject: "Verify your email and sign in"
 
   def verify
     user.update! email_address_verified_at: Time.current unless verified?

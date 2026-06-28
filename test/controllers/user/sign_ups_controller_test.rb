@@ -1,7 +1,7 @@
 require "test_helper"
 
 class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
-  setup { Rails.application.config.action_controller.cache_store.clear }
+  setup { User::SignUpsController.cache_store.clear }
 
   test "get new" do
     get user_sign_ups_url
@@ -28,10 +28,18 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "post create with taken email address" do
-    refute_increments User, Namespace, Namespace::Access do
-      post user_sign_ups_url, params: sign_up_params(email_address: users.owner.email_address)
+    refute_increments User, Namespace do
+      assert_increments users.owner.submissions do
+        post user_sign_ups_url, params: sign_up_params(email_address: users.owner.email_address)
+      end
     end
-    assert_response :unprocessable_entity
+    assert_response :success
+
+    Namespace::Submission.last.tap do |submission|
+      assert_equal "@someone", submission.name
+      assert_equal "Owner", submission.owner.name # We don't override the name.
+      assert_equal users.owner.email_address, submission.owner.email_address
+    end
   end
 
   test "post create with resolved namespace name" do
@@ -49,7 +57,21 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
     assert_increments User, Namespace::Submission do
       post user_sign_ups_url, params: sign_up_params(namespace_name: "@pending")
     end
+
     assert_response :success
+  end
+
+  test "post create rate_limit" do
+    limit = User::SignUpsController.rate_limiting(by: "someone@example.com")
+    limit.increment by: 4
+
+    post user_sign_ups_url, params: sign_up_params(namespace_name: "@gemcoop")
+    assert_equal 4, limit.read # Form submission errors don't count against rate_limit
+
+    limit.increment by: 1
+
+    post user_sign_ups_url, params: sign_up_params(namespace_name: "@one-for-the-road")
+    assert_response :too_many_requests
   end
 
   private

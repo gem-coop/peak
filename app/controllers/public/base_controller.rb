@@ -1,4 +1,6 @@
 class Public::BaseController < ActionController::Base
+  extend RateLimiting
+
   layout "application"
 
   def self.throttle_responses(on:)

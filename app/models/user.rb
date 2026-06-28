@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  has_many :submissions, class_name: "Namespace::Submission", foreign_key: :owner_id
+
   has_many :accesses, class_name: "Namespace::Access", dependent: :destroy
   has_many :namespaces, through: :accesses
 

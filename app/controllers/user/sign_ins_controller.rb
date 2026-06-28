@@ -16,7 +16,7 @@ class User::SignInsController < ApplicationController
     if user = User::MagicLink.find_by_token(params[:id])&.user
       attempted_access_url = discard_stashed_redirect_for(:sign_in)
       start_new_session_for user
-      redirect_to attempted_access_url || root_url
+      redirect_to attempted_access_url || dashboard_url
     else
       redirect_to new_sign_in_url, alert: "That sign-in link is invalid or has expired. Try again."
     end

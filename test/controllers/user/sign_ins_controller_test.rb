@@ -42,7 +42,7 @@ class User::SignInsControllerTest < ActionDispatch::IntegrationTest
     token = users.plain.magic_link.token
 
     assert_increments(User::Session) { get sign_in_url(token) }
-    assert_redirected_to root_url
+    assert_redirected_to dashboard_url
     assert_equal "no-referrer", response.headers["referrer-policy"]
 
     refute_increments(User::Session) { get sign_in_url(token) }

@@ -25,7 +25,7 @@ class User::EmailVerificationsControllerTest < ActionDispatch::IntegrationTest
       get user_email_verification_url(users.unverified_plain.email_verification.token)
     end
     assert_response :success
-    assert_equal "no-referrer", response.headers["Referrer-Policy"]
+    assert_equal "no-referrer", response.headers["referrer-policy"]
   end
 
   test "get show is single use" do

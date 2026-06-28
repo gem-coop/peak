@@ -1,4 +1,6 @@
 class User::EmailVerificationsController < ApplicationController
+  set_referrer_policy "no-referrer", only: :show
+
   def new
   end
 
@@ -14,7 +16,6 @@ class User::EmailVerificationsController < ApplicationController
   end
 
   def show
-    response.headers["Referrer-Policy"] = "no-referrer" # Keep the token URL out of the Referer header.
     verification = User::EmailVerification.find_by_token(params[:id])
 
     if verification

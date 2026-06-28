@@ -1,5 +1,6 @@
 class User::SignInsController < ApplicationController
   rate_limit to: 3, within: 1.minute, with: :rate_limit_response, only: :create
+  set_referrer_policy "no-referrer", only: :show
 
   def new
     stash_redirect_for :sign_in if redirect_url
@@ -12,7 +13,6 @@ class User::SignInsController < ApplicationController
   end
 
   def show
-    response.headers["Referrer-Policy"] = "no-referrer" # Keep the token URL out of the Referer header.
     if user = User::MagicLink.find_signed(params[:id])&.user
       attempted_access_url = discard_stashed_redirect_for(:sign_in)
       start_new_session_for user

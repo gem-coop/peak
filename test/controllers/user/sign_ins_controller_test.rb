@@ -43,7 +43,7 @@ class User::SignInsControllerTest < ActionDispatch::IntegrationTest
       get sign_in_url(users.plain.magic_link.signed_id)
     end
     assert_redirected_to root_url
-    assert_equal "no-referrer", response.headers["Referrer-Policy"]
+    assert_equal "no-referrer", response.headers["referrer-policy"]
   end
 
   test "show creates session from magic link — with redirect_url" do

@@ -13,7 +13,7 @@ class User::SignInsController < ApplicationController
   end
 
   def show
-    if user = User::MagicLink.find_signed(params[:id])&.user
+    if user = User::MagicLink.find_by_token(params[:id])&.user
       attempted_access_url = discard_stashed_redirect_for(:sign_in)
       start_new_session_for user
       redirect_to attempted_access_url || root_url

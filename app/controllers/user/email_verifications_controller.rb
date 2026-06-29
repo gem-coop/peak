@@ -1,4 +1,7 @@
 class User::EmailVerificationsController < ApplicationController
+  Success = Peak::Status("We've sent your verification email.")
+
+  rate_limit to: 1, within: 30.seconds, with: -> { render Success }, only: :create
   set_referrer_policy "no-referrer", only: :show
 
   def new
@@ -11,7 +14,7 @@ class User::EmailVerificationsController < ApplicationController
       verification.deliver_later
     end
 
-    render Peak::Status("We've sent your verification email.")
+    render Success
   end
 
   def show

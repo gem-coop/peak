@@ -1,6 +1,8 @@
 require "test_helper"
 
 class User::EmailVerificationsControllerTest < ActionDispatch::IntegrationTest
+  setup { User::EmailVerificationsController.cache_store.clear }
+
   test "get new" do
     get new_user_email_verification_url
     assert_response :success
@@ -11,6 +13,17 @@ class User::EmailVerificationsControllerTest < ActionDispatch::IntegrationTest
       post user_email_verifications_url, params: { email_address: users.unverified_plain.email_address }
     end
     assert_response :success
+    assert_dom "peak-status"
+  end
+
+  test "post create -- rate_limit" do
+    User::EmailVerificationsController.rate_limiting(by: remote_addr).increment by: 1
+
+    assert_no_emails do
+      post user_email_verifications_url, params: { email_address: users.unverified_plain.email_address }
+    end
+    assert_response :success
+    assert_dom "peak-status"
   end
 
   test "post create -- non-existent email address" do
@@ -18,6 +31,7 @@ class User::EmailVerificationsControllerTest < ActionDispatch::IntegrationTest
       post user_email_verifications_url, params: { email_address: "non-existent@example.com" }
     end
     assert_response :success
+    assert_dom "peak-status"
   end
 
   test "post create -- already verified" do
@@ -25,6 +39,7 @@ class User::EmailVerificationsControllerTest < ActionDispatch::IntegrationTest
       post user_email_verifications_url, params: { email_address: users.plain.email_address }
     end
     assert_response :success
+    assert_dom "peak-status"
   end
 
   test "get show" do

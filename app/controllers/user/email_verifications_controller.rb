@@ -5,14 +5,13 @@ class User::EmailVerificationsController < ApplicationController
   end
 
   def create
-    verification = User::EmailVerification.find_by!(email_address: params[:email_address])
+    verification = User::EmailVerification.find_by(email_address: params[:email_address])
 
     if verification && !verification.verified?
       verification.deliver_later
-      render Peak::Status("We've sent your verification email.")
-    else
-      render Peak::Error("That email address has already been verified."), status: :unprocessable_entity
     end
+
+    render Peak::Status("We've sent your verification email.")
   end
 
   def show

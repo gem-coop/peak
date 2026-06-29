@@ -13,11 +13,18 @@ class User::EmailVerificationsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "post create -- non-existent email address" do
+    assert_no_emails do
+      post user_email_verifications_url, params: { email_address: "non-existent@example.com" }
+    end
+    assert_response :success
+  end
+
   test "post create -- already verified" do
     assert_no_emails do
       post user_email_verifications_url, params: { email_address: users.plain.email_address }
     end
-    assert_response :unprocessable_entity
+    assert_response :success
   end
 
   test "get show" do

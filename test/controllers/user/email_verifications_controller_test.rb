@@ -12,8 +12,7 @@ class User::EmailVerificationsControllerTest < ActionDispatch::IntegrationTest
     assert_emails 1 do
       post user_email_verifications_url, params: { email_address: users.unverified_plain.email_address }
     end
-    assert_response :success
-    assert_dom "peak-status"
+    assert_ok
   end
 
   test "post create -- rate_limit" do
@@ -22,24 +21,21 @@ class User::EmailVerificationsControllerTest < ActionDispatch::IntegrationTest
     assert_no_emails do
       post user_email_verifications_url, params: { email_address: users.unverified_plain.email_address }
     end
-    assert_response :success
-    assert_dom "peak-status"
+    assert_ok
   end
 
   test "post create -- non-existent email address" do
     assert_no_emails do
       post user_email_verifications_url, params: { email_address: "non-existent@example.com" }
     end
-    assert_response :success
-    assert_dom "peak-status"
+    assert_ok
   end
 
   test "post create -- already verified" do
     assert_no_emails do
       post user_email_verifications_url, params: { email_address: users.plain.email_address }
     end
-    assert_response :success
-    assert_dom "peak-status"
+    assert_ok
   end
 
   test "get show" do

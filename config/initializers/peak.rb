@@ -23,6 +23,7 @@ module Peak extend self
   end
 
   def Status(...) = Status.new(...)
+  def Ok(...) = Ok.new(...)
   def Error(...) = Error.new(...)
 
   Admin = Data.define :username, :password do

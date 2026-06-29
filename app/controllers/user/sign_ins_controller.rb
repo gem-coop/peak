@@ -10,7 +10,7 @@ class User::SignInsController < ApplicationController
   def create
     User::MagicLink.find_by(email_address: params[:email_address])&.deliver_later
 
-    render Peak::Status("Check your email for a sign-in link. Check spam too, just in case.")
+    render Peak::Ok("Check your email for a sign-in link. Check spam too, just in case.")
   end
 
   def show

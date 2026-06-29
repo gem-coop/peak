@@ -1,5 +1,5 @@
 class User::EmailVerificationsController < ApplicationController
-  Success = Peak::Status("We've sent your verification email.")
+  Success = Peak::Ok("We've sent your verification email.")
 
   rate_limit to: 1, within: 30.seconds, with: -> { render Success }, only: :create
   set_referrer_policy "no-referrer", only: :show
@@ -22,7 +22,7 @@ class User::EmailVerificationsController < ApplicationController
 
     if verification
       verification.verify
-      render Peak::Status("Your email's been verified!")
+      render Peak::Ok("Your email's been verified!")
     else
       redirect_to new_user_email_verification_url, alert: "No verification found or it has expired. Request a new one here."
     end

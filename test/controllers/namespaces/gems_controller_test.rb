@@ -181,4 +181,26 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
     assert_match "Upload rejected", response.body
   end
+
+  test "re-pushing an existing version is skipped as a conflict" do
+    package = file_fixture "peak/peak-0.2.0.gem"
+
+    post namespace_gem_push_url(namespace:), env: { "RAW_POST_DATA" => package.binread, authorization: "Bearer #{token}" }
+    assert_response :success
+
+    refute_increments gems.peak.versions do
+      post namespace_gem_push_url(namespace:), env: { "RAW_POST_DATA" => package.binread, authorization: "Bearer #{token}" }
+    end
+    assert_response :conflict
+    assert_match "already exists", response.body
+  end
+
+  test "show serves a requested byte range" do
+    version = gems.peak.versions.first
+    full = version.package.download
+
+    get namespace_gems_url(namespace:, id: version), headers: { "Range" => "bytes=0-9" }
+    assert_response :partial_content
+    assert_equal full.byteslice(0, 10), response.body
+  end
 end

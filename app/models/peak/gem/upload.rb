@@ -28,13 +28,21 @@ class Peak::Gem::Upload
       values.none?(/[\r\n\x00]/)
     end
 
+    class Validator < Gem::SpecificationPolicy
+      def validate
+        Gem::DefaultUserInteraction.use_ui(Gem::SilentUI.new) { super }
+      end
+      def validate_non_files = nil
+    end
+    InvalidError = Gem::InvalidSpecificationException
+
     def validate
       raise InvalidError unless Peak::Gem.name?(name)
       raise InvalidError unless self.class.valid_ref?(platform_ref)
       raise InvalidError unless self.class.valid_chars?(checksum, ruby, rubygems, *executables, *licenses)
+      Validator.new(spec).validate
       self
     end
-    class InvalidError < StandardError; end
   end
 
   def package

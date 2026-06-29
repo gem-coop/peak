@@ -11,7 +11,7 @@ class Peak::Gem::UploadTest < ActiveSupport::TestCase
     assert_equal({ source_code: "https://example.com/src" }, upload.links)
   end
 
-  test "valid chars" do
+  test "validation" do
     assert peak_upload_from(gem_package_from(required_ruby_version: [">=\n 4.0\r"])).validate
     assert peak_upload_from(gem_package_from(required_rubygems_version: [">=\r4.0\n"])).validate
 

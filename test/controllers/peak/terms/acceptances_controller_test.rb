@@ -25,4 +25,11 @@ class Peak::Terms::AcceptancesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_terms_acceptances_url
     refute Peak::Terms.acceptance_for(@user).accepted?
   end
+
+  test "create denying" do
+    post terms_acceptances_url(terms.latest), params: { acceptance: { accepted: false, time_zone: "America/Chicago" } }
+    assert_response :success
+
+    refute Peak::Terms.acceptance_for(@user).accepted?
+  end
 end

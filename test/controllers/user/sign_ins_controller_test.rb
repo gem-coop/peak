@@ -38,31 +38,42 @@ class User::SignInsControllerTest < ActionDispatch::IntegrationTest
     assert_response :too_many_requests
   end
 
-  test "show creates session from magic link" do
+  test "show" do
     token = users.plain.magic_link.token
 
-    assert_increments(User::Session) { get sign_in_url(token) }
-    assert_redirected_to dashboard_url
-    assert_equal "no-referrer", response.headers["referrer-policy"]
+    refute_increments(User::Session) { get sign_in_url(token) }
+    assert_response :success
+    assert_equal "strict-origin", response.headers["referrer-policy"]
+    assert_dom("form") { |form| refute_pattern { form => { action: /.*\d+/ } } }
+
+    sign_in_as users.plain
 
     refute_increments(User::Session) { get sign_in_url(token) }
     assert_redirected_to new_sign_in_url
   end
 
-  test "show creates session from magic link — with redirect_url" do
-    get new_sign_in_url(redirect_url: dashboard_url)
-
+  test "update" do
     assert_increments User::Session do
-      get sign_in_url(users.plain.magic_link.token)
+      patch sign_in_index_url, params: { token: users.plain.magic_link.token }
     end
     assert_redirected_to dashboard_url
   end
 
-  test "show with expired magic link" do
+  test "update creates session from magic link — with redirect_url" do
+    assert_increments User::Session do
+      patch sign_in_index_url(redirect_url: dashboard_url), params: { token: users.plain.magic_link.token }
+    end
+    assert_redirected_to dashboard_url
+  end
+
+  test "show + update with expired magic link" do
     token = users.plain.magic_link.token
     travel 15.minutes + 1.second
 
     get sign_in_url(token)
+    assert_redirected_to new_sign_in_url
+
+    refute_increments(User::Session) { patch sign_in_index_url, params: { token: } }
     assert_redirected_to new_sign_in_url
   end
 end

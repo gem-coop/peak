@@ -1,0 +1,8 @@
+<%= tag.h1 page.title = "Complete Email Verification" %>
+
+<p>Click the confirm button and we'll verify your email address.</p>
+
+<%= form_with url: user_email_verifications_path, method: :patch do |form| %>
+  <%= form.hidden_field :token, value: @email_verification.token %>
+  <%= form.button "Verify my email" %>
+<% end %>

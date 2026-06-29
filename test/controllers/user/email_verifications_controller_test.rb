@@ -45,11 +45,12 @@ class User::EmailVerificationsControllerTest < ActionDispatch::IntegrationTest
   test "get show" do
     token = users.unverified_plain.email_verification.token
 
-    assert_changes -> { users.unverified_plain.email_address_verified_at }, from: nil do
-      get user_email_verification_url(token)
-    end
+    get user_email_verification_url(token)
     assert_response :success
-    assert_equal "no-referrer", response.headers["referrer-policy"]
+    assert_equal "strict-origin", response.headers["referrer-policy"]
+    assert_dom("form") { |form| refute_pattern { form => { action: /.*\d+/ } } }
+
+    users.unverified_plain.email_verification.verify
 
     get user_email_verification_url(token)
     assert_redirected_to new_user_email_verification_url
@@ -60,6 +61,19 @@ class User::EmailVerificationsControllerTest < ActionDispatch::IntegrationTest
     travel 24.hours + 1.second
 
     get user_email_verification_url(token)
+    assert_redirected_to new_user_email_verification_url
+  end
+
+  test "patch update" do
+    token = users.unverified_plain.email_verification.token
+
+    assert_changes -> { users.unverified_plain.email_address_verified_at }, from: nil do
+      patch user_email_verifications_url, params: { token: }
+    end
+    assert_response :success
+    assert_dom "peak-status"
+
+    patch user_email_verifications_url(token), params: { token: }
     assert_redirected_to new_user_email_verification_url
   end
 end

@@ -60,6 +60,6 @@ end
 
 class ActionDispatch::IntegrationTest
   def sign_in_as(user)
-    get sign_in_url(user.magic_link.token)
+    patch sign_in_index_url, params: { token: users.plain.magic_link.token }
   end
 end

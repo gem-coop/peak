@@ -14,10 +14,12 @@ class AuthenticationTest < ActionDispatch::IntegrationTest
       controller "authentication_test/test" do
         get :open
         get :secret
-        get :dashboard, action: :secret # sign_ins#show redirects here
+        get :dashboard, action: :secret # sign_ins#update redirects here
       end
 
-      resources :sign_in, controller: "user/sign_ins", only: %i[new show] # sign_in_url / new_sign_in_url
+      resources :sign_in, controller: "user/sign_ins", only: :new do
+        patch :update, on: :collection
+      end
     end
   end
 

@@ -9,14 +9,19 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => "/sidekiq"
 
   namespace :user do
-    resources :email_verifications, only: %i[new create show]
+    resources :email_verifications, only: %i[new create show], param: :token do
+      patch :update, on: :collection
+    end
     resources :push_keys, only: %i[new create]
   end
 
   get "/sign_up" => "user/sign_ups#new", as: :user_sign_ups
   post "/sign_up" => "user/sign_ups#create"
 
-  resources :sign_in, controller: "user/sign_ins", only: %i[new create show]
+  resources :sign_in, controller: "user/sign_ins", only: %i[new create show], param: :token do
+    patch :update, on: :collection
+  end
+
   delete "/sign_out" => "user/sessions#destroy", as: :sign_out
 
   get "/dashboard" => "dashboard#show", as: :dashboard

@@ -1,6 +1,6 @@
 class Namespace::Index::Manifest < ApplicationRecord
   belongs_to :author, polymorphic: true, touch: true
-  delegate :gems, :versions, to: :author
+  delegate :versions, to: :author
 
   # TODO: Look into why Active Job execution can't find Manifest, despite supposedly deferring jobs to after transaction commit now.
   after_create_commit :compact_later
@@ -17,7 +17,6 @@ class Namespace::Index::Manifest < ApplicationRecord
 
   private
     def computed_contents
-      # TODO: later, use https://github.com/bensheldon/activerecord-has_some_of_many
-      gems.find_each.pluck(:name).inject(+"") { |str, name| str << versions.latest_for(name)&.envelope.to_s }
+      versions.distinct_on_gem_name.latest_first.as_byline.inject(+"") { _1 << _2.envelope }
     end
 end

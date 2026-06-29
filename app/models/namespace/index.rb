@@ -9,7 +9,7 @@ class Namespace::Index < ApplicationRecord
     end
   end
 
-  has_many :gems, -> { alphabetized }, dependent: :destroy
+  has_many :gems, dependent: :destroy
   has_many :versions, through: :gems, class_name: "Namespace::Gem::Version"
 
   enum :access, %i[public private].index_by(&:itself), suffix: true

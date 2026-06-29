@@ -15,7 +15,7 @@
     </ul>
   </div>
 
-  <% if @gems.empty? %>
+  <% if @versions.empty? %>
     <h3>gems</h3>
     <p>No gems yet.</p>
     <p>Generate <%= link_to "a new push key", new_user_push_key_url %> to get started.</p>
@@ -25,7 +25,9 @@
     </div>
 
     <section style="min-height: 300px;">
-      <% @versions.each do |gem, version| %>
+      <% @versions.each do |version| %>
+        <% gem = version.gem %>
+
         <article>
           <h3 style="margin-block-end: 0; display: inline-block;">
             <%= link_to gem.name, namespace_gem_path(gem.namespace, gem, index: nil) %>
@@ -40,5 +42,5 @@
     </section>
   <% end %>
 
-  <%= render "gem/sections/usage", name: @gems.first&.name || "<name>", source_url: %>
+  <%= render "gem/sections/usage", name: @versions.first&.gem&.name || "<name>", source_url: %>
 </section>

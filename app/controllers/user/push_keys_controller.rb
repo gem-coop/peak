@@ -10,7 +10,7 @@ class User::PushKeysController < ApplicationController
       user.create_push_key.sign_in_mailer.deliver_later
     end
 
-    render Peak::Ok("Email sent! Check your spam folder too, just in case.")
+    Peak::Ok("Email sent! Check your spam folder too, just in case.")
   end
 
   private

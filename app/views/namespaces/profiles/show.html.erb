@@ -32,7 +32,7 @@
           <h3 style="margin-block-end: 0; display: inline-block;">
             <%= link_to gem.name, namespace_gem_path(gem.namespace, gem, index: nil) %>
           </h3>
-          <%= tag.button :🔗, onclick: "Clippy.addGem('#{gem.name}')", style: "height: 2em;" %>
+          <%= tag.button :🔗, onclick: "Clippy.addGem(this.getAttribute('data-gem-name'))", data: { gem_name: gem.name }, style: "height: 2em;" %>
 
           <p><i><%= version.summary %></i></p>
 

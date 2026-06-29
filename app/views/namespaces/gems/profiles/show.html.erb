@@ -18,7 +18,7 @@
       <dl data-condensed style="margin-block: 0;">
         <div>
           <dt>latest</dt>
-          <dd><%= latest.ref %><%= tag.button :🔗, onclick: "Clippy.addGem('#{@gem.name}')", style: "height: 2em;" %></dd>
+          <dd><%= latest.ref %><%= tag.button :🔗, onclick: "Clippy.addGem(this.getAttribute('data-gem-name'))", data: { gem_name: @gem.name }, style: "height: 2em;" %></dd>
         </div>
 
         <div>

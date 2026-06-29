@@ -73,7 +73,7 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "post create rate_limit" do
+  test "post create short rate_limit" do
     limit = User::SignUpsController.rate_limiting(by: "someone@example.com")
     limit.increment by: 4
 
@@ -83,6 +83,14 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
     limit.increment by: 1
 
     post user_sign_ups_url, params: sign_up_params(namespace_name: "@one-for-the-road")
+    assert_response :too_many_requests
+  end
+
+  test "post create burst rate_limit" do
+    limit = User::SignUpsController.rate_limiting(by: "burst")
+    limit.increment by: 20
+
+    post user_sign_ups_url, params: sign_up_params(namespace_name: "@gemcoop")
     assert_response :too_many_requests
   end
 

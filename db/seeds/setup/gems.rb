@@ -4,10 +4,6 @@ def gems.oaken_lines = [
   "1.0.0 |checksum:e89249bc4f6cd3ab9b5e3abdc06c377fa772e6bcb3005cc09ff044bb8d3f1dc2,ruby:>= 3.2,published_at:#{oaken_published_at.as_json}\n"
 ]
 
-def gems.import(name, **)
-  create(name:, **).imports.import_all
-end
-
 def gems.parse(name, *lines)
   gem = create(name, name:)
   lines.flatten.map { parse_line gem, _1 }

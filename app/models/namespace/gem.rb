@@ -6,8 +6,6 @@ class Namespace::Gem < ApplicationRecord
   has_many :versions, dependent: :destroy
   has_many :platforms, -> { distinct }, through: :versions
 
-  has_object :imports, :server
-
   scope :alphabetized, -> { order(name: :asc) }
 
   def self.named(name) = find_by!(name:)

@@ -1,5 +1,6 @@
 class User::SignInsController < ApplicationController
   rate_limit to: 3, within: 1.minute, with: :rate_limit_response, only: :create
+  rate_limit to: 3, within: 1.minute, by: :email_address_rate_limiting_key, with: :rate_limit_response, only: :create
   set_referrer_policy "no-referrer", only: :show
 
   def new
@@ -23,6 +24,10 @@ class User::SignInsController < ApplicationController
   end
 
   private
+    def email_address_rate_limiting_key
+      User.normalize_value_for :email_address, params[:email_address].to_s
+    end
+
     def rate_limit_response
       render Peak::Error("Too many sign-in attempts. Try again later."), status: :too_many_requests
     end

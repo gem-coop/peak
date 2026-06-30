@@ -23,18 +23,22 @@ def gems.create(label = nil, unique_by: [:index, :name], **) = super
 
 def namespaces.create_approved(label = nil, owner: Peak.system_user, **) = create(label, **).tap do
   accesses.owner.create(namespace: _1, user: owner)
-  submissions.approved.create(namespace: _1, owner:, resolved_at: Time.current)
+  submissions.approved.create(name: _1.name, owner:, resolved_at: Time.current)
 end
 def namespaces.create(label = nil, unique_by: :name, **) = super
 
 indexes.proxy :public_access, :private_access
 def indexes.create(label = nil, unique_by: [:namespace, :slug], **) = super
 
+def cooldowns.create(label = nil, unique_by: [:index], **) = super
+
 accesses.proxy(*Namespace::Access.roles.keys)
 def accesses.create(label = nil, unique_by: [:namespace, :user], **) = super
 
 submissions.defaults owner: -> { users.owner }
 submissions.proxy(*Namespace::Submission.statuses.keys)
+
+def submissions.create(label = nil, unique_by: [:name], **) = super
 
 versions.with do
   # TODO: Figure out why we need `versions.` here for it to work.

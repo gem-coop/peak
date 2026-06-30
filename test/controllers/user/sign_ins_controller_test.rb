@@ -38,6 +38,17 @@ class User::SignInsControllerTest < ActionDispatch::IntegrationTest
     assert_response :too_many_requests
   end
 
+  test "create throttles by target email even from a fresh source IP" do
+    email_address = users.plain.email_address
+    3.times do |index|
+      post sign_in_index_url, params: { email_address: }, env: { "REMOTE_ADDR" => "203.0.113.#{index}" }
+      assert_response :success
+    end
+
+    post sign_in_index_url, params: { email_address: " #{email_address.upcase} " }, env: { "REMOTE_ADDR" => "203.0.113.250" }
+    assert_response :too_many_requests
+  end
+
   test "show creates session from magic link" do
     token = users.plain.magic_link.token
 

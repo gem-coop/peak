@@ -51,4 +51,13 @@ class User::PushKeysControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :too_many_requests
   end
+
+  test "create throttles by target email even from a fresh source IP" do
+    email_address = users.plain.email_address
+    post user_push_keys_url, params: { email_address: }, env: { "REMOTE_ADDR" => "203.0.113.1" }
+    assert_response :success
+
+    post user_push_keys_url, params: { email_address: " #{email_address.upcase} " }, env: { "REMOTE_ADDR" => "203.0.113.250" }
+    assert_response :too_many_requests
+  end
 end

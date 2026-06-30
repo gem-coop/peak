@@ -4,7 +4,12 @@ class User::EmailVerification < ActiveRecord::AssociatedObject
   has_mailer to: :user, subject: "Verify your email and sign in"
 
   def verify
-    user.update! email_address_verified_at: Time.current unless verified?
+    user.with_lock do
+      return if verified?
+
+      user.update! email_address_verified_at: Time.current
+      user.submissions.pending.find_each(&:slack_notify_later)
+    end
   end
   def verified? = user.verified?
 end

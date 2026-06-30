@@ -55,6 +55,16 @@ class User::EmailVerificationsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_email_verification_url
   end
 
+  test "get show notifies slack for pending submissions" do
+    submission = Namespace::Submission.create!(name: "@unverified", owner: users.unverified_plain)
+    token = users.unverified_plain.email_verification.token
+
+    assert_slack_request title: "Namespace @unverified requested",
+      avo_path: "namespace/submissions/#{submission.id}" do
+      perform_enqueued_jobs { get user_email_verification_url(token) }
+    end
+  end
+
   test "get show expired" do
     token = users.plain.email_verification.token
     travel 24.hours + 1.second

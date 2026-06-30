@@ -11,6 +11,30 @@ class Namespace::SubmissionTest < ActiveSupport::TestCase
     end
   end
 
+  test "does not notify slack until owner verifies email address" do
+    submission = Namespace::Submission.create!(name: "@unverified", owner: users.unverified_plain)
+
+    Slack.with webhook_url: "https://slack.test/webhook" do
+      webhook = stub_request(:post, Slack.webhook_url)
+
+      perform_enqueued_jobs
+      assert_not_requested webhook
+
+      users.unverified_plain.email_verification.verify
+      perform_enqueued_jobs
+      assert_requested webhook
+    end
+  end
+
+  test "notifies slack immediately for verified owners" do
+    submission = Namespace::Submission.create!(name: "@verified", owner: users.plain)
+
+    assert_slack_request title: "Namespace @verified requested",
+      avo_path: "namespace/submissions/#{submission.id}" do
+      perform_enqueued_jobs
+    end
+  end
+
   test "name format" do
     assert_name_clash "@basic"
 
@@ -53,6 +77,21 @@ class Namespace::SubmissionTest < ActiveSupport::TestCase
 
     assert_raises Namespace::Submission::NamespaceAlreadyExistsError do
       submissions.basic.process_approved
+    end
+  end
+
+  test "approval requires a verified owner" do
+    submission = Namespace::Submission.create!(name: "@unverified", owner: users.unverified_plain)
+
+    assert_raises Namespace::Submission::OwnerEmailUnverifiedError do
+      submission.resolve! :approved
+    end
+    assert submission.reload.pending?
+
+    refute_increments Namespace, Namespace::Access do
+      assert_raises Namespace::Submission::OwnerEmailUnverifiedError do
+        submission.process_approved
+      end
     end
   end
 

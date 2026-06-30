@@ -6,6 +6,8 @@ class Avo::Actions::Approve < Avo::BaseAction
     query.each do |record|
       record.resolve! :approved
       record.process_approved_later
+    rescue Namespace::Submission::OwnerEmailUnverifiedError
+      error "#{record.name}: owner has not verified their email yet."
     end
   end
 end

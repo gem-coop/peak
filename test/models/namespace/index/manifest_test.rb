@@ -39,4 +39,20 @@ class Namespace::Index::ManifestTest < ActiveSupport::TestCase
     assert_includes lines, "actionview 7.0.9,7.0.10,7.1.6,7.2.3 fc355f85935a75c158b042ed679f73cd\n"
     assert_includes lines, cooldown.versions.latest_for(:actionview).envelope
   end
+
+  test "concurrent appends keep every entry" do
+    manifest = namespaces.blank.stable_index.manifest
+    oaken = gems.oaken.versions.first
+    peak  = gems.peak.versions.first
+
+    # Two requests both read the manifest, then both append — the classic lost-update race.
+    first = Namespace::Index::Manifest.find(manifest.id)
+    stale = Namespace::Index::Manifest.find(manifest.id) # loaded before `first` writes
+    first.append [oaken]
+    stale.append [peak]
+
+    manifest.reload
+    assert_includes manifest.contents, oaken.envelope(ref_stamp: oaken.ref)
+    assert_includes manifest.contents, peak.envelope(ref_stamp: peak.ref)
+  end
 end

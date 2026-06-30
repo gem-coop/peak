@@ -26,6 +26,8 @@ module Peak extend self
   def Error(...) = Error.new(...)
 
   Admin = Data.define :username, :password do
+    def http_basic = { name: username, password: }
+
     def authenticate(username_challenge, password_challenge)
       # Use `&` to not short-circuit.
       compare(username, username_challenge) & compare(password, password_challenge)
@@ -36,6 +38,6 @@ module Peak extend self
     end
   end
 
-  admin = Admin.new(ENV.fetch("ADMIN_USERNAME", "gem-coop"), ENV["ADMIN_PASSWORD"])
+  admin = Admin.new(ENV.fetch("ADMIN_USERNAME", "gem-coop"), ENV.fetch("ADMIN_PASSWORD") { "password" if Rails.env.local? })
   define_method :admin, &admin.method(:itself)
 end

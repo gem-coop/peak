@@ -1,0 +1,36 @@
+<div>
+  <% page.title = "search namespaces & gems" %>
+
+  <%= form_with url: search_path, method: :get, html: { style: "margin-block: 0;" } do |form| %>
+    <%= form.label(:q, class: "font-sm") { tag.span page.title } %>
+
+    <div style="display: flex; gap: 1em;">
+      <%= form.text_field :q, value: @query, autofocus: @listings.empty?, placeholder: "gem names, summaries", style: "flex: 3;" %>
+      <%= form.button "Search", name: nil, style: "flex: 1;" %>
+    </div>
+  <% end %>
+
+  <h2 style="font-size: 1.117em;">results</h2>
+</div>
+
+<section id="search-listings" style="display: flex; flex-direction: column; gap: 1em;">
+  <% if @listings.empty? %>
+    <span>None.</span>
+
+    <p>You can search for namespace names & gem names. You can also find gems by the summary in their latest version.</p>
+  <% else %>
+    <% @listings.each do |listing| %>
+      <article>
+        <i><%= listing.record.model_name.element %></i>
+
+        <h3 style="margin-block: 0;">
+          <%= link_to listing.result_name, listing.record %>
+        </h3>
+
+        <% if listing.gem %>
+          <p style="margin-block: 0;"><%= highlight(listing.stripped, @query) %></p>
+        <% end %>
+      </article>
+    <% end %>
+  <% end %>
+</section>

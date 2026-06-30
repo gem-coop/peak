@@ -1,4 +1,7 @@
 class Namespace::Gem < ApplicationRecord
+  include Search::Indexed
+  def indexing_content = "#{namespace.name} #{name} #{versions.latest_first.pick(:summary)}"
+
   belongs_to :index
   belongs_to :namespace, default: -> { index.namespace }
 
@@ -17,10 +20,11 @@ class Namespace::Gem < ApplicationRecord
     find_or_create_by!(name:).versions.find_or_initialize_by(ref:)
   end
 
-  performs def process_version(version)
-    index.process_version(version)
+  def version_uploaded(version)
+    reindex_later
+    process_version_later(version)
   end
-  def version_uploaded(version) = process_version_later(version)
+  performs def process_version(version) = index.process_version(version)
 
   def namespaced_name
     "#{namespace.name}/#{name}"

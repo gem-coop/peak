@@ -1,4 +1,7 @@
 class Namespace < ApplicationRecord
+  include Search::Indexed
+  def indexing_content = name
+
   has_many :submissions, foreign_key: :name, primary_key: :name
 
   has_many :accesses, dependent: :destroy

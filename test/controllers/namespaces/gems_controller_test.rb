@@ -1,6 +1,8 @@
 require "test_helper"
 
 class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
+  setup { Namespaces::GemsController.cache_store.clear }
+
   def namespace = namespaces.gemcoop
   def token = user_push_keys.gemcoop_plain.token
 
@@ -199,5 +201,17 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     get namespace_gems_url(namespace:, id: version), headers: { "Range" => "bytes=0-9" }
     assert_response :partial_content
     assert_equal full.byteslice(0..9), response.body
+  end
+
+  test "create is rate limited per push key" do
+    authorization = "Bearer #{token}"
+    limit = Namespaces::GemsController.rate_limiting(by: Digest::SHA256.hexdigest(authorization))
+    refute_includes limit.key, token
+    limit.increment by: 10
+
+    refute_increments gems.peak.versions do
+      post namespace_gem_push_url(namespace:), env: { "RAW_POST_DATA" => file_fixture("peak/peak-0.2.0.gem").binread, authorization: }
+    end
+    assert_response :too_many_requests
   end
 end

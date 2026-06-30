@@ -106,3 +106,6 @@ jobs:
         run: bin/rails db:test:prepare test
         # env:
           # BACKTRACE: 1
+
+      - name: Run seed
+        run: bin/rails db:seed

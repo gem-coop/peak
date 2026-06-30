@@ -6,7 +6,7 @@ class Namespace::Index::Cooldown::Projection < ApplicationRecord
   scope :due, -> { where(append_at: ..Time.current) }
 
   def self.project(version)
-    build(version:).tap(&:realign)
+    find_or_initialize_by(version:).tap(&:realign)
   end
 
   def self.realign

@@ -183,10 +183,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "re-pushing an existing version is skipped as a conflict" do
-    package = file_fixture "peak/peak-0.2.0.gem"
-
-    post namespace_gem_push_url(namespace:), env: { "RAW_POST_DATA" => package.binread, authorization: "Bearer #{token}" }
-    assert_response :success
+    package = file_fixture "peak/peak-0.1.0.gem"
 
     refute_increments gems.peak.versions do
       post namespace_gem_push_url(namespace:), env: { "RAW_POST_DATA" => package.binread, authorization: "Bearer #{token}" }
@@ -201,6 +198,6 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
 
     get namespace_gems_url(namespace:, id: version), headers: { "Range" => "bytes=0-9" }
     assert_response :partial_content
-    assert_equal full.byteslice(0, 10), response.body
+    assert_equal full.byteslice(0..9), response.body
   end
 end

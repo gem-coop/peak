@@ -3,6 +3,7 @@ class Namespaces::Gems::ProfilesController < ApplicationController
 
   def show
     @gem = @index.gems.named(params[:id])
+    set_breadcrumb_trail @index.namespace, @gem
   end
 
   private

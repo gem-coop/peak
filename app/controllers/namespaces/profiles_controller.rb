@@ -2,6 +2,7 @@ class Namespaces::ProfilesController < ApplicationController
   before_action :set_index
 
   def show
+    set_breadcrumb_trail @index.namespace
     @versions = @index.versions.distinct_on_gem_name.latest_first.as_byline.load_async
   end
 

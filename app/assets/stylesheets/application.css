@@ -43,7 +43,6 @@ main {
 
 nav {
   display: flex;
-  gap: 1em;
   align-items: center;
   justify-content: space-between;
   margin-block-end: 2em;
@@ -86,6 +85,20 @@ header {
 
   a, a:visited {
     color: black;
+  }
+}
+
+footer nav {
+  flex-direction: column;
+
+  ul li:first-child {
+    border: none;
+    padding-inline-end: 0;
+
+    a {
+      font-weight: bold;
+      text-decoration: none;
+    }
   }
 }
 

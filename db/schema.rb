@@ -42,15 +42,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_27_195223) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "billing_stripe_event_receipts", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.jsonb "data", null: false
-    t.string "status", default: "pending", null: false
-    t.string "type", null: false
-    t.datetime "updated_at", null: false
-    t.index ["status"], name: "index_billing_stripe_event_receipts_on_status"
-  end
-
   create_table "namespace_accesses", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "namespace_id", null: false

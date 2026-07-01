@@ -1,6 +1,5 @@
 class Namespace::Gem < ApplicationRecord
-  include Search::Indexed
-  def indexing_content = "#{namespace.name} #{name} #{versions.latest_first.pick(:summary)}"
+  include SearchIndex::Indexed
 
   belongs_to :index
   belongs_to :namespace, default: -> { index.namespace }

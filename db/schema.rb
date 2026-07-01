@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_30_202412) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_01_164911) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -60,6 +60,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_30_202412) do
     t.integer "gem_id", null: false
     t.datetime "updated_at", null: false
     t.index ["gem_id"], name: "index_namespace_gem_infos_on_gem_id"
+  end
+
+  create_table "namespace_gem_search_indexes", force: :cascade do |t|
+    t.text "content", default: "", null: false
+    t.datetime "created_at", null: false
+    t.bigint "gem_id", null: false
+    t.datetime "updated_at", null: false
+    t.index "to_tsvector('simple'::regconfig, content)", name: "search_indexes_tsvector_index", using: :gin
+    t.index ["gem_id"], name: "index_namespace_gem_search_indexes_on_gem_id", unique: true
   end
 
   create_table "namespace_gem_version_linkings", force: :cascade do |t|
@@ -231,18 +240,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_30_202412) do
     t.bigint "user_id", null: false
     t.index ["terms_id"], name: "index_peak_terms_acceptances_on_terms_id"
     t.index ["user_id"], name: "index_peak_terms_acceptances_on_user_id"
-  end
-
-  create_table "search_indexes", force: :cascade do |t|
-    t.text "content", default: "", null: false
-    t.datetime "created_at", null: false
-    t.bigint "namespace_id", null: false
-    t.bigint "record_id", null: false
-    t.string "record_type", null: false
-    t.datetime "updated_at", null: false
-    t.index "to_tsvector('simple'::regconfig, content)", name: "search_indexes_tsvector_index", using: :gin
-    t.index ["namespace_id"], name: "index_search_indexes_on_namespace_id"
-    t.index ["record_type", "record_id"], name: "index_search_indexes_on_record", unique: true
   end
 
   create_table "user_push_keys", force: :cascade do |t|

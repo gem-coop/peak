@@ -1,4 +1,4 @@
-class Avo::Resources::Search::Index < Avo::BaseResource
+class Avo::Resources::Namespace::Gem::SearchIndex < Avo::BaseResource
   # self.icon = "tabler/outline/users"
   # self.avatar = {
   #   source: :avatar
@@ -12,8 +12,7 @@ class Avo::Resources::Search::Index < Avo::BaseResource
   def fields
     field :id, as: :id
     # field :avatar, as: :avatar
-    field :indexed, as: :text
-    field :name, as: :text
-    field :content, as: :textarea
+    field :gem, as: :belongs_to
+    field :content, as: :text
   end
 end

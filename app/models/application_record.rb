@@ -5,6 +5,7 @@ class ApplicationRecord < ActiveRecord::Base
 
   def self.has_one_built(name, ...)
     has_one(name, ...).tap do
+      define_method("#{name}_scope") { association(name).scope }
       before_create :"build_#{name}"
     end
   end

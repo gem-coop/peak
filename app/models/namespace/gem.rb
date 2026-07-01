@@ -21,4 +21,8 @@ class Namespace::Gem < ApplicationRecord
     index.process_version(version)
   end
   def version_uploaded(version) = process_version_later(version)
+
+  def namespaced_name
+    "#{namespace.name}/#{name}"
+  end
 end

@@ -50,6 +50,8 @@ Rails.application.routes.draw do
     get "/:namespace", to: "namespaces/profiles#show", as: :namespace
   end
 
+  resolve("Namespace::Gem") { route_for(:namespace_gem, _1.namespace, _1, index: _1.index.routable) }
+
   get "terms/acceptances/new",  to: "peak/terms/acceptances#new",    as: :new_terms_acceptances
   post "terms/:id/acceptances", to: "peak/terms/acceptances#create", as: :terms_acceptances
 

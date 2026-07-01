@@ -8,4 +8,9 @@ class ApplicationController < Public::BaseController
   def self.set_referrer_policy(policy, **)
     before_action(**) { response.set_header "referrer-policy", policy }
   end
+
+  private
+    def set_breadcrumb_trail(*trail)
+      @breadcrumb_trail = trail
+    end
 end

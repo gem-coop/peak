@@ -168,7 +168,7 @@ GEM
     fugit (1.12.3)
       et-orbi (~> 1.4)
       raabro (~> 1.4)
-    globalid (1.3.0)
+    globalid (1.4.0)
       activesupport (>= 6.1)
     google-protobuf (4.34.1)
       bigdecimal
@@ -774,7 +774,7 @@ CHECKSUMS
   erubi (1.13.1) sha256=a082103b0885dbc5ecf1172fede897f9ebdb745a4b97a5e8dc63953db1ee4ad9
   et-orbi (1.4.0) sha256=6c7e3c90779821f9e3b324c5e96fda9767f72995d6ae435b96678a4f3e2de8bc
   fugit (1.12.3) sha256=826d77739086482a6ac2805bc32693845395da688f637890cb4ca457dede2ec2
-  globalid (1.3.0) sha256=05c639ad6eb4594522a0b07983022f04aa7254626ab69445a0e493aa3786ff11
+  globalid (1.4.0) sha256=037f12fbf1d9d7a014d501c2d5c77356fd4ddd96d7a7991d6700bba96706f427
   google-protobuf (4.34.1) sha256=347181542b8d659c60f028fa3791c9cccce651a91ad27782dbc5c5e374796cdc
   google-protobuf (4.34.1-aarch64-linux-gnu) sha256=f9c07607dc139c895f2792a7740fcd01cd94d4d7b0e0a939045b50d7999f0b1d
   google-protobuf (4.34.1-aarch64-linux-musl) sha256=db58e5a4a492b43c6614486aea31b7fb86955b175d1d48f28ebf388f058d78a9

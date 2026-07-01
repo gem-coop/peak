@@ -12,6 +12,7 @@ class User < ApplicationRecord
 
   has_object :magic_link, :email_verification
   before_update { self.email_address_verified_at = nil if email_address_changed? }
+  normalizes :email_address, with: -> { _1.strip.downcase }
   validates_uniqueness_of :email_address
 
   def verified? = email_address_verified_at?

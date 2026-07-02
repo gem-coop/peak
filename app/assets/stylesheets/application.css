@@ -17,6 +17,8 @@
   --body-bg: light-dark( #f8f8f8,  #191e24);
   --main-bg: light-dark( white,  #1d232a);
 
+  --mark-bg: #f5cc00;
+
   --font-sm: .875rem;
 
   --primary: light-dark(black, white);
@@ -76,9 +78,8 @@ nav {
   }
 }
 
-
-header {
-  background: #f5cc00;
+header.breaking {
+  background: var(--mark-bg);
   color: black;
   padding: 4px;
   text-align: center;
@@ -144,6 +145,10 @@ dd {
   a:not(:hover) {
     text-decoration: none;
   }
+}
+
+mark {
+  background: var(--mark-bg);
 }
 
 pre {
@@ -217,4 +222,8 @@ peak-status, peak-error {
 .list-none {
   list-style: none;
   padding-inline-start: 0;
+}
+
+.font-sm {
+  font-size: var(--font-sm);
 }

@@ -1,13 +1,9 @@
 class Namespaces::ProfilesController < ApplicationController
-  before_action :set_index
-
   def show
-    set_breadcrumb_trail @index.namespace
-    @versions = @index.versions.distinct_on_gem_name.latest_first.as_byline.load_async
-  end
+    @namespace = Namespace.includes(:default_index).named(params[:namespace])
+    set_breadcrumb_trail @namespace
 
-  private
-    def set_index
-      @index = Namespace.named(params[:namespace]).default_index
-    end
+    @index = @namespace.default_index
+    @versions = @index.versions.distinct_on_gem_name.latest_first.as_byline.limit(20).load_async
+  end
 end

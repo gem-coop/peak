@@ -63,6 +63,10 @@ class ActionDispatch::IntegrationTest
     get sign_in_url(user.magic_link.token)
   end
 
+  def dom(selector)
+    response.parsed_body.css(selector)
+  end
+
   def peak_admin_authorization
     { "HTTP_AUTHORIZATION" => ADMIN_AUTHORIZATION }
   end

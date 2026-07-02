@@ -5,9 +5,11 @@
     <%= form.label(:q, class: "font-sm") { tag.span page.title } %>
 
     <div style="display: flex; gap: 1em;">
-      <%= form.text_field :q, value: @query, placeholder: "gem names, summaries", style: "flex: 3;" %>
+      <%= form.text_field :q, value: @query, placeholder: "gem names, summaries", style: "flex: 3; margin-block-end: .5em;" %>
       <%= form.button "Search", name: nil, style: "flex: 1;" %>
     </div>
+
+    <%= link_to "reset →" if @query %>
   <% end %>
 
   <h2 style="font-size: 1.117em;">results</h2>

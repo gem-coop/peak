@@ -10,7 +10,7 @@ class Namespace < ApplicationRecord
   has_many :indexes, dependent: :destroy
   has_one_built :default_index, -> { public_access.where(slug: :default) }, class_name: "Index"
 
-  scope :named_like, -> { where("name ILIKE ?", "%#{_1}%") if _1.present? }
+  scope :named_like, -> { _1.blank? ? none : where("name ILIKE ?", "%#{_1}%") }
 
   def self.named(name) = find_by!(name:)
   def to_param = name

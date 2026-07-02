@@ -17,7 +17,8 @@ class AuthenticationTest < ActionDispatch::IntegrationTest
         get :dashboard, action: :secret # sign_ins#update redirects here
       end
 
-      resources :sign_in, controller: "user/sign_ins", only: :new do
+      resources :sign_in, controller: "user/sign_ins", only: %i[new show], param: :token do
+        get :confirm, on: :collection
         patch :update, on: :collection
       end
     end

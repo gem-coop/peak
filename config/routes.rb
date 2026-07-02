@@ -18,7 +18,8 @@ Rails.application.routes.draw do
   get "/sign_up" => "user/sign_ups#new", as: :user_sign_ups
   post "/sign_up" => "user/sign_ups#create"
 
-  resources :sign_in, controller: "user/sign_ins", only: %i[new create show], param: :token do
+  resources :sign_in, controller: "user/sign_ins", only: %i[new show create], param: :token do
+    get :confirm, on: :collection
     patch :update, on: :collection
   end
 

@@ -11,13 +11,15 @@ accesses.with namespace: do
   _1.plain.create user: users.unverified.create(:unverified_plain, name: "Unverified", email_address: "unverified@example.com")
 end
 
-gems.with index: namespace.default_index do
-  _1.parse :oaken, gems.oaken_lines
-  gems.oaken.versions.latest.update! summary: "Oaken aims to blend your Fixtures/Factories and levels up your database seeds."
-  gems.oaken.reindex
+gems.with namespace: do
+  index = namespace.default_index
+
+  gem = _1.parse :oaken, index, gems.oaken_lines
+  gem.versions.latest.update! summary: "Oaken aims to blend your Fixtures/Factories and levels up your database seeds."
+  gem.reload.reindex
 
   peak = _1.create :peak, name: :peak
-  versions.upload peak, ref: "0.1.0", created_by: users.owner
+  versions.upload peak, ref: "0.1.0", index:, created_by: users.owner
 end
 
 cooldowns.create :gemcoop, index: namespace.default_index

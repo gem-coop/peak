@@ -8,6 +8,7 @@ class Namespace < ApplicationRecord
   has_many :owners, through: :ownerships, source: :user
 
   has_many :indexes, dependent: :destroy
+  has_many :gems, dependent: :destroy
   has_one_built :default_index, -> { public_access.where(slug: :default) }, class_name: "Index"
 
   scope :named_like, -> { _1.blank? ? none : where("name ILIKE ?", "%#{_1}%") }

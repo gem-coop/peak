@@ -1,6 +1,6 @@
 class Namespace::Gem::Version < ApplicationRecord
   belongs_to :gem
-  belongs_to :index, default: -> { gem.index }
+  belongs_to :index
   belongs_to :created_by, class_name: "User"
 
   has_many :linkings, dependent: :destroy
@@ -24,7 +24,7 @@ class Namespace::Gem::Version < ApplicationRecord
   scope :latest_last, -> { order(published_at: :asc, ref: :asc) }
   def self.latest = latest_last.last
 
-  def versions_upto_self = gem.versions.upto(self)
+  def versions_upto_self = index.versions.where(slice(:gem_id)).upto(self)
   scope :upto, -> { published_before(_1.published_at) }
 
   scope :for,    -> { joins(:gem).where(gem: {name: _1}) }
@@ -32,7 +32,7 @@ class Namespace::Gem::Version < ApplicationRecord
   scope :distinct_on_gem_name, -> { includes(:gem).distinct_on("namespace_gems.name").merge(Namespace::Gem.alphabetized) }
   def self.latest_for(name) = self.for(name).latest
 
-  scope :as_byline, -> { select(:id, :ref, :summary, :published_at, :gem_id, :created_by_id).includes(:gem, :created_by) }
+  scope :as_byline, -> { select(:id, :ref, :summary, :published_at, :index_id, :gem_id, :created_by_id).includes(:gem, :created_by) }
 
   belongs_to :platform, class_name: "Peak::Platform"
 
@@ -56,6 +56,7 @@ class Namespace::Gem::Version < ApplicationRecord
   def process(...)
     consume(...)
     gem.version_uploaded self
+    index.version_uploaded self
   end
 
   def consume(upload, **)
@@ -71,7 +72,7 @@ class Namespace::Gem::Version < ApplicationRecord
     # function = Arel.sql("concat_ws(' ', string_agg(ref::text, ','), md5(string_agg(line::text, '')))")
     # "#{gem.name} #{versions_upto_self.pick(function)}\n"
 
-    versions = versions_upto_self
+    versions_upto_self => versions
     "#{gem.name} #{ref_stamp || versions.refs.join(",")} #{versions.checksum}\n"
   end
 

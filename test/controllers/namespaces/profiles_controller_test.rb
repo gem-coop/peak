@@ -17,7 +17,7 @@ class Namespaces::ProfilesControllerTest < ActionDispatch::IntegrationTest
     get namespace_url(namespaces.blank)
     assert_response :success
 
-    namespaces.blank.default_index.gems.create name: "unversioned"
+    namespaces.blank.gems.create name: "unversioned"
 
     get namespace_url(namespaces.blank)
     assert_response :success

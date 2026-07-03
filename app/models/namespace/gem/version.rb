@@ -1,5 +1,6 @@
 class Namespace::Gem::Version < ApplicationRecord
   belongs_to :gem
+  belongs_to :index, default: -> { gem.index }
   belongs_to :created_by, class_name: "User"
 
   has_many :linkings, dependent: :destroy

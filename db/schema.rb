@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_01_164911) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_03_124527) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,6 +40,50 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_01_164911) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "billing_stripe_event_receipts", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.jsonb "data", null: false
+    t.string "status", default: "pending", null: false
+    t.string "type", null: false
+    t.datetime "updated_at", null: false
+    t.index ["status"], name: "index_billing_stripe_event_receipts_on_status"
+  end
+
+  create_table "content_collections", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "slug", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_content_collections_on_slug", unique: true
+  end
+
+  create_table "content_connections", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "editor_id", null: false
+    t.bigint "record_id", null: false
+    t.string "record_type", null: false
+    t.datetime "updated_at", null: false
+    t.index ["editor_id"], name: "index_content_connections_on_editor_id"
+    t.index ["record_type", "record_id"], name: "index_content_connections_on_record"
+  end
+
+  create_table "content_editors", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "content_posts", force: :cascade do |t|
+    t.string "brief"
+    t.bigint "collection_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "published_at"
+    t.string "slug", null: false
+    t.string "subtitle"
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_id", "slug"], name: "index_content_posts_on_collection_id_and_slug", unique: true
+    t.index ["collection_id"], name: "index_content_posts_on_collection_id"
   end
 
   create_table "namespace_accesses", force: :cascade do |t|
@@ -146,7 +190,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_01_164911) do
     t.integer "index_id", null: false
     t.string "name", null: false
     t.integer "namespace_id", null: false
-    t.datetime "trim_versions_published_at"
     t.datetime "updated_at", null: false
     t.index ["index_id", "name"], name: "index_namepace_gems_uniqueness", unique: true
     t.index ["index_id"], name: "index_namespace_gems_on_index_id"
@@ -263,10 +306,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_01_164911) do
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.bigint "editor_id"
     t.string "email_address", null: false
     t.datetime "email_address_verified_at"
     t.string "name", null: false
     t.datetime "updated_at", null: false
+    t.index ["editor_id"], name: "index_users_on_editor_id"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 

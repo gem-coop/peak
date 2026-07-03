@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_03_124527) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_03_124704) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -170,6 +170,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_03_124527) do
     t.json "executables", default: [], null: false
     t.integer "gem_id", null: false
     t.boolean "has_extensions"
+    t.bigint "index_id", null: false
     t.json "licenses", default: [], null: false
     t.string "line", null: false
     t.integer "platform_id", null: false
@@ -182,6 +183,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_03_124527) do
     t.index ["created_by_id"], name: "index_namespace_gem_versions_on_created_by_id"
     t.index ["gem_id", "ref"], name: "index_namepace_gem_versions_uniqueness", unique: true
     t.index ["gem_id"], name: "index_namespace_gem_versions_on_gem_id"
+    t.index ["index_id"], name: "index_namespace_gem_versions_on_index_id"
     t.index ["platform_id"], name: "index_namespace_gem_versions_on_platform_id"
   end
 

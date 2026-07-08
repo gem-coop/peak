@@ -1,0 +1,12 @@
+<% return if trail.empty? %>
+
+<div style="margin-block-end: 2.5em;">
+  <i>
+    <span>←</span>
+
+    <% trail.each_with_index do |element, index| %>
+      <span><%= element.model_name.element.pluralize.downcase %></span> /
+      <span><%= link_to element.name, element %></span> <%= "/" unless index == trail.size.pred %>
+    <% end %>
+  </i>
+</div>

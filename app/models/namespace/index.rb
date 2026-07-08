@@ -16,7 +16,7 @@ class Namespace::Index < ApplicationRecord
 
   validates_presence_of :slug
   normalizes :slug, with: -> { _1.to_s.parameterize }
-  before_destroy { throw :abort if slug.inquiry.default? } # Can't destroy default index.
+  before_destroy { throw :abort if default? } # Can't destroy default index.
 
   def self.locate_or_default(slug)
     find_by!(slug: slug.presence || :default)
@@ -26,4 +26,9 @@ class Namespace::Index < ApplicationRecord
     append version
     cooldowns.each { _1.project version }
   end
+
+  def routable
+    self unless default?
+  end
+  def default? = slug == "default"
 end

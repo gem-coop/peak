@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_27_195223) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_03_124704) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -51,6 +51,41 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_27_195223) do
     t.index ["status"], name: "index_billing_stripe_event_receipts_on_status"
   end
 
+  create_table "content_collections", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "slug", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_content_collections_on_slug", unique: true
+  end
+
+  create_table "content_connections", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "editor_id", null: false
+    t.bigint "record_id", null: false
+    t.string "record_type", null: false
+    t.datetime "updated_at", null: false
+    t.index ["editor_id"], name: "index_content_connections_on_editor_id"
+    t.index ["record_type", "record_id"], name: "index_content_connections_on_record"
+  end
+
+  create_table "content_editors", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "content_posts", force: :cascade do |t|
+    t.string "brief"
+    t.bigint "collection_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "published_at"
+    t.string "slug", null: false
+    t.string "subtitle"
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_id", "slug"], name: "index_content_posts_on_collection_id_and_slug", unique: true
+    t.index ["collection_id"], name: "index_content_posts_on_collection_id"
+  end
+
   create_table "namespace_accesses", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "namespace_id", null: false
@@ -69,6 +104,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_27_195223) do
     t.integer "gem_id", null: false
     t.datetime "updated_at", null: false
     t.index ["gem_id"], name: "index_namespace_gem_infos_on_gem_id"
+  end
+
+  create_table "namespace_gem_search_indexes", force: :cascade do |t|
+    t.text "content", default: "", null: false
+    t.datetime "created_at", null: false
+    t.bigint "gem_id", null: false
+    t.datetime "updated_at", null: false
+    t.index "to_tsvector('simple'::regconfig, content)", name: "search_indexes_tsvector_index", using: :gin
+    t.index ["gem_id"], name: "index_namespace_gem_search_indexes_on_gem_id", unique: true
   end
 
   create_table "namespace_gem_version_linkings", force: :cascade do |t|
@@ -126,6 +170,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_27_195223) do
     t.json "executables", default: [], null: false
     t.integer "gem_id", null: false
     t.boolean "has_extensions"
+    t.bigint "index_id", null: false
     t.json "licenses", default: [], null: false
     t.string "line", null: false
     t.integer "platform_id", null: false
@@ -138,6 +183,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_27_195223) do
     t.index ["created_by_id"], name: "index_namespace_gem_versions_on_created_by_id"
     t.index ["gem_id", "ref"], name: "index_namepace_gem_versions_uniqueness", unique: true
     t.index ["gem_id"], name: "index_namespace_gem_versions_on_gem_id"
+    t.index ["index_id"], name: "index_namespace_gem_versions_on_index_id"
     t.index ["platform_id"], name: "index_namespace_gem_versions_on_platform_id"
   end
 
@@ -146,7 +192,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_27_195223) do
     t.integer "index_id", null: false
     t.string "name", null: false
     t.integer "namespace_id", null: false
-    t.datetime "trim_versions_published_at"
     t.datetime "updated_at", null: false
     t.index ["index_id", "name"], name: "index_namepace_gems_uniqueness", unique: true
     t.index ["index_id"], name: "index_namespace_gems_on_index_id"
@@ -263,10 +308,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_27_195223) do
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.bigint "editor_id"
     t.string "email_address", null: false
     t.datetime "email_address_verified_at"
     t.string "name", null: false
     t.datetime "updated_at", null: false
+    t.index ["editor_id"], name: "index_users_on_editor_id"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 

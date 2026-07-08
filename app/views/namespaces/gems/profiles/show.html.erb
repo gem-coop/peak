@@ -1,15 +1,10 @@
-<% page.title = [@gem.namespace.name, @gem.name].join("/") %>
-
-<% source_url = polymorphic_url @index.namespace %>
-<%= render "clippy", source_url: %>
-
 <section>
-  <h1 style="font-size: 1.17em; font-weight: normal;">
-    <%= link_to @gem.namespace.name, @gem.namespace %>/<%= tag.span @gem.name, style: "padding-inline-start: .5em;" %>
-  </h1>
+  <%= render "breadcrumbs/trail", trail: @breadcrumb_trail %>
+
+  <%= tag.h1 page.title = @gem.namespaced_name %>
 
   <% latest = @gem.versions.pure.latest %>
-  <p style="margin-block-start: 0;"><i><%= latest.summary %></i></p>
+  <p style="margin-block-end: 2em;"><i><%= latest.summary %></i></p>
 
   <section style="display: grid; grid-template-columns: 50% 50%; margin-block-end: 1em;">
     <section>
@@ -18,7 +13,7 @@
       <dl data-condensed style="margin-block: 0;">
         <div>
           <dt>latest</dt>
-          <dd><%= latest.ref %><%= tag.button :🔗, onclick: "Clippy.addGem(this.getAttribute('data-gem-name'))", data: { gem_name: @gem.name }, style: "height: 2em;" %></dd>
+          <dd><%= latest.ref %></dd>
         </div>
 
         <div>
@@ -79,5 +74,6 @@
     </div>
   </section>
 
-  <%= render "gem/sections/usage", name: @gem.name, source_url: %>
+  <%= render "clippy", source_url: polymorphic_url(@index.namespace) %>
+  <%= render "gem/sections/usage", name: @gem.name, source_url: polymorphic_url(@index.namespace) %>
 </section>

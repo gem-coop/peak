@@ -31,7 +31,7 @@ class Namespaces::GemsController < Public::BaseController
 
     # Adapted from ActiveStorage::Blobs::ProxyController:
     # https://github.com/rails/rails/blob/9ecc4a5ca6fb9a93a1f243e8f23d8ba592f41600/activestorage/app/controllers/active_storage/blobs/proxy_controller.rb#L28
-    when ranges = request.get_header("Range").presence
+    when ranges = request.headers["Range"].presence
       send_blob_byte_range_data blob, ranges
     else
       expires_in 1.year, public: @index.public_access?

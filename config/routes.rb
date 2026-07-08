@@ -31,7 +31,7 @@ Rails.application.routes.draw do
     get "/gems/:gem" => "mirror#gems", as: :gems, constraints: {gem: Peak::Gem.route_pattern}
   end
 
-  constraints -> { _1.params[:namespace].then { it.starts_with?("@") && it != "@public" } } do
+  constraints -> { _1.params[:namespace].then { it.starts_with?("@") } } do
     namespace :namespaces, path: "/:namespace(/:index)/cooldown(/:period_id)", as: :namespace_cooldown do
       get :versions,   to: "index/cooldowns#index", as: :versions
       get "/info/:id", to: "index/cooldowns#show", as: :info
@@ -50,6 +50,8 @@ Rails.application.routes.draw do
     get "/:namespace", to: "namespaces/profiles#show", as: :namespace
   end
 
+  resolve("Namespace::Gem") { route_for(:namespace_gem, _1.namespace, _1, index: _1.index.routable) }
+
   get "terms/acceptances/new",  to: "peak/terms/acceptances#new",    as: :new_terms_acceptances
   post "terms/:id/acceptances", to: "peak/terms/acceptances#create", as: :terms_acceptances
 
@@ -62,6 +64,8 @@ Rails.application.routes.draw do
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+
+  get "search", to: "search#index"
 
   # Defines the root path route ("/")
   root to: "user/sign_ups#new"

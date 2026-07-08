@@ -1,40 +1,41 @@
-<% page.title = @index.namespace.name %>
-
 <% source_url = polymorphic_url @index.namespace %>
 <%= render "clippy", source_url: %>
 
 <section>
-  <div>
-    <h1><%= @index.namespace.name %></h1>
+  <%= render "breadcrumbs/trail", trail: @breadcrumb_trail %>
 
-    <small><i>Owned by</i></small>
-    <ul class="list-none" style="margin-block-start: 0;">
-      <% @index.namespace.accesses.owner.extract_associated(:user).each do |user| %>
-        <%= tag.li user.name %>
-      <% end %>
-    </ul>
-  </div>
+  <%= tag.h1 page.title = @index.namespace.name %>
+
+  <h3 style="margin-block: 0;">operators</h3>
+
+  <ul class="list-none" style="margin-block-start: 0;">
+    <% @index.namespace.owners.each do |user| %>
+      <%= tag.li user.name %>
+    <% end %>
+  </ul>
+
+  <h2 style="margin-block-end: 0;">gems</h2>
 
   <% if @versions.empty? %>
-    <h3>gems</h3>
     <p>No gems yet.</p>
-    <p>Generate <%= link_to "a new push key", new_user_push_key_url %> to get started.</p>
+    <p>Request <%= link_to "a new push key", new_user_push_key_url %> to push gems.</p>
   <% else %>
-    <div>
-      <h3 style="display: inline;">gems</h3>
-    </div>
-
     <section style="min-height: 300px;">
       <% @versions.each do |version| %>
-        <% gem = version.gem %>
-
         <article>
-          <h3 style="margin-block-end: 0; display: inline-block;">
-            <%= link_to gem.name, namespace_gem_path(gem.namespace, gem, index: nil) %>
-          </h3>
-          <%= tag.button :🔗, onclick: "Clippy.addGem(this.getAttribute('data-gem-name'))", data: { gem_name: gem.name }, style: "height: 2em;" %>
+          <% gem = version.gem %>
 
-          <p><i><%= version.summary %></i></p>
+          <h3 style="margin-block-end: 0; display: inline-block;">
+            <%= link_to gem.name, gem %>
+          </h3>
+
+          <%= tag.button onclick: "Clippy.addGem(this.getAttribute('data-gem-name'))", data: { gem_name: gem.name }, style: "padding: 4px;" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" height="16" width="16" viewBox="0 0 256 256" fill="currentColor">
+              <path d="M172,164a12,12,0,0,1-12,12H96a12,12,0,0,1,0-24h64A12,12,0,0,1,172,164Zm-12-52H96a12,12,0,0,0,0,24h64a12,12,0,0,0,0-24Zm60-64V216a20,20,0,0,1-20,20H56a20,20,0,0,1-20-20V48A20,20,0,0,1,56,28H90.53a51.88,51.88,0,0,1,74.94,0H200A20,20,0,0,1,220,48ZM100.29,60h55.42a28,28,0,0,0-55.42,0ZM196,52H178.59A52.13,52.13,0,0,1,180,64v8a12,12,0,0,1-12,12H88A12,12,0,0,1,76,72V64a52.13,52.13,0,0,1,1.41-12H60V212H196Z"></path>
+            </svg>
+          <% end %>
+
+          <p style="margin-block-end: 0;"><i><%= version.summary %></i></p>
 
           <%= render "gem/versions/list", versions: [version] %>
         </article>

@@ -13,6 +13,8 @@ end
 
 gems.with index: namespace.default_index do
   _1.parse :oaken, gems.oaken_lines
+  gems.oaken.versions.latest.update! summary: "Oaken aims to blend your Fixtures/Factories and levels up your database seeds."
+  gems.oaken.reindex
 
   peak = _1.create :peak, name: :peak
   versions.upload peak, ref: "0.1.0", created_by: users.owner

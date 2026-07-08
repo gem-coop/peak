@@ -36,6 +36,8 @@ module Peak extend self
     end
   end
 
-  admin = Admin.new(ENV.fetch("ADMIN_USERNAME", "gem-coop"), ENV["ADMIN_PASSWORD"])
+  password = ENV["ADMIN_PASSWORD"]
+  password ||= "password" if Rails.env.local?
+  admin = Admin.new(ENV.fetch("ADMIN_USERNAME", "gem-coop"), password)
   define_method :admin, &admin.method(:itself)
 end

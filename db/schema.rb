@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_03_124704) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_03_132740) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -181,7 +181,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_03_124704) do
     t.string "summary", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_namespace_gem_versions_on_created_by_id"
-    t.index ["gem_id", "ref"], name: "index_namepace_gem_versions_uniqueness", unique: true
+    t.index ["gem_id", "index_id", "ref"], name: "index_namepace_gem_versions_uniqueness", unique: true
     t.index ["gem_id"], name: "index_namespace_gem_versions_on_gem_id"
     t.index ["index_id"], name: "index_namespace_gem_versions_on_index_id"
     t.index ["platform_id"], name: "index_namespace_gem_versions_on_platform_id"
@@ -189,12 +189,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_03_124704) do
 
   create_table "namespace_gems", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.integer "index_id", null: false
+    t.integer "index_id"
     t.string "name", null: false
     t.integer "namespace_id", null: false
     t.datetime "updated_at", null: false
-    t.index ["index_id", "name"], name: "index_namepace_gems_uniqueness", unique: true
-    t.index ["index_id"], name: "index_namespace_gems_on_index_id"
+    t.index ["namespace_id", "name"], name: "index_namepace_gems_uniqueness", unique: true
     t.index ["namespace_id"], name: "index_namespace_gems_on_namespace_id"
   end
 

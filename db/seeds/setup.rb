@@ -19,7 +19,7 @@ register Namespace::Gem::Version, as: :versions
 register Namespace::Gem::Version::Reference, as: :references
 
 def users.create(label = nil, unique_by: :email_address, **) = super
-def gems.create(label = nil, unique_by: [:index, :name], **) = super
+def gems.create(label = nil, unique_by: [:namespace, :name], **) = super
 
 def namespaces.create_approved(label = nil, owner: Peak.system_user, **) = create(label, **).tap do
   accesses.owner.create(namespace: _1, user: owner)

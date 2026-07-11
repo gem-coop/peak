@@ -8,21 +8,21 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "index with namespace matching query" do
-    get search_url(q: "oak"), headers: peak_admin_authorization
-    assert_response :success
-    assert_results 2 do
-      assert_dom "a", "@public/oaken"
-      assert_dom "a", "@gemcoop/oaken"
-    end
-  end
-
-  test "index with gem matching query" do
     get search_url(q: "gem"), headers: peak_admin_authorization
     assert_response :success
     assert_results 2 do
       assert_dom "a", "@gemcoop"
       assert_dom "a", "@gemcoop/peak"
       assert_dom "p mark", "gem"
+    end
+  end
+
+  test "index with gem matching query" do
+    get search_url(q: "oak"), headers: peak_admin_authorization
+    assert_response :success
+    assert_results 2 do
+      assert_dom "a", "@public/oaken"
+      assert_dom "a", "@gemcoop/oaken"
     end
   end
 

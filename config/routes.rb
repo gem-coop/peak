@@ -19,8 +19,12 @@ Rails.application.routes.draw do
   post "/sign_up" => "user/sign_ups#create"
 
   resources :sign_in, controller: "user/sign_ins", only: %i[new show create], param: :token do
-    get :confirm, on: :collection
+    get :edit, on: :collection
     patch :update, on: :collection
+  end
+
+  if Rails.env.test?
+    post "sign_in/test", to: "test/sign_in#create", as: :test_sign_in
   end
 
   delete "/sign_out" => "user/sessions#destroy", as: :sign_out

@@ -60,9 +60,6 @@ end
 
 class ActionDispatch::IntegrationTest
   def sign_in_as(user)
-    get sign_in_url(user.magic_link.token)
-    follow_redirect!
-    confirmation_nonce = response.parsed_body.at_css("input[name='confirmation_nonce']")["value"]
-    patch sign_in_index_url, params: { confirmation_nonce: }
+    post test_sign_in_url, params: { user_id: user.id }
   end
 end

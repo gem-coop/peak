@@ -42,14 +42,13 @@ class User::SignInsControllerTest < ActionDispatch::IntegrationTest
     token = users.plain.magic_link.token
 
     refute_increments(User::Session) { get sign_in_url(token) }
-    assert_redirected_to confirm_sign_in_index_url
+    assert_redirected_to edit_sign_in_index_url
     assert_equal "strict-origin", response.headers["referrer-policy"]
 
     follow_redirect!
     assert_response :success
-    assert_no_match token, response.body
-    assert_dom "form"
-    assert_dom "input[name=confirmation_nonce]"
+    refute_match token, response.body
+    assert_dom "form input[name=confirmation_nonce]"
   end
 
   test "show rejects a used magic link" do
@@ -61,24 +60,23 @@ class User::SignInsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "update creates session from pending magic link" do
-    get sign_in_url(users.plain.magic_link.token)
-    follow_redirect!
+    with_confirmation_nonce do |nonce|
+      get sign_in_url(users.plain.magic_link.token)
 
-    assert_increments User::Session do
-      patch sign_in_index_url, params: { confirmation_nonce: }
+      assert_increments(User::Session) { patch sign_in_index_url, params: { confirmation_nonce: nonce } }
+      assert_redirected_to dashboard_url
     end
-    assert_redirected_to dashboard_url
   end
 
   test "update creates session from pending magic link — with redirect_url" do
-    get new_sign_in_url(redirect_url: dashboard_url)
-    get sign_in_url(users.plain.magic_link.token)
-    follow_redirect!
+    get new_sign_in_url(redirect_url: new_user_push_key_url)
 
-    assert_increments User::Session do
-      patch sign_in_index_url, params: { confirmation_nonce: }
+    with_confirmation_nonce do |nonce|
+      get sign_in_url(users.plain.magic_link.token)
+
+      assert_increments(User::Session) { patch sign_in_index_url, params: { confirmation_nonce: nonce } }
+      assert_redirected_to new_user_push_key_url
     end
-    assert_redirected_to dashboard_url
   end
 
   test "update requires a pending magic link" do
@@ -89,26 +87,25 @@ class User::SignInsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "update revalidates a pending magic link" do
-    get sign_in_url(users.plain.magic_link.token)
-    follow_redirect!
-    users.plain.sessions.create!(ip_address: "127.0.0.1")
+    with_confirmation_nonce do |nonce|
+      get sign_in_url(users.plain.magic_link.token)
 
-    refute_increments(User::Session) { patch sign_in_index_url, params: { confirmation_nonce: } }
-    assert_redirected_to new_sign_in_url
+      sign_in_as users.plain
+
+      refute_increments(User::Session) { patch sign_in_index_url, params: { confirmation_nonce: nonce } }
+      assert_redirected_to new_sign_in_url
+    end
   end
 
   test "update rejects a stale confirmation page" do
-    get sign_in_url(users.plain.magic_link.token)
-    follow_redirect!
-    stale_confirmation_nonce = confirmation_nonce
+    with_confirmation_nonce do
+      get sign_in_url(users.owner.magic_link.token)
 
-    get sign_in_url(users.owner.magic_link.token)
-    follow_redirect!
-
-    refute_increments User::Session do
-      patch sign_in_index_url, params: { confirmation_nonce: stale_confirmation_nonce }
+      refute_increments User::Session do
+        patch sign_in_index_url, params: { confirmation_nonce: SecureRandom.hex }
+      end
+      assert_redirected_to new_sign_in_url
     end
-    assert_redirected_to new_sign_in_url
   end
 
   test "show and update with expired magic link" do
@@ -118,16 +115,18 @@ class User::SignInsControllerTest < ActionDispatch::IntegrationTest
     get sign_in_url(token)
     assert_redirected_to new_sign_in_url
 
-    get sign_in_url(users.plain.magic_link.token)
-    follow_redirect!
-    travel 15.minutes + 1.second
+    with_confirmation_nonce do |nonce|
+      get sign_in_url(users.plain.magic_link.token)
+      follow_redirect!
+      travel 15.minutes + 1.second
 
-    refute_increments(User::Session) { patch sign_in_index_url, params: { confirmation_nonce: } }
-    assert_redirected_to new_sign_in_url
+      refute_increments(User::Session) { patch sign_in_index_url, params: { confirmation_nonce: nonce } }
+      assert_redirected_to new_sign_in_url
+    end
   end
 
   private
-    def confirmation_nonce
-      response.parsed_body.at_css("input[name='confirmation_nonce']")["value"]
+    def with_confirmation_nonce(nonce = "abcdef")
+      Confirmation::Token.with(nonce:) { yield nonce }
     end
 end

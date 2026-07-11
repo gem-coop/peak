@@ -18,9 +18,10 @@ class AuthenticationTest < ActionDispatch::IntegrationTest
       end
 
       resources :sign_in, controller: "user/sign_ins", only: %i[new show], param: :token do
-        get :confirm, on: :collection
         patch :update, on: :collection
       end
+
+      post "sign_in/test", to: "test/sign_in#create", as: :test_sign_in
     end
   end
 

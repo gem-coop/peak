@@ -3,6 +3,6 @@
 <p>Click the confirm button and we'll sign you in.</p>
 
 <%= form_with url: sign_in_index_path, method: :patch do |form| %>
-  <%= form.hidden_field :confirmation_nonce, value: @confirmation_nonce %>
+  <%= form.hidden_field :confirmation_nonce, value: @confirmation_token.nonce %>
   <%= form.button "Sign me in" %>
 <% end %>

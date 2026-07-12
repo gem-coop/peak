@@ -28,7 +28,7 @@ class Billing::Stripe::Event::Receipt < ApplicationRecord
   end
 
   class Customer < Abstract
-    def created = nil # account.update!(external_id: id)
+    def created = account.update!(external_id: id)
   end
 
   class Customer::Subscription < Abstract

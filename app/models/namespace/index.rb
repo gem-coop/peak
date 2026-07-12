@@ -16,10 +16,10 @@ class Namespace::Index < ApplicationRecord
 
   validates_presence_of :slug
   normalizes :slug, with: -> { _1.to_s.parameterize }
-  before_destroy { throw :abort if default? } # Can't destroy default index.
+  before_destroy { throw :abort if stable? }
 
-  def self.locate_or_default(slug)
-    find_by!(slug: slug.presence || :default)
+  def self.locate_or_stable(slug)
+    find_by!(slug: slug.presence || :stable)
   end
 
   def version_from(name:, ref:)
@@ -32,5 +32,5 @@ class Namespace::Index < ApplicationRecord
   end
   def version_uploaded(version) = process_version_later(version)
 
-  def default? = slug == "default"
+  def stable? = slug == "stable"
 end

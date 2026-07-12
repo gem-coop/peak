@@ -7,7 +7,7 @@ class Namespaces::Index::CooldownsControllerTest < ActionDispatch::IntegrationTe
   end
 
   test "get primary index cooldown with no cooldowns" do
-    namespace.default_index.cooldowns.delete_all
+    namespace.stable_index.cooldowns.delete_all
 
     get namespace_cooldown_versions_url(namespace:)
     assert_response :not_found

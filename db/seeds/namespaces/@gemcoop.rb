@@ -12,7 +12,7 @@ accesses.with namespace: do
 end
 
 gems.with namespace: do
-  index = namespace.default_index
+  index = namespace.stable_index
 
   gem = _1.parse :oaken, index, gems.oaken_lines
   gem.versions.latest.update! summary: "Oaken aims to blend your Fixtures/Factories and levels up your database seeds."
@@ -22,5 +22,5 @@ gems.with namespace: do
   versions.upload peak, ref: "0.1.0", index:, created_by: users.owner
 end
 
-cooldowns.create :gemcoop, index: namespace.default_index
+cooldowns.create :gemcoop, index: namespace.stable_index
 cooldowns.create :gemcoop_dev, index: indexes.gemcoop_dev

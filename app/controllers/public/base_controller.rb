@@ -23,7 +23,7 @@ class Public::BaseController < ActionController::Base
 
     def set_routed_index(from: Namespace)
       # TODO: Figure out authenticated routing to `private_access` indexes.
-      @index = from.named(params[:namespace]).indexes.public_access.locate_or_default(params[:index])
+      @index = from.named(params[:namespace]).indexes.public_access.locate_or_stable(params[:index])
     end
 
     def stream_lines_from(versions)

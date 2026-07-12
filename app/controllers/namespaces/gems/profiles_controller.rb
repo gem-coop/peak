@@ -8,6 +8,6 @@ class Namespaces::Gems::ProfilesController < ApplicationController
 
   private
     def set_index
-      @index = Namespace.named(params[:namespace]).default_index
+      @index = Namespace.named(params[:namespace]).stable_index
     end
 end

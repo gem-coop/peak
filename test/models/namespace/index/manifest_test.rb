@@ -2,7 +2,7 @@ require "test_helper"
 
 class Namespace::Index::ManifestTest < ActiveSupport::TestCase
   test "index compaction" do
-    manifest = namespaces.public.default_index.manifest
+    manifest = namespaces.public.stable_index.manifest
     assert_changes(-> { manifest.compacted_at }) { manifest.compact }
 
     lines = manifest.contents.lines
@@ -18,7 +18,7 @@ class Namespace::Index::ManifestTest < ActiveSupport::TestCase
   end
 
   test "cooldown compaction" do
-    cooldown = namespaces.public.default_index.cooldowns.create
+    cooldown = namespaces.public.stable_index.cooldowns.create
     travel 2.days + 1.second
 
     cooldown.index.versions.for(:actionview).where("namespace_gem_versions.ref LIKE '8%'").update_all published_at: 1.second.ago

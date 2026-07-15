@@ -534,7 +534,7 @@ GEM
     regexp_parser (2.12.0)
     reline (0.6.3)
       io-console (~> 0.5)
-    resend (1.5.0)
+    resend (1.6.0)
       base64
       httparty (>= 0.22.0)
     rexml (3.4.4)
@@ -702,7 +702,7 @@ DEPENDENCIES
   puma (>= 5.0)
   rails
   redis (~> 5.4)
-  resend (~> 1.5)
+  resend (~> 1.6)
   rubocop-rails-omakase
   selenium-webdriver
   sidekiq (~> 8.1)
@@ -913,7 +913,7 @@ CHECKSUMS
   redis-client (0.30.0) sha256=743f11ed42f0a41a0341554087b077479fec7e2d47a7c123fd90a12c0db5e477
   regexp_parser (2.12.0) sha256=35a916a1d63190ab5c9009457136ae5f3c0c7512d60291d0d1378ba18ce08ebb
   reline (0.6.3) sha256=1198b04973565b36ec0f11542ab3f5cfeeec34823f4e54cebde90968092b1835
-  resend (1.5.0) sha256=26a2e9d4e32c1f33eadf25b53810b0b78af73f85440d7d6fa6c340fdd6e3ca46
+  resend (1.6.0) sha256=d87038284a3687ec42b1e88b973c481bd5c27486cf3d7e25082c0b4889bd0b49
   rexml (3.4.4) sha256=19e0a2c3425dfbf2d4fc1189747bdb2f849b6c5e74180401b15734bc97b5d142
   rubocop (1.88.1) sha256=726af773d6bc169ed3ff852f3ca020b7c58d39c34e7a8d879a8e0147cc994f26
   rubocop-ast (1.49.1) sha256=4412f3ee70f6fe4546cc489548e0f6fcf76cafcfa80fa03af67098ffed755035

@@ -24,7 +24,7 @@ jobs:
           ref: ${{ github.event.repository.default_branch }}
 
       - name: Check Single CLA
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const checkSingleCla = require("./.github/scripts/check-single-cla.js");

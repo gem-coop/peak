@@ -631,37 +631,37 @@ GEM
 GEM
   remote: https://packager.dev/avo-hq/
   specs:
-    avo-advanced (4.0.0.beta.12)
-      avo (>= 4.0.0.beta.30)
+    avo-advanced (4.0.0.beta.13)
+      avo (>= 4.0.0.beta.46)
       avo-dynamic_filters (>= 4.0.0.beta.13)
-      avo-licensing (>= 4.0.0.beta.8)
-      avo-pro (>= 4.0.0.beta.16)
+      avo-licensing (>= 4.0.0.beta.9)
+      avo-pro (>= 4.0.0.beta.23)
       zeitwerk (>= 2.6.12)
-    avo-dashboards (4.0.0.beta.14)
-      avo (>= 4.0.0.beta.26)
-      avo-licensing (>= 4.0.0.beta.7)
+    avo-dashboards (4.0.9)
+      avo (>= 4.0.20)
+      avo-licensing (>= 4.0.10)
       turbo-rails
       view_component (>= 3.7.0)
       zeitwerk (>= 2.6.12)
-    avo-dynamic_filters (4.0.0.beta.13)
-      avo (>= 4.0.0.beta.26)
-      avo-licensing (>= 4.0.0.beta.7)
+    avo-dynamic_filters (4.0.4)
+      avo (>= 4.0.19)
+      avo-licensing (>= 4.0.8)
       ransack (>= 4.2.0)
       view_component (>= 3.7.0)
       zeitwerk (>= 2.6.12)
-    avo-licensing (4.0.0.beta.8)
-      avo (>= 4.0.0.beta.27)
+    avo-licensing (4.0.10)
+      avo (>= 4.0.20)
       zeitwerk (>= 2.6.12)
-    avo-menu (4.0.0.beta.12)
-      avo (>= 4.0.0.beta.26)
-      avo-licensing (>= 4.0.0.beta.7)
+    avo-menu (4.0.3)
+      avo (>= 4.0.2)
+      avo-licensing (>= 4.0.1)
       docile
       zeitwerk (>= 2.6.12)
-    avo-pro (4.0.0.beta.16)
-      avo (>= 4.0.0.beta.26)
-      avo-dashboards (>= 4.0.0.beta.14)
-      avo-licensing (>= 4.0.0.beta.7)
-      avo-menu (>= 4.0.0.beta.12)
+    avo-pro (4.0.0.beta.23)
+      avo (>= 4.0.0.beta.44)
+      avo-dashboards (>= 4.0.0.beta.15)
+      avo-licensing (>= 4.0.0.beta.9)
+      avo-menu (>= 4.0.1.beta.12)
       zeitwerk (>= 2.6.12)
 
 PLATFORMS
@@ -735,13 +735,13 @@ CHECKSUMS
   addressable (2.9.0) sha256=7fdf6ac3660f7f4e867a0838be3f6cf722ace541dd97767fa42bc6cfa980c7af
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
   avo (4.0.21) sha256=4b88d7d545e1c1c790d9902004706f9ed9c8f0a2bb40779f842e476fd925bafd
-  avo-advanced (4.0.0.beta.12) sha256=f2934a6f47ac7bf20515344073d19a15e4681dfdf06bf0c24abc9fbed4c5cb12
-  avo-dashboards (4.0.0.beta.14) sha256=7c36983f46d31382453446a91416374364e4cad920905ef4496a5ad9a5a9e647
-  avo-dynamic_filters (4.0.0.beta.13) sha256=acf635643dc0cb97b34c551103b67fb1ffd1541424e37ad0dd39c1546b63d53c
+  avo-advanced (4.0.0.beta.13) sha256=947a0f4af725f908f632310a72d965dd3c4b5949d2bc415521e6e2215fdfa923
+  avo-dashboards (4.0.9) sha256=51898850bc3b6f666611721d7de4d4ef0f87e9446448fbb5437e8f62824dbfe0
+  avo-dynamic_filters (4.0.4) sha256=36d6fa93c6b7b5373e441c3bd39aa66cabbfbda1fbb6f7c2bc7784e704f87b64
   avo-icons (0.1.6) sha256=6f1c985aca238d81446e517cee4924752e7ada1604971f6bb59913472e123f4c
-  avo-licensing (4.0.0.beta.8) sha256=da44656e60b6f82a3d3f3bf962f2b8e626a704cfa0d3c2f9b7ba6cf6c1f41b04
-  avo-menu (4.0.0.beta.12) sha256=0a172f1628716a10dd02479ec532e53b099f6999e119ca63974c6f5fcc3eed44
-  avo-pro (4.0.0.beta.16) sha256=1408a8b88ba0b73298c2a3b95e17cc2c5893212fa5fc090a1920f53b37bde059
+  avo-licensing (4.0.10) sha256=03b0e93133f651e879ed05fd2f6d892d5873be031b3501b620f7581a22c42928
+  avo-menu (4.0.3) sha256=55935238c085d22ddcf8beb5dafe6b618fd6b889e665899d810ba178d025529f
+  avo-pro (4.0.0.beta.23) sha256=e1e01b4de2168293e648d7c88946a3d596686428dd4fed4bc8fbcf3f64a5ab7c
   aws-eventstream (1.4.0) sha256=116bf85c436200d1060811e6f5d2d40c88f65448f2125bc77ffce5121e6e183b
   aws-partitions (1.1271.0) sha256=a078db0fa59bb5beeceef56b3a482140179ece702ee94fbc94196e2281296c0c
   aws-sdk-core (3.254.0) sha256=ee3e3220b8468a3c9e59daba18e6ec897bf5c7ce8adcc0670cfa2f1f092112fe

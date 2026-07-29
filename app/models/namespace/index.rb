@@ -23,7 +23,7 @@ class Namespace::Index < ApplicationRecord
   end
 
   def version_from(name:, ref:)
-    versions.find_or_initialize_by(ref:, gem: gems.find_or_create_by!(name:))
+    versions.find_or_initialize_by(ref:, gem: namespace.gems.find_or_create_by!(name:))
   end
 
   performs def process_version(version)

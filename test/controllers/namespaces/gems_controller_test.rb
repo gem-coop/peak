@@ -81,6 +81,24 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     assert_equal users.owner, first.created_by
   end
 
+  test "push first version of a new gem" do
+    package = gem_package_from(name: "fresh")
+
+    assert_increments Namespace::Gem, Namespace::Gem::Version do
+      post namespace_gem_push_url(namespace:), env: { "RAW_POST_DATA" => package, authorization: "Bearer #{token}" }
+    end
+    assert_response :success
+    assert_match "fresh-1.0.0.gem uploaded 🎉", response.body
+
+    gem = namespace.gems.find_by!(name: "fresh")
+    version = versions.by gem, ref: "1.0.0"
+
+    assert_equal namespace.stable_index, version.index
+    assert_equal users.plain, version.created_by
+    assert version.package.attached?
+    assert_equal package, version.package.download
+  end
+
   test "push platform" do
     package = file_fixture "peak/peak-0.1.0-arm-linux.gem"
 

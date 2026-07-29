@@ -19,6 +19,19 @@ class Peak::Gem::UploadTest < ActiveSupport::TestCase
     assert_invalid_upload gem_package_from(executables: ["peak\nforged"])
   end
 
+  test "validation with jar requirements" do
+    requirements = [
+      "jar org.bouncycastle:bcprov-jdk18on, 1.80",
+      "jar org.bouncycastle:bcpkix-jdk18on, 1.80",
+      "jar org.bouncycastle:bctls-jdk18on, 1.80",
+      "jar org.bouncycastle:bcutil-jdk18on, 1.80"
+    ]
+    upload = peak_upload_from gem_package_from(platform: "java", requirements:)
+
+    assert upload.validate
+    assert_equal requirements, upload.spec.requirements
+  end
+
   test "ref format" do
     refute valid_ref?("1.0\n9")
     refute valid_ref?("1.0 0")

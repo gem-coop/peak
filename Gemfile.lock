@@ -710,9 +710,6 @@ GEM
       avo (>= 4.0.0)
       avo-licensing (>= 4.0.0)
       zeitwerk (>= 2.6.12)
-    avo-notifications (4.0.0)
-      avo (>= 4.0.0)
-      avo-licensing (>= 4.0.0)
     avo-reactive_fields (4.0.0)
       avo (>= 4.0.0)
       avo-licensing (>= 4.0.0)
@@ -757,7 +754,6 @@ DEPENDENCIES
   avo-kanban (~> 4.0)!
   avo-menu (~> 4.0)!
   avo-nested (~> 4.0)!
-  avo-notifications (~> 4.0)!
   avo-reactive_fields (~> 4.0)!
   avo-record_reordering (~> 4.0)!
   avo-scopes (~> 4.0)!
@@ -832,7 +828,6 @@ CHECKSUMS
   avo-licensing (4.0.10) sha256=03b0e93133f651e879ed05fd2f6d892d5873be031b3501b620f7581a22c42928
   avo-menu (4.0.3) sha256=55935238c085d22ddcf8beb5dafe6b618fd6b889e665899d810ba178d025529f
   avo-nested (4.0.0) sha256=02be50b59f1a4bcfa1ddee539851b30fdf0dd73cdf97d58b05a4bfa6fc6cc0d5
-  avo-notifications (4.0.0) sha256=1a18009826c529e320d0203a900741666f6ea9f3eec24cb2454e343bfc83b7c7
   avo-reactive_fields (4.0.0) sha256=059bead40cbfc2b159835435157b0b29a73af6a873c7815de143311c5826b46e
   avo-record_reordering (4.0.0) sha256=584a41fe296ffe43938fd26b1296f235298f2ec0169bb6d2c212c29493865c8a
   avo-scopes (4.0.5) sha256=fcc0de3d020f8bcd73e33c939ea7d89872aba0415105a29cf28d4ef3fe4d3d83

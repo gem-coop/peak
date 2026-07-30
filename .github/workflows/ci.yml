@@ -79,6 +79,7 @@ jobs:
           docker compose up -d db > /dev/null 2>&1 &
           disown
 
+      - run: sudo apt-get install libvips
       # - name: Set up Ruby
       #   uses: spinel-coop/setup-rv@main
       #   with:

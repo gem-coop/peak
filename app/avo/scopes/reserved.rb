@@ -1,4 +1,4 @@
-class Avo::Scopes::Reserved < Avo::Advanced::Scopes::BaseScope
+class Avo::Scopes::Reserved < Avo::Scopes::BaseScope
   self.name = "Reserved"
   # self.description = "Reserved"
   self.scope = :reserved

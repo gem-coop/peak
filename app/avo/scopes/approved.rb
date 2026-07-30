@@ -1,4 +1,4 @@
-class Avo::Scopes::Approved < Avo::Advanced::Scopes::BaseScope
+class Avo::Scopes::Approved < Avo::Scopes::BaseScope
   self.name = "Approved"
   # self.description = "Approved"
   self.scope = :approved

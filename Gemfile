@@ -56,11 +56,26 @@ end
 
 # Use Avo for our starting UI
 group :avo, optional: true do
-  gem "avo"
-  gem "avo-advanced", ">= 4.0.0.beta", source: "https://packager.dev/avo-hq/"
+  gem "avo", ">= 4.0.0"
+  source "https://packager.dev/avo-hq/" do
+    gem "avo-advanced_search", ">= 4.0.0"
+    gem "avo-api", ">= 4.0.0"
+    gem "avo-authorization", ">= 4.0.0"
+    gem "avo-collaboration", ">= 4.0.0"
+    gem "avo-custom_controls", ">= 4.0.0"
+    gem "avo-dashboards", ">= 4.0.0"
+    gem "avo-dynamic_filters", ">= 4.0.0"
+    gem "avo-forms", ">= 4.0.0"
+    gem "avo-http_resource", ">= 4.0.0"
+    gem "avo-kanban", ">= 4.0.0"
+    gem "avo-menu", ">= 4.0.0"
+    gem "avo-nested", ">= 4.0.0"
+    gem "avo-notifications", ">= 4.0.0"
+    gem "avo-reactive_fields", ">= 4.0.0"
+    gem "avo-record_reordering", ">= 4.0.0"
+    gem "avo-scopes", ">= 4.0.0"
+  end
 end
-
-gem "benchmark"
 
 # Use next-gen Rails extensions
 gem "oaken"
@@ -69,6 +84,7 @@ gem "active_job-performs"
 gem "action_controller-stashed_redirects"
 
 gem "aws-sdk-s3", "~> 1.228"
+gem "benchmark"
 gem "brotli", "~> 0.8.0"
 gem "honeybadger", "~> 6.9"
 gem "httpx", "~> 1.8"

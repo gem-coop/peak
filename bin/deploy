@@ -15,12 +15,14 @@ case "$1" in
         exit 1
         ;;
 esac
+shift
 
-BUNDLE_PACKAGER__DEV="$(bundle config get packager.dev | tail -n1 | sed 's/.*: //')"
+BUNDLE_PACKAGER__DEV="$(bundle config get packager.dev | tail -n1 | sed -r 's/.*: "(.*)"/\1/')"
 
 flyctl deploy \
     -a ${APP_NAME} \
     -e BUILT_BY=${USER} \
     -e GIT_SHA="$(git rev-parse HEAD)"\
     -e BUNDLE_WITH=avo \
-    --build-secret BUNDLE_PACKAGER__DEV=${BUNDLE_PACKAGER__DEV}
+    --build-secret BUNDLE_PACKAGER__DEV="${BUNDLE_PACKAGER__DEV}" \
+    "$@"

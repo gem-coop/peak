@@ -29,11 +29,11 @@ class Avo::Resources::Namespace::Submission < Avo::BaseResource
 
   def actions
     if view.show? && !record.approved?
-      action Avo::Actions::Approve, icon: "heroicons/outline/check-circle"
+      action Avo::Actions::Approve, icon: "tabler/outline/circle-check"
       divider
 
-      action Avo::Actions::Reserve, icon: "heroicons/outline/archive-box-arrow-down"
-      action Avo::Actions::Reject, icon: "heroicons/outline/archive-box-x-mark"
+      action Avo::Actions::Reserve, icon: "tabler/outline/pin"
+      action Avo::Actions::Reject, icon: "tabler/outline/circle-x"
     end
   end
 

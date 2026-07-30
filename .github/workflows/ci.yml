@@ -21,11 +21,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      # - name: Set up Ruby
-      #   uses: spinel-coop/setup-rv@main
-      #   with:
-      #     ruby-version: current
-      #     install-gems: true
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -42,11 +37,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      # - name: Set up Ruby
-      #   uses: spinel-coop/setup-rv@main
-      #   with:
-      #     ruby-version: current
-      #     install-gems: true
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -80,15 +70,11 @@ jobs:
           disown
 
       - run: sudo apt-get install libvips
-      # - name: Set up Ruby
-      #   uses: spinel-coop/setup-rv@main
-      #   with:
-      #     ruby-version: current
-      #     install-gems: true
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+          cache-version: 1
 
       - name: Configure database
         run: cp config/database.ci.yml config/database.yml

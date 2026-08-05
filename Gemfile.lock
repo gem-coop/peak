@@ -710,9 +710,9 @@ GEM
       avo (>= 4.0.26)
       avo-licensing (>= 4.1.0)
       zeitwerk (>= 2.6.12)
-    avo-reactive_fields (4.0.0)
-      avo (>= 4.0.0)
-      avo-licensing (>= 4.0.0)
+    avo-reactive_fields (4.1.0)
+      avo (>= 4.0.26)
+      avo-licensing (>= 4.1.0)
       zeitwerk (>= 2.6.12)
     avo-record_reordering (4.1.1)
       avo (>= 4.1.1)
@@ -754,7 +754,7 @@ DEPENDENCIES
   avo-kanban (~> 4.0)!
   avo-menu (~> 4.0)!
   avo-nested (~> 4.1)!
-  avo-reactive_fields (~> 4.0)!
+  avo-reactive_fields (~> 4.1)!
   avo-record_reordering (~> 4.1)!
   avo-scopes (~> 4.0)!
   aws-sdk-s3 (~> 1.228)
@@ -828,7 +828,7 @@ CHECKSUMS
   avo-licensing (4.1.0) sha256=12692a826bf568501879285f26112a84df4fb0302941741825e1b7f049c5a1bf
   avo-menu (4.0.3) sha256=55935238c085d22ddcf8beb5dafe6b618fd6b889e665899d810ba178d025529f
   avo-nested (4.1.0) sha256=bd2030d30a428afb2ce952aacf9814fbff76f811fb11e669301aff92a2eff2bf
-  avo-reactive_fields (4.0.0) sha256=059bead40cbfc2b159835435157b0b29a73af6a873c7815de143311c5826b46e
+  avo-reactive_fields (4.1.0) sha256=2ce6b74c5bef78692979fe80d9a103c3b1cf2255623e65a9161ca6a07ebc3f54
   avo-record_reordering (4.1.1) sha256=ac5111763887cb2b4e426f8cdc763eef38de4942457d099221225d937e988733
   avo-scopes (4.0.5) sha256=fcc0de3d020f8bcd73e33c939ea7d89872aba0415105a29cf28d4ef3fe4d3d83
   aws-eventstream (1.4.0) sha256=116bf85c436200d1060811e6f5d2d40c88f65448f2125bc77ffce5121e6e183b

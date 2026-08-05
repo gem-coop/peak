@@ -671,9 +671,9 @@ GEM
       pagy (>= 43)
       rails (>= 7.2.0)
       view_component
-    avo-custom_controls (4.0.1)
-      avo (>= 4.0.10)
-      avo-licensing (>= 4.0.6)
+    avo-custom_controls (4.1.1)
+      avo (>= 4.1.1)
+      avo-licensing (>= 4.1.0)
     avo-dashboards (4.0.9)
       avo (>= 4.0.20)
       avo-licensing (>= 4.0.10)
@@ -746,7 +746,7 @@ DEPENDENCIES
   avo-api (~> 4.0)!
   avo-authorization (~> 4.0)!
   avo-collaboration (~> 4.0)!
-  avo-custom_controls (~> 4.0)!
+  avo-custom_controls (~> 4.1)!
   avo-dashboards (~> 4.0)!
   avo-dynamic_filters (~> 4.1)!
   avo-forms (~> 4.1)!
@@ -818,7 +818,7 @@ CHECKSUMS
   avo-api (4.0.0) sha256=d6bc62830ba95cbfb457724006dce5fb8689195e8428664d3ab0e3194aca432f
   avo-authorization (4.0.0) sha256=1a6ccd7f57ffef0ecbbf849682646486bf47c274a79a43650a4250ac0f76045a
   avo-collaboration (4.0.2) sha256=6bec48eeee9fc0340df0df8c94af555567607cdec221adab526e8bf62b450752
-  avo-custom_controls (4.0.1) sha256=8dc2ca048d1d632b7cc488405be5781a69002c7f3cad425daa676c7ed5c34bb2
+  avo-custom_controls (4.1.1) sha256=2590e0daff067d7131658100be6fecc708306afd4bbc9605e28281fdd1a28b62
   avo-dashboards (4.0.9) sha256=51898850bc3b6f666611721d7de4d4ef0f87e9446448fbb5437e8f62824dbfe0
   avo-dynamic_filters (4.1.1) sha256=c169e9d578e488d4884c93fdad6901550c7fbf2309db6e224867fbd2cbc6123b
   avo-forms (4.1.1) sha256=ce9c5e4ebfd38292c50f9d30a145c00a19861a4f00c1ad4b81068a2723c53801

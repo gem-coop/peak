@@ -680,9 +680,9 @@ GEM
       turbo-rails
       view_component (>= 3.7.0)
       zeitwerk (>= 2.6.12)
-    avo-dynamic_filters (4.0.4)
-      avo (>= 4.0.19)
-      avo-licensing (>= 4.0.8)
+    avo-dynamic_filters (4.1.1)
+      avo (>= 4.1.1)
+      avo-licensing (>= 4.1.0)
       ransack (>= 4.2.0)
       view_component (>= 3.7.0)
       zeitwerk (>= 2.6.12)
@@ -748,7 +748,7 @@ DEPENDENCIES
   avo-collaboration (~> 4.0)!
   avo-custom_controls (~> 4.0)!
   avo-dashboards (~> 4.0)!
-  avo-dynamic_filters (~> 4.0)!
+  avo-dynamic_filters (~> 4.1)!
   avo-forms (~> 4.1)!
   avo-http_resource (~> 4.0)!
   avo-kanban (~> 4.0)!
@@ -820,7 +820,7 @@ CHECKSUMS
   avo-collaboration (4.0.2) sha256=6bec48eeee9fc0340df0df8c94af555567607cdec221adab526e8bf62b450752
   avo-custom_controls (4.0.1) sha256=8dc2ca048d1d632b7cc488405be5781a69002c7f3cad425daa676c7ed5c34bb2
   avo-dashboards (4.0.9) sha256=51898850bc3b6f666611721d7de4d4ef0f87e9446448fbb5437e8f62824dbfe0
-  avo-dynamic_filters (4.0.4) sha256=36d6fa93c6b7b5373e441c3bd39aa66cabbfbda1fbb6f7c2bc7784e704f87b64
+  avo-dynamic_filters (4.1.1) sha256=c169e9d578e488d4884c93fdad6901550c7fbf2309db6e224867fbd2cbc6123b
   avo-forms (4.1.1) sha256=ce9c5e4ebfd38292c50f9d30a145c00a19861a4f00c1ad4b81068a2723c53801
   avo-http_resource (4.1.6) sha256=5601d1cde64f578b76dcec323c70a013963fb1d9eedce64d73585845875fab3f
   avo-icons (0.2.0) sha256=ca5e2dda5236ea55cfba7dbb4cfd970f74d2ed8214aed0a4e0370a637ce93f2b

@@ -90,7 +90,7 @@ GEM
     addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
     ast (2.4.3)
-    avo (4.0.21)
+    avo (4.0.25)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -105,7 +105,7 @@ GEM
       turbo_power (>= 0.6.0)
       view_component (>= 3.7.0)
       zeitwerk (>= 2.6.12)
-    avo-icons (0.1.6)
+    avo-icons (0.2.0)
       inline_svg
     aws-eventstream (1.4.0)
     aws-partitions (1.1276.0)
@@ -164,7 +164,7 @@ GEM
     dockerfile-rails (1.7.10)
       rails (>= 3.0.0)
     drb (2.2.3)
-    erb (6.0.6)
+    erb (6.0.7)
     erubi (1.13.1)
     et-orbi (1.4.0)
       tzinfo
@@ -233,7 +233,7 @@ GEM
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     jmespath (1.6.2)
-    json (2.21.1)
+    json (2.21.2)
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
     logger (1.7.0)
@@ -537,7 +537,7 @@ GEM
       activerecord (>= 7.2)
       activesupport (>= 7.2)
       i18n
-    rbs (4.1.0)
+    rbs (4.1.2)
       logger
       prism (>= 1.6.0)
       tsort
@@ -648,7 +648,7 @@ GEM
     xpath (3.2.0)
       nokogiri (~> 1.8)
     yaml (0.4.0)
-    zeitwerk (2.8.2)
+    zeitwerk (2.8.3)
 
 GEM
   remote: https://packager.dev/avo-hq/
@@ -813,7 +813,7 @@ CHECKSUMS
   acts_as_list (1.2.6) sha256=8345380900b7bee620c07ad00991ccee59af3d8c9e8574f426e321da2865fdc8
   addressable (2.9.0) sha256=7fdf6ac3660f7f4e867a0838be3f6cf722ace541dd97767fa42bc6cfa980c7af
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
-  avo (4.0.21) sha256=4b88d7d545e1c1c790d9902004706f9ed9c8f0a2bb40779f842e476fd925bafd
+  avo (4.0.25) sha256=9269ec26440b7c0d3784355b1eeaf007dd3dddefc30e7838d9fb726a733ed99b
   avo-advanced_search (4.0.3) sha256=1811a9b40d9bfcf1b63869a0c585c39b99e9e9685495b4b6b4033699596d2213
   avo-api (4.0.0) sha256=d6bc62830ba95cbfb457724006dce5fb8689195e8428664d3ab0e3194aca432f
   avo-authorization (4.0.0) sha256=1a6ccd7f57ffef0ecbbf849682646486bf47c274a79a43650a4250ac0f76045a
@@ -823,7 +823,7 @@ CHECKSUMS
   avo-dynamic_filters (4.0.4) sha256=36d6fa93c6b7b5373e441c3bd39aa66cabbfbda1fbb6f7c2bc7784e704f87b64
   avo-forms (4.0.0) sha256=dfaba9871d5c2ec57c5c133a12e42716205782750f502fac8e35d6869617e09f
   avo-http_resource (4.1.6) sha256=5601d1cde64f578b76dcec323c70a013963fb1d9eedce64d73585845875fab3f
-  avo-icons (0.1.6) sha256=6f1c985aca238d81446e517cee4924752e7ada1604971f6bb59913472e123f4c
+  avo-icons (0.2.0) sha256=ca5e2dda5236ea55cfba7dbb4cfd970f74d2ed8214aed0a4e0370a637ce93f2b
   avo-kanban (4.0.3) sha256=c3e51eb2a2602e03012ff94a3cc6686c4d77dd4ab8da1e5311e1e9272c9e2543
   avo-licensing (4.0.10) sha256=03b0e93133f651e879ed05fd2f6d892d5873be031b3501b620f7581a22c42928
   avo-menu (4.0.3) sha256=55935238c085d22ddcf8beb5dafe6b618fd6b889e665899d810ba178d025529f
@@ -859,7 +859,7 @@ CHECKSUMS
   docile (1.4.1) sha256=96159be799bfa73cdb721b840e9802126e4e03dfc26863db73647204c727f21e
   dockerfile-rails (1.7.10) sha256=04163273792ec6c6560244d32c0b44bbed705384a47b8063adcbf0d7bc8abd26
   drb (2.2.3) sha256=0b00d6fdb50995fe4a45dea13663493c841112e4068656854646f418fda13373
-  erb (6.0.6) sha256=a9b24986700f5bf127c4f297c5403c3ca41b83b0a316c0cd09a096b56e644ae5
+  erb (6.0.7) sha256=c5ca6dc25b0ef974a44dc8f59fe847577122483b1968a38dec305c60bf91ee92
   erubi (1.13.1) sha256=a082103b0885dbc5ecf1172fede897f9ebdb745a4b97a5e8dc63953db1ee4ad9
   et-orbi (1.4.0) sha256=6c7e3c90779821f9e3b324c5e96fda9767f72995d6ae435b96678a4f3e2de8bc
   ffi (1.17.4-aarch64-linux-gnu) sha256=b208f06f91ffd8f5e1193da3cae3d2ccfc27fc36fba577baf698d26d91c080df
@@ -892,7 +892,7 @@ CHECKSUMS
   io-console (0.8.2) sha256=d6e3ae7a7cc7574f4b8893b4fca2162e57a825b223a177b7afa236c5ef9814cc
   irb (1.18.0) sha256=de9454a0703a54704b9811a5ef31a60c86949fbf4013fcf244fabc7c775248e3
   jmespath (1.6.2) sha256=238d774a58723d6c090494c8879b5e9918c19485f7e840f2c1c7532cf84ebcb1
-  json (2.21.1) sha256=13a43df75d95641443f5702dff350f237164a9d811ff0f2c2800d4d980220583
+  json (2.21.2) sha256=1f1d3b7cf2b3ba1a69beca0bb6db13d5438b80bff3cd54cdaaa620b9b07c1c6a
   language_server-protocol (3.17.0.5) sha256=fd1e39a51a28bf3eec959379985a72e296e9f9acfce46f6a79d31ca8760803cc
   lint_roller (1.1.0) sha256=2c0c845b632a7d172cb849cc90c1bce937a28c5c8ccccb50dfd46a485003cc87
   logger (1.7.0) sha256=196edec7cc44b66cfb40f9755ce11b392f21f7967696af15d274dde7edff0203
@@ -1006,7 +1006,7 @@ CHECKSUMS
   rainbow (3.1.1) sha256=039491aa3a89f42efa1d6dec2fc4e62ede96eb6acd95e52f1ad581182b79bc6a
   rake (13.4.2) sha256=cb825b2bd5f1f8e91ca37bddb4b9aaf345551b4731da62949be002fa89283701
   ransack (4.4.1) sha256=6aeaac36fc19088570e10da1044e6cfd88c740e20f871b84566fd30e32b7a63d
-  rbs (4.1.0) sha256=8baba59008b0643b4ba2090e9b1d0149655b0bbd42eb2ffe42b1d0eb6923fd72
+  rbs (4.1.2) sha256=050eb1d8b508f1233bed929c0f2c7052302f7adf295230d9cb314e9024078f48
   rdoc (8.0.0) sha256=03bf8c08a9639658855a0cfd77c0abca8325c227693f7f33f82957811348c469
   redis (5.4.1) sha256=b5e675b57ad22b15c9bcc765d5ac26f60b675408af916d31527af9bd5a81faae
   redis-client (0.30.0) sha256=743f11ed42f0a41a0341554087b077479fec7e2d47a7c123fd90a12c0db5e477
@@ -1048,7 +1048,7 @@ CHECKSUMS
   websocket-extensions (0.1.5) sha256=1c6ba63092cda343eb53fc657110c71c754c56484aad42578495227d717a8241
   xpath (3.2.0) sha256=6dfda79d91bb3b949b947ecc5919f042ef2f399b904013eb3ef6d20dd3a4082e
   yaml (0.4.0) sha256=240e69d1e6ce3584d6085978719a0faa6218ae426e034d8f9b02fb54d3471942
-  zeitwerk (2.8.2) sha256=7212a61311083c604184b1ea2574b9aa05cd14f855a0841c06985cabe9181d12
+  zeitwerk (2.8.3) sha256=2c85125a8467ce069e20123d1e709a08955c9d29c118c25b46b7b7fafdbb92e5
 
 RUBY VERSION
   ruby 4.0.5

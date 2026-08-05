@@ -64,7 +64,7 @@ group :avo, optional: true do
     gem "avo-collaboration", "~> 4.0"
     gem "avo-custom_controls", "~> 4.0"
     gem "avo-dashboards", "~> 4.0"
-    gem "avo-dynamic_filters", "~> 4.0"
+    gem "avo-dynamic_filters", "~> 4.1"
     gem "avo-forms", "~> 4.1"
     gem "avo-http_resource", "~> 4.0"
     gem "avo-kanban", "~> 4.0"

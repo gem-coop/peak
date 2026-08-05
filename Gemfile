@@ -72,7 +72,7 @@ group :avo, optional: true do
     gem "avo-nested", "~> 4.0"
     # gem "avo-notifications", "~> 4.0" # depends on action_cable/engine, which is disabled
     gem "avo-reactive_fields", "~> 4.0"
-    gem "avo-record_reordering", "~> 4.0"
+    gem "avo-record_reordering", "~> 4.1"
     gem "avo-scopes", "~> 4.0"
   end
 end

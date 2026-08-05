@@ -62,7 +62,7 @@ group :avo, optional: true do
     gem "avo-api", "~> 4.0"
     gem "avo-authorization", "~> 4.0"
     gem "avo-collaboration", "~> 4.0"
-    gem "avo-custom_controls", "~> 4.0"
+    gem "avo-custom_controls", "~> 4.1"
     gem "avo-dashboards", "~> 4.0"
     gem "avo-dynamic_filters", "~> 4.1"
     gem "avo-forms", "~> 4.1"

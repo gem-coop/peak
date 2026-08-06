@@ -1,3 +1,5 @@
+<% -> { highlight _1, @query } => highlighter %>
+
 <div>
   <% page.title = "search namespaces & gems" %>
 
@@ -26,7 +28,7 @@
         <span><i>namespace</i></span>
 
         <h3 style="margin-block: 0;">
-          <%= link_to namespace.name, namespace %>
+          <%= link_to highlighter[namespace.name], namespace %>
         </h3>
       </article>
     <% end %>
@@ -36,10 +38,10 @@
         <span><i>gem</i></span>
 
         <h3 style="margin-block: 0;">
-          <%= link_to search_index.gem.namespaced_name, search_index.gem %>
+          <%= link_to highlighter[search_index.gem.namespaced_name], search_index.gem %>
         </h3>
 
-        <p style="margin-block: 0;"><%= highlight(search_index.stripped, @query) %></p>
+        <p style="margin-block: 0;"><%= highlighter[search_index.stripped] %></p>
       </article>
     <% end %>
   <% end %>

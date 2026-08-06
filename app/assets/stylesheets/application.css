@@ -17,7 +17,7 @@
   --body-bg: light-dark( #f8f8f8,  #191e24);
   --main-bg: light-dark( white,  #1d232a);
 
-  --mark-bg: #f5cc00;
+  --mark-bg: light-dark(#f5cc00, #435a17);
 
   --font-sm: .875rem;
 
@@ -148,6 +148,7 @@ dd {
 }
 
 mark {
+  color: inherit;
   background: var(--mark-bg);
 }
 

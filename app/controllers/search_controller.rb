@@ -1,5 +1,5 @@
 class SearchController < ApplicationController
-  require_peak_admin_authentication
+  # require_peak_admin_authentication
 
   def index
     @query = params[:q].presence

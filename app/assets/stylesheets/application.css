@@ -215,7 +215,7 @@ form {
   }
 }
 
-peak-status, peak-error {
+peak-status, peak-ok, peak-error {
   display: block;
   text-align: center;
 }

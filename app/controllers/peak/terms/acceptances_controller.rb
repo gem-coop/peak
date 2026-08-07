@@ -11,7 +11,7 @@ class Peak::Terms::AcceptancesController < ApplicationController
     acceptance.capture **params.expect(acceptance: [:accepted, :time_zone]).to_h.symbolize_keys
 
     if acceptance.accepted?
-      render Peak::Status("Terms of Service accepted! Thank you.")
+      render Peak::Ok("Terms of Service accepted! Thank you.")
     else
       render Peak::Error("Terms of Service denied.")
     end

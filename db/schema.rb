@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_16_152536) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_16_153006) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -50,16 +50,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_152536) do
     t.integer "user_id", null: false
     t.index ["namespace_id"], name: "index_namespace_accesses_on_namespace_id"
     t.index ["user_id"], name: "index_namespace_accesses_on_user_id"
-  end
-
-  create_table "namespace_gem_infos", force: :cascade do |t|
-    t.string "checksum", default: "", null: false
-    t.text "contents", default: "", null: false
-    t.datetime "created_at", null: false
-    t.string "envelope", default: "", null: false
-    t.integer "gem_id", null: false
-    t.datetime "updated_at", null: false
-    t.index ["gem_id"], name: "index_namespace_gem_infos_on_gem_id"
   end
 
   create_table "namespace_gem_search_indexes", force: :cascade do |t|

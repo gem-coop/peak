@@ -83,7 +83,7 @@ gem "active_record-associated_object"
 gem "active_job-performs"
 gem "action_controller-stashed_redirects"
 
-gem "aws-sdk-s3", "~> 1.228"
+gem "aws-sdk-s3", "~> 1.229"
 gem "brotli", "~> 0.8.0"
 gem "honeybadger", "~> 6.9"
 gem "httpx", "~> 1.8"

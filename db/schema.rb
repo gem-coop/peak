@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_16_151906) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_16_152536) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -200,7 +200,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_151906) do
 
   create_table "namespace_gems", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.integer "index_id"
     t.string "name", null: false
     t.integer "namespace_id", null: false
     t.datetime "updated_at", null: false

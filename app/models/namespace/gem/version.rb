@@ -1,6 +1,6 @@
 class Namespace::Gem::Version < ApplicationRecord
   belongs_to :gem
-  belongs_to :index
+  belongs_to :index, class_name: "Namespace::Index"
   belongs_to :created_by, class_name: "User"
 
   has_many :linkings, dependent: :destroy
@@ -60,7 +60,7 @@ class Namespace::Gem::Version < ApplicationRecord
   end
 
   def consume(upload, **)
-    self.package = { io: upload.tmpfile, filename: }
+    self.package = { io: upload.tmpfile, filename: } if upload.tmpfile
     self.link_ids = links.unscoped.ids_from(upload.links)
     self.reference_ids = references.unscoped.ids_from(upload.requirement_triples)
 

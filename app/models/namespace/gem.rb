@@ -2,7 +2,6 @@ class Namespace::Gem < ApplicationRecord
   include SearchIndex::Indexed
 
   belongs_to :namespace
-  self.ignored_columns = ["index_id"]
 
   has_many :referrants, class_name: "Version::Reference", foreign_key: :name, primary_key: :name
   has_many :versions, dependent: :destroy

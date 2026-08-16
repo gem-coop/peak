@@ -46,21 +46,21 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     assert_equal users.plain, version.created_by
 
     assert_equal "peak-0.2.0", version.name
-    assert_equal ">= 4.0", version.ruby
-    assert_equal ">= 2.7", version.rubygems
+    assert_equal [">= 4.0", "< 5"], version.ruby
+    assert_equal [">= 2.7", "< 3"], version.rubygems
     assert_equal ["peak"], version.executables
     assert version.has_extensions?
     assert_equal ["MIT"], version.licenses
 
     assert_equal Date.current, version.published_at.to_date
-    assert_equal "c6de6896567dd0fc5d000712cb75d12b4ef6168d1e340b9531523dcad9e50937", version.checksum
+    assert_equal "9ec6954ad56611da10a453b63dcdd28dc8a5961ebd874e6985ab3cbfc1abcabb", version.checksum
 
     assert_equal version.line, version.compute_line
 
     version.line.split("|", 2).tap do |references, metadata|
       assert references && metadata
       assert_match "oaken:>= 0.9&~> 1.0.0,second_release_exclusive_ref:= 2.0", references
-      assert_match "checksum:#{version.checksum},ruby:>= 4.0,rubygems:>= 2.7,executables:peak,licenses:MIT,published_at:#{version.published_at.iso8601(3)}\n", metadata
+      assert_match "checksum:#{version.checksum},ruby:>= 4.0&< 5,rubygems:>= 2.7&< 3,executables:peak,licenses:MIT,published_at:#{version.published_at.iso8601(3)}\n", metadata
     end
 
     assert_equal({
@@ -113,8 +113,8 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     assert_equal users.plain, version.created_by
 
     assert_equal "peak-0.1.0-arm-linux", version.name
-    assert_equal ">= 4.0", version.ruby
-    assert_equal ">= 2.7", version.rubygems
+    assert_equal [">= 4.0"], version.ruby
+    assert_equal [">= 2.7"], version.rubygems
     assert_equal ["peak"], version.executables
     assert version.has_extensions?
     assert_equal ["MIT"], version.licenses

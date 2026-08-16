@@ -9,8 +9,8 @@ Gem::Specification.new do
   it.summary = "The peak gem of them all."
   it.homepage = "https://github.com/gem-coop/peak"
   it.license = "MIT"
-  it.required_ruby_version = ">= 4.0"
-  it.required_rubygems_version = ">= 2.7"
+  it.required_ruby_version = [">= 4.0", "< 5"]
+  it.required_rubygems_version = [">= 2.7", "< 3"]
 
   it.metadata["allowed_push_host"] = "http://peak.test"
   it.metadata["homepage_uri"]      = it.homepage

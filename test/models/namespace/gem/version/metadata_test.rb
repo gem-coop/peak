@@ -12,6 +12,12 @@ class Namespace::Gem::Version::MetadataTest < ActiveSupport::TestCase
   end
 
   test "line" do
+    assert_line "|ruby:>= 4.0",     ruby: [">= 4.0"]
+    assert_line "|ruby:>= 4.0&< 5", ruby: [">= 4.0", "< 5"]
+
+    assert_line "|rubygems:>= 4.0",     rubygems: [">= 4.0"]
+    assert_line "|rubygems:>= 4.0&< 5", rubygems: [">= 4.0", "< 5"]
+
     assert_line "|licenses:MIT",     licenses: ["MIT"]
     assert_line "|licenses:MIT&GPL", licenses: ["MIT", "GPL"]
 

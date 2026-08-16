@@ -50,8 +50,8 @@ class Peak::Gem::Upload
   end
   delegate :spec, to: :package
   delegate :name, :executables, :licenses, :summary, :metadata, to: :spec
-  def ruby = spec.required_ruby_version.to_s
-  def rubygems = spec.required_rubygems_version.to_s
+  def ruby = spec.required_ruby_version.as_list
+  def rubygems = spec.required_rubygems_version.as_list
 
   def platform_id
     Peak::Platform.ids_from(platform_key).first

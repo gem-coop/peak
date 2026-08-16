@@ -659,9 +659,9 @@ GEM
       turbo-rails
       view_component (>= 3.7.0)
       zeitwerk (>= 2.6.12)
-    avo-api (4.0.0)
-      avo (>= 4.0.0)
-      avo-licensing (>= 4.0.0)
+    avo-api (4.1.1)
+      avo (>= 4.1.1)
+      avo-licensing (>= 4.1.0)
     avo-authorization (4.1.1)
       avo (>= 4.1.1)
       avo-licensing (>= 4.1.0)
@@ -743,7 +743,7 @@ DEPENDENCIES
   active_record-associated_object
   avo (~> 4.0)
   avo-advanced_search (~> 4.1)!
-  avo-api (~> 4.0)!
+  avo-api (~> 4.1)!
   avo-authorization (~> 4.1)!
   avo-collaboration (~> 4.0)!
   avo-custom_controls (~> 4.1)!
@@ -815,7 +815,7 @@ CHECKSUMS
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
   avo (4.1.10) sha256=4182cab640978901f526be2019af5cbbb3f98b38d179690f1ba1dbe2590d4c3b
   avo-advanced_search (4.1.1) sha256=82258b0af02c916e7ea4231d4d6c8e7647863bd4c4beb35aef98e5d84019a752
-  avo-api (4.0.0) sha256=d6bc62830ba95cbfb457724006dce5fb8689195e8428664d3ab0e3194aca432f
+  avo-api (4.1.1) sha256=79c519ca83c787ec731522343559a84f9205681f8faeff15930ed818db11b8e7
   avo-authorization (4.1.1) sha256=d55917509d8496f5b76048392dd3ba890376af2bdc8ee8f2a5579b635085ef71
   avo-collaboration (4.0.2) sha256=6bec48eeee9fc0340df0df8c94af555567607cdec221adab526e8bf62b450752
   avo-custom_controls (4.1.1) sha256=2590e0daff067d7131658100be6fecc708306afd4bbc9605e28281fdd1a28b62

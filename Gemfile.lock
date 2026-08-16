@@ -662,9 +662,9 @@ GEM
     avo-api (4.0.0)
       avo (>= 4.0.0)
       avo-licensing (>= 4.0.0)
-    avo-authorization (4.0.0)
-      avo (>= 4.0.0)
-      avo-licensing (>= 4.0.0)
+    avo-authorization (4.1.1)
+      avo (>= 4.1.1)
+      avo-licensing (>= 4.1.0)
     avo-collaboration (4.0.2)
       avo (>= 4.0.10)
       avo-licensing (>= 4.0.6)
@@ -744,7 +744,7 @@ DEPENDENCIES
   avo (~> 4.0)
   avo-advanced_search (~> 4.1)!
   avo-api (~> 4.0)!
-  avo-authorization (~> 4.0)!
+  avo-authorization (~> 4.1)!
   avo-collaboration (~> 4.0)!
   avo-custom_controls (~> 4.1)!
   avo-dashboards (~> 4.0)!
@@ -816,7 +816,7 @@ CHECKSUMS
   avo (4.1.3) sha256=290af2d867db7f11a974ea723577aba42b094f9caebcc8134a900f03ff8aea28
   avo-advanced_search (4.1.1) sha256=82258b0af02c916e7ea4231d4d6c8e7647863bd4c4beb35aef98e5d84019a752
   avo-api (4.0.0) sha256=d6bc62830ba95cbfb457724006dce5fb8689195e8428664d3ab0e3194aca432f
-  avo-authorization (4.0.0) sha256=1a6ccd7f57ffef0ecbbf849682646486bf47c274a79a43650a4250ac0f76045a
+  avo-authorization (4.1.1) sha256=d55917509d8496f5b76048392dd3ba890376af2bdc8ee8f2a5579b635085ef71
   avo-collaboration (4.0.2) sha256=6bec48eeee9fc0340df0df8c94af555567607cdec221adab526e8bf62b450752
   avo-custom_controls (4.1.1) sha256=2590e0daff067d7131658100be6fecc708306afd4bbc9605e28281fdd1a28b62
   avo-dashboards (4.0.9) sha256=51898850bc3b6f666611721d7de4d4ef0f87e9446448fbb5437e8f62824dbfe0

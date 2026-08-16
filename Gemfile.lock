@@ -90,7 +90,7 @@ GEM
     addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
     ast (2.4.3)
-    avo (4.1.3)
+    avo (4.1.10)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -698,8 +698,8 @@ GEM
       avo (>= 4.0.13)
       avo-licensing (>= 4.0.9)
       hotwire_combobox (~> 0.4.0)
-    avo-licensing (4.1.0)
-      avo (>= 4.0.26)
+    avo-licensing (4.1.1)
+      avo (>= 4.1.10)
       zeitwerk (>= 2.6.12)
     avo-menu (4.1.1)
       avo (>= 4.1.1)
@@ -720,9 +720,9 @@ GEM
       turbo-rails
       view_component (>= 3.7.0)
       zeitwerk (>= 2.6.12)
-    avo-scopes (4.0.5)
-      avo (>= 4.0.13)
-      avo-licensing (>= 4.0.8)
+    avo-scopes (4.1.2)
+      avo (>= 4.1.6)
+      avo-licensing (>= 4.1.0)
       turbo-rails
       view_component (>= 3.7.0)
       zeitwerk (>= 2.6.12)
@@ -756,7 +756,7 @@ DEPENDENCIES
   avo-nested (~> 4.1)!
   avo-reactive_fields (~> 4.1)!
   avo-record_reordering (~> 4.1)!
-  avo-scopes (~> 4.0)!
+  avo-scopes (~> 4.1)!
   aws-sdk-s3 (~> 1.229)
   bcrypt
   benchmark (~> 0.5.0)
@@ -813,7 +813,7 @@ CHECKSUMS
   acts_as_list (1.2.6) sha256=8345380900b7bee620c07ad00991ccee59af3d8c9e8574f426e321da2865fdc8
   addressable (2.9.0) sha256=7fdf6ac3660f7f4e867a0838be3f6cf722ace541dd97767fa42bc6cfa980c7af
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
-  avo (4.1.3) sha256=290af2d867db7f11a974ea723577aba42b094f9caebcc8134a900f03ff8aea28
+  avo (4.1.10) sha256=4182cab640978901f526be2019af5cbbb3f98b38d179690f1ba1dbe2590d4c3b
   avo-advanced_search (4.1.1) sha256=82258b0af02c916e7ea4231d4d6c8e7647863bd4c4beb35aef98e5d84019a752
   avo-api (4.0.0) sha256=d6bc62830ba95cbfb457724006dce5fb8689195e8428664d3ab0e3194aca432f
   avo-authorization (4.0.0) sha256=1a6ccd7f57ffef0ecbbf849682646486bf47c274a79a43650a4250ac0f76045a
@@ -825,12 +825,12 @@ CHECKSUMS
   avo-http_resource (4.1.7) sha256=dbc89089b4d1d0d9a87069c6c0709995d72ee89c047f8415303883210b85a51f
   avo-icons (0.2.1) sha256=1ceb00725ca6149f754ac9d8651398be03d67ceb6bd22eab98a5394d10210e10
   avo-kanban (4.0.3) sha256=c3e51eb2a2602e03012ff94a3cc6686c4d77dd4ab8da1e5311e1e9272c9e2543
-  avo-licensing (4.1.0) sha256=12692a826bf568501879285f26112a84df4fb0302941741825e1b7f049c5a1bf
+  avo-licensing (4.1.1) sha256=feecdad4d28336343949baf5ec99ffc0694828f43358c6b1883b7b09bbdd52bc
   avo-menu (4.1.1) sha256=1b43f62c9d29c7d8bf5b8b924d61fd63002fa9c8d795c87a993b072f55683d0d
   avo-nested (4.1.0) sha256=bd2030d30a428afb2ce952aacf9814fbff76f811fb11e669301aff92a2eff2bf
   avo-reactive_fields (4.1.0) sha256=2ce6b74c5bef78692979fe80d9a103c3b1cf2255623e65a9161ca6a07ebc3f54
   avo-record_reordering (4.1.1) sha256=ac5111763887cb2b4e426f8cdc763eef38de4942457d099221225d937e988733
-  avo-scopes (4.0.5) sha256=fcc0de3d020f8bcd73e33c939ea7d89872aba0415105a29cf28d4ef3fe4d3d83
+  avo-scopes (4.1.2) sha256=90b86077e0e7e1603399c3346f0119b408932dde4c721f82e5cab6dd5855c369
   aws-eventstream (1.4.0) sha256=116bf85c436200d1060811e6f5d2d40c88f65448f2125bc77ffce5121e6e183b
   aws-partitions (1.1280.0) sha256=4c5f5f0765603a738d6e212ae228ae6e5129696e907e4a2854c03d55ff9524bc
   aws-sdk-core (3.254.1) sha256=518089e32134c3478cd4ec63d07fb966546a45e9e4cbf5f80d2cf16d5699d29b

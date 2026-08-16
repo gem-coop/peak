@@ -18,17 +18,17 @@
 
         <div>
           <dt>licenses</dt>
-          <dd><%= latest.licenses.join(" ").presence || "none" %></dd>
+          <dd><%= latest.licenses.join(", ").presence || "none" %></dd>
         </div>
 
         <div>
           <dt>ruby</dt>
-          <dd><%= latest.ruby %></dd>
+          <dd><%= latest.ruby.join(", ") %></dd>
         </div>
 
         <div>
           <dt>rubygems</dt>
-          <dd><%= latest.rubygems %></dd>
+          <dd><%= latest.rubygems.join(", ") %></dd>
         </div>
 
         <div>

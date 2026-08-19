@@ -693,10 +693,10 @@ GEM
       avo (>= 4.1.12)
       avo-licensing (>= 4.1.1)
       httparty
-    avo-kanban (4.0.3)
+    avo-kanban (4.1.1)
       acts_as_list (~> 1.1)
-      avo (>= 4.0.13)
-      avo-licensing (>= 4.0.9)
+      avo (>= 4.1.1)
+      avo-licensing (>= 4.1.0)
       hotwire_combobox (~> 0.4.0)
     avo-licensing (4.1.1)
       avo (>= 4.1.10)
@@ -751,7 +751,7 @@ DEPENDENCIES
   avo-dynamic_filters (~> 4.1)!
   avo-forms (~> 4.1)!
   avo-http_resource (~> 4.1)!
-  avo-kanban (~> 4.0)!
+  avo-kanban (~> 4.1)!
   avo-menu (~> 4.1)!
   avo-nested (~> 4.1)!
   avo-reactive_fields (~> 4.1)!
@@ -824,7 +824,7 @@ CHECKSUMS
   avo-forms (4.1.1) sha256=ce9c5e4ebfd38292c50f9d30a145c00a19861a4f00c1ad4b81068a2723c53801
   avo-http_resource (4.1.8) sha256=cbc85715fa3abc6376216cd49ef65a10d6b5c4e317b41e6abb5c4fb03523fc81
   avo-icons (0.2.1) sha256=1ceb00725ca6149f754ac9d8651398be03d67ceb6bd22eab98a5394d10210e10
-  avo-kanban (4.0.3) sha256=c3e51eb2a2602e03012ff94a3cc6686c4d77dd4ab8da1e5311e1e9272c9e2543
+  avo-kanban (4.1.1) sha256=bdf1d47e3e2f1ccdd9da1d37c3b004ab7c89e681811b6f63a2ce1199d07bf671
   avo-licensing (4.1.1) sha256=feecdad4d28336343949baf5ec99ffc0694828f43358c6b1883b7b09bbdd52bc
   avo-menu (4.1.1) sha256=1b43f62c9d29c7d8bf5b8b924d61fd63002fa9c8d795c87a993b072f55683d0d
   avo-nested (4.1.0) sha256=bd2030d30a428afb2ce952aacf9814fbff76f811fb11e669301aff92a2eff2bf

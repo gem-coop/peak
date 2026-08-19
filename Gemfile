@@ -67,7 +67,7 @@ group :avo, optional: true do
     gem "avo-dynamic_filters", "~> 4.1"
     gem "avo-forms", "~> 4.1"
     gem "avo-http_resource", "~> 4.1"
-    gem "avo-kanban", "~> 4.0"
+    gem "avo-kanban", "~> 4.1"
     gem "avo-menu", "~> 4.1"
     gem "avo-nested", "~> 4.1"
     # gem "avo-notifications", "~> 4.0" # depends on action_cable/engine, which is disabled

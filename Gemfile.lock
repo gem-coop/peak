@@ -90,7 +90,7 @@ GEM
     addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
     ast (2.4.3)
-    avo (4.1.10)
+    avo (4.1.12)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -689,9 +689,9 @@ GEM
     avo-forms (4.1.1)
       avo (>= 4.1.1)
       avo-licensing (>= 4.1.0)
-    avo-http_resource (4.1.7)
-      avo (>= 4.1.1)
-      avo-licensing (>= 4.1.0)
+    avo-http_resource (4.1.8)
+      avo (>= 4.1.12)
+      avo-licensing (>= 4.1.1)
       httparty
     avo-kanban (4.0.3)
       acts_as_list (~> 1.1)
@@ -813,7 +813,7 @@ CHECKSUMS
   acts_as_list (1.2.6) sha256=8345380900b7bee620c07ad00991ccee59af3d8c9e8574f426e321da2865fdc8
   addressable (2.9.0) sha256=7fdf6ac3660f7f4e867a0838be3f6cf722ace541dd97767fa42bc6cfa980c7af
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
-  avo (4.1.10) sha256=4182cab640978901f526be2019af5cbbb3f98b38d179690f1ba1dbe2590d4c3b
+  avo (4.1.12) sha256=734a16dd5143ab617a6241da0a95e006121bf34a961b1c73c403dd1ea3a24209
   avo-advanced_search (4.1.1) sha256=82258b0af02c916e7ea4231d4d6c8e7647863bd4c4beb35aef98e5d84019a752
   avo-api (4.1.1) sha256=79c519ca83c787ec731522343559a84f9205681f8faeff15930ed818db11b8e7
   avo-authorization (4.1.1) sha256=d55917509d8496f5b76048392dd3ba890376af2bdc8ee8f2a5579b635085ef71
@@ -822,7 +822,7 @@ CHECKSUMS
   avo-dashboards (4.0.9) sha256=51898850bc3b6f666611721d7de4d4ef0f87e9446448fbb5437e8f62824dbfe0
   avo-dynamic_filters (4.1.1) sha256=c169e9d578e488d4884c93fdad6901550c7fbf2309db6e224867fbd2cbc6123b
   avo-forms (4.1.1) sha256=ce9c5e4ebfd38292c50f9d30a145c00a19861a4f00c1ad4b81068a2723c53801
-  avo-http_resource (4.1.7) sha256=dbc89089b4d1d0d9a87069c6c0709995d72ee89c047f8415303883210b85a51f
+  avo-http_resource (4.1.8) sha256=cbc85715fa3abc6376216cd49ef65a10d6b5c4e317b41e6abb5c4fb03523fc81
   avo-icons (0.2.1) sha256=1ceb00725ca6149f754ac9d8651398be03d67ceb6bd22eab98a5394d10210e10
   avo-kanban (4.0.3) sha256=c3e51eb2a2602e03012ff94a3cc6686c4d77dd4ab8da1e5311e1e9272c9e2543
   avo-licensing (4.1.1) sha256=feecdad4d28336343949baf5ec99ffc0694828f43358c6b1883b7b09bbdd52bc

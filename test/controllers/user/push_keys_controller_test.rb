@@ -1,7 +1,7 @@
 require "test_helper"
 
 class User::PushKeysControllerTest < ActionDispatch::IntegrationTest
-  setup { Rails.application.config.action_controller.cache_store.clear }
+  setup { cache_store.clear }
 
   test "get new" do
     get new_user_push_key_url

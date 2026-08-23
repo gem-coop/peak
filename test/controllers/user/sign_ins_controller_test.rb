@@ -1,7 +1,7 @@
 require "test_helper"
 
 class User::SignInsControllerTest < ActionDispatch::IntegrationTest
-  setup { User::SignInsController.cache_store.clear }
+  setup { cache_store.clear }
 
   test "get new" do
     get new_sign_in_url

@@ -1,6 +1,14 @@
 require "test_helper"
 
 class SearchControllerTest < ActionDispatch::IntegrationTest
+  setup { SearchController.cache_store.clear }
+
+  test "rate_limit" do
+    SearchController.rate_limiting(by: remote_addr).increment by: 40
+    get search_url
+    assert_response :too_many_requests
+  end
+
   test "index without query" do
     get search_url
     assert_response :success

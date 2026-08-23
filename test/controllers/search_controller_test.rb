@@ -2,13 +2,13 @@ require "test_helper"
 
 class SearchControllerTest < ActionDispatch::IntegrationTest
   test "index without query" do
-    get search_url, headers: peak_admin_authorization
+    get search_url
     assert_response :success
     assert_results 0
   end
 
   test "index with namespace matching query" do
-    get search_url(q: "gem"), headers: peak_admin_authorization
+    get search_url(q: "gem")
     assert_response :success
     assert_results 2 do
       assert_dom "a", "@gemcoop"
@@ -18,7 +18,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "index with gem matching query" do
-    get search_url(q: "oak"), headers: peak_admin_authorization
+    get search_url(q: "oak")
     assert_response :success
     assert_results 2 do
       assert_dom "a", "@public/oaken"
@@ -27,7 +27,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "index with gem summary query" do
-    get search_url(q: "aims"), headers: peak_admin_authorization
+    get search_url(q: "aims")
     assert_response :success
     assert_results 1 do
       assert_dom "a", "@gemcoop/oaken"
@@ -35,7 +35,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "index with gem summary query partial match on two terms" do
-    get search_url(q: "aim fix"), headers: peak_admin_authorization
+    get search_url(q: "aim fix")
     assert_response :success
     assert_results 1 do
       assert_dom "a", "@gemcoop/oaken"

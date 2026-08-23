@@ -82,4 +82,16 @@ class ActionDispatch::IntegrationTest
     assert_response status
     assert_dom "peak-error"
   end
+
+  def self.controller_class
+    @controller_class ||= name.chomp("Test").constantize.tap do |constant|
+      raise "Invalid controller resolve" unless Class === constant && constant < ActionController::Metal
+    end
+  end
+  delegate :controller_class, to: :class
+  delegate :cache_store, to: :controller_class
+
+  def rate_limiting(by: remote_addr, **)
+    controller_class.rate_limiting(by:, **)
+  end
 end

@@ -1,7 +1,7 @@
 require "test_helper"
 
 class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
-  setup { User::SignUpsController.cache_store.clear }
+  setup { cache_store.clear }
 
   test "get new" do
     get user_sign_ups_url
@@ -74,7 +74,7 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "post create short rate_limit" do
-    limit = User::SignUpsController.rate_limiting(by: "someone@example.com")
+    limit = rate_limiting(by: "someone@example.com")
     limit.increment by: 4
 
     post user_sign_ups_url, params: sign_up_params(namespace_name: "@gemcoop")
@@ -87,7 +87,7 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "post create burst rate_limit" do
-    limit = User::SignUpsController.rate_limiting(by: "burst")
+    limit = rate_limiting(by: "burst")
     limit.increment by: 20
 
     post user_sign_ups_url, params: sign_up_params(namespace_name: "@gemcoop")

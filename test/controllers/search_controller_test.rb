@@ -34,6 +34,14 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "index with gem summary query partial match on two terms" do
+    get search_url(q: "aim fix"), headers: peak_admin_authorization
+    assert_response :success
+    assert_results 1 do
+      assert_dom "a", "@gemcoop/oaken"
+    end
+  end
+
   private
     def assert_results(count, &)
       # puts dom("#search-listings article")

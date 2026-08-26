@@ -56,7 +56,7 @@ end
 
 # Use Avo for our starting UI
 group :avo, optional: true do
-  gem "avo", "~> 4.0"
+  gem "avo", "~> 4.1"
   source "https://packager.dev/avo-hq/" do
     gem "avo-advanced_search", "~> 4.1"
     gem "avo-api", "~> 4.1"

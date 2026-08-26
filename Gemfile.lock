@@ -701,9 +701,9 @@ GEM
     avo-licensing (4.1.1)
       avo (>= 4.1.10)
       zeitwerk (>= 2.6.12)
-    avo-menu (4.1.1)
-      avo (>= 4.1.1)
-      avo-licensing (>= 4.1.0)
+    avo-menu (4.1.2)
+      avo (>= 4.1.13)
+      avo-licensing (>= 4.1.1)
       docile
       zeitwerk (>= 2.6.12)
     avo-nested (4.1.0)
@@ -826,7 +826,7 @@ CHECKSUMS
   avo-icons (0.2.1) sha256=1ceb00725ca6149f754ac9d8651398be03d67ceb6bd22eab98a5394d10210e10
   avo-kanban (4.1.1) sha256=bdf1d47e3e2f1ccdd9da1d37c3b004ab7c89e681811b6f63a2ce1199d07bf671
   avo-licensing (4.1.1) sha256=feecdad4d28336343949baf5ec99ffc0694828f43358c6b1883b7b09bbdd52bc
-  avo-menu (4.1.1) sha256=1b43f62c9d29c7d8bf5b8b924d61fd63002fa9c8d795c87a993b072f55683d0d
+  avo-menu (4.1.2) sha256=12a8bbecbf0b066ce414e617220836ca30e88f863734afeddecf21c381ec6971
   avo-nested (4.1.0) sha256=bd2030d30a428afb2ce952aacf9814fbff76f811fb11e669301aff92a2eff2bf
   avo-reactive_fields (4.1.0) sha256=2ce6b74c5bef78692979fe80d9a103c3b1cf2255623e65a9161ca6a07ebc3f54
   avo-record_reordering (4.1.1) sha256=ac5111763887cb2b4e426f8cdc763eef38de4942457d099221225d937e988733

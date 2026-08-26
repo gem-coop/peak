@@ -653,9 +653,9 @@ GEM
 GEM
   remote: https://packager.dev/avo-hq/
   specs:
-    avo-advanced_search (4.1.1)
-      avo (>= 4.1.1)
-      avo-licensing (>= 4.1.0)
+    avo-advanced_search (4.1.2)
+      avo (>= 4.1.15)
+      avo-licensing (>= 4.1.1)
       turbo-rails
       view_component (>= 3.7.0)
       zeitwerk (>= 2.6.12)
@@ -814,7 +814,7 @@ CHECKSUMS
   addressable (2.9.0) sha256=7fdf6ac3660f7f4e867a0838be3f6cf722ace541dd97767fa42bc6cfa980c7af
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
   avo (4.1.15) sha256=ffef9c0df308c810506d053d84fa5070b37159d186fe2783b2a81f40a7c82e2f
-  avo-advanced_search (4.1.1) sha256=82258b0af02c916e7ea4231d4d6c8e7647863bd4c4beb35aef98e5d84019a752
+  avo-advanced_search (4.1.2) sha256=a54ebdf423dd37f5e7e9057f32f884cbc8a9d2e72b3efc1602c1f7968d5a4fea
   avo-api (4.1.3) sha256=9d8ee1611748b998c3fa07f9719d907af3c17d64ba3889f1016b5191ce70620f
   avo-authorization (4.1.1) sha256=d55917509d8496f5b76048392dd3ba890376af2bdc8ee8f2a5579b635085ef71
   avo-collaboration (4.1.1) sha256=962f2516eaf7ef34f4ce4f6a3ee8171b397a5ace041d6da5c577033822a2f783

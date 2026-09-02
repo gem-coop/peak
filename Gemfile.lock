@@ -90,7 +90,7 @@ GEM
     addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
     ast (2.4.3)
-    avo (4.1.15)
+    avo (4.2.0)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -248,7 +248,7 @@ GEM
       net-smtp
     marcel (1.2.1)
     matrix (0.4.3)
-    meta-tags (2.23.0)
+    meta-tags (2.24.0)
       actionpack (>= 6.0.0)
     mini_mime (1.1.5)
     minitest (6.0.6)
@@ -653,9 +653,9 @@ GEM
 GEM
   remote: https://packager.dev/avo-hq/
   specs:
-    avo-advanced_search (4.1.2)
-      avo (>= 4.1.15)
-      avo-licensing (>= 4.1.1)
+    avo-advanced_search (4.2.0)
+      avo (>= 4.2.0)
+      avo-licensing (>= 4.2.0)
       turbo-rails
       view_component (>= 3.7.0)
       zeitwerk (>= 2.6.12)
@@ -698,8 +698,8 @@ GEM
       avo (>= 4.1.1)
       avo-licensing (>= 4.1.0)
       hotwire_combobox (~> 0.4.0)
-    avo-licensing (4.1.1)
-      avo (>= 4.1.10)
+    avo-licensing (4.2.0)
+      avo (>= 4.2.0)
       zeitwerk (>= 2.6.12)
     avo-menu (4.1.2)
       avo (>= 4.1.13)
@@ -742,7 +742,7 @@ DEPENDENCIES
   active_job-performs
   active_record-associated_object
   avo (~> 4.1)
-  avo-advanced_search (~> 4.1)!
+  avo-advanced_search (~> 4.2)!
   avo-api (~> 4.1)!
   avo-authorization (~> 4.1)!
   avo-collaboration (~> 4.1)!
@@ -813,8 +813,8 @@ CHECKSUMS
   acts_as_list (1.2.6) sha256=8345380900b7bee620c07ad00991ccee59af3d8c9e8574f426e321da2865fdc8
   addressable (2.9.0) sha256=7fdf6ac3660f7f4e867a0838be3f6cf722ace541dd97767fa42bc6cfa980c7af
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
-  avo (4.1.15) sha256=ffef9c0df308c810506d053d84fa5070b37159d186fe2783b2a81f40a7c82e2f
-  avo-advanced_search (4.1.2) sha256=a54ebdf423dd37f5e7e9057f32f884cbc8a9d2e72b3efc1602c1f7968d5a4fea
+  avo (4.2.0) sha256=b51f5f2f4d3b619f46752d323f382f72adc83220acdaffccb541e37b68d91ad3
+  avo-advanced_search (4.2.0) sha256=a575639fa344bb5d6b532c7fd02ab487ace29968cc86ef0a916ddec1b01c310a
   avo-api (4.1.3) sha256=9d8ee1611748b998c3fa07f9719d907af3c17d64ba3889f1016b5191ce70620f
   avo-authorization (4.1.1) sha256=d55917509d8496f5b76048392dd3ba890376af2bdc8ee8f2a5579b635085ef71
   avo-collaboration (4.1.1) sha256=962f2516eaf7ef34f4ce4f6a3ee8171b397a5ace041d6da5c577033822a2f783
@@ -825,7 +825,7 @@ CHECKSUMS
   avo-http_resource (4.1.9) sha256=a5310733b3005a4866b11fe8bfa7bfa97b6b1177d34ff030a918b248713fd7ab
   avo-icons (0.2.1) sha256=1ceb00725ca6149f754ac9d8651398be03d67ceb6bd22eab98a5394d10210e10
   avo-kanban (4.1.1) sha256=bdf1d47e3e2f1ccdd9da1d37c3b004ab7c89e681811b6f63a2ce1199d07bf671
-  avo-licensing (4.1.1) sha256=feecdad4d28336343949baf5ec99ffc0694828f43358c6b1883b7b09bbdd52bc
+  avo-licensing (4.2.0) sha256=c2ff254aacc42d538e2bf2fc2b08ef04182d4790df59823d4528366dc20537ae
   avo-menu (4.1.2) sha256=12a8bbecbf0b066ce414e617220836ca30e88f863734afeddecf21c381ec6971
   avo-nested (4.1.0) sha256=bd2030d30a428afb2ce952aacf9814fbff76f811fb11e669301aff92a2eff2bf
   avo-reactive_fields (4.1.0) sha256=2ce6b74c5bef78692979fe80d9a103c3b1cf2255623e65a9161ca6a07ebc3f54
@@ -900,7 +900,7 @@ CHECKSUMS
   mail (2.9.1) sha256=06574eca475253d6c18145dd70af80d0eb970182d55053497c5f4d797ea160e8
   marcel (1.2.1) sha256=1678e9360e32f9eafa917c80029e2f6d10b2715c66a4b87b6d0da9b9cd1f859f
   matrix (0.4.3) sha256=a0d5ab7ddcc1973ff690ab361b67f359acbb16958d1dc072b8b956a286564c5b
-  meta-tags (2.23.0) sha256=ffe78b5bee398de4ff5ac3316f5a786049538a651643b8476def06c3acc762c1
+  meta-tags (2.24.0) sha256=3a8a7a1059a3f223d08f5364b9ffac6dd2bbbbbe9cbaf1f466d234d4c43f8ab6
   mini_mime (1.1.5) sha256=8681b7e2e4215f2a159f9400b5816d85e9d8c6c6b491e96a12797e798f8bccef
   minitest (6.0.6) sha256=153ea36d1d987a62942382b61075745042a2b3123b1cd48f4c3675af9cc7d6f1
   msgpack (1.8.4) sha256=4411c22d350dd1c20250f7eada3cca2695438c2f769cf0782f0cd065d90a3e7b

@@ -720,9 +720,9 @@ GEM
       turbo-rails
       view_component (>= 3.7.0)
       zeitwerk (>= 2.6.12)
-    avo-scopes (4.1.2)
-      avo (>= 4.1.6)
-      avo-licensing (>= 4.1.0)
+    avo-scopes (4.2.0)
+      avo (>= 4.2.0)
+      avo-licensing (>= 4.2.0)
       turbo-rails
       view_component (>= 3.7.0)
       zeitwerk (>= 2.6.12)
@@ -756,7 +756,7 @@ DEPENDENCIES
   avo-nested (~> 4.1)!
   avo-reactive_fields (~> 4.1)!
   avo-record_reordering (~> 4.1)!
-  avo-scopes (~> 4.1)!
+  avo-scopes (~> 4.2)!
   aws-sdk-s3 (~> 1.229)
   bcrypt
   benchmark (~> 0.5.0)
@@ -830,7 +830,7 @@ CHECKSUMS
   avo-nested (4.1.0) sha256=bd2030d30a428afb2ce952aacf9814fbff76f811fb11e669301aff92a2eff2bf
   avo-reactive_fields (4.1.0) sha256=2ce6b74c5bef78692979fe80d9a103c3b1cf2255623e65a9161ca6a07ebc3f54
   avo-record_reordering (4.1.1) sha256=ac5111763887cb2b4e426f8cdc763eef38de4942457d099221225d937e988733
-  avo-scopes (4.1.2) sha256=90b86077e0e7e1603399c3346f0119b408932dde4c721f82e5cab6dd5855c369
+  avo-scopes (4.2.0) sha256=63c74a15386620442301b62d54836961450040d07480947d9b2ea04fe86da722
   aws-eventstream (1.4.0) sha256=116bf85c436200d1060811e6f5d2d40c88f65448f2125bc77ffce5121e6e183b
   aws-partitions (1.1280.0) sha256=4c5f5f0765603a738d6e212ae228ae6e5129696e907e4a2854c03d55ff9524bc
   aws-sdk-core (3.254.1) sha256=518089e32134c3478cd4ec63d07fb966546a45e9e4cbf5f80d2cf16d5699d29b

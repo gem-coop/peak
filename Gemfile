@@ -69,7 +69,7 @@ group :avo, optional: true do
     gem "avo-http_resource", "~> 4.2"
     gem "avo-kanban", "~> 4.1"
     gem "avo-menu", "~> 4.1"
-    gem "avo-nested", "~> 4.1"
+    gem "avo-nested", "~> 4.2"
     # gem "avo-notifications", "~> 4.0" # depends on action_cable/engine, which is disabled
     gem "avo-reactive_fields", "~> 4.1"
     gem "avo-record_reordering", "~> 4.1"

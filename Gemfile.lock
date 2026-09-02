@@ -689,9 +689,9 @@ GEM
     avo-forms (4.1.2)
       avo (>= 4.1.15)
       avo-licensing (>= 4.1.1)
-    avo-http_resource (4.1.9)
-      avo (>= 4.1.15)
-      avo-licensing (>= 4.1.1)
+    avo-http_resource (4.2.0)
+      avo (>= 4.2.0)
+      avo-licensing (>= 4.2.0)
       httparty
     avo-kanban (4.1.1)
       acts_as_list (~> 1.1)
@@ -750,7 +750,7 @@ DEPENDENCIES
   avo-dashboards (~> 4.1)!
   avo-dynamic_filters (~> 4.1)!
   avo-forms (~> 4.1)!
-  avo-http_resource (~> 4.1)!
+  avo-http_resource (~> 4.2)!
   avo-kanban (~> 4.1)!
   avo-menu (~> 4.1)!
   avo-nested (~> 4.1)!
@@ -822,7 +822,7 @@ CHECKSUMS
   avo-dashboards (4.1.4) sha256=0178a65d33e82f0a9caf3351c6053af3a20ddbf352987649c3057b7ed29dc280
   avo-dynamic_filters (4.1.2) sha256=0c32efe2c145a66aa32c6e871ca5d4ff8fb5a8a942b7c92f48141a3a0d275d63
   avo-forms (4.1.2) sha256=011a11587681ae96a1490c7fd713dc66e9e822550ee7d0464f5744038f3459f9
-  avo-http_resource (4.1.9) sha256=a5310733b3005a4866b11fe8bfa7bfa97b6b1177d34ff030a918b248713fd7ab
+  avo-http_resource (4.2.0) sha256=f099b31f14b1b9fea4c8739aa08b8b2ac50da9c0928b8e57c4c7d4175a6d7a30
   avo-icons (0.2.1) sha256=1ceb00725ca6149f754ac9d8651398be03d67ceb6bd22eab98a5394d10210e10
   avo-kanban (4.1.1) sha256=bdf1d47e3e2f1ccdd9da1d37c3b004ab7c89e681811b6f63a2ce1199d07bf671
   avo-licensing (4.2.0) sha256=c2ff254aacc42d538e2bf2fc2b08ef04182d4790df59823d4528366dc20537ae

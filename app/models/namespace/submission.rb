@@ -9,7 +9,7 @@ class Namespace::Submission < ApplicationRecord
   normalizes :name, with: -> { _1.start_with?("@") ? _1 : "@#{_1}" }
 
   class_attribute :name_pattern, default: /@[a-z0-9-]+/ # For embedding in HTML5 input patterns.
-  validates_uniqueness_of :name, conditions: -> { resolved }
+  validates_uniqueness_of :name
   validates_format_of :name, with: /\A#{name_pattern}\z/
 
   after_create :deliver_welcome_later, :slack_notify_later, unless: :resolved?

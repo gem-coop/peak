@@ -12,6 +12,7 @@ class Namespace::Submission < ApplicationRecord
   validates_uniqueness_of :name
   validates_format_of :name, with: /\A#{name_pattern}\z/
 
+  before_create :reject_existing_namespace_submission, if: :pending?
   after_create :deliver_welcome_later, :slack_notify_later, unless: :resolved?
 
   performs def process_approved
@@ -33,6 +34,10 @@ class Namespace::Submission < ApplicationRecord
   end
 
   private
+    def reject_existing_namespace_submission
+      assign status: :rejected, resolved_at: Time.current if pending? && namespace
+    end
+
     def deliver_welcome_later
       mailer.welcome.deliver_later
     end

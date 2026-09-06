@@ -14,7 +14,7 @@ class Namespace::SubmissionTest < ActiveSupport::TestCase
   test "name format" do
     assert_name_clash "@basic"
 
-    assert submissions.build(name: "basic").valid?
+    refute submissions.build(name: "basic").valid?
     submissions.basic.rejected!
 
     refute submissions.build(name: "basic").valid?

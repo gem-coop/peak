@@ -42,6 +42,50 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_153006) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "billing_stripe_event_receipts", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.jsonb "data", null: false
+    t.string "status", default: "pending", null: false
+    t.string "type", null: false
+    t.datetime "updated_at", null: false
+    t.index ["status"], name: "index_billing_stripe_event_receipts_on_status"
+  end
+
+  create_table "content_collections", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "slug", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_content_collections_on_slug", unique: true
+  end
+
+  create_table "content_connections", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "editor_id", null: false
+    t.bigint "record_id", null: false
+    t.string "record_type", null: false
+    t.datetime "updated_at", null: false
+    t.index ["editor_id"], name: "index_content_connections_on_editor_id"
+    t.index ["record_type", "record_id"], name: "index_content_connections_on_record"
+  end
+
+  create_table "content_editors", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "content_posts", force: :cascade do |t|
+    t.string "brief"
+    t.bigint "collection_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "published_at"
+    t.string "slug", null: false
+    t.string "subtitle"
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_id", "slug"], name: "index_content_posts_on_collection_id_and_slug", unique: true
+    t.index ["collection_id"], name: "index_content_posts_on_collection_id"
+  end
+
   create_table "namespace_accesses", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "namespace_id", null: false
@@ -116,7 +160,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_153006) do
     t.json "executables", default: [], null: false
     t.integer "gem_id", null: false
     t.boolean "has_extensions"
-    t.bigint "index_id"
+    t.bigint "index_id", null: false
     t.json "licenses", default: [], null: false
     t.string "line", null: false
     t.integer "platform_id", null: false

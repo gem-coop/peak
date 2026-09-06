@@ -66,11 +66,10 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
   test "post create with pending namespace name" do
     submissions.pending.create name: "@pending"
 
-    assert_increments User, Namespace::Submission do
+    refute_increments User, Namespace::Submission do
       post user_sign_ups_url, params: sign_up_params(namespace_name: "@pending")
+      assert_response :unprocessable_content
     end
-
-    assert_response :success
   end
 
   test "post create short rate_limit" do

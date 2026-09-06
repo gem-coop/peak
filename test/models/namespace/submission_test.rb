@@ -29,6 +29,21 @@ class Namespace::SubmissionTest < ActiveSupport::TestCase
     assert third.valid?
   end
 
+  test "requesting a namespace that already exists auto-rejects" do
+    freeze_time
+
+    submission = submissions.basic.dup
+    namespace = namespaces.create name: "@auto-rejectable"
+
+    refute_increments Namespace, Namespace::Access do
+      assert_no_emails do
+        submission.update! name: namespace.name
+      end
+    end
+    assert submission.rejected?
+    assert_equal Time.current, submission.resolved_at
+  end
+
   test "resolve" do
     freeze_time
 

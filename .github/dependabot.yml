@@ -5,6 +5,11 @@ updates:
   schedule:
     interval: weekly
   open-pull-requests-limit: 10
+  groups:
+    avo:
+      patterns:
+        - "avo*"
+
 - package-ecosystem: github-actions
   directory: "/"
   schedule:

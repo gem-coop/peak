@@ -770,6 +770,7 @@ DEPENDENCIES
   honeybadger (~> 6.9)
   httpx (~> 1.8)
   image_processing (~> 2.1)
+  json (< 3)
   oaken
   opentelemetry-exporter-otlp
   opentelemetry-instrumentation-all

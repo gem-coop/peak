@@ -59,7 +59,7 @@ group :avo, optional: true do
   gem "avo", "~> 4.1"
   source "https://packager.dev/avo-hq/" do
     gem "avo-advanced_search", "~> 4.2"
-    gem "avo-api", "~> 4.1"
+    gem "avo-api", "~> 4.2"
     gem "avo-authorization", "~> 4.2"
     gem "avo-collaboration", "~> 4.1"
     gem "avo-custom_controls", "~> 4.1"

@@ -56,23 +56,23 @@ end
 
 # Use Avo for our starting UI
 group :avo, optional: true do
-  gem "avo", "~> 4.1"
+  gem "avo", "~> 4.2"
   source "https://packager.dev/avo-hq/" do
     gem "avo-advanced_search", "~> 4.2"
-    gem "avo-api", "~> 4.1"
+    gem "avo-api", "~> 4.2"
     gem "avo-authorization", "~> 4.2"
-    gem "avo-collaboration", "~> 4.1"
-    gem "avo-custom_controls", "~> 4.1"
-    gem "avo-dashboards", "~> 4.1"
+    gem "avo-collaboration", "~> 4.2"
+    gem "avo-custom_controls", "~> 4.2"
+    gem "avo-dashboards", "~> 4.2"
     gem "avo-dynamic_filters", "~> 4.2"
-    gem "avo-forms", "~> 4.1"
+    gem "avo-forms", "~> 4.2"
     gem "avo-http_resource", "~> 4.2"
-    gem "avo-kanban", "~> 4.1"
-    gem "avo-menu", "~> 4.1"
+    gem "avo-kanban", "~> 4.2"
+    gem "avo-menu", "~> 4.2"
     gem "avo-nested", "~> 4.2"
     # gem "avo-notifications", "~> 4.0" # depends on action_cable/engine, which is disabled
-    gem "avo-reactive_fields", "~> 4.1"
-    gem "avo-record_reordering", "~> 4.1"
+    gem "avo-reactive_fields", "~> 4.2"
+    gem "avo-record_reordering", "~> 4.2"
     gem "avo-scopes", "~> 4.2"
   end
 end

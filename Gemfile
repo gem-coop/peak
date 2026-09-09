@@ -65,7 +65,7 @@ group :avo, optional: true do
     gem "avo-custom_controls", "~> 4.1"
     gem "avo-dashboards", "~> 4.1"
     gem "avo-dynamic_filters", "~> 4.2"
-    gem "avo-forms", "~> 4.1"
+    gem "avo-forms", "~> 4.2"
     gem "avo-http_resource", "~> 4.2"
     gem "avo-kanban", "~> 4.1"
     gem "avo-menu", "~> 4.1"

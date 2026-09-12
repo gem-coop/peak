@@ -14,10 +14,16 @@ class User < ApplicationRecord
   before_update { self.email_address_verified_at = nil if email_address_changed? }
   normalizes :email_address, with: -> { _1.strip.downcase }
   validates_uniqueness_of :email_address
+  validate :email_address_domain_not_blocked, if: :email_address_changed?
 
   def verified? = email_address_verified_at?
 
   def system?
     Peak.system_user == self
   end
+
+  private
+    def email_address_domain_not_blocked
+      errors.add :email_address, "uses a blocked domain" if Peak::EmailAddress.new(email_address).blocked_domain?
+    end
 end

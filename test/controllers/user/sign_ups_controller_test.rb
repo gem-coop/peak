@@ -72,6 +72,15 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "post create with a blocked email domain" do
+    refute_increments User, Namespace::Submission do
+      post user_sign_ups_url, params: sign_up_params(email_address: "garbage@relay.#{blocked_domains.mail_com.name}")
+      assert_response :unprocessable_content
+    end
+
+    assert_dom "form p", /blocked email domain/
+  end
+
   test "post create short rate_limit" do
     limit = rate_limiting(by: "someone@example.com")
     limit.increment by: 4

@@ -777,6 +777,7 @@ DEPENDENCIES
   opentelemetry-sdk
   pg (~> 1.6)
   propshaft
+  public_suffix (~> 7.0)
   puma (>= 5.0)
   rails
   redis (~> 6.0)

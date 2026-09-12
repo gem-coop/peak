@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_16_153006) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_12_084500) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -241,6 +241,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_153006) do
     t.string "name", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_namespaces_on_name", unique: true
+  end
+
+  create_table "peak_blocked_domains", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.string "source", default: "manual", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_peak_blocked_domains_on_name", unique: true
+    t.index ["source", "updated_at"], name: "index_peak_blocked_domains_on_source_and_updated_at"
   end
 
   create_table "peak_platforms", force: :cascade do |t|

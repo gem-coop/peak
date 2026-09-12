@@ -15,3 +15,5 @@
       cron: "*/10 * * * *" # every 10 minutes
     ClearExpiredPushKeysJob:
       cron: "6 * * * *" # every hour at 6 minutes past
+    SyncDisposableEmailListJob:
+      cron: "26 4 * * *" # every day at 04:26

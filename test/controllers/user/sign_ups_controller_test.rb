@@ -54,7 +54,7 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "post create with disposed domain" do
+  test "post create with disposable domain" do
     email_address = "garbage@#{disposed_domains.mail_com.name}"
 
     refute_increments User, Namespace::Submission do

@@ -1,9 +1,10 @@
 class User::SignUp
   mattr_accessor :per_owner_limit, default: 5
 
-  include ActiveModel::Model
+  include ActiveModel::Model, ActiveModel::Attributes
   attr_accessor :name, :email_address, :namespace_name
 
+  validate { errors.add(:base, "can't sign up using a disposable domain name.") if disposable_domain? }
   validate { errors.add(:base, "namespace limit reached. contact support for help.") if limit_reached? }
 
   def save
@@ -12,6 +13,10 @@ class User::SignUp
     # Race Condition guard: namespace name can be taken after uniqueness constraint checks,
     # so Active Record raises when trying to commit the transaction.
     false
+  end
+
+  def disposable_domain?
+    Peak::EmailAddress::DisposedDomain.include? email_address
   end
 
   def limit_reached?

@@ -1,6 +1,8 @@
 require "test_helper"
 
 class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
+  setup { cache_store.clear }
+
   def namespace = namespaces.gemcoop
   def token = user_push_keys.gemcoop_plain.token
 
@@ -208,6 +210,17 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     end
     assert_response :conflict
     assert_match "already exists", response.body
+  end
+
+  test "post create -- rate_limit" do
+    rate_limiting(by: token).increment by: 20
+
+    package = file_fixture "peak/peak-0.2.0.gem"
+
+    refute_increments gems.peak.versions do
+      post namespace_gem_push_url(namespace:), env: { "RAW_POST_DATA" => package.binread, authorization: "Bearer #{token}" }
+    end
+    assert_response :too_many_requests
   end
 
   test "show serves a requested byte range" do

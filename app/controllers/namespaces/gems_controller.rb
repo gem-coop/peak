@@ -2,6 +2,7 @@ class Namespaces::GemsController < Public::BaseController
   include ActiveStorage::Streaming
 
   skip_forgery_protection only: :create
+  rate_limit to: 20, within: 1.minute, by: :push_key_token, with: :rate_limit_response, only: :create
   before_action :halt_exhaustive_upload, :set_user_from_push_key, only: :create
 
   def create
@@ -44,6 +45,10 @@ class Namespaces::GemsController < Public::BaseController
   end
 
   private
+    def rate_limit_response
+      render Peak::Error("You can only push 20 gems per minute. Try again later."), status: :too_many_requests
+    end
+
     def halt_exhaustive_upload
       head :bad_request if request.content_length > Peak::Gem::Upload.limit
     end

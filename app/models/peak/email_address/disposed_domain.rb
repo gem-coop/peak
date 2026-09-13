@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Peak::EmailAddress::DisposedDomain < ApplicationRecord
-  class ImportJob
+  class ImportJob < ApplicationJob
     def perform = Peak::EmailAddress::DisposedDomain.import
   end
 
@@ -12,6 +12,7 @@ class Peak::EmailAddress::DisposedDomain < ApplicationRecord
       insert_all domains.map { {name: _1} }, unique_by: :name
     end
   end
+  def self.import_later = ImportJob.perform_later
   URL = "https://raw.githubusercontent.com/disposable-email-domains/disposable-email-domains/refs/heads/main/disposable_email_blocklist.conf"
 
   def self.include?(name)

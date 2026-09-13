@@ -1,7 +1,15 @@
 require "test_helper"
 
 class Peak::EmailAddress::DisposedDomainTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
+
   def klass = Peak::EmailAddress::DisposedDomain
+
+  test "import job" do
+    assert_enqueued_with job: klass::ImportJob do
+      klass.import_later
+    end
+  end
 
   test "import" do
     stub_imports_response body: "domain-name.com\n"

@@ -32,8 +32,7 @@ class User::PushKeysControllerTest < ActionDispatch::IntegrationTest
 
   test "create doesn't let slip if the user doesn't exist" do
     post user_push_keys_url, params: { email_address: "nonexistent@example.com" }
-    assert_response :success
-    assert_match "Email sent!", response.body
+    assert_ok
   end
 
   test "create deletes existing push key" do

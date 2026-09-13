@@ -8,12 +8,7 @@ class User::EmailVerificationsController < ApplicationController
   end
 
   def create
-    verification = User::EmailVerification.find_by(email_address: params[:email_address])
-
-    if verification && !verification.verified?
-      verification.deliver_later
-    end
-
+    User::EmailVerification.find_by(params.permit(:email_address))&.deliver_pending_later
     render Success
   end
 

@@ -13,5 +13,7 @@
     # PRO TIP: build schedules via https://crontab.guru
     Namespace::Index::Cooldown::Refresh::FanoutJob:
       cron: "*/10 * * * *" # every 10 minutes
+    Peak::EmailAddress::DisposedDomain::ImportJob:
+      cron: "0 0 * * *" # at 00:00
     ClearExpiredPushKeysJob:
       cron: "6 * * * *" # every hour at 6 minutes past

@@ -54,6 +54,16 @@ class User::SignUpsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "post create with disposable domain" do
+    email_address = "garbage@#{disposed_domains.mail_com.name}"
+
+    refute_increments User, Namespace::Submission do
+      post user_sign_ups_url, params: sign_up_params(email_address:)
+    end
+    assert_response :unprocessable_entity
+    assert_dom "form p", /disposable domain/
+  end
+
   test "post create with resolved namespace name" do
     submissions.rejected.create name: "@rejected"
 

@@ -1,9 +1,11 @@
 class User::SignUp
   mattr_accessor :per_owner_limit, default: 5
 
-  include ActiveModel::Model
-  attr_accessor :name, :email_address, :namespace_name
+  include ActiveModel::Attributes, ActiveModel::Model
+  attribute :email_address, Peak::EmailAddress::Type.new
+  attr_accessor :name, :namespace_name
 
+  validate { errors.add(:base, "can't sign up using a disposable domain name.") if email_address.disposable_domain? }
   validate { errors.add(:base, "namespace limit reached. contact support for help.") if limit_reached? }
 
   def save

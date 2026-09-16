@@ -94,7 +94,7 @@ gem "opentelemetry-instrumentation-all"
 gem "opentelemetry-sdk"
 gem "pg", "~> 1.6"
 gem "redis", "~> 6.0"
-gem "resend", "~> 1.14"
+gem "resend", "~> 1.15"
 gem "ruby-vips", "~> 2.0"
 gem "sidekiq-scheduler", "~> 6.0"
 gem "sidekiq", "~> 8.1", require: %w[sidekiq sidekiq/api]

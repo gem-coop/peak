@@ -77,7 +77,7 @@ group :avo, optional: true do
   end
 end
 
-gem "json", "< 3" # LOCKED: activesupport@8.1.3.1: ActiveSupport::JSON.decode fails on JSON 3+.
+gem "json", "< 3.0" # LOCKED: activesupport@8.1.3.1: ActiveSupport::JSON.decode fails on JSON 3+.
 
 # Use next-gen Rails extensions
 gem "oaken"

@@ -563,8 +563,8 @@ GEM
       base64
       httparty (>= 0.22.0)
     rexml (3.4.4)
-    rubocop (1.88.1)
-      json (~> 2.3)
+    rubocop (1.91.0)
+      json (>= 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
       parallel (>= 1.10)
@@ -776,7 +776,7 @@ DEPENDENCIES
   honeybadger (~> 6.9)
   httpx (~> 1.8)
   image_processing (~> 2.1)
-  json (< 3)
+  json (< 3.0)
   oaken
   opentelemetry-exporter-otlp
   opentelemetry-instrumentation-all
@@ -1022,7 +1022,7 @@ CHECKSUMS
   reline (0.7.0) sha256=5b012d8e55dbf9d450f12bde2cf7d15ff546ae80b3f8f3b30e570d431815583d
   resend (1.15.0) sha256=8903fbb162e64fe2075727ca74161cb1b66051a2c2b2cd114666bb65c5303e8e
   rexml (3.4.4) sha256=19e0a2c3425dfbf2d4fc1189747bdb2f849b6c5e74180401b15734bc97b5d142
-  rubocop (1.88.1) sha256=726af773d6bc169ed3ff852f3ca020b7c58d39c34e7a8d879a8e0147cc994f26
+  rubocop (1.91.0) sha256=9c82b7bf391c5d7e3798c5b9996e22a1fe3bd7468e351dfdeb96140c058296d0
   rubocop-ast (1.49.1) sha256=4412f3ee70f6fe4546cc489548e0f6fcf76cafcfa80fa03af67098ffed755035
   rubocop-performance (1.26.1) sha256=cd19b936ff196df85829d264b522fd4f98b6c89ad271fa52744a8c11b8f71834
   rubocop-rails (2.35.5) sha256=f00b3c936002ba8e9ac62e8607c54bb24cda44b36e41b9c7e4f3872e1b0f3fe3

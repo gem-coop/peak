@@ -90,7 +90,7 @@ GEM
     addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
     ast (2.4.3)
-    avo (4.2.1)
+    avo (4.2.3)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -129,7 +129,7 @@ GEM
     base64 (0.3.0)
     bcrypt (3.1.22)
     benchmark (0.5.0)
-    bigdecimal (4.1.2)
+    bigdecimal (4.1.3)
     bindex (0.8.1)
     bootsnap (1.26.0)
       msgpack (~> 1.5)
@@ -226,7 +226,7 @@ GEM
     inline_svg (1.10.0)
       activesupport (>= 3.0)
       nokogiri (>= 1.6)
-    io-console (0.9.2)
+    io-console (0.9.3)
     irb (1.18.0)
       pp (>= 0.6.0)
       prism (>= 1.3.0)
@@ -659,8 +659,8 @@ GEM
       turbo-rails
       view_component (>= 3.7.0)
       zeitwerk (>= 2.6.12)
-    avo-api (4.2.0)
-      avo (>= 4.2.0)
+    avo-api (4.2.3)
+      avo (>= 4.2.3)
       avo-licensing (>= 4.2.0)
     avo-authorization (4.2.0)
       avo (>= 4.2.0)
@@ -698,8 +698,8 @@ GEM
       avo (>= 4.2.0)
       avo-licensing (>= 4.2.0)
       hotwire_combobox (~> 0.4.0)
-    avo-licensing (4.2.0)
-      avo (>= 4.2.0)
+    avo-licensing (4.2.1)
+      avo (>= 4.2.3)
       zeitwerk (>= 2.6.12)
     avo-menu (4.2.0)
       avo (>= 4.2.0)
@@ -814,9 +814,9 @@ CHECKSUMS
   acts_as_list (1.2.6) sha256=8345380900b7bee620c07ad00991ccee59af3d8c9e8574f426e321da2865fdc8
   addressable (2.9.0) sha256=7fdf6ac3660f7f4e867a0838be3f6cf722ace541dd97767fa42bc6cfa980c7af
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
-  avo (4.2.1) sha256=1e1f2a6851590b5bb03bbd7f76175f58ba3b77ebab53e3376c32560c0a1334eb
+  avo (4.2.3) sha256=a2d365655a537282de62dcc839ad0839ccca141ef8fc7b47aa903d62b3274bfe
   avo-advanced_search (4.2.0) sha256=a575639fa344bb5d6b532c7fd02ab487ace29968cc86ef0a916ddec1b01c310a
-  avo-api (4.2.0) sha256=68cf5954d6c56c52ce96454787ecc5a4f5be34ff6b50538f7e9408dcd4e3e3b3
+  avo-api (4.2.3) sha256=54a676fb8d0d6949ce279f20dfcdf5729326c41d98a64b30376143ff3db2edce
   avo-authorization (4.2.0) sha256=7a88f9133c9c024ae6e91bd256c3836ad4bb93e7bada4a3074d931d534685e16
   avo-collaboration (4.2.0) sha256=45cbe88263ab8cfd02f6ef1e127cfb43c45b442f7f2c3212ff7bc61f7486c78f
   avo-custom_controls (4.2.0) sha256=0472bc6db72644977c25a47ea22883570c1636720dbeac19ae9e11536c3dcee7
@@ -826,7 +826,7 @@ CHECKSUMS
   avo-http_resource (4.2.0) sha256=f099b31f14b1b9fea4c8739aa08b8b2ac50da9c0928b8e57c4c7d4175a6d7a30
   avo-icons (0.2.1) sha256=1ceb00725ca6149f754ac9d8651398be03d67ceb6bd22eab98a5394d10210e10
   avo-kanban (4.2.0) sha256=e8b70eec3f870b383cf72e19f1a939465dd21cd7b8f12e39b17e055881e1b6f6
-  avo-licensing (4.2.0) sha256=c2ff254aacc42d538e2bf2fc2b08ef04182d4790df59823d4528366dc20537ae
+  avo-licensing (4.2.1) sha256=89d8d31b06be27cabdb10de50b4b7a7a48fe0050ec5ce9f835f27db7919bfb29
   avo-menu (4.2.0) sha256=33e39da4a97cb22fab71b9744863e12936a4c76948581271306e21b2553362ab
   avo-nested (4.2.0) sha256=97961ab9bd6dc01d947ac68f867d98e75d1caa22fde6b382bbb2c8198ad8bb27
   avo-reactive_fields (4.2.0) sha256=dbbf42f830561632812774d1eb866153b026efe4bc9964c77960c4f43b46d390
@@ -841,7 +841,7 @@ CHECKSUMS
   base64 (0.3.0) sha256=27337aeabad6ffae05c265c450490628ef3ebd4b67be58257393227588f5a97b
   bcrypt (3.1.22) sha256=1f0072e88c2d705d94aff7f2c5cb02eb3f1ec4b8368671e19112527489f29032
   benchmark (0.5.0) sha256=465df122341aedcb81a2a24b4d3bd19b6c67c1530713fd533f3ff034e419236c
-  bigdecimal (4.1.2) sha256=53d217666027eab4280346fba98e7d5b66baaae1b9c3c1c0ffe89d48188a3fbd
+  bigdecimal (4.1.3) sha256=61ebe1e5e559bdc3cc6f2c0ee7f427321fc838f59611c294356eb04d6e21cf66
   bindex (0.8.1) sha256=7b1ecc9dc539ed8bccfc8cb4d2732046227b09d6f37582ff12e50a5047ceb17e
   bootsnap (1.26.0) sha256=ca96237015e6cd74a02963d5821cf00ac5ea134653b323e8cd6d702a7718bf1b
   brakeman (8.0.6) sha256=759cc69341115e6c2dcd47b6fd8649a0b9bd540e3585ac8a0a94e31c66fee386
@@ -890,7 +890,7 @@ CHECKSUMS
   i18n (1.15.2) sha256=00f9eb62412fe593b2a65a97daa75300d37abb8f7202ec748e94b6d46a9dd1b5
   image_processing (2.1.0) sha256=ca3814b1b909fc5fab68b261c50eaffef11e29a6907143e9cf1efc14b6dc6f47
   inline_svg (1.10.0) sha256=5b652934236fd9f8adc61f3fd6e208b7ca3282698b19f28659971da84bf9a10f
-  io-console (0.9.2) sha256=efa74f891dd03c0939a931dfc6e74c2813d904763d456ea9762b0525e748db08
+  io-console (0.9.3) sha256=f555049461b0afb78a5448b5be8e7c7b48371347cd48abfc22814764160000dd
   irb (1.18.0) sha256=de9454a0703a54704b9811a5ef31a60c86949fbf4013fcf244fabc7c775248e3
   jmespath (1.6.2) sha256=238d774a58723d6c090494c8879b5e9918c19485f7e840f2c1c7532cf84ebcb1
   json (2.21.2) sha256=1f1d3b7cf2b3ba1a69beca0bb6db13d5438b80bff3cd54cdaaa620b9b07c1c6a

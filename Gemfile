@@ -99,6 +99,6 @@ gem "ruby-vips", "~> 2.0"
 gem "sidekiq-scheduler", "~> 6.0"
 gem "sidekiq", "~> 8.1", require: %w[sidekiq sidekiq/api]
 gem "slack-notifier", "~> 2.4"
-
 gem "benchmark", "~> 0.5.0"
+gem "stripe"
 gem "strong_migrations", "~> 2.8"

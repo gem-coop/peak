@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+stripe listen --use-configured-webhooks --forward-to localhost:3000

@@ -1,12 +1,13 @@
 class Namespace::Gem::Imports < ActiveRecord::AssociatedObject
-  def import_all
-    pending_refs.each { |ref| import_ref ref }
-    gem.index.compact
+  # Call `index.compact` afterwards, as needed.
+  performs def import_all(index)
+    pending_refs.each { |ref| import_ref ref, index }
+    gem.reindex
   end
 
-  def import_ref(ref)
-    upload = Peak::Gem::Upload.read server.download(ref), published_at: publishing_ledger[ref]
-    versions.system.new(ref:).consume(upload)
+  def import_ref(ref, index)
+    upload = Package.new server.gemspec(ref)
+    versions.system.new(ref:).consume(upload, index:, **publishing_ledger[ref])
   end
 
   def pending_refs
@@ -16,9 +17,19 @@ class Namespace::Gem::Imports < ActiveRecord::AssociatedObject
   private
     delegate :server, :versions, to: :gem
 
+    class Package < Peak::Gem::Upload
+      attr_reader :spec, :checksum
+
+      def initialize(spec)
+        @spec = spec
+      end
+    end
+
     def publishing_ledger
       @publishing_ledger ||= server.versions_json.to_h do |json|
-        [json.values_at("number", "platform").join("-").chomp("-ruby"), json["created_at"]]
+        key = json.values_at("number", "platform").join("-").chomp("-ruby")
+        value = {published_at: json["created_at"], checksum: json["sha"]}
+        [key, value]
       end.compact
     end
 end

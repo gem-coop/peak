@@ -11,6 +11,8 @@ class Namespace < ApplicationRecord
   has_many :gems, dependent: :destroy
   has_one_built :stable_index, -> { public_access.where(slug: :stable) }, class_name: "Index"
 
+  has_one :mirror, dependent: :destroy
+
   scope :named_like, -> { _1.blank? ? none : where("name ILIKE ?", "%#{_1}%") }
 
   def self.named(name) = find_by!(name:)

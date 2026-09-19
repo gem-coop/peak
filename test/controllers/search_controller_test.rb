@@ -18,7 +18,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
   test "index with namespace matching query" do
     get search_url(q: "gem")
     assert_response :success
-    assert_results 2 do
+    assert_results 3 do
       assert_dom "a", "@gemcoop"
       assert_dom "a", "@gemcoop/peak"
       assert_dom "p mark", "gem"
@@ -29,7 +29,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     get search_url(q: "oak")
     assert_response :success
     assert_results 2 do
-      assert_dom "a", "@public/oaken"
+      assert_dom "a", "@rubygems/oaken"
       assert_dom "a", "@gemcoop/oaken"
     end
   end

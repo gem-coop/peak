@@ -1,4 +1,4 @@
-namespace = namespaces.create_approved :public, name: "@public"
+namespace = namespaces.create_approved :rubygems, name: "@rubygems"
 
 gems.with namespace: do
   index = namespace.stable_index

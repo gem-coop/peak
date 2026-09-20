@@ -1,7 +1,6 @@
 class Namespace::Gem::Server < ActiveRecord::AssociatedObject
   def gemspec(ref)
-    # TODO: Use `load` and pass something so Gem::Specification, Gem::Requirement are valid to parse.
-    YAML.unsafe_load client.get("gemspecs/#{gem.name}-#{ref}.gem").body.to_s
+    Gem::Specification.from_yaml client.get("gemspecs/#{gem.name}-#{ref}.gem").body.to_s
   end
 
   def download(ref)

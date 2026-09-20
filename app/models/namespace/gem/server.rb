@@ -18,5 +18,5 @@ class Namespace::Gem::Server < ActiveRecord::AssociatedObject
   end
 
   private
-    mattr_reader :client, default: HTTPX.plugin(:brotli).with(origin: "https://gem.coop")
+    mattr_reader :client, default: HTTPX.plugin(:persistent).with(origin: "https://rubygems.org")
 end

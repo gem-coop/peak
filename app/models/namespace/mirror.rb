@@ -1,5 +1,8 @@
 class Namespace::Mirror < ApplicationRecord
   belongs_to :namespace
+
+  scope :enabled, -> { where(enabled: true) }
+
   validates :url, presence: true
 
   before_validation do

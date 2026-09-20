@@ -1,6 +1,8 @@
 class Namespace::Gem::Server < ActiveRecord::AssociatedObject
   def gemspec(ref)
-    Gem::Specification.from_yaml client.get("gemspecs/#{gem.name}-#{ref}.gem").body.to_s
+    body = client.get("quick/Marshal.4.8/#{gem.name}-#{ref}.gemspec.rz").body.to_s
+    require "rubygems/safe_marshal"
+    Gem::SafeMarshal.safe_load Gem::Util.inflate(body)
   end
 
   def download(ref)

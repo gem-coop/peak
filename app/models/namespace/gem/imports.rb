@@ -1,29 +1,22 @@
 class Namespace::Gem::Imports < ActiveRecord::AssociatedObject
   # Call `index.compact` afterwards, as needed.
   performs def import_all(index)
-    pending_refs.each { |ref| import_ref ref, index }
+    known_refs = server.refs
+
+    yanked_refs = versions.where.not(ref: known_refs).pluck(:ref)
+    versions.where(ref: yanked_refs).destroy_all
+
+    pending_refs = known_refs.then { _1.without versions.where(ref: _1).pluck(:ref) }
+    pending_refs.each do |ref|
+      upload = Peak::Gem::Gemspec.new server.gemspec(ref)
+      versions.system.new(ref:).consume(upload, index:, **publishing_ledger[ref])
+    end
+
     gem.reindex
-  end
-
-  def import_ref(ref, index)
-    upload = Package.new server.gemspec(ref)
-    versions.system.new(ref:).consume(upload, index:, **publishing_ledger[ref])
-  end
-
-  def pending_refs
-    server.refs.then { _1.without versions.where(ref: _1).pluck(:ref) }
   end
 
   private
     delegate :server, :versions, to: :gem
-
-    class Package < Peak::Gem::Upload
-      attr_reader :spec, :checksum
-
-      def initialize(spec)
-        @spec = spec
-      end
-    end
 
     def publishing_ledger
       @publishing_ledger ||= server.versions_json.to_h do |json|

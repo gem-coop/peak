@@ -1,0 +1,54 @@
+--- !ruby/object:Gem::Specification
+name: rake
+version: !ruby/object:Gem::Version
+  version: 13.0.0
+platform: ruby
+authors:
+- Hiroshi SHIBATA
+- Eric Hodel
+- Jim Weirich
+bindir: bin
+cert_chain: []
+date: 2019-09-27 00:00:00.000000000 Z
+dependencies: []
+description: |
+  Rake is a Make-like program implemented in Ruby. Tasks and dependencies are
+  specified in standard Ruby syntax.
+  Rake has the following features:
+    * Rakefiles (rake's version of Makefiles) are completely defined in standard Ruby syntax.
+      No XML files to edit. No quirky Makefile syntax to worry about (is that a tab or a space?)
+    * Users can specify tasks with prerequisites.
+    * Rake supports rule patterns to synthesize implicit tasks.
+    * Flexible FileLists that act like arrays but know about manipulating file names and paths.
+    * Supports parallel execution of tasks.
+email:
+- hsbt@ruby-lang.org
+- drbrain@segment7.net
+- ''
+executables: []
+extensions: []
+extra_rdoc_files: []
+files: []
+homepage: https://github.com/ruby/rake
+licenses:
+- MIT
+metadata: {}
+rdoc_options: []
+require_paths:
+- lib
+required_ruby_version: !ruby/object:Gem::Requirement
+  requirements:
+  - - ">="
+    - !ruby/object:Gem::Version
+      version: '2.2'
+required_rubygems_version: !ruby/object:Gem::Requirement
+  requirements:
+  - - ">="
+    - !ruby/object:Gem::Version
+      version: 1.3.2
+requirements: []
+rubygems_version: 3.0.3
+specification_version: 4
+summary: Rake is a Make-like program implemented in Ruby
+test_files: []
+

@@ -10,7 +10,7 @@ class Namespace::Gem::Server < ActiveRecord::AssociatedObject
   end
 
   def refs
-    info.lines.map { _1.split(" ", 2).first }.without "---"
+    info.sub(/\A.*---\n/m, "").lines.map { _1.split(" ", 2).first }
   end
   def info = client.get("/info/#{gem.name}").body.to_s
 

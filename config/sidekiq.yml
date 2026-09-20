@@ -11,8 +11,8 @@
 :scheduler:
   :schedule:
     # PRO TIP: build schedules via https://crontab.guru
-    Namespace::Mirror::SyncFanoutJob:
-      cron: "*/10 * * * *" # every 10 minutes
+    # Namespace::Mirror::SyncFanoutJob:
+    #   cron: "*/10 * * * *" # every 10 minutes
     Namespace::Index::Cooldown::Refresh::FanoutJob:
       cron: "*/10 * * * *" # every 10 minutes
     Peak::EmailAddress::DisposedDomain::ImportJob:

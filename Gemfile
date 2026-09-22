@@ -86,9 +86,11 @@ gem "active_job-performs"
 gem "action_controller-stashed_redirects"
 
 gem "aws-sdk-s3", "~> 1.232"
+gem "benchmark", "~> 0.5.0"
 gem "brotli", "~> 0.8.0"
 gem "honeybadger", "~> 6.9"
 gem "httpx", "~> 1.8"
+gem "mail", "~> 2.9"
 gem "opentelemetry-exporter-otlp"
 gem "opentelemetry-instrumentation-all"
 gem "opentelemetry-sdk"
@@ -99,6 +101,4 @@ gem "ruby-vips", "~> 2.0"
 gem "sidekiq-scheduler", "~> 6.0"
 gem "sidekiq", "~> 8.1", require: %w[sidekiq sidekiq/api]
 gem "slack-notifier", "~> 2.4"
-
-gem "benchmark", "~> 0.5.0"
 gem "strong_migrations", "~> 2.8"

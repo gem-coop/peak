@@ -778,6 +778,7 @@ DEPENDENCIES
   httpx (~> 1.8)
   image_processing (~> 2.1)
   json (< 4.0)
+  mail (~> 2.9)
   oaken
   opentelemetry-exporter-otlp
   opentelemetry-instrumentation-all

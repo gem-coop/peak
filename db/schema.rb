@@ -168,7 +168,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_26_130403) do
     t.string "ref", null: false
     t.json "ruby", default: [], null: false
     t.json "rubygems", default: [], null: false
-    t.string "summary"
+    t.string "summary", default: "", null: false
     t.datetime "updated_at", null: false
     t.string "created_by_type", default: "User", null: false
     t.index ["created_by_id"], name: "index_namespace_gem_versions_on_created_by_id"

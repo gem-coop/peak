@@ -2,7 +2,7 @@ module Peak extend self
   def table_name_prefix = "peak_"
 
   Release = Data.define(:sha)
-  sha = ENV.fetch("GIT_SHA") { `git rev-parse HEAD || jj log -r @ -T change_id -G`.chomp }
+  sha = ENV.fetch("GIT_SHA") { `git rev-parse HEAD 2> /dev/null || jj log -r @ -T change_id -G`.chomp }
   mattr_reader :release, default: Release.new(sha:)
 
   def host

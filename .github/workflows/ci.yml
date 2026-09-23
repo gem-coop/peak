@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   scan:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
 
     steps:
       - name: Checkout code
@@ -30,7 +30,7 @@ jobs:
         run: bin/brakeman --no-pager
 
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     env:
       RUBOCOP_CACHE_ROOT: tmp/rubocop
     steps:
@@ -56,7 +56,7 @@ jobs:
         run: bin/rubocop -f github
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     env:
       RAILS_ENV: test
 

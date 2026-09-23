@@ -13,16 +13,13 @@ class Namespace::Mirror < ApplicationRecord
     @uri ||= Addressable::URI.parse(url)
   end
 
-  performs def sync
-    gems_to_sync.in_groups_of(1000, false).each do |names|
-      # ensure the gems exist
+  performs def sync(force_all: false)
+    update!(last_seen_line: nil, last_seen_line_end: nil) if force_all
+
+    gems_to_sync do |names|
       gem_attrs = names.map { {name: _1, namespace_id:} }
       Namespace::Gem.upsert_all gem_attrs, unique_by: %i[namespace_id name], returning: false
-
-      # queue and import those gem's versions
-      Namespace::Gem::Imports.where(namespace_id:, name: names).each do |i|
-        i.import_all namespace.stable_index
-      end
+      ActiveJob.perform_all_later gem_attrs.map { Namespace::Mirror::GemImportJob.new(**_1) }
     end
 
     # compact?
@@ -30,21 +27,27 @@ class Namespace::Mirror < ApplicationRecord
   end
 
   def gems_to_sync
-    lines = versions.lines
-    lines = lines[last_seen_line..] if last_seen_line_valid?(lines)
-    update_last_seen_line!(versions.lines)
-    lines.map { _1.split(" ", 2).first }.uniq
+    lines = versions.lines(chomp: true).reject(&:blank?)
+    Rails.logger.debug { "[mirror] #{url} versions contains #{lines.count} lines" }
+    numbered = lines.each_with_index.to_a
+    numbered = numbered[(last_seen_line + 1)..] if last_seen_line_valid?(numbered)
+    Rails.logger.debug { "[mirror] Resuming after line #{last_seen_line.inspect}: #{numbered.count} lines left" }
+
+    numbered.each_slice(1000) do |batch|
+      yield batch.map { _1.first.split(" ", 2).first }.uniq
+      update_last_seen_line!(*batch.last)
+    end
   end
 
+  # Ensure our line number matches the content of the line as well
   def last_seen_line_valid?(lines)
-    last_line = last_seen_line && lines[last_seen_line]
-    last_line && last_seen_line_end && last_line.end_with?(last_seen_line_end)
+    line = last_seen_line && lines[last_seen_line]&.first
+    line && last_seen_line_end && line.end_with?(last_seen_line_end)
   end
 
-  def update_last_seen_line!(lines)
-    last_seen_line = lines.size - 1
-    last_seen_line_end = lines[last_seen_line]&.slice(-50..)
-    update!(last_seen_line:, last_seen_line_end:)
+  def update_last_seen_line!(line, line_no)
+    Rails.logger.debug { "[mirror] Updating last seen line to #{line_no}" }
+    update! last_seen_line: line_no, last_seen_line_end: line.last(50)
   end
 
   def versions

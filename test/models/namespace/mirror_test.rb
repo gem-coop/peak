@@ -1,8 +1,22 @@
 require "test_helper"
 
 class Namespace::MirrorTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
+
   def mirror
     namespaces.rubygems.mirror
+  end
+
+  def sync
+    perform_enqueued_jobs do
+      mirror.sync
+    end
+  end
+
+  def enqueued_gem_names
+    enqueued_jobs.filter_map do |job|
+      job[:args].first["name"] if job[:job] == Namespace::Mirror::GemImportJob
+    end
   end
 
   test "normalizes a url without a trailing slash" do
@@ -57,7 +71,7 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
       rake -100.0.0
       rake 13.3.0 1330aaaaaaaaaaaaaaaaaaaaaaaaaaaa
     END
-    mirror.sync
+    sync
     assert_versions "rake", %w[13.0.0.pre.1 13.0.0 13.0.1 13.1.0 13.2.0 13.2.1 13.3.0]
 
     # no changes, compact
@@ -65,7 +79,7 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
       ---
       rake 13.0.0.pre.1,13.0.0,13.0.1,13.0.2,13.0.3,13.0.4,13.0.5,13.0.6,13.1.0,13.2.0,13.2.1,13.3.0 1330aaaaaaaaaaaaaaaaaaaaaaaaaaaa
     END
-    mirror.sync
+    sync
     assert_versions "rake", %w[13.0.0.pre.1 13.0.0 13.0.1 13.1.0 13.2.0 13.2.1 13.3.0]
   end
 
@@ -88,7 +102,7 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
       13.2.1 |checksum:46cb38dae65d7d74b6020a4ac9d48afed8eb8149c040eccf0523bec91907059d,ruby:>= 2.3
       13.3.0 |checksum:96f5092d786ff412c62fde76f793cc0541bd84d2eb579caa529aa8a059934493,ruby:>= 2.3
     END
-    mirror.sync
+    sync
     assert_versions "rake", %w[13.0.0.pre.1 13.0.0 13.0.1 13.1.0 13.2.0 13.2.1 13.3.0]
 
     # yank, compact
@@ -100,7 +114,7 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
       ---
       13.3.0 |checksum:96f5092d786ff412c62fde76f793cc0541bd84d2eb579caa529aa8a059934493,ruby:>= 2.3
     END
-    mirror.sync
+    sync
     assert_versions "rake", %w[13.3.0]
   end
 
@@ -121,7 +135,7 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
       13.2.0 |checksum:f6c1ae27806904a33733be246568ae0937204f1386d8f0774bf3f81c6d269b53,ruby:>= 2.3
       13.2.1 |checksum:46cb38dae65d7d74b6020a4ac9d48afed8eb8149c040eccf0523bec91907059d,ruby:>= 2.3
     END
-    mirror.sync
+    sync
     assert_versions "rake", %w[13.0.0.pre.1 13.0.0 13.0.1 13.1.0 13.2.0 13.2.1]
 
     # publish 13.3.0, compact
@@ -144,7 +158,7 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
     stub_request(:get, "https://rubygems.org/quick/Marshal.4.8/rake-13.0.0.gemspec.rz").
       to_return(status: 404, body: "")
 
-    mirror.sync
+    sync
     assert_versions "rake", %w[13.0.0.pre.1 13.0.0 13.0.1 13.1.0 13.2.0 13.2.1 13.3.0]
   end
 
@@ -165,7 +179,7 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
       13.2.1 |checksum:46cb38dae65d7d74b6020a4ac9d48afed8eb8149c040eccf0523bec91907059d,ruby:>= 2.3
       100.0.0 |checksum:96f5092d786ff412c62fde76f793cc0541bd84d2eb579caa529aa8a059934493,ruby:>= 2.3
     END
-    mirror.sync
+    sync
     assert_versions "rake", %w[13.0.0.pre.1 13.0.0 13.0.1 13.1.0 13.2.0 13.2.1 100.0.0]
 
     # yank 100.0.0, publish 13.3.0, compact
@@ -183,7 +197,7 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
       13.2.1 |checksum:46cb38dae65d7d74b6020a4ac9d48afed8eb8149c040eccf0523bec91907059d,ruby:>= 2.3
       13.3.0 |checksum:96f5092d786ff412c62fde76f793cc0541bd84d2eb579caa529aa8a059934493,ruby:>= 2.3
     END
-    mirror.sync
+    sync
     assert_versions "rake", %w[13.0.0.pre.1 13.0.0 13.0.1 13.1.0 13.2.0 13.2.1 13.3.0]
   end
 
@@ -202,7 +216,7 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
       13.2.0 |checksum:f6c1ae27806904a33733be246568ae0937204f1386d8f0774bf3f81c6d269b53,ruby:>= 2.3
       13.2.1 |checksum:46cb38dae65d7d74b6020a4ac9d48afed8eb8149c040eccf0523bec91907059d,ruby:>= 2.3
     END
-    mirror.sync
+    sync
     assert_versions "rake", %w[13.0.0.pre.1 13.0.0 13.0.1 13.1.0 13.2.0 13.2.1]
 
     # publish 100, yank 100, publish 13.3.0, compact
@@ -220,7 +234,7 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
       13.2.1 |checksum:46cb38dae65d7d74b6020a4ac9d48afed8eb8149c040eccf0523bec91907059d,ruby:>= 2.3
       13.3.0 |checksum:96f5092d786ff412c62fde76f793cc0541bd84d2eb579caa529aa8a059934493,ruby:>= 2.3
     END
-    mirror.sync
+    sync
     assert_versions "rake", %w[13.0.0.pre.1 13.0.0 13.0.1 13.1.0 13.2.0 13.2.1 13.3.0]
   end
 
@@ -237,7 +251,7 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
       13.1.0 |checksum:be6a3e1aa7f66e6c65fa57555234eb75ce4cf4ada077658449207205474199c6,ruby:>= 2.3
       13.2.0 |checksum:f6c1ae27806904a33733be246568ae0937204f1386d8f0774bf3f81c6d269b53,ruby:>= 2.3
     END
-    mirror.sync
+    sync
     assert_versions "rake", %w[13.0.0.pre.1 13.0.0 13.0.1 13.1.0 13.2.0]
 
     # publish 13.2.1, publish 100, yank 100, publish 13.3.0, compact
@@ -255,7 +269,76 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
       13.2.1 |checksum:46cb38dae65d7d74b6020a4ac9d48afed8eb8149c040eccf0523bec91907059d,ruby:>= 2.3
       13.3.0 |checksum:96f5092d786ff412c62fde76f793cc0541bd84d2eb579caa529aa8a059934493,ruby:>= 2.3
     END
-    mirror.sync
+    sync
     assert_versions "rake", %w[13.0.0.pre.1 13.0.0 13.0.1 13.1.0 13.2.0 13.2.1 13.3.0]
+  end
+
+  test "queues an import job for every gem in the versions list" do
+    stub_versions <<~END
+      ---
+      rake 13.0.0 1000aaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      oaken 1.0.0 1001aaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      unpwn 2.0.0 1002aaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    END
+
+    mirror.sync
+
+    assert_equal %w[rake oaken unpwn], enqueued_gem_names
+    assert_equal 2, mirror.reload.last_seen_line
+  end
+
+  test "resumes from the checkpoint line instead of requeueing every gem" do
+    stub_versions <<~END
+      ---
+      rake 13.0.0 1000aaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      oaken 1.0.0 1001aaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      unpwn 2.0.0 1002aaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    END
+
+    mirror.sync
+    assert_equal %w[rake oaken unpwn], enqueued_gem_names
+
+    enqueued_jobs.clear
+    mirror.sync
+
+    assert_empty enqueued_gem_names
+    assert_equal 2, mirror.reload.last_seen_line
+  end
+
+  test "resyncs from the top when the checkpointed line no longer matches" do
+    stub_versions <<~END
+      ---
+      rake 13.0.0 1000aaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      oaken 1.0.0 1001aaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    END
+    mirror.sync
+    assert_equal %w[rake oaken], enqueued_gem_names
+
+    # after compacting the checkpoint doesn't match
+    stub_versions <<~END
+      ---
+      rake 13.0.0 1000aaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      unpwn 2.0.0 1002aaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    END
+    enqueued_jobs.clear
+    mirror.sync
+
+    assert_equal %w[rake unpwn], enqueued_gem_names
+  end
+
+  test "force_all clears the checkpoint and requeues every gem" do
+    stub_versions <<~END
+      ---
+      rake 13.0.0 1000aaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      oaken 1.0.0 1001aaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    END
+    mirror.sync
+    assert_equal 1, mirror.reload.last_seen_line
+
+    enqueued_jobs.clear
+    mirror.sync(force_all: true)
+
+    assert_equal %w[rake oaken], enqueued_gem_names
+    assert_equal 1, mirror.reload.last_seen_line
   end
 end

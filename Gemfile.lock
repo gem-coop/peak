@@ -90,13 +90,14 @@ GEM
     addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
     ast (2.4.3)
-    avo (4.2.3)
+    avo (4.2.5)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
       activesupport (>= 6.1)
       addressable
       avo-icons (>= 0.1.2)
+      csv
       docile
       meta-tags
       pagy (>= 43.0)
@@ -227,7 +228,7 @@ GEM
     inline_svg (1.10.0)
       activesupport (>= 3.0)
       nokogiri (>= 1.6)
-    io-console (0.9.3)
+    io-console (0.9.4)
     irb (1.18.0)
       pp (>= 0.6.0)
       prism (>= 1.3.0)
@@ -466,7 +467,7 @@ GEM
     opentelemetry-semantic_conventions (1.44.0)
       opentelemetry-api (~> 1.0)
     ostruct (0.6.3)
-    pagy (43.6.2)
+    pagy (43.6.3)
       json
       uri
       yaml
@@ -680,9 +681,9 @@ GEM
     avo-custom_controls (4.2.0)
       avo (>= 4.2.0)
       avo-licensing (>= 4.2.0)
-    avo-dashboards (4.2.0)
-      avo (>= 4.2.0)
-      avo-licensing (>= 4.2.0)
+    avo-dashboards (4.2.1)
+      avo (>= 4.2.5)
+      avo-licensing (>= 4.2.1)
       turbo-rails
       view_component (>= 3.7.0)
       zeitwerk (>= 2.6.12)
@@ -820,13 +821,13 @@ CHECKSUMS
   acts_as_list (1.2.6) sha256=8345380900b7bee620c07ad00991ccee59af3d8c9e8574f426e321da2865fdc8
   addressable (2.9.0) sha256=7fdf6ac3660f7f4e867a0838be3f6cf722ace541dd97767fa42bc6cfa980c7af
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
-  avo (4.2.3) sha256=a2d365655a537282de62dcc839ad0839ccca141ef8fc7b47aa903d62b3274bfe
+  avo (4.2.5) sha256=cc99697e81e7b0474226af2404f303f470420795981fbfd49c6d8b536e0a307d
   avo-advanced_search (4.2.0) sha256=a575639fa344bb5d6b532c7fd02ab487ace29968cc86ef0a916ddec1b01c310a
   avo-api (4.2.3) sha256=54a676fb8d0d6949ce279f20dfcdf5729326c41d98a64b30376143ff3db2edce
   avo-authorization (4.2.0) sha256=7a88f9133c9c024ae6e91bd256c3836ad4bb93e7bada4a3074d931d534685e16
   avo-collaboration (4.2.0) sha256=45cbe88263ab8cfd02f6ef1e127cfb43c45b442f7f2c3212ff7bc61f7486c78f
   avo-custom_controls (4.2.0) sha256=0472bc6db72644977c25a47ea22883570c1636720dbeac19ae9e11536c3dcee7
-  avo-dashboards (4.2.0) sha256=b31e38c9aa73bbccb9fa2b79c3ad0985bccf226b705b440d39de5c22050672ea
+  avo-dashboards (4.2.1) sha256=ac495bc92ccf4cae0aba7999f5fd3ebbfb086d3ec922cf90a73f5f23c5031ab3
   avo-dynamic_filters (4.2.0) sha256=81527ccfcc6f03d59efe142fae2c7955c9751a820c636c31ab90c199700eacf0
   avo-forms (4.2.0) sha256=479e55cf7f566769d56459ba3d42f75d8436c2d050ab04c00d6ba85ea24b530f
   avo-http_resource (4.2.0) sha256=f099b31f14b1b9fea4c8739aa08b8b2ac50da9c0928b8e57c4c7d4175a6d7a30
@@ -896,7 +897,7 @@ CHECKSUMS
   i18n (1.15.2) sha256=00f9eb62412fe593b2a65a97daa75300d37abb8f7202ec748e94b6d46a9dd1b5
   image_processing (2.1.0) sha256=ca3814b1b909fc5fab68b261c50eaffef11e29a6907143e9cf1efc14b6dc6f47
   inline_svg (1.10.0) sha256=5b652934236fd9f8adc61f3fd6e208b7ca3282698b19f28659971da84bf9a10f
-  io-console (0.9.3) sha256=f555049461b0afb78a5448b5be8e7c7b48371347cd48abfc22814764160000dd
+  io-console (0.9.4) sha256=a403304f32928ee85e56d457b4612ca43f2703b561a3258844992bd24085fbb1
   irb (1.18.0) sha256=de9454a0703a54704b9811a5ef31a60c86949fbf4013fcf244fabc7c775248e3
   jmespath (1.6.2) sha256=238d774a58723d6c090494c8879b5e9918c19485f7e840f2c1c7532cf84ebcb1
   json (2.21.2) sha256=1f1d3b7cf2b3ba1a69beca0bb6db13d5438b80bff3cd54cdaaa620b9b07c1c6a
@@ -983,7 +984,7 @@ CHECKSUMS
   opentelemetry-sdk (1.13.0) sha256=eea4ab625eb901ecfe1083049862d4853fd16d94029f3cdd16526c81332f0fff
   opentelemetry-semantic_conventions (1.44.0) sha256=b09b8793422f13b01c08f7a6f29b5f511f47f37bcdb57c0513465a0464168513
   ostruct (0.6.3) sha256=95a2ed4a4bd1d190784e666b47b2d3f078e4a9efda2fccf18f84ddc6538ed912
-  pagy (43.6.2) sha256=b1d461b6bb43ce410ed2b9f09ce2a90430fa804265d167207a30337ea45c1dd3
+  pagy (43.6.3) sha256=3b7cd5b5b08e975b85cb48c1e7b729d90125a46c9ac14bd830fde1a8c6719a85
   parallel (2.1.0) sha256=b35258865c2e31134c5ecb708beaaf6772adf9d5efae28e93e99260877b09356
   parser (3.3.11.1) sha256=d17ace7aabe3e72c3cc94043714be27cc6f852f104d81aa284c2281aecc65d54
   pg (1.6.3) sha256=1388d0563e13d2758c1089e35e973a3249e955c659592d10e5b77c468f628a99

@@ -206,7 +206,7 @@ GEM
     googleapis-common-protos-types (1.23.0)
       google-protobuf (~> 4.26)
     hashdiff (1.2.1)
-    honeybadger (6.9.1)
+    honeybadger (6.9.2)
       logger
       ostruct
     hotwire_combobox (0.4.1)
@@ -888,7 +888,7 @@ CHECKSUMS
   google-protobuf (4.36.1-x86_64-linux-musl) sha256=ae2712b7960e8b1f96d52fef8c2c0dc1cd230f2be13e48492dad0aa2a6a7cf03
   googleapis-common-protos-types (1.23.0) sha256=992e740a523794d9fc5f29a504465d8fc737aaa16c930fe7228e3346860faf0a
   hashdiff (1.2.1) sha256=9c079dbc513dfc8833ab59c0c2d8f230fa28499cc5efb4b8dd276cf931457cd1
-  honeybadger (6.9.1) sha256=3e79543ab171f810306bd152b3f470ce2b905b1a27f766f3138568949078cf68
+  honeybadger (6.9.2) sha256=6f5a9c20f7a6448623c8fdc397fc3c96623b3d8fc85449810d42a0be4f8ae214
   hotwire_combobox (0.4.1) sha256=2d94741801f6e9814315fd7a36ee192da7e57e62c9eac7e3d2ed577bc2f73607
   http-2 (1.2.3) sha256=f4e3a7000e9a8ab97595f09eac44c6ec10a2aa438360758124df0ca5bcb280d4
   httparty (0.24.2) sha256=8fca6a54aa0c4aa4303a0fd33e5e2156175d6a5334f714263b458abd7fda9c38

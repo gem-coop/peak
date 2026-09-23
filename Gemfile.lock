@@ -748,6 +748,7 @@ DEPENDENCIES
   action_controller-stashed_redirects
   active_job-performs
   active_record-associated_object
+  addressable (~> 2.9)
   avo (~> 4.2)
   avo-advanced_search (~> 4.2)!
   avo-api (~> 4.2)!

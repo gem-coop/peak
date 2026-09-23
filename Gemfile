@@ -85,6 +85,7 @@ gem "active_record-associated_object"
 gem "active_job-performs"
 gem "action_controller-stashed_redirects"
 
+gem "addressable", "~> 2.9"
 gem "aws-sdk-s3", "~> 1.232"
 gem "benchmark", "~> 0.5.0"
 gem "brotli", "~> 0.8.0"

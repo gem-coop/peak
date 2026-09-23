@@ -38,7 +38,7 @@ class Namespace::Mirror < ApplicationRecord
 
   def last_seen_line_valid?(lines)
     last_line = last_seen_line && lines[last_seen_line]
-    last_line && last_line.end_with?(last_seen_line_end)
+    last_line && last_seen_line_end && last_line.end_with?(last_seen_line_end)
   end
 
   def update_last_seen_line!(lines)

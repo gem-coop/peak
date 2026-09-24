@@ -6,7 +6,7 @@ class Namespace::Mirror < ApplicationRecord
   validates :url, presence: true
 
   before_validation do
-    self.url << "/" unless url.ends_with?("/")
+    self.url = "#{url}/" if url.present? && !url.ends_with?("/")
   end
 
   def uri

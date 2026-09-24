@@ -5,9 +5,12 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
     namespaces.rubygems.mirror
   end
 
-  test "can be created" do
-    assert mirror.enabled?
-    assert_equal mirror.url, "https://rubygems.org/"
+  test "normalizes a url without a trailing slash" do
+    no_url = namespaces.gemcoop.build_mirror(url: nil)
+    assert_equal false, no_url.valid?
+
+    other = namespaces.gemcoop.create_mirror!(url: "https://gem.coop")
+    assert_equal "https://gem.coop/", other.reload.url
   end
 
   def stub_rake(body)

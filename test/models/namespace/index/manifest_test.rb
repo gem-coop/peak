@@ -55,4 +55,22 @@ class Namespace::Index::ManifestTest < ActiveSupport::TestCase
     assert_includes manifest.contents, oaken.envelope(ref_stamp: oaken.ref)
     assert_includes manifest.contents, peak.envelope(ref_stamp: peak.ref)
   end
+
+  test "compact queries are fixed regardless of version count" do
+    manifest = namespaces.rubygems.stable_index.manifest
+    queries = count_queries { manifest.compact }
+    assert_equal 5, queries
+
+    cooldown = namespaces.rubygems.stable_index.cooldowns.create.manifest
+    queries = count_queries { manifest.compact }
+    assert_equal 5, queries
+  end
+
+  private
+    def count_queries(&block)
+      count = 0
+      callback = ->(*args) { count += 1 unless args.last[:name] == "SCHEMA" }
+      ActiveSupport::Notifications.subscribed(callback, "sql.active_record", &block)
+      count
+    end
 end

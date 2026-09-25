@@ -45,6 +45,18 @@ class Namespace::Gem::Version < ApplicationRecord
   def self.lines = latest_last.pluck(:line).join
   def self.refs = latest_last.pluck(:ref)
 
+  def self.envelopes
+    ordering = "namespace_gem_versions.published_at, namespace_gem_versions.ref"
+    refs  = "string_agg(namespace_gem_versions.ref, ',' ORDER BY #{ordering})"
+    lines = "string_agg(namespace_gem_versions.line, '' ORDER BY #{ordering})"
+
+    joins(:gem)
+      .group("namespace_gems.name")
+      .order("namespace_gems.name")
+      .pluck(Arel.sql("concat_ws(' ', namespace_gems.name, #{refs}, md5(#{lines}))"))
+      .join("\n") << "\n"
+  end
+
   def to_param = filename
   def filename = "#{name}.gem"
   def name = "#{gem.name}-#{ref}"
@@ -68,9 +80,6 @@ class Namespace::Gem::Version < ApplicationRecord
   end
 
   def envelope(ref_stamp: nil)
-    # function = Arel.sql("concat_ws(' ', string_agg(ref::text, ','), md5(string_agg(line::text, '')))")
-    # "#{gem.name} #{versions_upto_self.pick(function)}\n"
-
     versions_upto_self => versions
     "#{gem.name} #{ref_stamp || versions.refs.join(",")} #{versions.checksum}\n"
   end

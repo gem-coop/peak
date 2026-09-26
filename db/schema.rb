@@ -42,50 +42,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_12_211858) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "billing_stripe_event_receipts", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.jsonb "data", null: false
-    t.string "status", default: "pending", null: false
-    t.string "type", null: false
-    t.datetime "updated_at", null: false
-    t.index ["status"], name: "index_billing_stripe_event_receipts_on_status"
-  end
-
-  create_table "content_collections", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.string "slug", null: false
-    t.datetime "updated_at", null: false
-    t.index ["slug"], name: "index_content_collections_on_slug", unique: true
-  end
-
-  create_table "content_connections", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.bigint "editor_id", null: false
-    t.bigint "record_id", null: false
-    t.string "record_type", null: false
-    t.datetime "updated_at", null: false
-    t.index ["editor_id"], name: "index_content_connections_on_editor_id"
-    t.index ["record_type", "record_id"], name: "index_content_connections_on_record"
-  end
-
-  create_table "content_editors", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "content_posts", force: :cascade do |t|
-    t.string "brief"
-    t.bigint "collection_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "published_at"
-    t.string "slug", null: false
-    t.string "subtitle"
-    t.string "title", null: false
-    t.datetime "updated_at", null: false
-    t.index ["collection_id", "slug"], name: "index_content_posts_on_collection_id_and_slug", unique: true
-    t.index ["collection_id"], name: "index_content_posts_on_collection_id"
-  end
-
   create_table "namespace_accesses", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "namespace_id", null: false
@@ -97,9 +53,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_12_211858) do
   end
 
   create_table "namespace_gem_search_indexes", force: :cascade do |t|
+    t.bigint "gem_id", null: false
     t.text "content", default: "", null: false
     t.datetime "created_at", null: false
-    t.bigint "gem_id", null: false
     t.datetime "updated_at", null: false
     t.index "to_tsvector('simple'::regconfig, content)", name: "search_indexes_tsvector_index", using: :gin
     t.index ["gem_id"], name: "index_namespace_gem_search_indexes_on_gem_id", unique: true
@@ -160,16 +116,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_12_211858) do
     t.json "executables", default: [], null: false
     t.integer "gem_id", null: false
     t.boolean "has_extensions"
-    t.bigint "index_id", null: false
     t.json "licenses", default: [], null: false
     t.string "line", null: false
     t.integer "platform_id", null: false
     t.datetime "published_at", null: false
     t.string "ref", null: false
-    t.json "ruby", default: [], null: false
-    t.json "rubygems", default: [], null: false
     t.string "summary", null: false
     t.datetime "updated_at", null: false
+    t.bigint "index_id", null: false
+    t.json "ruby", default: [], null: false
+    t.json "rubygems", default: [], null: false
     t.index ["created_by_id"], name: "index_namespace_gem_versions_on_created_by_id"
     t.index ["gem_id", "index_id", "ref"], name: "index_namepace_gem_versions_uniqueness", unique: true
     t.index ["gem_id"], name: "index_namespace_gem_versions_on_gem_id"
@@ -187,11 +143,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_12_211858) do
   end
 
   create_table "namespace_index_cooldown_projections", force: :cascade do |t|
-    t.datetime "append_at", null: false
     t.bigint "cooldown_id", null: false
+    t.bigint "version_id", null: false
+    t.datetime "append_at", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "version_id", null: false
     t.index ["cooldown_id", "version_id"], name: "idx_on_cooldown_id_version_id_07dae4f703", unique: true
     t.index ["cooldown_id"], name: "index_namespace_index_cooldown_projections_on_cooldown_id"
   end
@@ -226,11 +182,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_12_211858) do
   end
 
   create_table "namespace_submissions", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.string "name", null: false
     t.bigint "owner_id", null: false
-    t.datetime "resolved_at"
+    t.string "name", null: false
     t.string "status", default: "pending", null: false
+    t.datetime "resolved_at"
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_namespace_submissions_on_name", unique: true, where: "((status)::text <> 'pending'::text)"
     t.index ["owner_id"], name: "index_namespace_submissions_on_owner_id"
@@ -244,8 +200,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_12_211858) do
   end
 
   create_table "peak_email_address_disposed_domains", force: :cascade do |t|
-    t.datetime "created_at", null: false
     t.string "name", null: false
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_peak_email_address_disposed_domains_on_name", unique: true
   end
@@ -303,12 +259,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_12_211858) do
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.bigint "editor_id"
     t.string "email_address", null: false
     t.datetime "email_address_verified_at"
     t.string "name", null: false
     t.datetime "updated_at", null: false
-    t.index ["editor_id"], name: "index_users_on_editor_id"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 

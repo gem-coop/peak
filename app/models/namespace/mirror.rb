@@ -14,19 +14,16 @@ class Namespace::Mirror < ApplicationRecord
 
   performs def sync(force_all: false)
     update!(last_seen_line_no: nil, last_seen_line_end: nil) if force_all
-
-    import_queues = %w[import_1 import_2 import_3 import_4].cycle
-    gems_to_sync do |names|
-      gem_attrs = names.map { {name: _1, namespace_id:} }
-      Namespace::Gem.upsert_all gem_attrs, unique_by: %i[namespace_id name], returning: false
-
-      queue = import_queues.next
-      jobs = gem_attrs.map { Namespace::Mirror::GemImportJob.new(**_1).set(queue:) }
-      ActiveJob.perform_all_later jobs
-    end
+    gems_to_sync { enqueue_batch _1 }
 
     # compact?
     # update cooldowns?
+  end
+
+  def enqueue_batch(names)
+    gem_attrs = names.map { {name: _1, namespace_id:} }
+    Namespace::Gem.upsert_all gem_attrs, unique_by: %i[namespace_id name], returning: false
+    ActiveJob.perform_all_later gem_attrs.map { GemImportJob.new(**_1) }
   end
 
   def gems_to_sync

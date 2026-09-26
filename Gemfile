@@ -77,8 +77,6 @@ group :avo, optional: true do
   end
 end
 
-gem "json", "< 4.0" # LOCKED: activesupport@8.1.3.1: ActiveSupport::JSON.decode fails on JSON 3+.
-
 # Use next-gen Rails extensions
 gem "oaken"
 gem "active_record-associated_object"
@@ -98,6 +96,7 @@ gem "opentelemetry-sdk"
 gem "pg", "~> 1.6"
 gem "redis", "~> 6.0"
 gem "resend", "~> 1.16"
+gem "json", "< 3" # LOCKED: httparty@0.24.2 resend's httparty use passes `quirks_mode` as a non-keyword argument to JSON.parse.
 gem "ruby-vips", "~> 2.0"
 gem "sidekiq-scheduler", "~> 6.0"
 gem "sidekiq", "~> 8.1", require: %w[sidekiq sidekiq/api]

@@ -53,8 +53,8 @@ class Namespace::Gem::Version < ApplicationRecord
     joins(:gem)
       .group("namespace_gems.name")
       .order("namespace_gems.name")
-      .pluck(Arel.sql("concat_ws(' ', namespace_gems.name, #{refs}, md5(#{lines}))"))
-      .join("\n") << "\n"
+      .pluck(Arel.sql("concat_ws(' ', namespace_gems.name, #{refs}, md5(#{lines}))||chr(10)"))
+      .join
   end
 
   def to_param = filename

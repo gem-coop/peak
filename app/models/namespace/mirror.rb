@@ -27,7 +27,7 @@ class Namespace::Mirror < ApplicationRecord
   end
 
   def gems_to_sync
-    lines = versions.lines(chomp: true).reject(&:blank?)
+    lines = versions.lines(chomp: true)
     Rails.logger.debug { "[mirror] #{url} versions contains #{lines.count} lines" }
     numbered = lines.each_with_index.to_a
     numbered = numbered[(last_seen_line + 1)..] if last_seen_line_valid?(numbered)

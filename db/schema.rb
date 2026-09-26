@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_12_211858) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_26_130403) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -57,7 +57,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_12_211858) do
     t.text "content", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index "to_tsvector('simple'::regconfig, content)", name: "search_indexes_tsvector_index", using: :gin
+    t.index "to_tsvector('english'::regconfig, content)", name: "search_indexes_tsvector_index", using: :gin
     t.index ["gem_id"], name: "index_namespace_gem_search_indexes_on_gem_id", unique: true
   end
 

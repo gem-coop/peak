@@ -228,13 +228,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_26_130403) do
   end
 
   create_table "namespace_mirrors", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.boolean "enabled", default: true, null: false
-    t.integer "last_seen_line"
-    t.string "last_seen_line_end"
     t.bigint "namespace_id", null: false
-    t.datetime "updated_at", null: false
     t.string "url", null: false
+    t.boolean "enabled", default: true, null: false
+    t.integer "last_seen_line_no"
+    t.string "last_seen_line_end"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["namespace_id"], name: "index_namespace_mirrors_on_namespace_id"
   end
 

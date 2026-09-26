@@ -284,7 +284,7 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
     mirror.sync
 
     assert_equal %w[rake oaken unpwn], enqueued_gem_names
-    assert_equal 2, mirror.reload.last_seen_line
+    assert_equal 2, mirror.reload.last_seen_line_no
   end
 
   test "resumes from the checkpoint line instead of requeueing every gem" do
@@ -302,7 +302,7 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
     mirror.sync
 
     assert_empty enqueued_gem_names
-    assert_equal 2, mirror.reload.last_seen_line
+    assert_equal 2, mirror.reload.last_seen_line_no
   end
 
   test "resyncs from the top when the checkpointed line no longer matches" do
@@ -333,12 +333,12 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
       oaken 1.0.0 1001aaaaaaaaaaaaaaaaaaaaaaaaaaaa
     END
     mirror.sync
-    assert_equal 1, mirror.reload.last_seen_line
+    assert_equal 1, mirror.reload.last_seen_line_no
 
     enqueued_jobs.clear
     mirror.sync(force_all: true)
 
     assert_equal %w[rake oaken], enqueued_gem_names
-    assert_equal 1, mirror.reload.last_seen_line
+    assert_equal 1, mirror.reload.last_seen_line_no
   end
 end

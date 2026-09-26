@@ -45,6 +45,8 @@ class Namespace::Gem::Version < ApplicationRecord
   def name = "#{gem.name}-#{ref}"
   alias_method :package_name, :filename
 
+  has_object :destroyer
+
   has_object :metadata
   has_one_attached :package
   attribute :published_at, default: -> { Time.current }

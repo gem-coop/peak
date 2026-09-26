@@ -42,6 +42,50 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_26_130403) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "billing_stripe_event_receipts", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.jsonb "data", null: false
+    t.string "status", default: "pending", null: false
+    t.string "type", null: false
+    t.datetime "updated_at", null: false
+    t.index ["status"], name: "index_billing_stripe_event_receipts_on_status"
+  end
+
+  create_table "content_collections", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "slug", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_content_collections_on_slug", unique: true
+  end
+
+  create_table "content_connections", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "editor_id", null: false
+    t.bigint "record_id", null: false
+    t.string "record_type", null: false
+    t.datetime "updated_at", null: false
+    t.index ["editor_id"], name: "index_content_connections_on_editor_id"
+    t.index ["record_type", "record_id"], name: "index_content_connections_on_record"
+  end
+
+  create_table "content_editors", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "content_posts", force: :cascade do |t|
+    t.string "brief"
+    t.bigint "collection_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "published_at"
+    t.string "slug", null: false
+    t.string "subtitle"
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_id", "slug"], name: "index_content_posts_on_collection_id_and_slug", unique: true
+    t.index ["collection_id"], name: "index_content_posts_on_collection_id"
+  end
+
   create_table "namespace_accesses", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "namespace_id", null: false
@@ -53,9 +97,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_26_130403) do
   end
 
   create_table "namespace_gem_search_indexes", force: :cascade do |t|
-    t.bigint "gem_id", null: false
     t.text "content", default: "", null: false
     t.datetime "created_at", null: false
+    t.bigint "gem_id", null: false
     t.datetime "updated_at", null: false
     t.index "to_tsvector('english'::regconfig, content)", name: "search_indexes_tsvector_index", using: :gin
     t.index ["gem_id"], name: "index_namespace_gem_search_indexes_on_gem_id", unique: true
@@ -116,17 +160,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_26_130403) do
     t.json "executables", default: [], null: false
     t.integer "gem_id", null: false
     t.boolean "has_extensions"
+    t.bigint "index_id", null: false
     t.json "licenses", default: [], null: false
     t.string "line", null: false
     t.integer "platform_id", null: false
     t.datetime "published_at", null: false
     t.string "ref", null: false
-    t.string "summary", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "index_id", null: false
     t.json "ruby", default: [], null: false
     t.json "rubygems", default: [], null: false
+    t.string "summary", default: "", null: false
+    t.datetime "updated_at", null: false
+    t.string "created_by_type", default: "User", null: false
     t.index ["created_by_id"], name: "index_namespace_gem_versions_on_created_by_id"
+    t.index ["created_by_type", "created_by_id"], name: "idx_on_created_by_type_created_by_id_c48d949be2"
     t.index ["gem_id", "index_id", "ref"], name: "index_namepace_gem_versions_uniqueness", unique: true
     t.index ["gem_id"], name: "index_namespace_gem_versions_on_gem_id"
     t.index ["index_id"], name: "index_namespace_gem_versions_on_index_id"
@@ -143,11 +189,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_26_130403) do
   end
 
   create_table "namespace_index_cooldown_projections", force: :cascade do |t|
-    t.bigint "cooldown_id", null: false
-    t.bigint "version_id", null: false
     t.datetime "append_at", null: false
+    t.bigint "cooldown_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "version_id", null: false
     t.index ["cooldown_id", "version_id"], name: "idx_on_cooldown_id_version_id_07dae4f703", unique: true
     t.index ["cooldown_id"], name: "index_namespace_index_cooldown_projections_on_cooldown_id"
   end
@@ -181,12 +227,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_26_130403) do
     t.index ["namespace_id"], name: "index_namespace_indexes_on_namespace_id"
   end
 
-  create_table "namespace_submissions", force: :cascade do |t|
-    t.bigint "owner_id", null: false
-    t.string "name", null: false
-    t.string "status", default: "pending", null: false
-    t.datetime "resolved_at"
+  create_table "namespace_mirrors", force: :cascade do |t|
+    t.bigint "namespace_id", null: false
+    t.string "url", null: false
+    t.boolean "enabled", default: true, null: false
+    t.integer "last_seen_line_no"
+    t.string "last_seen_line_end"
     t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["namespace_id"], name: "index_namespace_mirrors_on_namespace_id"
+  end
+
+  create_table "namespace_submissions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.bigint "owner_id", null: false
+    t.datetime "resolved_at"
+    t.string "status", default: "pending", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_namespace_submissions_on_name", unique: true, where: "((status)::text <> 'pending'::text)"
     t.index ["owner_id"], name: "index_namespace_submissions_on_owner_id"
@@ -199,9 +256,41 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_26_130403) do
     t.index ["name"], name: "index_namespaces_on_name", unique: true
   end
 
-  create_table "peak_email_address_disposed_domains", force: :cascade do |t|
-    t.string "name", null: false
+  create_table "oidc_id_tokens", force: :cascade do |t|
+    t.bigint "provider_id", null: false
+    t.bigint "trusted_publisher_id", null: false
+    t.bigint "push_key_id"
+    t.string "jti", null: false
+    t.json "claims", default: {}, null: false
     t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["provider_id", "jti"], name: "index_oidc_id_tokens_on_provider_id_and_jti", unique: true
+    t.index ["provider_id"], name: "index_oidc_id_tokens_on_provider_id"
+    t.index ["push_key_id"], name: "index_oidc_id_tokens_on_push_key_id"
+    t.index ["trusted_publisher_id"], name: "index_oidc_id_tokens_on_trusted_publisher_id"
+  end
+
+  create_table "oidc_providers", force: :cascade do |t|
+    t.string "type", null: false
+    t.string "name", null: false
+    t.string "issuer", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["issuer"], name: "index_oidc_providers_on_issuer", unique: true
+  end
+
+  create_table "peak_blocked_domains", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "source", default: "manual", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_peak_blocked_domains_on_name", unique: true
+    t.index ["source", "updated_at"], name: "index_peak_blocked_domains_on_source_and_updated_at"
+  end
+
+  create_table "peak_email_address_disposed_domains", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_peak_email_address_disposed_domains_on_name", unique: true
   end
@@ -238,6 +327,34 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_26_130403) do
     t.index ["user_id"], name: "index_peak_terms_acceptances_on_user_id"
   end
 
+  create_table "trusted_publisher_push_keys", force: :cascade do |t|
+    t.bigint "trusted_publisher_id", null: false
+    t.string "token_digest", null: false
+    t.datetime "expires_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["token_digest"], name: "index_trusted_publisher_push_keys_on_token_digest", unique: true
+    t.index ["trusted_publisher_id"], name: "index_trusted_publisher_push_keys_on_trusted_publisher_id"
+  end
+
+  create_table "trusted_publishers", force: :cascade do |t|
+    t.string "type", null: false
+    t.bigint "namespace_id", null: false
+    t.bigint "gem_id"
+    t.string "gem_name", null: false
+    t.bigint "provider_id", null: false
+    t.string "repository_owner"
+    t.string "repository_name"
+    t.string "workflow_filename"
+    t.string "environment"
+    t.string "ref"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["gem_id"], name: "index_trusted_publishers_on_gem_id"
+    t.index ["namespace_id"], name: "index_trusted_publishers_on_namespace_id"
+    t.index ["provider_id"], name: "index_trusted_publishers_on_provider_id"
+  end
+
   create_table "user_push_keys", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "expires_at", null: false
@@ -259,13 +376,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_26_130403) do
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.bigint "editor_id"
     t.string "email_address", null: false
     t.datetime "email_address_verified_at"
     t.string "name", null: false
     t.datetime "updated_at", null: false
+    t.index ["editor_id"], name: "index_users_on_editor_id"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "namespace_mirrors", "namespaces"
+  add_foreign_key "oidc_id_tokens", "oidc_providers", column: "provider_id"
+  add_foreign_key "oidc_id_tokens", "trusted_publisher_push_keys", column: "push_key_id"
+  add_foreign_key "oidc_id_tokens", "trusted_publishers"
+  add_foreign_key "trusted_publisher_push_keys", "trusted_publishers"
+  add_foreign_key "trusted_publishers", "namespace_gems", column: "gem_id"
+  add_foreign_key "trusted_publishers", "namespaces"
+  add_foreign_key "trusted_publishers", "oidc_providers", column: "provider_id"
 end

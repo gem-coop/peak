@@ -1,4 +1,5 @@
-namespace = namespaces.create_approved :public, name: "@public"
+namespace = namespaces.create_approved :rubygems, name: "@rubygems"
+namespace.create_mirror!(url: "https://rubygems.org", enabled: false)
 
 gems.with namespace: do
   index = namespace.stable_index

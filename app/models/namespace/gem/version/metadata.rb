@@ -9,7 +9,7 @@ class Namespace::Gem::Version::Metadata < ActiveRecord::AssociatedObject
   end
 
   mattr_reader :keys, default: %i[checksum ruby rubygems executables licenses published_at]
-  delegate *keys, to: :version
+  delegate(*keys, to: :version)
 
   private
     def join_value(value)

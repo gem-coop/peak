@@ -748,6 +748,7 @@ DEPENDENCIES
   action_controller-stashed_redirects
   active_job-performs
   active_record-associated_object
+  addressable (~> 2.9)
   avo (~> 4.2)
   avo-advanced_search (~> 4.2)!
   avo-api (~> 4.2)!
@@ -778,6 +779,7 @@ DEPENDENCIES
   httpx (~> 1.8)
   image_processing (~> 2.1)
   json (< 4.0)
+  mail (~> 2.9)
   oaken
   opentelemetry-exporter-otlp
   opentelemetry-instrumentation-all

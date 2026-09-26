@@ -13,7 +13,7 @@ jobs:
     name: Deploy staging
     environment: Staging
     if: ${{ github.repository == 'gem-coop/peak' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     concurrency:
       group: staging-deploy
       cancel-in-progress: false
@@ -54,7 +54,7 @@ jobs:
     needs: [deploy-staging]
     environment: Production
     if: ${{ github.repository == 'gem-coop/peak' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     concurrency:
       group: production-deploy
       cancel-in-progress: false

@@ -66,7 +66,7 @@ class Peak::Gem::Upload
   end
 
   def links
-    metadata.select { _1.end_with?("_uri") }
+    metadata.to_h.select { _1.end_with?("_uri") }
       .to_h { [_1.delete_suffix("_uri").to_sym, Peak::Gem::Link.parse(_2)] }
       .merge(homepage:).compact_blank
   end

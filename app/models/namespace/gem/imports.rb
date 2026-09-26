@@ -1,16 +1,21 @@
 class Namespace::Gem::Imports < ActiveRecord::AssociatedObject
-  def import_all
-    pending_refs.each { |ref| import_ref ref }
-    gem.index.compact
-  end
+  # Call `index.compact` afterwards, as needed.
+  performs def import_all(index)
+    server_refs = server.refs
+    stored_refs = versions.pluck(:ref)
 
-  def import_ref(ref)
-    upload = Peak::Gem::Upload.read server.download(ref), published_at: publishing_ledger[ref]
-    versions.system.new(ref:).consume(upload)
-  end
+    # Refs we have that the server doesn't have been yanked
+    yanked_refs = stored_refs - server_refs
+    versions.where(ref: yanked_refs).destroy_all
 
-  def pending_refs
-    server.refs.then { _1.without versions.where(ref: _1).pluck(:ref) }
+    # Refs the server has that we don't should be imported
+    import_refs = server_refs - stored_refs
+    import_refs.each do |ref|
+      gemspec = Peak::Gem::Gemspec.new server.gemspec(ref)
+      versions.system.new(ref:).consume(gemspec, index:, **publishing_ledger[ref])
+    end
+
+    gem.reindex
   end
 
   private
@@ -18,7 +23,9 @@ class Namespace::Gem::Imports < ActiveRecord::AssociatedObject
 
     def publishing_ledger
       @publishing_ledger ||= server.versions_json.to_h do |json|
-        [json.values_at("number", "platform").join("-").chomp("-ruby"), json["created_at"]]
+        key = json.values_at("number", "platform").join("-").chomp("-ruby")
+        value = {published_at: json["created_at"], checksum: json["sha"]}
+        [key, value]
       end.compact
     end
 end

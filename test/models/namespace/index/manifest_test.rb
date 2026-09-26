@@ -2,7 +2,7 @@ require "test_helper"
 
 class Namespace::Index::ManifestTest < ActiveSupport::TestCase
   test "index compaction" do
-    manifest = namespaces.public.stable_index.manifest
+    manifest = namespaces.rubygems.stable_index.manifest
     assert_changes(-> { manifest.compacted_at }) { manifest.compact }
 
     lines = manifest.contents.lines
@@ -18,7 +18,7 @@ class Namespace::Index::ManifestTest < ActiveSupport::TestCase
   end
 
   test "cooldown compaction" do
-    cooldown = namespaces.public.stable_index.cooldowns.create
+    cooldown = namespaces.rubygems.stable_index.cooldowns.create
     travel 2.days + 1.second
 
     cooldown.index.versions.for(:actionview).where("namespace_gem_versions.ref LIKE '8%'").update_all published_at: 1.second.ago
@@ -55,4 +55,22 @@ class Namespace::Index::ManifestTest < ActiveSupport::TestCase
     assert_includes manifest.contents, oaken.envelope(ref_stamp: oaken.ref)
     assert_includes manifest.contents, peak.envelope(ref_stamp: peak.ref)
   end
+
+  test "compact queries are fixed regardless of version count" do
+    manifest = namespaces.rubygems.stable_index.manifest
+    queries = count_queries { manifest.compact }
+    assert_equal 5, queries
+
+    cooldown = namespaces.rubygems.stable_index.cooldowns.create.manifest
+    queries = count_queries { manifest.compact }
+    assert_equal 5, queries
+  end
+
+  private
+    def count_queries(&block)
+      count = 0
+      callback = ->(*args) { count += 1 unless args.last[:name] == "SCHEMA" }
+      ActiveSupport::Notifications.subscribed(callback, "sql.active_record", &block)
+      count
+    end
 end

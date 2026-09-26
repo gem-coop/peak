@@ -12,11 +12,6 @@ class Namespace::Index::Manifest < ApplicationRecord
 
   performs def compact
     update! compacted_at: compacted_at = Time.current,
-      contents: "#{compacted_at.iso8601}\n---\n#{computed_contents}"
+      contents: "compacted_at: #{compacted_at.iso8601}\n---\n#{versions.envelopes}"
   end
-
-  private
-    def computed_contents
-      versions.distinct_on_gem_name.latest_first.as_byline.inject(+"") { _1 << _2.envelope }
-    end
 end

@@ -1,15 +1,18 @@
 class Namespace::Gem::Imports < ActiveRecord::AssociatedObject
   # Call `index.compact` afterwards, as needed.
   performs def import_all(index)
-    known_refs = server.refs
+    server_refs = server.refs
+    stored_refs = versions.pluck(:ref)
 
-    yanked_refs = versions.where.not(ref: known_refs).pluck(:ref)
+    # Refs we have that the server doesn't have been yanked
+    yanked_refs = stored_refs - server_refs
     versions.where(ref: yanked_refs).destroy_all
 
-    pending_refs = known_refs.then { _1.without versions.where(ref: _1).pluck(:ref) }
-    pending_refs.each do |ref|
-      upload = Peak::Gem::Gemspec.new server.gemspec(ref)
-      versions.system.new(ref:).consume(upload, index:, **publishing_ledger[ref])
+    # Refs the server has that we don't should be imported
+    import_refs = server_refs - stored_refs
+    import_refs.each do |ref|
+      gemspec = Peak::Gem::Gemspec.new server.gemspec(ref)
+      versions.system.new(ref:).consume(gemspec, index:, **publishing_ledger[ref])
     end
 
     gem.reindex

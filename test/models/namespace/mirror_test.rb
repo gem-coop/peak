@@ -23,8 +23,11 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
     no_url = namespaces.gemcoop.build_mirror(url: nil)
     assert_equal false, no_url.valid?
 
-    other = namespaces.gemcoop.create_mirror!(url: "https://gem.coop")
-    assert_equal "https://gem.coop/", other.reload.url
+    value = Namespace::Mirror.normalize_value_for(:url, "https://gem.coop/")
+    assert_equal "https://gem.coop/", value
+
+    value = Namespace::Mirror.normalize_value_for(:url, "https://gem.coop")
+    assert_equal "https://gem.coop/", value
   end
 
   def stub_rake(body)

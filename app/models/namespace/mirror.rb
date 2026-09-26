@@ -6,7 +6,7 @@ class Namespace::Mirror < ApplicationRecord
   scope :enabled, -> { where(enabled: true) }
 
   validates :url, presence: true
-  normalizes :url, with: ->(url) { url << "/" unless url.ends_with?("/") }
+  normalizes :url, with: -> { _1.chomp("/") << "/" }
 
   def uri
     @uri ||= Addressable::URI.parse(url)

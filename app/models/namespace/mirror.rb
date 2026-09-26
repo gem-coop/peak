@@ -52,6 +52,6 @@ class Namespace::Mirror < ApplicationRecord
 
   def versions
     versions = HTTPX.get(uri.join("versions")).body.to_s
-    versions.tap { |v| v.sub!(/\A.*---\n/m, "") } # Trim out metadata
+    versions.tap { |v| v.sub!(/\A.*---\n+/m, "") } # Trim out metadata
   end
 end

@@ -1,7 +1,7 @@
-<script>
+<script nonce="<%= request.content_security_policy_nonce %>">
   class Clippy {
     static addGem(name) {
-      const text = `bundle add ${name} --source "<%= source_url %>"`
+      const text = `bundle add ${name} --source "<%= source_url.to_json %>"`
       navigator.clipboard.writeText(text)
     }
 

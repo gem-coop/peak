@@ -21,7 +21,7 @@ Rails.application.routes.draw do
 
   get "/dashboard" => "dashboard#show", as: :dashboard
 
-  scope module: :namespaces, defaults: { namespace: "@public" }, as: :public do
+  scope module: :namespaces, defaults: { namespace: "@rubygems" }, as: :public do
     get "/cooldown(/:period_id)/versions", to: "index/cooldowns#index", as: :cooldown_versions
     get "/cooldown(/:period_id)/info/:id", to: "index/cooldowns#show", as: :cooldown_info
     get "/cooldown(/:period_id)/gems/:id", to: "gems#show", as: :cooldown_gems, constraints: {id: Peak::Gem.route_pattern}

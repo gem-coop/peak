@@ -31,10 +31,10 @@ and also the data we test with.
 
 To get up to speed, start reading db/seeds/namespaces:
 
-1. [db/seeds/namespaces/@public.rb](db/seeds/namespaces/@public.rb)
+1. [db/seeds/namespaces/@rubygems.rb](db/seeds/namespaces/@rubygems.rb)
 2. [db/seeds/namespaces/@gemcoop.rb](db/seeds/namespaces/@gemcoop.rb)
 
-First is our `@public` namespace, which in production will have thousands of gems that we ingest continually. In our seeds we just ingest a few.
+First is our `@rubygems` namespace, which in production will have thousands of gems that we ingest continually. In our seeds we just ingest a few.
 
 Second is modeling a distinct namespace, here just called `@gemcoop`, which mirrors real life in that it:
 

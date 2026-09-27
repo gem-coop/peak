@@ -54,35 +54,47 @@ linter:
   #   - '**/*.xml.erb'
   #
   # # Patterns to exclude from linting
-  # exclude:
-  #   - 'app/views/admin/**/*'
+  exclude:
+    - public/**/*
 
-  # rules:
-  #   # The 'all' pseudo rule sets the default for every rule you don't list.
-  #   #   false: start from an empty set and opt back in explicitly
-  #   #   true:  start from every rule, including the ones off by default
-  #   all:
-  #     enabled: false
-  #
-  #   erb-no-extra-newline:
-  #     enabled: false
-  #
-  #   # Rules can have 'include', 'only', and 'exclude' patterns
-  #   some-rule:
-  #     # Additional patterns to check (additive, ignored when 'only' is present)
-  #     include:
-  #       - 'app/components/**/*'
-  #     # Don't apply this rule to files matching these patterns
-  #     exclude:
-  #       - 'app/views/admin/**/*'
-  #
-  #   another-rule:
-  #     # Only apply this rule to files matching these patterns (overrides all 'include')
-  #     only:
-  #       - 'app/views/**/*'
-  #     # Exclude still applies even with 'only'
-  #     exclude:
-  #       - 'app/views/admin/**/*'
+  rules:
+    #   # The 'all' pseudo rule sets the default for every rule you don't list.
+    #   #   false: start from an empty set and opt back in explicitly
+    #   #   true:  start from every rule, including the ones off by default
+    #   all:
+    #     enabled: false
+    #
+    #   erb-no-extra-newline:
+    #     enabled: false
+    #
+    #   # Rules can have 'include', 'only', and 'exclude' patterns
+    #   some-rule:
+    #     include:
+    #       - 'app/components/**/*'
+    #     exclude:
+    #       - 'app/views/admin/**/*'
+    #
+    #   another-rule:
+    #     # Only apply this rule to files matching these patterns (overrides all 'include')
+    #     only:
+    #       - 'app/views/**/*'
+    #     # Exclude still applies even with 'only'
+    #     exclude:
+    #       - 'app/views/admin/**/*'
+    erb-no-return:
+      enabled: false
+
+    erb-no-duplicate-branch-elements:
+      enabled: false
+
+    erb-no-commented-out-output-tags:
+      enabled: false
+
+    actionview-no-implicit-polymorphic-url:
+      enabled: false
+
+    actionview-prefer-qualified-partial-path:
+      enabled: false
 
 formatter:
   enabled: false

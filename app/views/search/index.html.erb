@@ -11,7 +11,7 @@
       <%= form.button "Search", name: nil, style: "flex: 1;" %>
     </div>
 
-    <%= link_to "reset →" if @query %>
+    <%= link_to "reset →", search_path if @query %>
   <% end %>
 
   <h2 style="font-size: 1.117em;">results</h2>
@@ -21,7 +21,7 @@
   <% if @namespaces.empty? && @search_indexes.empty? %>
     <span>None.</span>
 
-    <p>You can search for namespace names & gem names. You can also find gems by the summary in their latest version.</p>
+    <p>You can search for namespace names &amp; gem names. You can also find gems by the summary in their latest version.</p>
   <% else %>
     <% @namespaces.each do |namespace| %>
       <article>

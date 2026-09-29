@@ -1,4 +1,6 @@
 class Namespace::Mirror < ApplicationRecord
+  BATCH_SIZE = 1000
+
   belongs_to :namespace
 
   scope :enabled, -> { where(enabled: true) }
@@ -13,10 +15,14 @@ class Namespace::Mirror < ApplicationRecord
   performs def sync(force_all: false)
     update!(last_seen_line_no: nil, last_seen_line_end: nil) if force_all
 
+    import_queues = %w[import_1 import_2 import_3 import_4].cycle
     gems_to_sync do |names|
       gem_attrs = names.map { {name: _1, namespace_id:} }
       Namespace::Gem.upsert_all gem_attrs, unique_by: %i[namespace_id name], returning: false
-      ActiveJob.perform_all_later gem_attrs.map { Namespace::Mirror::GemImportJob.new(**_1) }
+
+      queue = import_queues.next
+      jobs = gem_attrs.map { Namespace::Mirror::GemImportJob.new(**_1).set(queue:) }
+      ActiveJob.perform_all_later jobs
     end
 
     # compact?
@@ -30,7 +36,7 @@ class Namespace::Mirror < ApplicationRecord
     Rails.logger.debug { "[mirror] Resuming after line #{last_seen_line_no.inspect}: #{lines.count} lines left" }
 
     numbered = lines.each_with_index.to_a
-    numbered.each_slice(1000) do |batch|
+    numbered.each_slice(BATCH_SIZE) do |batch|
       yield batch.map { _1.first.split(" ", 2).first }.uniq
       update_last_seen_line!(*batch.last)
     end

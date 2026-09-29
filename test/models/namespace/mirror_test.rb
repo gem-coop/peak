@@ -332,7 +332,12 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
       rake 13.0.0 1000aaaaaaaaaaaaaaaaaaaaaaaaaaaa
       oaken 1.0.0 1001aaaaaaaaaaaaaaaaaaaaaaaaaaaa
     END
-    mirror.sync
+
+    stub_const(Namespace::Mirror, :BATCH_SIZE, 1) do
+      mirror.sync
+    end
+    assert_equal %w[import_1 import_2], enqueued_jobs.map { |j| j["queue_name"] }
+    assert_equal %w[rake oaken], enqueued_gem_names
     assert_equal 1, mirror.reload.last_seen_line_no
 
     enqueued_jobs.clear

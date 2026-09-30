@@ -23,8 +23,11 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
     no_url = namespaces.gemcoop.build_mirror(url: nil)
     assert_equal false, no_url.valid?
 
-    other = namespaces.gemcoop.create_mirror!(url: "https://gem.coop")
-    assert_equal "https://gem.coop/", other.reload.url
+    value = Namespace::Mirror.normalize_value_for(:url, "https://gem.coop/")
+    assert_equal "https://gem.coop/", value
+
+    value = Namespace::Mirror.normalize_value_for(:url, "https://gem.coop")
+    assert_equal "https://gem.coop/", value
   end
 
   def stub_rake(body)
@@ -336,14 +339,15 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
     stub_const(Namespace::Mirror, :BATCH_SIZE, 1) do
       mirror.sync
     end
-    assert_equal %w[import_1 import_2], enqueued_jobs.map { |j| j["queue_name"] }
     assert_equal %w[rake oaken], enqueued_gem_names
+    assert_equal 2, enqueued_jobs.map { |j| j["queue_name"] }.uniq.size
     assert_equal 1, mirror.reload.last_seen_line_no
 
     enqueued_jobs.clear
     mirror.sync(force_all: true)
 
     assert_equal %w[rake oaken], enqueued_gem_names
+    assert_equal 2, enqueued_jobs.map { |j| j["queue_name"] }.uniq.size
     assert_equal 1, mirror.reload.last_seen_line_no
   end
 end

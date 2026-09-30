@@ -1,0 +1,45 @@
+#!/usr/bin/env bin/rails runner
+
+# exact name match:
+#   bin/mirror -r rails
+#
+# regexp match:
+#   bin/mirror -r /rails/
+#
+# pass a different namespace:
+#   bin/mirror @kaspth -r oaken
+
+if i = ARGV.index("-r")
+  match = ARGV.slice!(i, 2).last
+  match = Regexp.new $1 if match =~ /^\/(.*)\/$/
+end
+
+name = (ARGV.shift || "@rubygems").then.find { _1.start_with?("@") } or raise "pass a valid namespace name"
+namespace = Namespace.named(name)
+
+mirror = namespace.build_mirror(url: "https://rubygems.org/").tap(&:readonly!)
+names = mirror.names.grep match
+
+if names.empty?
+  puts "found 0 gems matching #{match}"
+  exit 1
+end
+
+message = "found #{names.size} gems… import them? [y/N] (p for print)"
+puts message
+
+until (res = gets.chomp) == "y"
+  if res == "p"
+    puts names
+    puts
+    puts message
+  else
+    exit 1
+  end
+end
+
+puts "importing #{names.size} gems…"
+ActiveJob::Base.with queue_adapter: :inline, logger: Logger.new(STDOUT) do
+  names.each_slice(500) { mirror.enqueue_batch _1 }
+  namespace.gems.where(name: names).find_each(&:reindex)
+end

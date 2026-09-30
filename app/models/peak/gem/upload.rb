@@ -50,8 +50,8 @@ class Peak::Gem::Upload
   end
   delegate :spec, to: :package
   delegate :name, :executables, :licenses, :summary, :metadata, to: :spec
-  def ruby = spec.required_ruby_version.as_list
-  def rubygems = spec.required_rubygems_version.as_list
+  def ruby = spec.required_ruby_version&.as_list
+  def rubygems = spec.required_rubygems_version&.as_list
 
   def platform_id
     Peak::Platform.ids_from(platform_key).first
@@ -60,7 +60,8 @@ class Peak::Gem::Upload
   def platform_ref = "#{spec.version}-#{spec.platform}".chomp("-ruby")
 
   def requirement_triples
-    spec.dependencies.select(&:runtime?).flat_map { |dep|
+    dependencies = spec.dependencies.map { _1.is_a?(Gem::Dependency) ? _1 : Gem::Dependency.new(_1, _2) }
+    dependencies.select(&:runtime?).flat_map { |dep|
       dep.requirement.requirements.map { |operator, ref| [dep.name, operator, ref] }
     }
   end

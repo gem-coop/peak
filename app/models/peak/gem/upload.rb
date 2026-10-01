@@ -61,9 +61,9 @@ class Peak::Gem::Upload
 
   def requirement_triples
     dependencies = spec.dependencies.map { _1.is_a?(Gem::Dependency) ? _1 : Gem::Dependency.new(_1, _2) }
-    dependencies.uniq.select(&:runtime?).flat_map { |dep|
+    dependencies.select(&:runtime?).flat_map { |dep|
       dep.requirement.requirements.map { |operator, ref| [dep.name, operator, ref.to_s] }
-    }
+    }.uniq
   end
 
   def links

@@ -32,10 +32,10 @@ class Namespace::Gem::Version < ApplicationRecord
 
   scope :for,    -> { joins(:gem).where(gem: {name: _1}) }
   scope :system, -> { where(created_by: Peak.system_user) }
-  scope :distinct_on_gem_name, -> { includes(:gem).distinct_on("namespace_gems.name").merge(Namespace::Gem.alphabetized) }
+  scope :distinct_on_gem, -> { distinct_on(:gem_id).order(:gem_id) }
   def self.latest_for(name) = self.for(name).latest_by_ref
 
-  scope :as_byline, -> { select(:id, :ref, :summary, :published_at, :index_id, :gem_id, :created_by_id).includes(:gem, :created_by) }
+  scope :as_byline, -> { select(:id, :ref, :summary, :published_at, :gem_id, :created_by_id).preload(:gem, :created_by) }
   scope :missing_precompiles, -> { has_extensions.joins(:platform).merge(Peak::Platform.precompile_targeted) }
   scope :has_extensions, -> { where(has_extensions: true) }
   scope :pure, -> { joins(:platform).merge(Peak::Platform.pure) }

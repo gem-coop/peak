@@ -26,7 +26,7 @@
           <% gem = version.gem %>
 
           <h3 style="margin-block-end: 0; display: inline-block;">
-            <%= link_to gem.name, gem %>
+            <%= link_to gem.name, namespace_gem_path(@namespace, gem, index: nil) %>
           </h3>
 
           <%= tag.button onclick: "Clippy.addGem(this.getAttribute('data-gem-name'))", data: { gem_name: gem.name }, style: "padding: 4px;" do %>

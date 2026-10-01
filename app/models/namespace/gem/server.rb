@@ -19,5 +19,6 @@ class Namespace::Gem::Server < ActiveRecord::AssociatedObject
   end
 
   private
-    mattr_reader :client, default: HTTPX.plugin(:persistent).with(origin: "https://rubygems.org")
+    def self.client = @client ||= HTTPX.plugin(:persistent).with(origin: "https://rubygems.org")
+    delegate :client, to: :class
 end

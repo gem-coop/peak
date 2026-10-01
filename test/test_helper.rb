@@ -5,11 +5,6 @@ require "webmock"
 require "httpx/adapters/webmock"
 require "webmock/minitest"
 
-# create a new HTTPX client with webmock
-Namespace::Gem::Server.class_eval do
-  mattr_reader :client, default: HTTPX.plugin(:persistent).with(origin: "https://rubygems.org")
-end
-
 class ActiveSupport::TestCase
   parallelize workers: :number_of_processors
 

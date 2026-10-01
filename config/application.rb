@@ -18,7 +18,7 @@ require "rails/test_unit/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 # Require avo, or any other optional groups that are opt-in
-with = Bundler.settings["with"].without((:avo if Rails.env.test?))
+with = Bundler.settings["with"].without((:avo if Rails.env.test? && ENV["CI"].blank?))
 Bundler.require(*with)
 
 module Peak

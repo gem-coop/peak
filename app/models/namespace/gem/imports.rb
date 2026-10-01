@@ -9,7 +9,7 @@ class Namespace::Gem::Imports < ActiveRecord::AssociatedObject
     versions.where(ref: yanked_refs).destroy_all
 
     # Refs the server has that we don't should be imported
-    import_refs = server_refs - stored_refs
+    import_refs = server_refs - stored_refs - ignored_refs(gem.name)
     import_refs.each_with_object(+"") do |ref, errors|
       gemspec = Peak::Gem::Gemspec.new server.gemspec(ref)
       versions.system.new(ref:).consume(gemspec, index:, **publishing_ledger[ref])
@@ -31,5 +31,17 @@ class Namespace::Gem::Imports < ActiveRecord::AssociatedObject
         value = {published_at: json["created_at"], checksum: json["sha"]}
         [key, value]
       end.compact
+    end
+
+    def ignored_refs(name)
+      # These versions are still included in RubyGems.org /info files,
+      # even though the actual .gemspec and .gem files are invalid.
+      # So we have to exclude them by hand.
+      {
+        "dwradcliffe-test-one" => %w[0.0.1],
+        "dsad" => %w[1.0.0],
+        "sevgi-derender" => %w[0.73.0],
+        "test-html-sanitizer" => %w[0.0.1 0.0.2 0.0.3]
+      }[name] || []
     end
 end

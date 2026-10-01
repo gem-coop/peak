@@ -97,7 +97,6 @@ gem "pg", "~> 1.6"
 gem "redis", "~> 6.0"
 gem "resend", "~> 1.16"
 gem "json", "< 3" # LOCKED: httparty@0.24.2 resend's httparty use passes `quirks_mode` as a non-keyword argument to JSON.parse.
-gem "ruby-vips", "~> 2.0"
 gem "sidekiq-scheduler", "~> 6.0"
 gem "sidekiq", "~> 8.1", require: %w[sidekiq sidekiq/api]
 gem "slack-notifier", "~> 2.4"

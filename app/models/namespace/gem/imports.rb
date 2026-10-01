@@ -10,12 +10,16 @@ class Namespace::Gem::Imports < ActiveRecord::AssociatedObject
 
     # Refs the server has that we don't should be imported
     import_refs = server_refs - stored_refs
-    import_refs.each do |ref|
+    import_refs.each_with_object(+"") do |ref, errors|
       gemspec = Peak::Gem::Gemspec.new server.gemspec(ref)
       versions.system.new(ref:).consume(gemspec, index:, **publishing_ledger[ref])
-    end
+    rescue => error
+      errors << "#{ref}: #{error.inspect}\n"
+    end => errors
 
     gem.reindex
+  ensure
+    raise errors unless errors.empty?
   end
 
   private

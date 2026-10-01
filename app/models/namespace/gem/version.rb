@@ -25,8 +25,7 @@ class Namespace::Gem::Version < ApplicationRecord
   scope :published_before, -> { where(published_at: .._1) }
   scope :published_after, -> { where(published_at: _1..) }
   scope :latest_first, -> { order(published_at: :desc, ref: :desc) }
-  scope :latest_last, -> { order(published_at: :asc, ref: :asc) }
-  def self.latest = latest_last.last
+  def self.latest = latest_first.first
 
   def versions_upto_self = index.versions.where(slice(:gem_id)).upto(self)
   scope :upto, -> { published_before(_1.published_at) }
@@ -43,7 +42,7 @@ class Namespace::Gem::Version < ApplicationRecord
 
   def self.checksum = Digest::MD5.hexdigest(lines)
   def self.lines = pick(Arel.sql("string_agg(namespace_gem_versions.line, '' ORDER BY namespace_gem_versions.published_at, namespace_gem_versions.ref)"))
-  def self.refs = latest_last.pluck(:ref)
+  def self.refs = order(:published_at, :ref).pluck(:ref)
 
   def self.envelopes
     ordering = "namespace_gem_versions.published_at, namespace_gem_versions.ref"

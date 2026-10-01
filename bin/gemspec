@@ -1,11 +1,11 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env bin/rails runner
 
 puts <<~HELP if ARGV.none?
-  #{$0} PACKAGE_NAME [OPTIONS]
+  #{$0} GEM_NAME [OPTIONS]
 
-  Downloads a gemspec, writes to ./tmp/gems, then prints it.
+  Downloads a gemspec then prints it.
 
-  #{$0} railties-8.1.0 --full --console
+  #{$0} railties 8.1.0 --full --console
 
   -c, --console  Start an IRB session with the loaded gemspec.
   -f, --full     Don't strip lengthy files array from gemspecs when printing.
@@ -13,25 +13,15 @@ HELP
 exit 1 if ARGV.none?
 
 name = ARGV.first
+ref = ARGV.second
 console = (ARGV & ["-c", "--console"]).any?
 full = (ARGV & ["-f", "--full"]).any?
 
-require "pathname"
-require "net/http"
-require "rubygems/package"
+gem = Namespace.named(:@rubygems).gems.new(name:)
+spec = Peak::Gem::Gemspec.new gem.server.gemspec(ref)
 
-def write_remote_package(name, path)
-  path.write Net::HTTP.get URI("https://gem.coop/gems/#{name}.gem")
-end
-
-cache_dir = Pathname("./tmp/gems").expand_path.tap(&:mkpath)
-path = cache_dir.join("#{name}.gem")
-write_remote_package name, path unless path.exist?
-
-package = Gem::Package.new path.to_s
-spec = package.spec
-files = spec.files
-spec.files = [] unless full # Extract files since they can take a lot of vertical space
+files = spec.spec.files
+spec.spec.files = [] unless full # Extract files since they can take a lot of vertical space
 pp spec
 
 binding.irb if console

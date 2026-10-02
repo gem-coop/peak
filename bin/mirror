@@ -39,7 +39,8 @@ until (res = gets.chomp) == "y"
 end
 
 puts "importing #{names.size} gems…"
-ActiveJob::Base.with queue_adapter: :inline, logger: Logger.new(STDOUT) do
+ApplicationJob.with logger: Logger.new(STDOUT) do
   names.each_slice(500) { mirror.enqueue_batch _1 }
-  namespace.gems.where(name: names).find_each(&:reindex)
 end
+
+ApplicationJob.queue_adapter.shutdown(wait: true)

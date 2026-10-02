@@ -38,10 +38,13 @@ class Namespace::Gem::Imports < ActiveRecord::AssociatedObject
       # even though the actual .gemspec and .gem files are invalid.
       # So we have to exclude them by hand.
       {
-        "dwradcliffe-test-one" => %w[0.0.1],
-        "dsad" => %w[1.0.0],
-        "sevgi-derender" => %w[0.73.0],
-        "test-html-sanitizer" => %w[0.0.1 0.0.2 0.0.3]
-      }[name] || []
+        "dwradcliffe-test-one" => ["0.0.1"],
+        "rumai" => ["2.1.0", "3.0.0", "3.1.0", "3.2.0"],
+        "dsad" => ["1.0.0"],
+        "evri" => ["0.03", "0.04", "0.05", "0.06", "0.07"],
+        "sevgi-derender" => ["0.73.0"],
+        "test-html-sanitizer" => ["0.0.1", "0.0.2", "0.0.3"],
+        "rubymisc" => ["0.0.1", "0.0.2", "0.0.3", "0.0.3.1"]
+      }.fetch(name, [])
     end
 end

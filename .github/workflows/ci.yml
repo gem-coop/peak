@@ -87,7 +87,12 @@ jobs:
         run: bun run build
 
       - name: Ensure DB is up
-        run: docker compose up -d --wait db
+        uses: stringbean/docker-healthcheck-action@v1
+        with:
+          container: db-peak-1
+          wait-time: 10
+          require-status: running
+          require-healthy: true
 
       - name: Run tests
         run: bin/rails db:test:prepare test

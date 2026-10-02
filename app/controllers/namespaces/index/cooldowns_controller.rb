@@ -7,8 +7,8 @@ class Namespaces::Index::CooldownsController < Public::BaseController
   end
 
   def show
-    stream_lines_from @cooldown.versions.for(params[:id])
-    head :not_found unless performed?
+    plain = @cooldown.versions.latest_last.for(params[:id]).lines
+    render plain:, status: (:not_found if plain.empty?)
   end
 
   private

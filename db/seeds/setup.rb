@@ -24,6 +24,11 @@ register Namespace::Gem::Version::Reference, as: :references
 def users.create(label = nil, unique_by: :email_address, **) = super
 def gems.create(label = nil, unique_by: [:namespace, :name], **) = super
 
+def namespaces.mirror(namespace, names)
+  namespace.build_mirror.enqueue_batch names
+  at_exit { ApplicationJob.queue_adapter.shutdown(wait: true) }
+end
+
 def namespaces.create_approved(label = nil, owner: Peak.system_user, **) = create(label, **).tap do
   accesses.owner.create(namespace: _1, user: owner)
   submissions.approved.create(name: _1.name, owner:, resolved_at: Time.current)

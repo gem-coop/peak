@@ -7,7 +7,7 @@ class Namespaces::IndexController < Public::BaseController
   end
 
   def show
-    plain = @index.versions.latest_last.for(params[:id]).lines
-    render plain:, status: (:not_found if plain.empty?)
+    plain = @index.versions.for(params[:id]).lines
+    render plain:, status: (:not_found if plain.blank?)
   end
 end

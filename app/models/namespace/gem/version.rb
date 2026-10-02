@@ -42,7 +42,7 @@ class Namespace::Gem::Version < ApplicationRecord
   scope :pure, -> { joins(:platform).merge(Peak::Platform.pure) }
 
   def self.checksum = Digest::MD5.hexdigest(lines)
-  def self.lines = latest_last.pluck(:line).join
+  def self.lines = pick(Arel.sql("string_agg(namespace_gem_versions.line, '' ORDER BY namespace_gem_versions.published_at, namespace_gem_versions.ref)"))
   def self.refs = latest_last.pluck(:ref)
 
   def self.envelopes

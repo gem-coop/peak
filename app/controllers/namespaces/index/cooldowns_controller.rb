@@ -7,8 +7,8 @@ class Namespaces::Index::CooldownsController < Public::BaseController
   end
 
   def show
-    plain = @cooldown.versions.latest_last.for(params[:id]).lines
-    render plain:, status: (:not_found if plain.empty?)
+    plain = @cooldown.versions.for(params[:id]).lines
+    render plain:, status: (:not_found if plain.blank?)
   end
 
   private

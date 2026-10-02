@@ -65,29 +65,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      - name: Start database
-        run: |
-          docker compose up -d db > /dev/null 2>&1 &
-          disown
+      - parallel:
+        - name: Start database
+          run: docker compose up -d db --wait db > /dev/null 2>&1
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-          cache-version: 1
+        - name: Set up Ruby
+          uses: ruby/setup-ruby@v1
+          with:
+            bundler-cache: true
+            cache-version: 1
 
-      - name: Configure database
-        run: cp config/database.ci.yml config/database.yml
+        - name: Configure database
+          run: cp config/database.ci.yml config/database.yml
 
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.3.5
+        - uses: oven-sh/setup-bun@v2
+          with:
+            bun-version: 1.3.5
 
       - name: Run bun
         run: bun run build
-
-      - name: Ensure DB is up
-        run: docker compose up -d --wait db
 
       - name: Run tests
         run: bin/rails db:test:prepare test

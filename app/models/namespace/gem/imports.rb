@@ -1,8 +1,10 @@
 class Namespace::Gem::Imports < ActiveRecord::AssociatedObject
   # Call `index.compact` afterwards, as needed.
   performs def import_all(index)
+    versions = gem.versions.where(index:)
+
     server_refs = server.refs
-    stored_refs = versions.pluck(:ref)
+    stored_refs = versions.refs
 
     # Refs we have that the server doesn't have been yanked
     yanked_refs = stored_refs - server_refs
@@ -23,7 +25,7 @@ class Namespace::Gem::Imports < ActiveRecord::AssociatedObject
   end
 
   private
-    delegate :server, :versions, to: :gem
+    delegate :server, to: :gem
 
     def publishing_ledger
       @publishing_ledger ||= server.versions_json.to_h do |json|

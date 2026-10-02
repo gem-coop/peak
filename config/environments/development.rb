@@ -71,5 +71,7 @@ Rails.application.configure do
   # config.generators.apply_rubocop_autocorrect_after_generate!
 
   # Use the in-process and non-durable queuing backend for Active Job.
-  config.active_job.queue_adapter = :async
+  config.active_job.queue_adapter = ActiveJob::QueueAdapters::AsyncAdapter.new(
+    max_threads: Concurrent.processor_count * 2
+  )
 end

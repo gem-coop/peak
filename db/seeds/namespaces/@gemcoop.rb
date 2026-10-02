@@ -15,7 +15,7 @@ gems.with namespace: do
   index = namespace.stable_index
 
   gem = _1.parse :oaken, index, gems.oaken_lines
-  gem.versions.latest.update! summary: "Oaken aims to blend your Fixtures/Factories and levels up your database seeds."
+  gem.versions.latest_by_ref.update! summary: "Oaken aims to blend your Fixtures/Factories and levels up your database seeds."
   gem.reload.reindex
 
   peak = _1.create :peak, name: :peak

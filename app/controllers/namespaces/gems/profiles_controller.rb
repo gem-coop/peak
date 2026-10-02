@@ -5,7 +5,7 @@ class Namespaces::Gems::ProfilesController < ApplicationController
     @gem = @index.gems.named(params[:id])
     set_breadcrumb_trail @index.namespace, @gem
 
-    @latest = @gem.versions.pure.latest
+    @latest = @gem.versions.pure.latest_by_ref
     @versions = @gem.versions.pure.as_byline.latest_first.limit(20)
   end
 

@@ -60,24 +60,25 @@ jobs:
     runs-on: ubuntu-26.04
     env:
       RAILS_ENV: test
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: --health-cmd="pg_isready" --health-interval=3s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
-
-      - name: Start database
-        run: |
-          docker compose up -d db > /dev/null 2>&1 &
-          disown
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
           cache-version: 1
-
-      - name: Configure database
-        run: cp config/database.ci.yml config/database.yml
 
       - uses: oven-sh/setup-bun@v2
         with:
@@ -86,12 +87,10 @@ jobs:
       - name: Run bun
         run: bun run build
 
-      - name: Ensure DB is up
-        run: docker compose up -d --wait db
-
       - name: Run tests
         run: bin/rails db:test:prepare test
-        # env:
+        env:
+          DATABASE_URL: "postgres://postgres:postgres@localhost:5432"
           # BACKTRACE: 1
 
       - name: Run seed

@@ -40,7 +40,8 @@ end
 
 puts "importing #{names.size} gems…"
 ApplicationJob.with logger: Logger.new(STDOUT) do
-  names.each_slice(500) { mirror.enqueue_batch _1 }
+  queues = mirror.queue_cycle
+  names.each_slice(500) { mirror.enqueue_batch _1, queue: queues.next }
 end
 
 ApplicationJob.queue_adapter.shutdown(wait: true)

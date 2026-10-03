@@ -347,7 +347,6 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
     mirror.sync(force_all: true)
 
     assert_equal %w[rake oaken], enqueued_gem_names
-    assert_equal 2, enqueued_jobs.map { |j| j["queue_name"] }.uniq.size
     assert_equal 1, mirror.reload.last_seen_line_no
   end
 end

@@ -29,4 +29,17 @@ class Namespace::Mirror::GemImportJobTest < ActiveSupport::TestCase
       Namespace::Mirror::GemImportJob.new.perform(name: "rake", namespace_id: namespaces.gemcoop.id)
     end
   end
+
+  test "creates jobs across threads without a fiber error" do
+    first_thread = Thread.new do
+      4.times.map { Namespace::Mirror::GemImportJob.new(name: "rake", namespace_id: 1).queue_name }
+    end.value
+
+    second_thread = Thread.new do
+      4.times.map { Namespace::Mirror::GemImportJob.new(name: "rake", namespace_id: 1).queue_name }
+    end.value
+
+    assert_equal ["default"], first_thread.uniq
+    assert_equal ["default"], second_thread.uniq
+  end
 end

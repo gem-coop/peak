@@ -12,18 +12,22 @@ class Namespace::Mirror < ApplicationRecord
     @uri ||= Addressable::URI.parse(url)
   end
 
+  def queue_cycle = %w[import_1 import_2 import_3 import_4].cycle
+
   performs def sync(force_all: false)
     update!(last_seen_line_no: nil, last_seen_line_end: nil) if force_all
-    gems_to_sync { enqueue_batch _1 }
+
+    queues = queue_cycle
+    gems_to_sync { enqueue_batch _1, queue: queues.next }
 
     # compact?
     # update cooldowns?
   end
 
-  def enqueue_batch(names)
+  def enqueue_batch(names, queue: queue_cycle.next)
     gem_attrs = names.map { {name: _1, namespace_id:} }
     Namespace::Gem.upsert_all gem_attrs, unique_by: %i[namespace_id name], returning: false
-    ActiveJob.perform_all_later gem_attrs.map { GemImportJob.new(**_1) }
+    ActiveJob.perform_all_later gem_attrs.map { GemImportJob.new(**_1).set(queue:) }
   end
 
   def gems_to_sync

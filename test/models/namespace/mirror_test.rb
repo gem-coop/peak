@@ -349,4 +349,26 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
     assert_equal %w[rake oaken], enqueued_gem_names
     assert_equal 1, mirror.reload.last_seen_line_no
   end
+
+  test "gems_to_sync always saves line numbers from the full file" do
+    # test to make sure we apply line numbers _before_ resuming from a line
+    # we have seen before. if we don't, resuming will cause a nonsense
+    # number to get saved, forcing a full sync as soon as one gem is added.
+    stub_versions <<~END
+      ---
+      rake 13.0.0 1000aaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      oaken 1.0.0 1001aaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    END
+    mirror.sync
+    assert_equal 1, mirror.reload.last_seen_line_no
+
+    stub_versions <<~END
+      ---
+      rake 13.0.0 1000aaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      oaken 1.0.0 1001aaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      unpwn 2.0.0 1002aaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    END
+    mirror.sync
+    assert_equal 2, mirror.reload.last_seen_line_no
+  end
 end

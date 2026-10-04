@@ -31,13 +31,12 @@ class Namespace::Mirror < ApplicationRecord
   end
 
   def gems_to_sync
-    lines = versions.lines(chomp: true)
+    lines = versions.lines(chomp: true).each_with_index.to_a
     Rails.logger.debug { "[mirror] #{url} versions contains #{lines.count} lines" }
     lines = lines[(last_seen_line_no + 1)..] if last_seen_line_valid?(lines)
     Rails.logger.debug { "[mirror] Resuming after line #{last_seen_line_no.inspect}: #{lines.count} lines left" }
 
-    numbered = lines.each_with_index.to_a
-    numbered.each_slice(BATCH_SIZE) do |batch|
+    lines.each_slice(BATCH_SIZE) do |batch|
       yield batch.map { _1.first.split(" ", 2).first }.uniq
       update_last_seen_line!(*batch.last)
     end
@@ -45,7 +44,7 @@ class Namespace::Mirror < ApplicationRecord
 
   # Ensure our line number matches the content of the line as well
   def last_seen_line_valid?(lines)
-    last_seen_line_no && lines[last_seen_line_no]&.end_with?(last_seen_line_end)
+    last_seen_line_no && lines[last_seen_line_no]&.first&.end_with?(last_seen_line_end)
   end
 
   def update_last_seen_line!(line, line_no)

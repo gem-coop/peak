@@ -3,8 +3,10 @@ Rails.application.routes.draw do
   require "sidekiq-scheduler/web"
 
   scope :admin do
-    mount Sidekiq::Web => "/sidekiq"
-    mount_avo at: "/" if Peak.avo?
+    github_authenticate(:admin, team: :maintainers) do
+      mount Sidekiq::Web => "/sidekiq"
+      mount_avo at: "/" if Peak.avo?
+    end
   end
 
   namespace :user do

@@ -194,7 +194,7 @@ Avo.configure do |config|
     Avo::Resources::ResourceManager.prepend Module.new {
       # Avo sorts by navigation_label, but that doesn't work for us.
       Sorted = Data.define(:resources) do
-        def sort_by(&) = resources.sort_by(&:name)
+        def sort_by(&) = resources.sort_by { |x| x.navigation_label.sub(/^::/, "Namespace::") }
       end unless defined?(Sorted)
 
       def resources_for_navigation(user = nil)

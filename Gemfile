@@ -87,8 +87,10 @@ gem "addressable", "~> 2.9"
 gem "aws-sdk-s3", "~> 1.232"
 gem "benchmark", "~> 0.5.0"
 gem "brotli", "~> 0.8.0"
+gem "faraday-retry", "~> 2.4"
 gem "honeybadger", "~> 6.9"
 gem "httpx", "~> 1.8"
+gem "json", "< 3" # LOCKED: httparty@0.24.2 resend's httparty use passes `quirks_mode` as a non-keyword argument to JSON.parse.
 gem "mail", "~> 2.9"
 gem "opentelemetry-exporter-otlp"
 gem "opentelemetry-instrumentation-all"
@@ -96,7 +98,6 @@ gem "opentelemetry-sdk"
 gem "pg", "~> 1.6"
 gem "redis", "~> 6.0"
 gem "resend", "~> 1.16"
-gem "json", "< 3" # LOCKED: httparty@0.24.2 resend's httparty use passes `quirks_mode` as a non-keyword argument to JSON.parse.
 gem "sidekiq-scheduler", "~> 6.0"
 gem "sidekiq", "~> 8.1", require: %w[sidekiq sidekiq/api]
 gem "slack-notifier", "~> 2.4"

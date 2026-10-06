@@ -4,12 +4,12 @@ return unless Peak.avo?
 # The values disaplayed here are the default ones. Uncomment and change them to fit your needs.
 Avo.configure do |config|
   ## == Routing ==
-  config.root_path = "/avo"
+  config.root_path = "/admin"
   # used only when you have custom `map` configuration in your config.ru
   # config.prefix_path = "/internal"
 
   # Where should the user be redirected when visiting the `/avo` url
-  config.home_path = "/avo/resources/namespaces"
+  config.home_path = "/admin/resources/namespaces"
 
   ## == Licensing ==
   config.license_key = ENV["AVO_LICENSE_KEY"]

@@ -27,7 +27,7 @@ class ActiveSupport::TestCase
   def assert_slack_request(title:, avo_path:)
     Slack.with webhook_url: "https://slack.test/webhook" do
       text = +"[TEST] #{title}"
-      text << "\nhttp://example.com/avo/resources/#{avo_path}" if Peak.avo?
+      text << "\nhttp://example.com/admin/resources/#{avo_path}" if Peak.avo?
       webhook = stub_request(:post, Slack.webhook_url).with(body: {"payload" => JSON.dump({text:})})
 
       yield.tap do

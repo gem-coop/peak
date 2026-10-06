@@ -4,12 +4,12 @@ return unless Peak.avo?
 # The values disaplayed here are the default ones. Uncomment and change them to fit your needs.
 Avo.configure do |config|
   ## == Routing ==
-  config.root_path = "/avo"
+  config.root_path = "/admin"
   # used only when you have custom `map` configuration in your config.ru
   # config.prefix_path = "/internal"
 
   # Where should the user be redirected when visiting the `/avo` url
-  config.home_path = "/avo/resources/namespaces"
+  config.home_path = "/admin/resources/namespaces"
 
   ## == Licensing ==
   config.license_key = ENV["AVO_LICENSE_KEY"]
@@ -21,9 +21,6 @@ Avo.configure do |config|
 
   ## == Authentication ==
   config.current_user_method { nil } # Avo 4 requires to return nil here
-  config.authenticate_with do
-    authenticate_or_request_with_http_basic { |u, p| Peak.admin.authenticate u, p }
-  end unless Rails.env.local?
 
   ## == Authorization ==
   # config.is_admin_method = :is_admin
@@ -194,7 +191,7 @@ Avo.configure do |config|
     Avo::Resources::ResourceManager.prepend Module.new {
       # Avo sorts by navigation_label, but that doesn't work for us.
       Sorted = Data.define(:resources) do
-        def sort_by(&) = resources.sort_by(&:name)
+        def sort_by(&) = resources.sort_by { |x| x.navigation_label.sub(/^::/, "Namespace::") }
       end unless defined?(Sorted)
 
       def resources_for_navigation(user = nil)

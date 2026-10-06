@@ -28,6 +28,7 @@ FileUtils.chdir APP_ROOT do
   unless File.exist?("config/database.yml")
     FileUtils.cp "config/database.local.yml", "config/database.yml"
   end
+  File.write(".env.local", "") unless File.exist?(".env.local")
 
   puts "\n== Preparing database =="
   system! "bin/rails db:reset" if ARGV.include?("--reset")

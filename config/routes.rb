@@ -1,12 +1,5 @@
 Rails.application.routes.draw do
-  mount_avo if Peak.avo?
-
-  require "sidekiq/web"
-  require "sidekiq-scheduler/web"
-  Sidekiq::Web.use(Rack::Auth::Basic) do |u, p|
-    Peak.admin.authenticate(u, p)
-  end unless Rails.env.local?
-  mount Sidekiq::Web => "/sidekiq"
+  draw :admin
 
   namespace :user do
     resources :email_verifications, only: %i[new create show]

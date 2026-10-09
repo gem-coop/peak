@@ -1,11 +1,11 @@
 class Admin::SessionsController < ApplicationController
   def create
-    github_authenticate!
-    redirect_to "/admin/avo"
+    Peak.admin.authenticate request
+    redirect_to avo_path
   end
 
   def destroy
-    github_logout
+    Peak.admin.logout request
     redirect_to root_url
   end
 end

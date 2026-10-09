@@ -69,12 +69,6 @@ class ActionDispatch::IntegrationTest
     response.parsed_body.css(selector)
   end
 
-  def peak_admin_authorization
-    { "HTTP_AUTHORIZATION" => ADMIN_AUTHORIZATION }
-  end
-
-  ADMIN_AUTHORIZATION = ActionController::HttpAuthentication::Basic.encode_credentials(Peak.admin.username, Peak.admin.password)
-
   def assert_ok
     assert_response :success
     assert_dom "peak-ok"

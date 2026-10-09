@@ -9,8 +9,8 @@ scope :admin do
     get "/callback/github" => "admin/sessions#create"
     get "/logout" => "admin/sessions#destroy"
 
-    # see initializers/warden_github_rails.rb for config
-    github_authenticate(:admin, team: :maintainers) do
+    # see initializers/warden_github.rb for config
+    constraints -> { Peak.admin.authenticate _1 } do
       mount Sidekiq::Web => "/sidekiq"
       mount_avo at: "/" if Peak.avo?
     end

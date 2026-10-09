@@ -26,19 +26,19 @@ module Peak extend self
   def Ok(...) = Ok.new(...)
   def Error(...) = Error.new(...)
 
-  Admin = Data.define :username, :password do
-    def authenticate(username_challenge, password_challenge)
-      # Use `&` to not short-circuit.
-      compare(username, username_challenge) & compare(password, password_challenge)
+  class Admin < Data.define(:team_id)
+    def scope = :admin
+
+    def authenticate(request)
+      warden = request.env["warden"]
+      team_id && warden.authenticate!(scope:)&.team_member?(team_id)
     end
 
-    def compare(internal, other)
-      internal.present? && ActiveSupport::SecurityUtils.secure_compare(internal, other)
+    def logout(request)
+      request.env["warden"].logout(scope:)
     end
   end
 
-  password = ENV["ADMIN_PASSWORD"]
-  password ||= "password" if Rails.env.local?
-  admin = Admin.new(ENV.fetch("ADMIN_USERNAME", "gem-coop"), password)
-  define_method :admin, &admin.method(:itself)
+  attr_accessor :admin
+  @admin = Admin.new(nil)
 end

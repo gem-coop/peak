@@ -31,7 +31,8 @@ module Peak extend self
 
     def authenticate(request)
       warden = request.env["warden"]
-      team_id && warden.authenticate!(scope:)&.team_member?(team_id)
+      Current.admin = User.new(warden.authenticate!(scope:))
+      Current.admin.team_member?(team_id)
     end
 
     def logout(request)
@@ -41,4 +42,22 @@ module Peak extend self
 
   attr_accessor :admin
   @admin = Admin.new(nil)
+
+  class User < Data.define(:github_user)
+    def team_member?(team_id)
+      team_id && github_user&.team_member?(team_id)
+    end
+
+    def name
+      "@#{github_user.login}"
+    end
+
+    def avo_title
+      github_user.name
+    end
+
+    def avatar
+      github_user.avatar_url
+    end
+  end
 end

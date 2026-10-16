@@ -10,4 +10,6 @@ class Current < ActiveSupport::CurrentAttributes
   def upload_from(io)
     Peak::Gem::Upload.read(io).tap { uploads << _1 }
   end
+
+  attribute :admin
 end

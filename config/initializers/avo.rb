@@ -20,7 +20,7 @@ Avo.configure do |config|
   end
 
   ## == Authentication ==
-  config.current_user_method { nil } # Avo 4 requires to return nil here
+  config.current_user_method { Current.admin } # Avo 4 requires to return nil here
 
   ## == Authorization ==
   # config.is_admin_method = :is_admin

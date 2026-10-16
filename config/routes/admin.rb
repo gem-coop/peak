@@ -2,7 +2,7 @@ require "sidekiq/web"
 require "sidekiq-scheduler/web"
 
 scope :admin do
-  if Rails.env.local?
+  if !Rails.env.local?
     mount Sidekiq::Web => "/sidekiq"
     mount_avo at: "/" if Peak.avo?
   else

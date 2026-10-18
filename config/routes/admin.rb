@@ -2,17 +2,15 @@ require "sidekiq/web"
 require "sidekiq-scheduler/web"
 
 scope :admin do
-  if Rails.env.local?
+  # see initializers/warden_github.rb for config
+  constraint = -> { Peak.admin.authenticate _1 }
+  constraint = -> { true } if !Peak.admin.team_id && Rails.env.development? # Comment out to check admin authentication locally
+
+  constraints constraint do
     mount Sidekiq::Web => "/sidekiq"
     mount_avo at: "/" if Peak.avo?
-  else
-    get "/callback/github" => "admin/sessions#create"
-    get "/logout" => "admin/sessions#destroy"
-
-    # see initializers/warden_github_rails.rb for config
-    github_authenticate(:admin, team: :maintainers) do
-      mount Sidekiq::Web => "/sidekiq"
-      mount_avo at: "/" if Peak.avo?
-    end
   end
+
+  get "/callback/github" => "admin/sessions#create"
+  get "/logout" => "admin/sessions#destroy"
 end

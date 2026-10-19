@@ -21,6 +21,7 @@ Avo.configure do |config|
 
   ## == Authentication ==
   config.current_user_method { Current.admin } # Avo 4 requires to return nil here
+  config.sign_out_path_name = :admin_logout_path
 
   ## == Authorization ==
   # config.is_admin_method = :is_admin

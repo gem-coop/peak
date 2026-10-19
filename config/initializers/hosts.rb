@@ -1,7 +1,7 @@
 Rails.application.configure do
   host =
     case Rails.env
-    when "development" then "peak.test"
+    when "development" then "localhost:3000"
     when "test" then "example.com"
     when "production"
       case ENV.fetch("PEAK_ENV", "production")

@@ -36,7 +36,7 @@ module Peak extend self
     end
 
     def logout(request)
-      request.env["warden"].logout(scope:)
+      request.env["warden"].logout(scope)
     end
 
     class User < Data.define(:github_user)

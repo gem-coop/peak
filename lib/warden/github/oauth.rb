@@ -6,7 +6,7 @@ class Warden::GitHub::OAuth < Data.define(:client_id, :client_secret, :scope, :r
   end
 
   def authorize_uri(origin:, state:)
-    redirect_uri = "#{origin}/#{redirect_uri}" if redirect_uri
+    redirect_uri = URI(origin).tap { _1.path = self.redirect_uri }.to_s
 
     URI("https://github.com/login/oauth/authorize").tap do
       _1.query = URI.encode_www_form(client_id:, scope:, redirect_uri:, state:)

@@ -15,7 +15,7 @@ Warden::GitHub.oauth = Warden::GitHub::OAuth.new(
   client_id:,
   client_secret:,
   scope: "read:org",
-  redirect_uri: "/admin/callback/github" && nil
+  redirect_uri: "/admin/callback/github"
 )
 
 Rails.application.config.middleware.use Warden::Manager do |config|

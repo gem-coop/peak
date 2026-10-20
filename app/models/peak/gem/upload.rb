@@ -20,13 +20,12 @@ class Peak::Gem::Upload
   end
 
   class_eval do
-    def self.valid_ref?(ref)
-      ref.present? && ::Gem::Version::ANCHORED_VERSION_PATTERN.match?(ref)
-    end
-
-    def self.valid_chars?(*values)
-      values.none?(/[\r\n\x00]/)
-    end
+    # TODO: Support @namespace/gem format in names, particularly in requirement_triples.
+    def self.valid_name?(name)     = Peak::Gem.name?(name)
+    def self.valid_operator?(op)   = Peak::Gem.operator_values.include?(op)
+    def self.valid_chars?(*values) = values.none?(/[\r\n\x00]/)
+    def self.valid_ref?(ref)       = ref.present? && ::Gem::Version::ANCHORED_VERSION_PATTERN.match?(ref)
+    delegate :valid_name?, :valid_operator?, :valid_chars?, :valid_ref?, to: :class
 
     class Validator < Gem::SpecificationPolicy
       def validate
@@ -37,9 +36,10 @@ class Peak::Gem::Upload
     InvalidError = Gem::InvalidSpecificationException
 
     def validate
-      raise InvalidError unless Peak::Gem.name?(name)
-      raise InvalidError unless self.class.valid_ref?(platform_ref)
-      raise InvalidError unless self.class.valid_chars?(checksum, ruby, rubygems, *executables, *licenses)
+      raise InvalidError unless valid_name?(name)
+      raise InvalidError unless valid_ref?(platform_ref)
+      raise InvalidError unless valid_chars?(checksum, ruby, rubygems, *executables, *licenses)
+      raise InvalidError unless requirement_triples.all? { valid_name?(_1) && valid_operator?(_2) && valid_ref?(_3) }
       Validator.new(spec).validate
       self
     end
@@ -60,10 +60,12 @@ class Peak::Gem::Upload
   def platform_ref = "#{spec.version}-#{spec.platform}".chomp("-ruby")
 
   def requirement_triples
-    dependencies = spec.dependencies.map { _1.is_a?(Gem::Dependency) ? _1 : Gem::Dependency.new(_1, _2) }
-    dependencies.select(&:runtime?).flat_map { |dep|
-      dep.requirement.requirements.map { |operator, ref| [dep.name, operator, ref.to_s] }
-    }.uniq
+    @requirement_triples ||= begin
+      dependencies = spec.dependencies.map { _1.is_a?(Gem::Dependency) ? _1 : Gem::Dependency.new(_1, _2) }.select(&:runtime?)
+      dependencies.flat_map { |dep|
+        dep.requirement.requirements.map { |operator, ref| [dep.name, operator, ref.to_s] }
+      }.uniq
+    end
   end
 
   def links

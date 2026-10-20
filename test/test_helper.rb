@@ -52,6 +52,7 @@ class ActiveSupport::TestCase
       values.with_defaults(name: "safe", version: "1.0.0", summary: "summary", author: "author", files: ["safe.rb"]).each do |key, value|
         spec.public_send "#{key}=", value
       end
+      yield spec if block_given?
 
       Gem::DefaultUserInteraction.use_ui(Gem::SilentUI.new) do
         File.binread Gem::Package.build(spec, true, false) # Build `.gem` with skip-validation so unsafe links survive into the package.

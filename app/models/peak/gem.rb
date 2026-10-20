@@ -3,6 +3,16 @@ class Peak::Gem
   mattr_reader :name_pattern,  default: /\A#{unanchored_name_pattern}\z/
   mattr_reader :route_pattern, default: /#{unanchored_name_pattern}\.gem/ # Routes manage anchoring.
 
+  mattr_reader :operators, default: {
+    greater_eq: ">=",
+    greater: ">",
+    less_eq: "<=",
+    less: "<",
+    eq: "=",
+    pessimistic: "~>"
+  }
+  mattr_reader :operator_values, default: Set.new(operators.values)
+
   def self.name?(name)
     name_pattern.match? name
   end

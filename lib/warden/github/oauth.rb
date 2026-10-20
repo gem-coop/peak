@@ -14,7 +14,15 @@ class Warden::GitHub::OAuth < Data.define(:client_id, :client_secret, :scope, :r
   end
 
   def access_token_trade_from(code:)
-    data = HTTPX.post("https://github.com/login/oauth/access_token", form: { client_id:, client_secret:, code: }).form
+    access_token_post(code:)
+  end
+
+  def refresh(refresh_token)
+    access_token_post(grant_type: :refresh_token, refresh_token:)
+  end
+
+  def access_token_post(**params)
+    data = HTTPX.post("https://github.com/login/oauth/access_token", form: { client_id:, client_secret:, **params }).form
     data.symbolize_keys.slice(:access_token, :expires_in, :refresh_token).presence
   end
 end

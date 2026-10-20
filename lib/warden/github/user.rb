@@ -3,10 +3,18 @@ class Warden::GitHub::User < Data.define(:access_token, :expires_at, :refresh_to
     new(**JSON.parse(data, symbolize_names: true).slice(*members))
   end
 
-  def self.from(access_token:, expires_in:, **)
-    expires_at = Time.now.utc.to_i + expires_in.to_i
+  def self.from(access_token:, **)
     details = Warden::GitHub::Client.from(access_token).user_details(members)
     new(access_token:, expires_at:, **, **details)
+  end
+
+  def initialize(expires_in: nil, expires_at: nil, **)
+    expires_at ||= Time.now.utc.to_i + expires_in.to_i
+    super(expires_at:, **)
+  end
+
+  def refreshed
+    Warden::GitHub.oauth.refresh(refresh_token)&.then { with(**_1) } if expired?
   end
 
   def team_member?(**)

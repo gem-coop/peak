@@ -45,7 +45,7 @@ jobs:
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
           override: false
           auto_inactive: true
-      - uses: honeybadger-io/github-notify-deploy-action@v1
+      - uses: honeybadger-io/github-notify-deploy-action@v2
         with:
           api_key: ${{ secrets.HONEYBADGER_API_KEY }}
           environment: staging
@@ -86,7 +86,7 @@ jobs:
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
           override: false
           auto_inactive: true
-      - uses: honeybadger-io/github-notify-deploy-action@v1
+      - uses: honeybadger-io/github-notify-deploy-action@v2
         with:
           api_key: ${{ secrets.HONEYBADGER_API_KEY }}
           environment: production

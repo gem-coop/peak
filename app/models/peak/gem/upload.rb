@@ -38,7 +38,7 @@ class Peak::Gem::Upload
     def validate
       raise InvalidError unless valid_name?(name)
       raise InvalidError unless valid_ref?(platform_ref)
-      raise InvalidError unless valid_chars?(checksum, ruby, rubygems, *executables, *licenses)
+      raise InvalidError unless valid_chars?(checksum, *ruby, *rubygems, *executables, *licenses)
       raise InvalidError unless requirement_triples.all? { valid_name?(_1) && valid_operator?(_2) && valid_ref?(_3) }
       Validator.new(spec).validate
       self

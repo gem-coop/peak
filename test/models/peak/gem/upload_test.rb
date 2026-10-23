@@ -18,6 +18,10 @@ class Peak::Gem::UploadTest < ActiveSupport::TestCase
     assert peak_upload_from(gem_package_from(required_ruby_version: [">=\n 4.0\r", ">=\n 4.1"])).validate
     assert peak_upload_from(gem_package_from(required_rubygems_version: [">=\r4.0\n", ">=\r4.1\n"])).validate
 
+    # RubyGems does sanitation on requirements, but not gem names. So the above tests are valid, but the below aren't:
+    assert_invalid_upload gem_package_from { _1.add_dependency "ruby-ajp\n", ">= 0.2.0" }
+    assert_invalid_upload gem_package_from { _1.add_dependency "rails&", ">= 0.14" }
+
     assert_invalid_upload gem_package_from(licenses: ["MIT\nFORGED"])
     assert_invalid_upload gem_package_from(executables: ["peak\nforged"])
   end
@@ -38,13 +42,13 @@ class Peak::Gem::UploadTest < ActiveSupport::TestCase
   test "ref format" do
     refute valid_ref?("1.0\n9")
     refute valid_ref?("1.0 0")
+    refute valid_ref?("1.0.0-x86_64-linux")
     refute valid_ref?("v1")
     refute valid_ref?("")
     refute valid_ref?("1.0.0; rm -rf")
 
     assert valid_ref?("1.0.0")
     assert valid_ref?("0.9.1")
-    assert valid_ref?("1.0.0-arm-linux")
     assert valid_ref?("8.1.0.pre.1")
   end
 

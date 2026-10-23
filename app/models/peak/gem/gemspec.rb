@@ -4,6 +4,7 @@ class Peak::Gem::Gemspec < Peak::Gem::Upload
 
   def initialize(spec)
     @spec = spec
+    @spec.metadata ||= {} # Some specs have nil metadata but are otherwise valid, so we shimmy them a bit.
   end
 
   def package = raise("no package on a gemspec")

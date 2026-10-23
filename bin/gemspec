@@ -17,11 +17,21 @@ ref = ARGV.second
 console = (ARGV & ["-c", "--console"]).any?
 full = (ARGV & ["-f", "--full"]).any?
 
+def validate(spec)
+  spec.validate
+rescue => error
+  puts "ERROR"
+  puts error.class
+  puts error
+  puts Rails.backtrace_cleaner.clean(error.backtrace)
+end
+
 gem = Namespace.named(:@rubygems).gems.new(name:)
 spec = Peak::Gem::Gemspec.new gem.server.gemspec(ref)
 
 files = spec.spec.files
 spec.spec.files = [] unless full # Extract files since they can take a lot of vertical space
 pp spec
+validate(spec)
 
 binding.irb if console

@@ -34,7 +34,7 @@ module Peak extend self
 
     def authenticate(request)
       warden = request.env["warden"]
-      logout request if warden.user(scope:)&.expired?
+      refresh_expired_session warden
 
       Current.admin = warden.authenticate!(scope:)
       Current.admin&.team_member?(org:, team:)
@@ -42,6 +42,16 @@ module Peak extend self
 
     def logout(request)
       request.env["warden"].logout(scope)
+    end
+
+    def refresh_expired_session(warden)
+      if (user = warden.user(scope:))&.expired?
+        if user = user.refreshed
+          warden.set_user(user, scope:)
+        else
+          warden.logout(scope)
+        end
+      end
     end
   end
 

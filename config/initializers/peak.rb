@@ -26,38 +26,25 @@ module Peak extend self
   def Ok(...) = Ok.new(...)
   def Error(...) = Error.new(...)
 
-  class Admin < Data.define(:team_id)
+  class Peak::Admin < Data.define(:org, :team, :client_id, :client_secret)
+    def self.empty = new(**members.index_with(nil))
+
     def scope = :admin
+    def client_set? = client_id.present? && client_secret.present?
 
     def authenticate(request)
       warden = request.env["warden"]
-      Current.admin = User.new(warden.authenticate!(scope:))
-      Current.admin.team_member?(team_id)
+      logout request if warden.user(scope:)&.expired?
+
+      Current.admin = warden.authenticate!(scope:)
+      Current.admin&.team_member?(org:, team:)
     end
 
     def logout(request)
       request.env["warden"].logout(scope)
     end
-
-    class User < Data.define(:github_user)
-      def team_member?(team_id)
-        team_id && github_user&.team_member?(team_id)
-      end
-
-      def name
-        "@#{github_user.login}"
-      end
-
-      def avo_title
-        github_user.name
-      end
-
-      def avatar
-        github_user.avatar_url
-      end
-    end
   end
 
   attr_accessor :admin
-  @admin = Admin.new(nil)
+  @admin = Admin.empty
 end

@@ -103,4 +103,4 @@ gem "sidekiq", "~> 8.1", require: %w[sidekiq sidekiq/api]
 gem "slack-notifier", "~> 2.4"
 gem "strong_migrations", "~> 2.8"
 
-gem "warden-github", "~> 1.3"
+gem "warden", "~> 1.2"

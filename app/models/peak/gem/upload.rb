@@ -37,7 +37,7 @@ class Peak::Gem::Upload
 
     def validate
       raise InvalidError unless valid_name?(name)
-      raise InvalidError unless valid_ref?(platform_ref)
+      raise InvalidError unless valid_ref?(ref)
       raise InvalidError unless valid_chars?(checksum, *ruby, *rubygems, *executables, *licenses)
       raise InvalidError unless requirement_triples.all? { valid_name?(_1) && valid_operator?(_2) && valid_ref?(_3) }
       Validator.new(spec).validate
@@ -57,7 +57,9 @@ class Peak::Gem::Upload
     Peak::Platform.ids_from(platform_key).first
   end
   def platform_key = spec.platform.to_s
-  def platform_ref = "#{spec.version}-#{spec.platform}".chomp("-ruby")
+  def platform_ref = "#{ref}-#{spec.platform}".chomp("-ruby")
+
+  def ref = spec.version.to_s
 
   def requirement_triples
     @requirement_triples ||= begin

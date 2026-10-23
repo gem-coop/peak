@@ -50,8 +50,8 @@ class Namespace::MirrorTest < ActiveSupport::TestCase
   end
 
   def assert_versions(name, versions)
-    db_versions = mirror.namespace.gems.find_by(name:).versions.map(&:ref)
-    assert_equal versions, db_versions
+    db_versions = mirror.namespace.gems.find_by(name:).versions.refs.to_set
+    assert_equal versions.to_set, db_versions
   end
 
   test "sync, compact, sync" do

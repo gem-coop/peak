@@ -1,8 +1,8 @@
 require "test_helper"
 
 class Peak::Gem::GemspecTest < ActiveSupport::TestCase
-  defaults = %i[required_ruby_version required_rubygems_version dependencies].index_with(nil)
-  GemspecShim = Data.define(*defaults.keys).new(**defaults)
+  defaults = %i[required_ruby_version required_rubygems_version dependencies metadata].index_with(nil)
+  GemspecShim = Data.define(*defaults.keys) { def metadata=(v); end }.new(**defaults)
 
   test "parsing old gemspecs" do
     assert_nil gemspec_with(required_ruby_version: nil).ruby

@@ -27,13 +27,14 @@ class Peak::Gem::Upload
     def self.valid_ref?(ref)       = ref.present? && ::Gem::Version::ANCHORED_VERSION_PATTERN.match?(ref)
     delegate :valid_name?, :valid_operator?, :valid_chars?, :valid_ref?, to: :class
 
+    class InvalidError < StandardError; end
+
     class Validator < Gem::SpecificationPolicy
       def validate
         Gem::DefaultUserInteraction.use_ui(Gem::SilentUI.new) { super }
       end
       def validate_non_files = nil
     end
-    InvalidError = Gem::InvalidSpecificationException
 
     def validate
       raise InvalidError unless valid_name?(name)
@@ -42,6 +43,8 @@ class Peak::Gem::Upload
       raise InvalidError unless requirement_triples.all? { valid_name?(_1) && valid_operator?(_2) && valid_ref?(_3) }
       Validator.new(spec).validate
       self
+    rescue Gem::InvalidSpecificationException
+      raise InvalidError
     end
   end
 

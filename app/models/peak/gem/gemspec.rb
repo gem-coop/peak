@@ -6,10 +6,6 @@ class Peak::Gem::Gemspec
     @spec.metadata ||= {} # Some specs have nil metadata but are otherwise valid, so we shimmy them a bit.
   end
 
-  def tmpfile = nil
-  def checksum = nil
-  def published_at = nil
-
   def slice(*keys)
     keys.index_with { public_send _1 }
   end

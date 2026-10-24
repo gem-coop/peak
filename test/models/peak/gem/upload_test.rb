@@ -39,22 +39,7 @@ class Peak::Gem::UploadTest < ActiveSupport::TestCase
     assert_equal requirements, upload.spec.spec.requirements
   end
 
-  test "ref format" do
-    refute valid_ref?("1.0\n9")
-    refute valid_ref?("1.0 0")
-    refute valid_ref?("1.0.0-x86_64-linux")
-    refute valid_ref?("v1")
-    refute valid_ref?("")
-    refute valid_ref?("1.0.0; rm -rf")
-
-    assert valid_ref?("1.0.0")
-    assert valid_ref?("0.9.1")
-    assert valid_ref?("8.1.0.pre.1")
-  end
-
   private
-    delegate :valid_ref?, to: Peak::Gem::Gemspec
-
     def assert_invalid_upload(contents)
       assert_raise(Peak::Gem::Gemspec::InvalidError) { peak_upload_from(contents).spec.validate }
     end

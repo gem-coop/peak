@@ -29,7 +29,7 @@ class Peak::Gem::Gemspec
 
     def validate
       raise InvalidError unless valid_name?(name)
-      raise InvalidError unless valid_ref?(ref)
+      raise InvalidError unless valid_ref?(version)
       raise InvalidError unless valid_chars?(*ruby, *rubygems, *executables, *licenses)
       raise InvalidError unless requirement_triples.all? { valid_name?(_1) && valid_operator?(_2) && valid_ref?(_3) }
       Validator.new(spec).validate
@@ -43,10 +43,10 @@ class Peak::Gem::Gemspec
   def ruby = spec.required_ruby_version&.as_list
   def rubygems = spec.required_rubygems_version&.as_list
 
+  def ref = "#{version}-#{platform_key}".chomp("-ruby")
+  def version = spec.version.to_s
   def platform_key = spec.platform.to_s
-  def platform_ref = "#{ref}-#{spec.platform}".chomp("-ruby")
-
-  def ref = spec.version.to_s
+  private :version
 
   def requirement_triples
     @requirement_triples ||= begin

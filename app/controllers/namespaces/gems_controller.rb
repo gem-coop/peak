@@ -9,7 +9,7 @@ class Namespaces::GemsController < Public::BaseController
     upload = Current.upload_from(request.body)
     spec = upload.spec.validate
 
-    version = @index.version_from name: spec.name, ref: spec.platform_ref
+    version = @index.version_from name: spec.name, ref: spec.ref
 
     if version.persisted?
       render plain: "Upload skipped: #{version.package_name} already exists. ❌", status: :conflict

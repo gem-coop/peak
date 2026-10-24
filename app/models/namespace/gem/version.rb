@@ -63,18 +63,22 @@ class Namespace::Gem::Version < ApplicationRecord
 
   attribute :published_at, default: -> { Time.current }
 
-  def process(...)
-    consume(...)
+  # Process a Peak::Gem::Upload with broadcasts to the resulting version's `gem` & `index`.
+  def process(upload, **)
+    self.package = { io: upload.tmpfile, filename: }
+    consume(upload.spec, checksum: upload.checksum, **)
+
     gem.version_uploaded self
     index.version_uploaded self
   end
 
-  def consume(upload, **)
-    self.package = { io: upload.tmpfile, filename: } if upload.tmpfile
-    self.link_ids = links.unscoped.ids_from(upload.links)
-    self.reference_ids = references.unscoped.ids_from(upload.requirement_triples)
+  # Consume a Peak::Gem::Gemspec, callers are reuired to handle broadcasts to other models, like search indexes, themselves.
+  def consume(spec, **)
+    self.link_ids = links.unscoped.ids_from(spec.links)
+    self.reference_ids = references.unscoped.ids_from(spec.requirement_triples)
+    self.platform_id = Peak::Platform.ids_from(spec.platform_key).first
 
-    assign(**upload.slice(:platform_id, :has_extensions, :summary, *metadata.keys).compact_blank, **)
+    assign(**spec.slice(:has_extensions, :summary, :ruby, :rubygems, :licenses, :executables).compact_blank, **)
     update! line: compute_line
   end
 

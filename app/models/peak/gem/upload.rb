@@ -1,4 +1,4 @@
-class Peak::Gem::Upload < Peak::Gem::Gemspec
+class Peak::Gem::Upload
   mattr_reader :limit, default: 50.megabytes
 
   def self.read(io, **)
@@ -10,13 +10,13 @@ class Peak::Gem::Upload < Peak::Gem::Gemspec
 
   def initialize(tmpfile)
     @tmpfile = tmpfile.tap(&:rewind)
-    @package = nil
+    @package = @spec = nil
   end
 
   def package
     @package ||= rewinding { ::Gem::Package.new tmpfile }
   end
-  delegate :spec, to: :package
+  def spec = @spec ||= Peak::Gem::Gemspec.new(package.spec)
 
   def unlink
     tmpfile.close!

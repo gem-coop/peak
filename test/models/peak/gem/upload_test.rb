@@ -8,15 +8,15 @@ class Peak::Gem::UploadTest < ActiveSupport::TestCase
       "changelog_uri"   => "data:text/html,evil"
     })
 
-    assert_equal({ source_code: "https://example.com/src" }, upload.links)
+    assert_equal({ source_code: "https://example.com/src" }, upload.spec.links)
   end
 
   test "validation" do
-    assert peak_upload_from(gem_package_from(required_ruby_version: [">=\n 4.0\r"])).validate
-    assert peak_upload_from(gem_package_from(required_rubygems_version: [">=\r4.0\n"])).validate
+    assert peak_upload_from(gem_package_from(required_ruby_version: [">=\n 4.0\r"])).spec.validate
+    assert peak_upload_from(gem_package_from(required_rubygems_version: [">=\r4.0\n"])).spec.validate
 
-    assert peak_upload_from(gem_package_from(required_ruby_version: [">=\n 4.0\r", ">=\n 4.1"])).validate
-    assert peak_upload_from(gem_package_from(required_rubygems_version: [">=\r4.0\n", ">=\r4.1\n"])).validate
+    assert peak_upload_from(gem_package_from(required_ruby_version: [">=\n 4.0\r", ">=\n 4.1"])).spec.validate
+    assert peak_upload_from(gem_package_from(required_rubygems_version: [">=\r4.0\n", ">=\r4.1\n"])).spec.validate
 
     # RubyGems does sanitation on requirements, but not gem names. So the above tests are valid, but the below aren't:
     assert_invalid_upload gem_package_from { _1.add_dependency "ruby-ajp\n", ">= 0.2.0" }
@@ -35,8 +35,8 @@ class Peak::Gem::UploadTest < ActiveSupport::TestCase
     ]
     upload = peak_upload_from gem_package_from(platform: "java", requirements:)
 
-    assert upload.validate
-    assert_equal requirements, upload.spec.requirements
+    assert upload.spec.validate
+    assert_equal requirements, upload.spec.spec.requirements
   end
 
   test "ref format" do
@@ -53,9 +53,9 @@ class Peak::Gem::UploadTest < ActiveSupport::TestCase
   end
 
   private
-    delegate :valid_ref?, to: Peak::Gem::Upload
+    delegate :valid_ref?, to: Peak::Gem::Gemspec
 
     def assert_invalid_upload(contents)
-      assert_raise(Peak::Gem::Upload::InvalidError) { peak_upload_from(contents).validate }
+      assert_raise(Peak::Gem::Gemspec::InvalidError) { peak_upload_from(contents).spec.validate }
     end
 end

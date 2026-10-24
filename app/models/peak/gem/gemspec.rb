@@ -47,9 +47,6 @@ class Peak::Gem::Gemspec
   def ruby = spec.required_ruby_version&.as_list
   def rubygems = spec.required_rubygems_version&.as_list
 
-  def platform_id
-    Peak::Platform.ids_from(platform_key).first
-  end
   def platform_key = spec.platform.to_s
   def platform_ref = "#{ref}-#{spec.platform}".chomp("-ruby")
 

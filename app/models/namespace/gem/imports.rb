@@ -14,7 +14,7 @@ class Namespace::Gem::Imports < ActiveRecord::AssociatedObject
     import_refs = server_refs - stored_refs - ignored_refs(gem.name)
     import_refs.each_with_object(+"") do |ref, errors|
       gemspec = server.gemspec(ref).validate
-      versions.system.new(ref:).consume(gemspec, index:, **publishing_ledger[ref])
+      versions.system.new(ref:, index:, **publishing_ledger[ref]).consume(gemspec)
     rescue => error
       errors << "#{ref}: #{error.inspect}\n"
     end => errors

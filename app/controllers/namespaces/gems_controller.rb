@@ -6,8 +6,10 @@ class Namespaces::GemsController < Public::BaseController
   before_action :halt_exhaustive_upload, :set_user_from_push_key, only: :create
 
   def create
-    upload = Current.upload_from(request.body).validate
-    version = @index.version_from name: upload.name, ref: upload.platform_ref
+    upload = Current.upload_from(request.body)
+    spec = upload.spec.validate
+
+    version = @index.version_from name: spec.name, ref: spec.platform_ref
 
     if version.persisted?
       render plain: "Upload skipped: #{version.package_name} already exists. ❌", status: :conflict
@@ -16,7 +18,7 @@ class Namespaces::GemsController < Public::BaseController
 
       render plain: "#{version.package_name} uploaded 🎉"
     end
-  rescue Peak::Gem::Upload::InvalidError
+  rescue Peak::Gem::Gemspec::InvalidError
     render plain: "Upload rejected: gemspec contains invalid characters. ❌", status: :unprocessable_entity
   end
 

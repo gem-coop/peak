@@ -1,5 +1,9 @@
 class Namespace::Gem::Server < ActiveRecord::AssociatedObject
   def gemspec(ref)
+    Peak::Gem::Gemspec.new raw_gemspec(ref)
+  end
+
+  def raw_gemspec(ref)
     body = client.get("quick/Marshal.4.8/#{gem.name}-#{ref}.gemspec.rz").body.to_s
     require "rubygems/safe_marshal"
     Gem::SafeMarshal.safe_load Gem::Util.inflate(body)

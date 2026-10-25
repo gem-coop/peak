@@ -8,7 +8,7 @@
   <%= render "categories/acknowledgement" %>
 </header>
 
-<section style="display: flex; column-gap: 1em; margin-block: 2em 1em;">
+<section style="display: flex; flex-wrap: wrap; column-gap: 1em; margin-block: 2em 1em;">
   <span><%= link_to "ALL", nil, aria: { current: ("page" unless @letters.include?(params[:l])) } %></span>
   <span>|</span>
 

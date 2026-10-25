@@ -6,14 +6,21 @@
   <span><%= @category.description %></span>
 </header>
 
-<% namespace = Namespace.named(:@rubygems) %>
-<h3>available from <%= link_to namespace.name, namespace %></h3>
+<h3>available from <%= link_to @namespace.name, @namespace %></h3>
 
-<ul style="display: flex; flex-direction: column; row-gap: 10px; padding-inline-start: 2ch; list-style-type: '- ';">
-  <% @category.projects.each do |name| %>
-    <li><%= link_to name, namespace_gem_path(namespace, name, index: nil) %></li>
+<section style="display: flex; flex-direction: column; row-gap: 10px;">
+  <% @versions.each do |version| %>
+    <article>
+      <h3 style="margin-block-end: 0; display: inline-block;">
+        <%= link_to version.gem.name, namespace_gem_path(@namespace, version.gem, index: nil) %>
+      </h3>
+
+      <p style="margin-block-end: 0;"><i><%= version.summary %></i></p>
+
+      <%= render "gem/versions/list", versions: [version] %>
+    </article>
   <% end %>
-</ul>
+</section>
 
 <footer style="margin-block-start: 5em;">
   <%= render "categories/acknowledgement" %>

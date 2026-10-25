@@ -8,6 +8,8 @@ class CategoriesController < Public::BaseController
 
   def show
     @category = Peak::Category.find(params[:id])
+    @namespace = Namespace.named(:@rubygems)
+    @versions = @namespace.stable_index.versions.pure.for(@category.projects).as_byline.distinct_on_gem.order(ref: :desc)
   rescue ActiveRecord::RecordNotFound
     redirect_to categories_path, alert: "That category doesn't exist"
   end

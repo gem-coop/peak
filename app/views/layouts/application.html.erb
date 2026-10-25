@@ -31,8 +31,8 @@
 
         <ul>
           <li><%= link_to "Home", root_path %></li>
-          <li><%= link_to "Updates", "/updates" %></li>
           <li><%= link_to "Fellowship", "/fellowship" %></li>
+          <li><%= link_to "Categories", categories_path %></li>
 
           <% if Current.user? %>
             <li><%= link_to "Dashboard", dashboard_path %></li>

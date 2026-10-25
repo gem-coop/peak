@@ -59,6 +59,9 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   get "search", to: "search#index"
+  resources :categories, only: %i[index show]
+
+  direct(:toolbox_category) { "https://ruby-toolbox.com/categories/#{_1.permalink}" }
 
   # Defines the root path route ("/")
   root to: "user/sign_ups#new"

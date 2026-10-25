@@ -152,6 +152,15 @@ mark {
   background: var(--mark-bg);
 }
 
+a[aria-current="page"] {
+  background: var(--mark-bg);
+  padding-inline: .25em;
+
+  &:not(:hover) {
+    text-decoration: none;
+  }
+}
+
 pre {
   overflow: auto;
   margin-block-start: 0;

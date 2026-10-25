@@ -1,5 +1,11 @@
 #!/usr/bin/env bin/rails runner
 
+# mirror gems in config/storage/categories.yml:
+#   bin/mirror --categories (also implies -l 1)
+#
+# limit mirror to just the latest N versions:
+#   bin/mirror -l 1
+#
 # exact name match:
 #   bin/mirror -r rails
 #
@@ -9,16 +15,26 @@
 # pass a different namespace:
 #   bin/mirror @kaspth -r oaken
 
+limit = nil
+
+if i = ARGV.index("-l")
+  limit = ARGV.slice!(i, 2).last.to_i
+end
+
 if i = ARGV.index("-r")
   match = ARGV.slice!(i, 2).last
   match = Regexp.new $1 if match =~ /^\/(.*)\/$/
 end
 
+categories = ARGV.delete("--categories")
+limit ||= 1 if categories
+Namespace::Gem::Imports.limit = limit if limit
+
 name = (ARGV.shift || "@rubygems").then.find { _1.start_with?("@") } or raise "pass a valid namespace name"
 namespace = Namespace.named(name)
 
 mirror = namespace.build_mirror(url: "https://rubygems.org/").tap(&:readonly!)
-names = mirror.names.grep match
+names = categories ? Peak::Category.projects : mirror.names.grep(match)
 
 if names.empty?
   puts "found 0 gems matching #{match}"

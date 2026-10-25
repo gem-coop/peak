@@ -8,5 +8,6 @@ class Peak::Category < Data.define(:name, :permalink, :description, :projects)
   Group.define_singleton_method(:letters) { lettered.keys }
 
   def self.find(id) = @index.fetch(id) { raise ActiveRecord::RecordNotFound }
+  def self.projects = @index.values.flat_map(&:projects)
   @index = Group.all.flat_map(&:categories).index_by(&:permalink)
 end

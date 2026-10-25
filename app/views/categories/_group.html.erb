@@ -1,0 +1,9 @@
+<article>
+  <h3 style="margin-block-end: 0;"><%= group.name %></h3>
+
+  <ul style="display: flex; flex-direction: column; row-gap: 10px; margin-block: .5em; padding-inline-start: 2ch; list-style-type: '- ';">
+    <% group.categories.each do |category| %>
+      <li><%= link_to category.name, category_path(category.permalink) %></li>
+    <% end %>
+  </ul>
+</article>

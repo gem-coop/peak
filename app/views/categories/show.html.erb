@@ -1,0 +1,20 @@
+<span><%= link_to "← categories", categories_path %> / category</span>
+
+<header style="display: flex; flex-wrap: wrap; column-gap: 1em; align-items: baseline;">
+  <h2><%= @category.name %></h2>
+  <span><%= link_to "See on ruby-toolbox ↗", toolbox_category_url(@category) %></span>
+  <span><%= @category.description %></span>
+</header>
+
+<% namespace = Namespace.named(:@rubygems) %>
+<h3>available from <%= link_to namespace.name, namespace %></h3>
+
+<ul style="display: flex; flex-direction: column; row-gap: 10px; padding-inline-start: 2ch; list-style-type: '- ';">
+  <% @category.projects.each do |name| %>
+    <li><%= link_to name, namespace_gem_path(namespace, name, index: nil) %></li>
+  <% end %>
+</ul>
+
+<footer style="margin-block-start: 5em;">
+  <%= render "categories/acknowledgement" %>
+</footer>

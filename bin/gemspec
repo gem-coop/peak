@@ -27,7 +27,7 @@ rescue => error
 end
 
 gem = Namespace.named(:@rubygems).gems.new(name:)
-spec = Peak::Gem::Gemspec.new gem.server.gemspec(ref)
+spec = gem.server.gemspec(ref)
 
 files = spec.spec.files
 spec.spec.files = [] unless full # Extract files since they can take a lot of vertical space

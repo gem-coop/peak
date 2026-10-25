@@ -37,7 +37,33 @@ class Peak::Gem::GemspecTest < ActiveSupport::TestCase
     assert_equal [%w[activesupport >= 3.0.8], %w[activesupport < 3.2.0]], spec.requirement_triples
   end
 
+  test "links drops unsafe URI schemes and keeps web links" do
+    shim = Data.define(:homepage, :metadata)["javascript:alert(1)", {
+      "source_code_uri" => "https://example.com/src",
+      "bug_tracker_uri" => "javascript:alert(2)",
+      "changelog_uri"   => "data:text/html,evil"
+    }]
+
+    spec = Peak::Gem::Gemspec.new(shim)
+    assert_equal({ source_code: "https://example.com/src" }, spec.links)
+  end
+
+  test "ref format" do
+    refute valid_ref?("1.0\n9")
+    refute valid_ref?("1.0 0")
+    refute valid_ref?("1.0.0-x86_64-linux")
+    refute valid_ref?("v1")
+    refute valid_ref?("")
+    refute valid_ref?("1.0.0; rm -rf")
+
+    assert valid_ref?("1.0.0")
+    assert valid_ref?("0.9.1")
+    assert valid_ref?("8.1.0.pre.1")
+  end
+
   private
+    delegate :valid_ref?, to: Peak::Gem::Gemspec
+
     def gemspec_with(**values)
       Peak::Gem::Gemspec.new GemspecShim.with(**values)
     end

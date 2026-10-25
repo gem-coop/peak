@@ -1,4 +1,6 @@
 class Namespace::Gem::Imports < ActiveRecord::AssociatedObject
+  mattr_accessor :limit
+
   # Call `index.compact` afterwards, as needed.
   performs def import_all(index)
     versions = gem.versions.where(index:)
@@ -9,6 +11,8 @@ class Namespace::Gem::Imports < ActiveRecord::AssociatedObject
     # Refs we have that the server doesn't have been yanked
     yanked_refs = stored_refs - server_refs
     versions.where(ref: yanked_refs).destroy_all
+
+    server_refs = server_refs.last(limit) if limit
 
     # Refs the server has that we don't should be imported
     import_refs = server_refs - stored_refs - ignored_refs(gem.name)

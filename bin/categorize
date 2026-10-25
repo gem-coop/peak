@@ -23,7 +23,7 @@ Pathname.glob("tmp/catalog/catalog/**/*.yml").each do |file|
   data["permalink"] = permalink
   data["projects"].delete_if { _1.include? "/" }
 
-  groups.fetch(key)["categories"] << data
+  groups.fetch(key)["categories"] << data unless data["projects"].empty?
 end
 
 sorted = groups.values.sort_by { it["name"] }

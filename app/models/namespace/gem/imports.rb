@@ -25,7 +25,7 @@ class Namespace::Gem::Imports < ActiveRecord::AssociatedObject
 
     gem.reindex
   ensure
-    raise errors unless errors.empty?
+    raise errors if errors.present?
   end
 
   private

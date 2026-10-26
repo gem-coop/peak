@@ -18,8 +18,8 @@ class Namespaces::GemsController < Public::BaseController
 
       render plain: "#{version.package_name} uploaded 🎉"
     end
-  rescue Peak::Gem::Gemspec::InvalidError
-    render plain: "Upload rejected: gemspec contains invalid characters. ❌", status: :unprocessable_entity
+  rescue Peak::Gem::Gemspec::InvalidError => error
+    render plain: "Upload rejected: #{error.message}. ❌", status: :unprocessable_entity
   end
 
   def show

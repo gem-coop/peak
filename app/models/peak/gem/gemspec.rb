@@ -28,14 +28,20 @@ class Peak::Gem::Gemspec
     end
 
     def validate
-      raise InvalidError unless valid_name?(name)
-      raise InvalidError unless valid_ref?(version)
-      raise InvalidError unless valid_chars?(*ruby, *rubygems, *executables, *licenses)
-      raise InvalidError unless requirement_triples.all? { valid_name?(_1) && valid_operator?(_2) && valid_ref?(_3) }
+      raise InvalidError, "gemspec contained invalid gem name" unless valid_name?(name)
+      raise InvalidError, "gemspec contained invalid version ref" unless valid_ref?(version)
+      raise InvalidError, "gemspec contained invalid characters" unless valid_chars?(*ruby, *rubygems, *executables, *licenses)
+
+      requirement_triples.each do |name, op, ref|
+        raise InvalidError, "gemspec '#{name}' dependency had invalid name" unless valid_name?(name)
+        raise InvalidError, "gemspec '#{name}' dependency had invalid operator" unless valid_operator?(op)
+        raise InvalidError, "gemspec '#{name}' dependency had invalid ref" unless valid_ref?(ref)
+      end
+
       Validator.new(spec).validate
       self
     rescue Gem::InvalidSpecificationException
-      raise InvalidError
+      raise InvalidError, "gemspec deemed invalid by running Gem::SpecificationPolicy"
     end
   end
 

@@ -5,7 +5,7 @@ class Warden::GitHub::User < Data.define(:access_token, :expires_at, :refresh_to
 
   def self.from(access_token:, **)
     details = Warden::GitHub::Client.from(access_token).user_details(members)
-    new(access_token:, expires_at:, **, **details)
+    new(access_token:, **, **details)
   end
 
   def initialize(expires_in: nil, expires_at: nil, **)

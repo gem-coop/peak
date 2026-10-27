@@ -10,7 +10,7 @@ return unless Peak.admin.client_set?
 
 require_relative "../../lib/warden/github"
 
-Warden::GitHub::User.alias_method :avo_title, :name
+Warden::GitHub::User.alias_method :avo_title, :handle
 Warden::GitHub.oauth = Warden::GitHub::OAuth.new(
   client_id:,
   client_secret:,

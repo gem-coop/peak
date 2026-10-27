@@ -23,6 +23,6 @@ class Warden::GitHub::User < Data.define(:access_token, :expires_at, :refresh_to
 
   def expired? = Time.at(expires_at).past?
 
-  def name = "@#{login}"
+  def handle = "@#{login}"
   def avatar = avatar_url
 end

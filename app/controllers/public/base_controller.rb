@@ -25,4 +25,9 @@ class Public::BaseController < ActionController::Base
       # TODO: Figure out authenticated routing to `private_access` indexes.
       @index = from.named(params[:namespace]).indexes.public_access.locate_or_stable(params[:index])
     end
+
+    def set_stable_index(name)
+      @namespace = Namespace.includes(:stable_index).named(name)
+      @index = @namespace.stable_index
+    end
 end

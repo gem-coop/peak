@@ -1,0 +1,11 @@
+<%# locals: (namespace:, version:, index: nil) %>
+
+<article>
+  <h4 style="margin-block-end: 0; display: inline-block;">
+    <%= link_to version.gem.name, namespace_gem_path(namespace, version.gem, index:) %>
+  </h4>
+
+  <p style="margin-block-end: 0;"><i><%= version.summary %></i></p>
+
+  <%= render "gem/versions/list", versions: [version] %>
+</article>

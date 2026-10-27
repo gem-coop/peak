@@ -18,6 +18,11 @@
           </div>
 
           <div>
+            <dt>PURL</dt>
+            <dd><%= @latest.to_purl %></dd>
+          </div>
+
+          <div>
             <dt>licenses</dt>
             <dd><%= @latest.licenses.join(", ").presence || "none" %></dd>
           </div>

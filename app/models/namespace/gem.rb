@@ -27,4 +27,9 @@ class Namespace::Gem < ApplicationRecord
   def namespaced_name
     "#{namespace.name}/#{name}"
   end
+
+  # Ref: https://github.com/package-url/purl-spec
+  def to_purl
+    "pkg:gem/gem.coop/#{namespaced_name.delete_prefix("@")}"
+  end
 end

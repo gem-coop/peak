@@ -63,6 +63,13 @@ class Namespace::Gem::Version < ApplicationRecord
 
   attribute :published_at, default: -> { Time.current }
 
+  # Ref: https://github.com/package-url/purl-spec
+  def to_purl
+    "#{gem.to_purl}@#{ref.delete_suffix(platform.key)}".tap do
+      _1 << "?platform=#{platform.key}" unless platform.pure?
+    end
+  end
+
   # Process a Peak::Gem::Upload with broadcasts to the resulting version's `gem` & `index`.
   def process(upload, **)
     self.package = { io: upload.tmpfile, filename: }

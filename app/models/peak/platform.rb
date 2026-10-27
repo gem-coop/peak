@@ -11,7 +11,8 @@ class Peak::Platform < ApplicationRecord
     class_eval "def #{name}? = name == '#{name}'"
   end
 
-  scope :pure, -> { where(arch: "", specifier: "") }
+  scope :pure, -> { ruby }
+  def pure? = ruby?
 
   scope :precompile_targeted, -> { where(precompile_target: true) }
   before_create :set_details, :set_precompile_target

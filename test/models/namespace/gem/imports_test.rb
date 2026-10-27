@@ -53,6 +53,29 @@ class Namespace::Gem::ImportsTest < ActiveSupport::TestCase
     assert_match "published_at:2024-01-01T00:00:00.000Z", version.metadata.line
   end
 
+  test "imports refs the server has that we don't — with limit imports last N versions" do
+    Namespace::Gem::Imports.with limit: 1 do
+      stub_server info: "---\n1.0.0 |checksum:a\n1.1.0 |checksum:b\n", versions: versions_json("1.0.0", "1.1.0")
+      stub_gemspec "1.0.0"
+      stub_gemspec "1.1.0"
+
+      assert_increments gem.versions do
+        imports.import_all(index)
+      end
+
+      assert_raises(ActiveRecord::RecordNotFound) { versions.by gem, ref: "1.0.0" }
+
+      version = versions.by gem, ref: "1.1.0"
+      assert_equal index, version.index
+      assert_equal Peak.system_user, version.created_by
+      assert_equal "summary", version.summary
+      assert_equal "checksum-1.1.0", version.checksum
+      assert_equal Time.utc(2024, 1, 1), version.published_at
+      assert_match "checksum:checksum-1.1.0", version.metadata.line
+      assert_match "published_at:2024-01-01T00:00:00.000Z", version.metadata.line
+    end
+  end
+
   test "does nothing when the server and stored refs match" do
     stub_server info: "---\n1.0.0 |checksum:a\n", versions: versions_json("1.0.0")
     stub_gemspec "1.0.0"
@@ -68,7 +91,7 @@ class Namespace::Gem::ImportsTest < ActiveSupport::TestCase
     stub_gemspec "1.0.0"
     stub_gemspec "1.1.0"
     imports.import_all(index)
-    assert_equal %w[1.0.0 1.1.0], gem.reload.versions.map(&:ref)
+    assert_equal %w[1.0.0 1.1.0], gem.versions.refs
 
     # The server has yanked 1.0.0.
     stub_server info: "---\n1.1.0 |checksum:b\n", versions: versions_json("1.1.0")
@@ -76,7 +99,7 @@ class Namespace::Gem::ImportsTest < ActiveSupport::TestCase
       imports.import_all(index)
     end
 
-    assert_equal %w[1.1.0], gem.reload.versions.map(&:ref)
+    assert_equal %w[1.1.0], gem.versions.refs
   end
 
   test "reindexes the gem after importing" do
@@ -102,7 +125,7 @@ class Namespace::Gem::ImportsTest < ActiveSupport::TestCase
     end
 
     refute_requested :get, "https://rubygems.org/quick/Marshal.4.8/sevgi-derender-0.73.0.gemspec.rz"
-    assert_equal %w[0.73.1], gem.reload.versions.map(&:ref)
+    assert_equal %w[0.73.1], gem.versions.refs
   end
 
   test "maps platform-specific refs through the publishing ledger" do
@@ -138,6 +161,6 @@ class Namespace::Gem::ImportsTest < ActiveSupport::TestCase
     assert_match(/\A1\.2\.0: #<.+>\n\z/, error.message.lines.last)
 
     # The ref that did import before the failures is kept.
-    assert_equal %w[1.0.0], gem.reload.versions.map(&:ref)
+    assert_equal %w[1.0.0], gem.versions.refs
   end
 end

@@ -2,7 +2,7 @@ class Namespace::Gem::Imports < ActiveRecord::AssociatedObject
   mattr_accessor :limit
 
   # Call `index.compact` afterwards, as needed.
-  performs def import_all(index)
+  performs def import_all(index, limit: self.limit)
     versions = gem.versions.where(index:)
 
     server_refs = server.refs

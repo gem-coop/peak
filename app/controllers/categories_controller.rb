@@ -1,5 +1,6 @@
 class CategoriesController < Public::BaseController
-  before_action { fresh_when weak_etag: Peak.release.sha, public: true }
+  before_action :set_category, only: :show
+  before_action -> { fresh_when weak_etag: Peak.release.sha, public: true }, only: :index
 
   def index
     @letters = Peak::Category::Group.letters
@@ -7,10 +8,14 @@ class CategoriesController < Public::BaseController
   end
 
   def show
-    @category = Peak::Category.find(params[:id])
-    @namespace = Namespace.named(:@rubygems)
-    @versions = @namespace.stable_index.versions.pure.for(@category.projects).as_byline.distinct_on_gem.order(ref: :desc)
-  rescue ActiveRecord::RecordNotFound
-    redirect_to categories_path, alert: "That category doesn't exist"
+    @versions = set_stable_index(:@rubygems).versions.for(@category.projects)
+    fresh_when @versions, public: true
+
+    @versions = @versions.pure.as_byline.distinct_on_gem.order(ref: :desc)
   end
+
+  private
+    def set_category
+      @category = Peak::Category[params[:id]] or redirect_to categories_path, alert: "That category doesn't exist"
+    end
 end

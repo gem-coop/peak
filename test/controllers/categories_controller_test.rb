@@ -23,13 +23,21 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "get show" do
-    # Just shimmy it.
     namespaces.rubygems.gems.where(name: :activesupport).update_all name: :active_flag
 
     get category_path("Active_Record_Bit_Fields")
     assert_response :success
     assert_dom "a[href='https://ruby-toolbox.com/categories/Active_Record_Bit_Fields']"
-    assert_dom "article h3", "active_flag"
+    assert_dom "article h4", "active_flag"
+    assert_dom "section span", "None."
+  end
+
+  test "get show empty" do
+    get category_path("Active_Record_Bit_Fields")
+    assert_response :success
+    assert_dom "a[href='https://ruby-toolbox.com/categories/Active_Record_Bit_Fields']"
+
+    assert_dom "section span", text: "None.", count: 2
   end
 
   test "get show with no versions 200s" do

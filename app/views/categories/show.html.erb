@@ -6,20 +6,20 @@
   <span><%= @category.description %></span>
 </header>
 
-<h3>available from <%= link_to @namespace.name, @namespace %></h3>
+<% recent, older = 5.years.ago.then { |t| @versions.partition { _1.published_at.after? t } } %>
+
+<h3>recent from <%= link_to @namespace.name, @namespace %></h3>
 
 <section style="display: flex; flex-direction: column; row-gap: 10px;">
-  <% @versions.each do |version| %>
-    <article>
-      <h3 style="margin-block-end: 0; display: inline-block;">
-        <%= link_to version.gem.name, namespace_gem_path(@namespace, version.gem, index: nil) %>
-      </h3>
+  <%= render(partial: "gem/versions/version", collection: recent, locals: { namespace: @namespace }) || tag.span("None.") %>
+</section>
 
-      <p style="margin-block-end: 0;"><i><%= version.summary %></i></p>
+<hr>
 
-      <%= render "gem/versions/list", versions: [version] %>
-    </article>
-  <% end %>
+<h3>older from <%= link_to @namespace.name, @namespace %></h3>
+
+<section style="display: flex; flex-direction: column; row-gap: 10px;">
+  <%= render(partial: "gem/versions/version", collection: older, locals: { namespace: @namespace }) || tag.span("None.") %>
 </section>
 
 <footer style="margin-block-start: 5em;">

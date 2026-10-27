@@ -11,6 +11,14 @@ class Namespace::Gem < ApplicationRecord
 
   scope :alphabetized, -> { order(name: :asc) }
 
+  # Namespace::Gem.locate("oaken") # => @rubygems/oaken
+  # Namespace::Gem.locate("@kaspth/oaken") # => @kaspth/oaken
+  def self.locate(name)
+    *gunk, gem, namespace = name.split("/").reverse
+    raise ArgumentError, "too many segments in name" unless gunk.empty?
+    Namespace.named(namespace || :@rubygems).gems.named(gem)
+  end
+
   def self.named(name) = find_by!(name:)
   def to_param = name
 

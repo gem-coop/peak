@@ -81,11 +81,7 @@ Avo.configure do |config|
   # config.cache_resources_on_index_view = true
 
   ## == Turbo options ==
-  # config.turbo = -> do
-  #   {
-  #     instant_click: true
-  #   }
-  # end
+  config.turbo = -> { { instant_click: false } }
 
   ## == Logger ==
   # config.logger = -> {

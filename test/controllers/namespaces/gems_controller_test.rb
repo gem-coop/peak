@@ -4,7 +4,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
   setup { cache_store.clear }
 
   def namespace = namespaces.gemcoop
-  def token = user_push_keys.gemcoop_plain.token
+  def token = user_push_keys.gemcoop_owner.token
 
   test "show with missing gem" do
     head namespace_gems_url(namespace:, id: "nonexistent-1.0.0.gem")
@@ -45,7 +45,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     assert_match "peak-0.2.0.gem uploaded 🎉", response.body
 
     version = versions.by gems.peak, ref: "0.2.0"
-    assert_equal users.plain, version.created_by
+    assert_equal users.owner, version.created_by
 
     assert_equal "peak-0.2.0", version.name
     assert_equal [">= 4.0", "< 5"], version.ruby
@@ -96,7 +96,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     version = versions.by gem, ref: "1.0.0"
 
     assert_equal namespace.stable_index, version.index
-    assert_equal users.plain, version.created_by
+    assert_equal users.owner, version.created_by
     assert version.package.attached?
     assert_equal package, version.package.download
   end
@@ -112,7 +112,7 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
     assert_match "peak-0.1.0-arm-linux.gem uploaded 🎉", response.body
 
     version = versions.by gems.peak, ref: "0.1.0-arm-linux"
-    assert_equal users.plain, version.created_by
+    assert_equal users.owner, version.created_by
 
     assert_equal "peak-0.1.0-arm-linux", version.name
     assert_equal [">= 4.0"], version.ruby
@@ -164,6 +164,17 @@ class Namespaces::GemsControllerTest < ActionDispatch::IntegrationTest
 
     refute_increments gems.peak.versions do
       post namespace_gem_push_url(namespace: "@nonexistent"), env: { "RAW_POST_DATA" => package.binread, authorization: "Bearer #{token}" }
+    end
+    assert_response :unauthorized
+    assert_dom "body", /User doesn't have access to the given namespace/
+  end
+
+  test "push with invalid API key — user doesn't have push access" do
+    token = user_push_keys.gemcoop_plain.token
+    package = file_fixture "peak/peak-0.2.0.gem"
+
+    refute_increments gems.peak.versions do
+      post namespace_gem_push_url(namespace:), env: { "RAW_POST_DATA" => package.binread, authorization: "Bearer #{token}" }
     end
     assert_response :unauthorized
     assert_dom "body", /User doesn't have access to the given namespace/

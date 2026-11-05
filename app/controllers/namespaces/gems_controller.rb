@@ -64,7 +64,7 @@ class Namespaces::GemsController < Public::BaseController
       when !@user.verified?
         render plain: "User needs to verify email address", status: :unauthorized
       else
-        set_routed_index_from_user @user
+        set_routed_pushable_index_from_user @user
       end
     end
 

@@ -1,4 +1,6 @@
 owner = users.create(:owner, name: "Owner", email_address: "owner@example.com")
+user_push_keys.label gemcoop_owner: owner.create_push_key
+
 namespace = namespaces.create_approved :gemcoop, owner:, name: "@gemcoop"
 # Created & managed by subscription eventually
 indexes.public_access.create :gemcoop_dev, namespace:, slug: :dev

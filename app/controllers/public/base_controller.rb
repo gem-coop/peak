@@ -15,8 +15,8 @@ class Public::BaseController < ActionController::Base
   end
 
   private
-    def set_routed_index_from_user(user)
-      set_routed_index from: user.namespaces
+    def set_routed_pushable_index_from_user(user)
+      set_routed_index from: user.namespaces.pushable
     rescue ActiveRecord::RecordNotFound
       render plain: "User doesn't have access to the given namespace", status: :unauthorized
     end

@@ -9,7 +9,7 @@ class Peak::Gem
     less_eq: "<=",
     less: "<",
     eq: "=",
-    not_eq: "!=",
+    neq: "!=",
     pessimistic: "~>"
   }
   mattr_reader :operator_values, default: Set.new(operators.values)

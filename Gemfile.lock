@@ -157,7 +157,7 @@ GEM
       bigdecimal
       rexml
     crass (1.0.8)
-    csv (3.3.6)
+    csv (3.3.7)
     date (3.6.0)
     debug (1.11.1)
       irb (~> 1.10)
@@ -216,7 +216,7 @@ GEM
       stimulus-rails (>= 1.2)
       turbo-rails (>= 1.2)
     http-2 (1.2.3)
-    httparty (0.24.2)
+    httparty (0.24.3)
       csv
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
@@ -865,7 +865,7 @@ CHECKSUMS
   connection_pool (3.0.2) sha256=33fff5ba71a12d2aa26cb72b1db8bba2a1a01823559fb01d29eb74c286e62e0a
   crack (1.0.1) sha256=ff4a10390cd31d66440b7524eb1841874db86201d5b70032028553130b6d4c7e
   crass (1.0.8) sha256=7a0145c7a2c59f8e7923b3a69ce819c444823a00a5127d805298fea13be24efe
-  csv (3.3.6) sha256=aba61e7e507a66f03d45cb1f3c4b6359861c3504038b422962875dce099e4456
+  csv (3.3.7) sha256=15a3f16f6628da8664d455eb634e7f22031bcf53044923caf56975109e71b9f8
   date (3.6.0) sha256=18ac945c4e24ebd93534f8eab8c2fd8c5604b3e977105b3798d62a1e8d27b580
   debug (1.11.1) sha256=2e0b0ac6119f2207a6f8ac7d4a73ca8eb4e440f64da0a3136c30343146e952b6
   docile (1.4.1) sha256=96159be799bfa73cdb721b840e9802126e4e03dfc26863db73647204c727f21e
@@ -891,7 +891,7 @@ CHECKSUMS
   honeybadger (6.10.1) sha256=481a797ba1efaf5a4774b7740c9c2fa35d19f42a161ad04bd6f6ec865b101c92
   hotwire_combobox (0.4.1) sha256=2d94741801f6e9814315fd7a36ee192da7e57e62c9eac7e3d2ed577bc2f73607
   http-2 (1.2.3) sha256=f4e3a7000e9a8ab97595f09eac44c6ec10a2aa438360758124df0ca5bcb280d4
-  httparty (0.24.2) sha256=8fca6a54aa0c4aa4303a0fd33e5e2156175d6a5334f714263b458abd7fda9c38
+  httparty (0.24.3) sha256=5c95cf29ca70d5bfd834e56140ddfca6e94166c3b870cde9c25d157cdb5a00d2
   httpx (1.8.4) sha256=1782ecde81eb4e961ad8735ec74a6fec8e60efeaa4592c6b2f55d72e19aaeca8
   i18n (1.15.2) sha256=00f9eb62412fe593b2a65a97daa75300d37abb8f7202ec748e94b6d46a9dd1b5
   image_processing (2.1.0) sha256=ca3814b1b909fc5fab68b261c50eaffef11e29a6907143e9cf1efc14b6dc6f47

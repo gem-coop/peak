@@ -6,7 +6,7 @@ require "httpx/adapters/webmock"
 require "webmock/minitest"
 
 class ActiveSupport::TestCase
-  parallelize workers: :number_of_processors
+  parallelize(workers: ENV["CI"] ? 1 : :number_of_processors)
 
   include Oaken.test_setup
 

@@ -96,6 +96,7 @@ gem "opentelemetry-exporter-otlp"
 gem "opentelemetry-instrumentation-all"
 gem "opentelemetry-sdk"
 gem "pg", "~> 1.6"
+gem "ransack", "~> 4.4" # LOCKED: Attempt to make Avo dynamic filters work.
 gem "redis", "~> 6.0"
 gem "resend", "~> 1.16"
 gem "sidekiq-scheduler", "~> 6.0"

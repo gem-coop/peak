@@ -4,7 +4,8 @@
 require_relative "config/application"
 
 task "db:schema:dump" do
-  Rails.application.eager_load!
+  # Debug: attempting to appease Avo's conflict with ViewComponent
+  # Rails.application.eager_load!
 
   ignored = ApplicationRecord.lease_connection.tables - ActiveRecord::Base.descendants.map(&:table_name).compact_blank
   ActiveRecord::SchemaDumper.ignore_tables = ignored

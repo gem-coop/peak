@@ -13,7 +13,8 @@ Rails.application.configure do
   # this is usually not necessary, and can slow down your test suite. However, it's
   # recommended that you enable it in continuous integration systems to ensure eager
   # loading is working properly before deploying your code.
-  config.eager_load = false and ENV["CI"].present?
+  # config.eager_load = ENV["CI"].present?
+  config.eager_load = false
 
   # Configure public file server for tests with cache-control for performance.
   config.public_file_server.headers = { "cache-control" => "public, max-age=3600" }
@@ -50,8 +51,8 @@ Rails.application.configure do
   config.active_job.queue_adapter = :test
   config.cache_store = :memory_store
 
-  config.after_initialize do
-    # Force ViewComponent to precompile all templates synchronously, to avoid a deadlock with Avo's loading of them.
-    ViewComponent::Base.descendants.each(&:compile)
-  end
+  # config.after_initialize do
+  #   # Force ViewComponent to precompile all templates synchronously, to avoid a deadlock with Avo's loading of them.
+  #   ViewComponent::Base.descendants.each(&:compile)
+  # end
 end

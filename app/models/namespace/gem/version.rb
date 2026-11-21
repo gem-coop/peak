@@ -19,7 +19,7 @@ class Namespace::Gem::Version < ApplicationRecord
   end
   has_many :referrants, -> { where(ref: _1.ref) }, through: :gem, foreign_key: :ref, primary_key: :ref
 
-  has_object :metadata
+  has_object :destroyer, :metadata
   has_one_attached :package
 
   scope :published_before, -> { where(published_at: .._1) }
